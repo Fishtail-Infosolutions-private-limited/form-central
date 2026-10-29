@@ -1,0 +1,226 @@
+// Prisma schema for Form Central
+// Running Competition Registration & Dynamic Form Management System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+}
+
+enum FormStatus {
+  DRAFT
+  PUBLISHED
+  UNPUBLISHED
+  CLOSED
+}
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum StorageProvider {
+  LOCAL
+  GOOGLE_DRIVE
+}
+
+enum UploadStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  ATTACHED
+}
+
+model AdminUser {
+  id           String             @id @default(uuid())
+  email        String             @unique
+  name         String
+  passwordHash String
+  role         AdminRole          @default(ADMIN)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  forms        RegistrationForm[]
+  auditLogs    AuditLog[]
+
+  @@map("admin_users")
+}
+
+model RegistrationForm {
+  id                 String                   @id @default(uuid())
+  name               String
+  slug               String                   @unique
+  description        String?                  @db.Text
+  instructions       String?                  @db.Text
+  status             FormStatus               @default(DRAFT)
+  opensAt            DateTime?
+  closesAt           DateTime?
+  createdById        String
+  createdBy          AdminUser                @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  publishedVersionId String?
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+
+  versions           FormVersion[]
+  submissions        RegistrationSubmission[]
+  verifications      EmailVerification[]
+
+  @@index([slug])
+  @@index([status])
+  @@index([createdById])
+  @@map("registration_forms")
+}
+
+model FormVersion {
+  id            String                   @id @default(uuid())
+  formId        String
+  form          RegistrationForm         @relation(fields: [formId], references: [id], onDelete: Cascade)
+  versionNumber Int
+  schema        Json                     // Immutable snapshot of all steps, fields, validation, conditions
+  status        String                   @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED
+  publishedAt   DateTime?
+  createdAt     DateTime                 @default(now())
+
+  submissions   RegistrationSubmission[]
+
+  @@unique([formId, versionNumber])
+  @@index([formId])
+  @@map("form_versions")
+}
+
+model EmailVerification {
+  id            String            @id @default(uuid())
+  email         String
+  formId        String
+  form          RegistrationForm  @relation(fields: [formId], references: [id], onDelete: Cascade)
+  codeHash      String
+  expiresAt     DateTime
+  attempts      Int               @default(0)
+  verified      Boolean           @default(false)
+  verifiedAt    DateTime?
+  sessionToken  String?           @unique
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  submissions   RegistrationSubmission[]
+
+  @@index([email, formId])
+  @@index([sessionToken])
+  @@index([expiresAt])
+  @@map("email_verifications")
+}
+
+model RegistrationSubmission {
+  id                  String             @id @default(uuid())
+  referenceNumber     String             @unique // e.g. FC-2026-X8Y7Z
+  formId              String
+  form                RegistrationForm   @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formVersionId       String
+  formVersion         FormVersion        @relation(fields: [formVersionId], references: [id], onDelete: Cascade)
+  
+  // Mandatory System Fields (always populated and indexed)
+  fullName            String
+  email               String
+  phone               String
+
+  emailVerificationId String?
+  emailVerification   EmailVerification? @relation(fields: [emailVerificationId], references: [id], onDelete: SetNull)
+
+  status              SubmissionStatus   @default(PENDING)
+  submittedAt         DateTime           @default(now())
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  answers             SubmissionAnswer[]
+  uploadedFiles       UploadedFile[]
+
+  @@index([formId])
+  @@index([formVersionId])
+  @@index([email])
+  @@index([referenceNumber])
+  @@index([status])
+  @@index([submittedAt])
+  @@map("registration_submissions")
+}
+
+model SubmissionAnswer {
+  id           String                 @id @default(uuid())
+  submissionId String
+  submission   RegistrationSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  fieldKey     String
+  fieldLabel   String
+  fieldType    String
+  value        Json                   // Stored answer representation
+  createdAt    DateTime               @default(now())
+
+  @@index([submissionId])
+  @@index([fieldKey])
+  @@map("submission_answers")
+}
+
+model UploadedFile {
+  id                 String                  @id @default(uuid())
+  submissionId       String?
+  submission         RegistrationSubmission? @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+  uploadSessionToken String?
+  fieldKey           String
+  originalName       String
+  storageProvider    StorageProvider         @default(LOCAL)
+  storagePath        String                  // Local path or Drive identifier
+  driveFileId        String?
+  mimeType           String
+  fileSize           Int
+  status             UploadStatus            @default(PENDING)
+  createdAt          DateTime                @default(now())
+  updatedAt          DateTime                @updatedAt
+
+  @@index([submissionId])
+  @@index([uploadSessionToken])
+  @@index([status])
+  @@map("uploaded_files")
+}
+
+model AuditLog {
+  id         String     @id @default(uuid())
+  actorId    String?
+  actor      AdminUser? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  actorEmail String
+  action     String     // e.g. FORM_CREATED, FORM_PUBLISHED, SUBMISSION_UPDATED
+  entityType String     // FORM, SUBMISSION, USER
+  entityId   String
+  metadata   Json?
+  ipAddress  String?
+  createdAt  DateTime   @default(now())
+
+  @@index([actorId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model GoogleDriveIntegration {
+  id              String    @id @default("primary")
+  isConnected     Boolean   @default(false)
+  accountEmail    String?
+  accessToken     String?   @db.Text
+  refreshToken    String?   @db.Text
+  tokenExpiry     DateTime?
+  folderId        String?
+  folderName      String?
+  scope           String?
+  lastConnectedAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("google_drive_integrations")
+}
+
