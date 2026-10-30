@@ -275,7 +275,7 @@ export function LoginForm() {
                     type="email"
                     value={resetEmail}
                     onChange={(e) => setResetEmail(e.target.value)}
-                    placeholder="e.g. admin@formcentral.com or connected Google account"
+                    placeholder="Connected Google account"
                     required
                     className="h-10 text-sm border-zinc-300 bg-white"
                   />

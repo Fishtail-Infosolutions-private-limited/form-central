@@ -89,6 +89,7 @@ export function GoogleDriveManager({
     }>
   >([]);
   const [isLoadingAccounts, setIsLoadingAccounts] = useState(false);
+  const [deletingEmail, setDeletingEmail] = useState<string | null>(null);
 
   useEffect(() => {
     fetchAccounts();
@@ -104,12 +105,25 @@ export function GoogleDriveManager({
   };
 
   const handleRemoveAccountHistory = async (email: string) => {
+    setDeletingEmail(email);
+    // Optimistically update the UI immediately
+    setAccountsList((prev) =>
+      prev.filter((acc) => acc.email.trim().toLowerCase() !== email.trim().toLowerCase())
+    );
+
     const res = await removeSavedDriveAccountAction(email);
+    setDeletingEmail(null);
     if (res.success) {
       toast.success(`Account record ${email} removed from history`);
+      if (integration?.accountEmail?.trim().toLowerCase() === email.trim().toLowerCase()) {
+        setIsConnected(false);
+        setSelectedFolderId(null);
+        setSelectedFolderName(null);
+      }
       fetchAccounts();
     } else {
       toast.error(res.error || "Failed to remove account record");
+      fetchAccounts();
     }
   };
 
@@ -220,7 +234,9 @@ export function GoogleDriveManager({
 
   // Only previous / historical accounts (excluding active account if connected)
   const previousAccounts = accountsList.filter(
-    (acc) => !isConnected || acc.email !== integration?.accountEmail
+    (acc) =>
+      !isConnected ||
+      acc.email.trim().toLowerCase() !== integration?.accountEmail?.trim().toLowerCase()
   );
 
   return (
@@ -381,11 +397,16 @@ export function GoogleDriveManager({
 
                         <button
                           type="button"
+                          disabled={deletingEmail === acc.email}
                           onClick={() => handleRemoveAccountHistory(acc.email)}
-                          className="text-zinc-400 hover:text-red-600 p-1.5 rounded hover:bg-zinc-100 transition-colors"
+                          className="text-zinc-400 hover:text-red-600 p-1.5 rounded hover:bg-red-50 transition-colors disabled:opacity-50"
                           title="Remove from history"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          {deletingEmail === acc.email ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin text-red-600" />
+                          ) : (
+                            <Trash2 className="w-3.5 h-3.5" />
+                          )}
                         </button>
                       </div>
                     ))}

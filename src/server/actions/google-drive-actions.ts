@@ -103,14 +103,16 @@ export async function listConnectedDriveAccountsAction() {
       where: { id: "primary" },
     });
 
-    const allRecords = await prisma.googleDriveIntegration.findMany({
+    // History records (exclude primary row to avoid stale primary duplicates)
+    const historyRecords = await prisma.googleDriveIntegration.findMany({
       where: {
+        id: { not: "primary" },
         accountEmail: { not: null },
       },
       orderBy: { lastConnectedAt: "desc" },
     });
 
-    // Deduplicate by email
+    // Deduplicate by normalized lowercase email
     const accountMap = new Map<
       string,
       {
@@ -122,8 +124,10 @@ export async function listConnectedDriveAccountsAction() {
       }
     >();
 
+    // 1. If primary is actively connected, register it first as the active account
     if (primary?.accountEmail && primary.isConnected) {
-      accountMap.set(primary.accountEmail, {
+      const primaryClean = primary.accountEmail.trim().toLowerCase();
+      accountMap.set(primaryClean, {
         email: primary.accountEmail,
         folderName: primary.folderName,
         folderId: primary.folderId,
@@ -132,16 +136,21 @@ export async function listConnectedDriveAccountsAction() {
       });
     }
 
-    for (const record of allRecords) {
-      if (record.accountEmail && !accountMap.has(record.accountEmail)) {
-        accountMap.set(record.accountEmail, {
-          email: record.accountEmail,
-          folderName: record.folderName,
-          folderId: record.folderId,
-          lastConnectedAt: record.lastConnectedAt,
-          isCurrentlyActive:
-            primary?.accountEmail === record.accountEmail && Boolean(primary?.isConnected),
-        });
+    // 2. Add saved history accounts
+    for (const record of historyRecords) {
+      if (record.accountEmail) {
+        const cleanEmail = record.accountEmail.trim().toLowerCase();
+        if (!accountMap.has(cleanEmail)) {
+          accountMap.set(cleanEmail, {
+            email: record.accountEmail,
+            folderName: record.folderName,
+            folderId: record.folderId,
+            lastConnectedAt: record.lastConnectedAt,
+            isCurrentlyActive:
+              Boolean(primary?.isConnected) &&
+              primary?.accountEmail?.trim().toLowerCase() === cleanEmail,
+          });
+        }
       }
     }
 
@@ -155,15 +164,16 @@ export async function listConnectedDriveAccountsAction() {
 export async function switchActiveDriveAccountAction(targetEmail: string) {
   const admin = await requireAdmin();
   try {
+    const cleanEmail = (targetEmail || "").trim().toLowerCase();
     const target =
       (await prisma.googleDriveIntegration.findFirst({
         where: {
-          accountEmail: targetEmail,
+          accountEmail: { equals: cleanEmail, mode: "insensitive" },
           id: { startsWith: "account_" },
         },
       })) ||
       (await prisma.googleDriveIntegration.findFirst({
-        where: { accountEmail: targetEmail },
+        where: { accountEmail: { equals: cleanEmail, mode: "insensitive" } },
       }));
 
     if (!target) {
@@ -221,19 +231,54 @@ export async function switchActiveDriveAccountAction(targetEmail: string) {
 export async function removeSavedDriveAccountAction(targetEmail: string) {
   const admin = await requireAdmin();
   try {
+    const cleanEmail = (targetEmail || "").trim().toLowerCase();
+    if (!cleanEmail) {
+      return { success: false, error: "Invalid email address" };
+    }
+
+    // 1. Delete all history records matching this email
     await prisma.googleDriveIntegration.deleteMany({
       where: {
-        id: `account_${targetEmail}`,
+        OR: [
+          { id: `account_${targetEmail.trim()}` },
+          { id: `account_${cleanEmail}` },
+          {
+            accountEmail: { equals: cleanEmail, mode: "insensitive" },
+            id: { not: "primary" },
+          },
+        ],
       },
     });
 
-    // If removing the currently active account, disconnect primary
+    // 2. If the primary integration (active or disconnected) points to this email, clear it completely
     const primary = await prisma.googleDriveIntegration.findUnique({
       where: { id: "primary" },
     });
-    if (primary?.accountEmail === targetEmail) {
-      await disconnectDrive();
+    if (primary?.accountEmail && primary.accountEmail.trim().toLowerCase() === cleanEmail) {
+      await prisma.googleDriveIntegration.update({
+        where: { id: "primary" },
+        data: {
+          isConnected: false,
+          accountEmail: null,
+          accessToken: null,
+          refreshToken: null,
+          tokenExpiry: null,
+          folderId: null,
+          folderName: null,
+        },
+      });
     }
+
+    await prisma.auditLog.create({
+      data: {
+        actorId: admin.id,
+        actorEmail: admin.email,
+        action: "GOOGLE_DRIVE_ACCOUNT_REMOVED",
+        entityType: "INTEGRATION",
+        entityId: cleanEmail,
+        metadata: { accountEmail: cleanEmail },
+      },
+    });
 
     revalidatePath("/admin/settings/integrations/google-drive");
     revalidatePath("/admin/settings");
