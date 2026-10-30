@@ -140,3 +140,61 @@ ${messageText}
   return mailer.sendMail(mailOptions);
 }
 
+export async function sendAdminPasswordResetEmail({
+  to,
+  otpCode,
+  expiresInMinutes = 10,
+}: {
+  to: string;
+  otpCode: string;
+  expiresInMinutes?: number;
+}) {
+  const mailer = getEmailTransporter();
+  const fromName = process.env.EMAIL_FROM_NAME || "Form Central";
+  const fromEmail = process.env.EMAIL_FROM || "neosparknepal@gmail.com";
+
+  const mailOptions = {
+    from: `"${fromName}" <${fromEmail}>`,
+    to,
+    subject: `Admin Password Reset Code: ${otpCode} - Form Central`,
+    text: `Hello Administrator,\n\nA request was initiated to reset your Form Central administrator password.\n\nYour 6-digit verification code is: ${otpCode}\n\nThis code will expire in ${expiresInMinutes} minutes. If you did not make this request, please ensure your account credentials are secure.\n\nBest regards,\nForm Central Security Team`,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 580px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e4e4e7; border-radius: 12px; overflow: hidden;">
+        <div style="background-color: #000000; padding: 24px; text-align: center;">
+          <h1 style="color: #ffffff; font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">Form Central</h1>
+          <p style="color: #10b981; font-size: 12px; font-weight: 700; margin: 6px 0 0 0; text-transform: uppercase; letter-spacing: 1px;">Administrator Password Recovery</p>
+        </div>
+        
+        <div style="padding: 32px 28px;">
+          <p style="color: #18181b; font-size: 15px; line-height: 1.5; margin: 0 0 16px 0;">Hello Administrator,</p>
+          <p style="color: #52525b; font-size: 13px; line-height: 1.6; margin: 0 0 24px 0;">
+            A password reset was requested for your <strong>Form Central</strong> administrator account. To verify your identity and set a new password, enter the 6-digit code below:
+          </p>
+          
+          <div style="text-align: center; margin: 24px 0; background-color: #f4fdf8; border: 2px dashed #059669; border-radius: 12px; padding: 20px;">
+            <div style="font-size: 36px; font-weight: 900; letter-spacing: 8px; color: #059669; font-family: monospace;">
+              ${otpCode}
+            </div>
+            <p style="color: #64748b; font-size: 12px; margin: 8px 0 0 0;">
+              Valid for <strong>${expiresInMinutes} minutes</strong>
+            </p>
+          </div>
+          
+          <p style="color: #71717a; font-size: 12px; line-height: 1.5; margin: 24px 0 0 0;">
+            If you did not request this password reset, please ignore this email or review your security settings.
+          </p>
+        </div>
+        
+        <div style="background-color: #f4f4f5; padding: 14px 24px; text-align: center; border-top: 1px solid #e4e4e7;">
+          <p style="color: #a1a1aa; font-size: 11px; margin: 0;">
+            Form Central &bull; Fishtail Info Solutions &bull; Automated Security Notice
+          </p>
+        </div>
+      </div>
+    `,
+  };
+
+  return mailer.sendMail(mailOptions);
+}
+
+

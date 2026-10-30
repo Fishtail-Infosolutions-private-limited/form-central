@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { UploadSettingsCard } from "@/components/admin/upload-settings-card";
+import { ChangePasswordCard } from "@/components/admin/change-password-card";
 
 export default async function AdminSettingsPage() {
   await requireAdmin();
@@ -95,6 +96,9 @@ export default async function AdminSettingsPage() {
         {/* Upload Limits & Media Format Settings Card */}
         <UploadSettingsCard />
       </div>
+
+      {/* Admin Account Security & Password Change */}
+      <ChangePasswordCard />
     </div>
   );
 }
