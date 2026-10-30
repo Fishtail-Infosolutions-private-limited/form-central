@@ -3,6 +3,9 @@
 import { customAlphabet } from "nanoid";
 import { prisma } from "@/lib/db/prisma";
 import { FormSchemaDefinition, FormFieldDefinition } from "@/types/form";
+import { checkFormAvailability } from "@/lib/forms/availability";
+import { sendRegistrationConfirmationEmail } from "@/lib/email/client";
+import { formatNepalDateTime } from "@/lib/utils/timezone";
 
 const generateRefCode = customAlphabet("23456789ABCDEFGHJKLMNPQRSTUVWXYZ", 6);
 
@@ -29,16 +32,14 @@ export async function submitRegistrationAction({
     },
   });
 
-  if (!form || form.status !== "PUBLISHED") {
-    return { success: false, error: "This registration form is currently unavailable or unpublished." };
+  if (!form) {
+    return { success: false, error: "Registration form not found." };
   }
 
-  const now = new Date();
-  if (form.opensAt && form.opensAt > now) {
-    return { success: false, error: "Registration has not yet opened for this event." };
-  }
-  if (form.closesAt && form.closesAt < now) {
-    return { success: false, error: "Registration for this event is closed." };
+  // 1. Centralized Form Availability Check (Pre-flight)
+  const availability = await checkFormAvailability(form);
+  if (!availability.isAvailable) {
+    return { success: false, error: availability.message };
   }
 
   const publishedVersion = form.versions[0];
@@ -113,71 +114,104 @@ export async function submitRegistrationAction({
   // 5. Generate Unique Reference Number: FC-2026-XXXXXX
   const referenceNumber = `FC-2026-${generateRefCode()}`;
 
-  // 6. Execute Transaction
-  const submission = await prisma.$transaction(async (tx) => {
-    // Create Submission Record
-    const sub = await tx.registrationSubmission.create({
-      data: {
-        referenceNumber,
-        formId: form.id,
-        formVersionId: publishedVersion.id,
-        fullName,
-        email,
-        phone,
-        emailVerificationId: verification.id,
-        status: "PENDING",
-      },
-    });
-
-    // Attach Uploaded Files and map original names for file answers
-    const uploadedFilesMap = new Map<string, string>();
-    if (fileIds.length > 0) {
-      const files = await tx.uploadedFile.findMany({
-        where: { id: { in: fileIds } },
-        select: { id: true, fieldKey: true, originalName: true, storagePath: true, driveFileId: true },
-      });
-      for (const fl of files) {
-        uploadedFilesMap.set(fl.fieldKey, fl.originalName);
-        if (fl.storagePath) uploadedFilesMap.set(fl.storagePath, fl.originalName);
-        if (fl.driveFileId) uploadedFilesMap.set(fl.driveFileId, fl.originalName);
+  // 6. Execute Transaction (with atomic concurrency protection)
+  let submission;
+  try {
+    submission = await prisma.$transaction(async (tx) => {
+      // Re-verify availability inside the transaction to prevent concurrent over-capacity submissions
+      const txAvailability = await checkFormAvailability(form, tx);
+      if (!txAvailability.isAvailable) {
+        throw new Error(txAvailability.message);
       }
-      await tx.uploadedFile.updateMany({
-        where: { id: { in: fileIds } },
+
+      // Create Submission Record
+      const sub = await tx.registrationSubmission.create({
         data: {
-          submissionId: sub.id,
-          status: "ATTACHED",
+          referenceNumber,
+          formId: form.id,
+          formVersionId: publishedVersion.id,
+          fullName,
+          email,
+          phone,
+          emailVerificationId: verification.id,
+          status: "PENDING",
         },
       });
-    }
 
-    // Create Answers for each answered field (storing original file names instead of server paths)
-    const answerEntries = allFields
-      .filter((f) => answers[f.fieldKey] !== undefined && answers[f.fieldKey] !== null)
-      .map((f) => {
-        let val = answers[f.fieldKey];
-        if (["image", "video", "file"].includes(f.type)) {
-          const origName = uploadedFilesMap.get(f.fieldKey) || uploadedFilesMap.get(String(val));
-          if (origName) {
-            val = origName;
-          }
+      // Attach Uploaded Files and map original names for file answers
+      const uploadedFilesMap = new Map<string, string>();
+      if (fileIds.length > 0) {
+        const files = await tx.uploadedFile.findMany({
+          where: { id: { in: fileIds } },
+          select: { id: true, fieldKey: true, originalName: true, storagePath: true, driveFileId: true },
+        });
+        for (const fl of files) {
+          uploadedFilesMap.set(fl.fieldKey, fl.originalName);
+          if (fl.storagePath) uploadedFilesMap.set(fl.storagePath, fl.originalName);
+          if (fl.driveFileId) uploadedFilesMap.set(fl.driveFileId, fl.originalName);
         }
-        return {
-          submissionId: sub.id,
-          fieldKey: f.fieldKey,
-          fieldLabel: f.label,
-          fieldType: f.type,
-          value: val,
-        };
-      });
+        await tx.uploadedFile.updateMany({
+          where: { id: { in: fileIds } },
+          data: {
+            submissionId: sub.id,
+            status: "ATTACHED",
+          },
+        });
+      }
 
-    if (answerEntries.length > 0) {
-      await tx.submissionAnswer.createMany({
-        data: answerEntries,
-      });
-    }
+      // Create Answers for each answered field (storing original file names instead of server paths)
+      const answerEntries = allFields
+        .filter((f) => answers[f.fieldKey] !== undefined && answers[f.fieldKey] !== null)
+        .map((f) => {
+          let val = answers[f.fieldKey];
+          if (["image", "video", "file"].includes(f.type)) {
+            const origName = uploadedFilesMap.get(f.fieldKey) || uploadedFilesMap.get(String(val));
+            if (origName) {
+              val = origName;
+            }
+          }
+          return {
+            submissionId: sub.id,
+            fieldKey: f.fieldKey,
+            fieldLabel: f.label,
+            fieldType: f.type,
+            value: val,
+          };
+        });
 
-    return sub;
-  });
+      if (answerEntries.length > 0) {
+        await tx.submissionAnswer.createMany({
+          data: answerEntries,
+        });
+      }
+
+      return sub;
+    });
+  } catch (txErr: unknown) {
+    const errorMsg = txErr instanceof Error ? txErr.message : "Registration submission failed.";
+    return { success: false, error: errorMsg };
+  }
+
+  // 7. Dispatch Automatic Confirmation Email (Non-blocking background delivery)
+  try {
+    const formattedDateNpt = formatNepalDateTime(submission.submittedAt);
+    const baseUrl = process.env.APP_URL || "http://localhost:3000";
+    const viewDetailsUrl = `${baseUrl}/register/${form.slug}`;
+
+    sendRegistrationConfirmationEmail({
+      to: submission.email,
+      participantName: submission.fullName,
+      eventTitle: form.name,
+      referenceNumber: submission.referenceNumber,
+      submissionDate: formattedDateNpt,
+      status: "Confirmed",
+      viewDetailsUrl,
+    }).catch((emailErr) => {
+      console.error("Non-blocking confirmation email delivery error:", emailErr);
+    });
+  } catch (emailSetupErr) {
+    console.error("Confirmation email setup error:", emailSetupErr);
+  }
 
   return {
     success: true,

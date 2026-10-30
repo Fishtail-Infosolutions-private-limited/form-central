@@ -9,6 +9,7 @@ import { requireAdmin } from "@/lib/auth/guards";
 import { FormStatus } from "@prisma/client";
 import { FormSchemaDefinition } from "@/types/form";
 import { deleteMultiplePhysicalFiles } from "@/lib/storage/cleanup";
+import { nepalDateAndTimeToUtc } from "@/lib/utils/timezone";
 
 const createFormSchema = z.object({
   name: z.string().min(3, "Form name must be at least 3 characters").trim(),
@@ -132,6 +133,48 @@ export async function createFormAction(formData: FormData) {
     };
   }
 
+  // Registration Capacity Setting
+  const capacityType = (formData.get("capacityType") as string) || "unlimited";
+  const maxParticipantsRaw = (formData.get("maxParticipants") as string) || "";
+  let isUnlimitedCapacity = true;
+  let maxParticipants: number | null = null;
+
+  if (capacityType === "limited") {
+    const parsed = Number(maxParticipantsRaw);
+    if (!maxParticipantsRaw || isNaN(parsed) || !Number.isInteger(parsed) || parsed < 100) {
+      return {
+        success: false,
+        error: "Maximum participant capacity must be a whole number of at least 100.",
+      };
+    }
+    isUnlimitedCapacity = false;
+    maxParticipants = parsed;
+  }
+
+  // Registration Deadline Setting (Nepal Time UTC+05:45)
+  const isDeadlineEnabledRaw = formData.get("isDeadlineEnabled");
+  const isDeadlineEnabled = isDeadlineEnabledRaw === "true" || isDeadlineEnabledRaw === "on";
+  const deadlineDate = formData.get("deadlineDate") as string;
+  const deadlineTime = (formData.get("deadlineTime") as string) || "23:59";
+  let registrationDeadline: Date | null = null;
+
+  if (isDeadlineEnabled) {
+    if (!deadlineDate) {
+      return {
+        success: false,
+        error: "Please select a deadline date for Nepal Standard Time.",
+      };
+    }
+    try {
+      registrationDeadline = nepalDateAndTimeToUtc(deadlineDate, deadlineTime);
+    } catch {
+      return {
+        success: false,
+        error: "Invalid registration deadline date or time format.",
+      };
+    }
+  }
+
   const initialSchema = getInitialFormSchema();
 
   // Create form and version 1 draft
@@ -143,6 +186,10 @@ export async function createFormAction(formData: FormData) {
       instructions: validated.data.instructions,
       opensAt: validated.data.opensAt ? new Date(validated.data.opensAt) : null,
       closesAt: validated.data.closesAt ? new Date(validated.data.closesAt) : null,
+      isUnlimitedCapacity,
+      maxParticipants,
+      isDeadlineEnabled,
+      registrationDeadline,
       status: FormStatus.DRAFT,
       createdById: admin.id,
       versions: {
@@ -162,7 +209,7 @@ export async function createFormAction(formData: FormData) {
       action: "FORM_CREATED",
       entityType: "FORM",
       entityId: form.id,
-      metadata: { slug: form.slug, name: form.name },
+      metadata: { slug: form.slug, name: form.name, isUnlimitedCapacity, maxParticipants, isDeadlineEnabled },
     },
   });
 
@@ -199,6 +246,51 @@ export async function updateFormSettingsAction(formId: string, formData: FormDat
     }
   }
 
+  // Capacity validation
+  const capacityType = (formData.get("capacityType") as string) || "unlimited";
+  const maxParticipantsRaw = (formData.get("maxParticipants") as string) || "";
+  let isUnlimitedCapacity = true;
+  let maxParticipants: number | null = null;
+
+  if (capacityType === "limited") {
+    const parsed = Number(maxParticipantsRaw);
+    if (!maxParticipantsRaw || isNaN(parsed) || !Number.isInteger(parsed) || parsed < 100) {
+      return {
+        success: false,
+        error: "Maximum participant capacity must be a whole number of at least 100.",
+      };
+    }
+    isUnlimitedCapacity = false;
+    maxParticipants = parsed;
+  }
+
+  // Deadline validation (Nepal Time UTC+05:45)
+  const isDeadlineEnabledRaw = formData.get("isDeadlineEnabled");
+  const isDeadlineEnabled = isDeadlineEnabledRaw === "true" || isDeadlineEnabledRaw === "on";
+  const deadlineDate = formData.get("deadlineDate") as string;
+  const deadlineTime = (formData.get("deadlineTime") as string) || "23:59";
+  let registrationDeadline: Date | null = existingForm.registrationDeadline;
+
+  if (isDeadlineEnabled) {
+    if (!deadlineDate) {
+      return {
+        success: false,
+        error: "Please select a deadline date for Nepal Standard Time.",
+      };
+    }
+    try {
+      registrationDeadline = nepalDateAndTimeToUtc(deadlineDate, deadlineTime);
+    } catch {
+      return {
+        success: false,
+        error: "Invalid registration deadline date or time format.",
+      };
+    }
+  } else {
+    // If toggled OFF, preserve the date or keep existing if practical
+    registrationDeadline = existingForm.registrationDeadline;
+  }
+
   await prisma.registrationForm.update({
     where: { id: formId },
     data: {
@@ -208,6 +300,10 @@ export async function updateFormSettingsAction(formId: string, formData: FormDat
       instructions,
       opensAt: opensAtRaw ? new Date(opensAtRaw) : null,
       closesAt: closesAtRaw ? new Date(closesAtRaw) : null,
+      isUnlimitedCapacity,
+      maxParticipants,
+      isDeadlineEnabled,
+      registrationDeadline,
     },
   });
 
@@ -218,12 +314,80 @@ export async function updateFormSettingsAction(formId: string, formData: FormDat
       action: "FORM_SETTINGS_UPDATED",
       entityType: "FORM",
       entityId: formId,
+      metadata: { isUnlimitedCapacity, maxParticipants, isDeadlineEnabled },
     },
   });
 
   revalidatePath(`/admin/forms/${formId}`);
   revalidatePath("/admin/forms");
+  revalidatePath(`/register/${slug || existingForm.slug}`);
   return { success: true };
+}
+
+export async function closeFormAction(
+  formId: string
+): Promise<{ success: boolean; error?: string }> {
+  const admin = await requireAdmin();
+
+  try {
+    const form = await prisma.registrationForm.update({
+      where: { id: formId },
+      data: {
+        status: FormStatus.CLOSED,
+      },
+    });
+
+    await prisma.auditLog.create({
+      data: {
+        actorId: admin.id,
+        actorEmail: admin.email,
+        action: "FORM_MANUALLY_CLOSED",
+        entityType: "FORM",
+        entityId: formId,
+      },
+    });
+
+    revalidatePath(`/admin/forms/${formId}`);
+    revalidatePath("/admin/forms");
+    revalidatePath(`/register/${form.slug}`);
+    return { success: true };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to close form";
+    return { success: false, error: message };
+  }
+}
+
+export async function reopenFormAction(
+  formId: string
+): Promise<{ success: boolean; error?: string }> {
+  const admin = await requireAdmin();
+
+  try {
+    const form = await prisma.registrationForm.update({
+      where: { id: formId },
+      data: {
+        status: FormStatus.PUBLISHED,
+      },
+    });
+
+    await prisma.auditLog.create({
+      data: {
+        actorId: admin.id,
+        actorEmail: admin.email,
+        action: "FORM_REOPENED",
+        entityType: "FORM",
+        entityId: formId,
+      },
+    });
+
+    revalidatePath(`/admin/forms/${formId}`);
+    revalidatePath("/admin/forms");
+    revalidatePath(`/register/${form.slug}`);
+    return { success: true };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to reopen form";
+    return { success: false, error: message };
+  }
 }
 
 export async function saveFormSchemaAction(formId: string, schema: FormSchemaDefinition) {

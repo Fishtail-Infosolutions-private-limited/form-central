@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
 import { RegistrationWizard } from "@/components/registration/registration-wizard";
 import { FormSchemaDefinition } from "@/types/form";
-import { AlertTriangle, Clock, CalendarX2 } from "lucide-react";
+import { checkFormAvailability } from "@/lib/forms/availability";
+import { AlertTriangle, Clock, CalendarX2, Users, Lock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export async function generateMetadata({
@@ -45,58 +46,46 @@ export default async function PublicRegistrationPage({
     notFound();
   }
 
-  const now = new Date();
+  // Evaluate form availability
+  const availability = await checkFormAvailability(form);
 
-  // If unpublished or draft
-  if (form.status !== "PUBLISHED") {
-    return (
-      <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full bg-white p-8 text-center rounded-2xl shadow-sm border border-zinc-200">
-          <div className="w-14 h-14 bg-zinc-100 text-zinc-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <AlertTriangle className="w-7 h-7" />
-          </div>
-          <h2 className="text-xl font-bold text-black">Registration Unavailable</h2>
-          <p className="text-xs text-zinc-600 mt-2 mb-4 leading-relaxed">
-            <strong>{form.name}</strong> is currently not accepting public registrations at this time.
-          </p>
-          <div className="text-[11px] text-zinc-400 border-t border-zinc-100 pt-3">
-            Please check back later or contact the event administrator.
-          </div>
-        </Card>
-      </div>
-    );
-  }
-
-  // If date is before opensAt
-  if (form.opensAt && form.opensAt > now) {
-    return (
-      <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full bg-white p-8 text-center rounded-2xl shadow-sm border border-zinc-200">
-          <div className="w-14 h-14 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Clock className="w-7 h-7" />
-          </div>
-          <h2 className="text-xl font-bold text-black">Registration Opening Soon</h2>
-          <p className="text-xs text-zinc-600 mt-2 mb-4 leading-relaxed">
-            Registration for <strong>{form.name}</strong> opens on{" "}
-            <strong>{form.opensAt.toLocaleDateString()} at {form.opensAt.toLocaleTimeString()}</strong>.
-          </p>
-        </Card>
-      </div>
-    );
-  }
-
-  // If date is after closesAt
-  if (form.closesAt && form.closesAt < now) {
+  if (!availability.isAvailable) {
     return (
       <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-4">
         <Card className="max-w-md w-full bg-white p-8 text-center rounded-2xl shadow-sm border border-zinc-200">
           <div className="w-14 h-14 bg-zinc-100 text-zinc-900 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <CalendarX2 className="w-7 h-7" />
+            {availability.status === "CAPACITY_FULL" ? (
+              <Users className="w-7 h-7 text-rose-600" />
+            ) : availability.status === "DEADLINE_PASSED" ? (
+              <CalendarX2 className="w-7 h-7 text-zinc-800" />
+            ) : availability.status === "NOT_OPEN_YET" ? (
+              <Clock className="w-7 h-7 text-emerald-600" />
+            ) : availability.status === "CLOSED" ? (
+              <Lock className="w-7 h-7 text-zinc-800" />
+            ) : (
+              <AlertTriangle className="w-7 h-7 text-amber-600" />
+            )}
           </div>
-          <h2 className="text-xl font-bold text-black">Registration Closed</h2>
+          <h2 className="text-xl font-bold text-black">{availability.headline}</h2>
           <p className="text-xs text-zinc-600 mt-2 mb-4 leading-relaxed">
-            Entries for <strong>{form.name}</strong> have officially closed.
+            {availability.message}
           </p>
+
+          {availability.status === "DEADLINE_PASSED" && availability.formattedDeadline && (
+            <div className="text-[11px] font-semibold text-zinc-600 bg-zinc-50 border border-zinc-200 rounded-lg p-2.5 mb-2">
+              Registration Deadline: {availability.formattedDeadline}
+            </div>
+          )}
+
+          {availability.status === "CAPACITY_FULL" && (
+            <div className="text-[11px] font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg p-2.5 mb-2">
+              Maximum Capacity: {availability.maxParticipants} participants reached.
+            </div>
+          )}
+
+          <div className="text-[11px] text-zinc-400 border-t border-zinc-100 pt-3 mt-3">
+            Please contact the event administrator for further inquiries.
+          </div>
         </Card>
       </div>
     );

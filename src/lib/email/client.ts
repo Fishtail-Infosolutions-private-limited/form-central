@@ -197,4 +197,113 @@ export async function sendAdminPasswordResetEmail({
   return mailer.sendMail(mailOptions);
 }
 
+export async function sendRegistrationConfirmationEmail({
+  to,
+  participantName,
+  eventTitle,
+  referenceNumber,
+  submissionDate,
+  status = "Confirmed",
+  viewDetailsUrl,
+}: {
+  to: string;
+  participantName: string;
+  eventTitle: string;
+  referenceNumber: string;
+  submissionDate: string;
+  status?: string;
+  viewDetailsUrl?: string;
+}) {
+  const mailer = getEmailTransporter();
+  const fromName = process.env.EMAIL_FROM_NAME || "FormSuite";
+  const fromEmail = process.env.EMAIL_FROM || "neosparknepal@gmail.com";
 
+  const mailOptions = {
+    from: `"${fromName}" <${fromEmail}>`,
+    to,
+    subject: `Registration Successful – ${eventTitle}`,
+    text: `Hello ${participantName},\n\nThank you for registering for ${eventTitle}.\n\nYour registration has been successfully received.\n\nRegistration Details:\n- Registration ID: ${referenceNumber}\n- Event: ${eventTitle}\n- Name: ${participantName}\n- Email: ${to}\n- Registration Date: ${submissionDate}\n- Status: ${status}\n\nPlease keep your registration ID for future reference.\n\nThank you!\n${eventTitle} Organizing Team`,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e4e4e7; border-radius: 12px; overflow: hidden;">
+        <!-- Header -->
+        <div style="background-color: #000000; padding: 28px 24px; text-align: center;">
+          <h1 style="color: #ffffff; font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">${eventTitle}</h1>
+          <p style="color: #10b981; font-size: 12px; font-weight: 700; margin: 6px 0 0 0; text-transform: uppercase; letter-spacing: 1.5px;">Registration Confirmed</p>
+        </div>
+
+        <!-- Body -->
+        <div style="padding: 32px 28px;">
+          <p style="color: #18181b; font-size: 15px; font-weight: 600; margin: 0 0 12px 0;">Hello ${participantName},</p>
+          <p style="color: #52525b; font-size: 14px; line-height: 1.6; margin: 0 0 24px 0;">
+            Thank you for registering for <strong>${eventTitle}</strong>. Your official entry has been successfully received and recorded in our system.
+          </p>
+
+          <!-- Registration Details Card -->
+          <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; margin-bottom: 24px;">
+            <h3 style="color: #059669; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 16px 0; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px;">
+              Official Registration Details
+            </h3>
+
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+              <tr>
+                <td style="padding: 6px 0; color: #71717a; width: 40%; font-weight: 500;">Registration ID:</td>
+                <td style="padding: 6px 0; color: #000000; font-family: monospace; font-weight: 800; font-size: 14px;">${referenceNumber}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; color: #71717a; font-weight: 500;">Event / Competition:</td>
+                <td style="padding: 6px 0; color: #18181b; font-weight: 700;">${eventTitle}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; color: #71717a; font-weight: 500;">Participant Name:</td>
+                <td style="padding: 6px 0; color: #18181b; font-weight: 600;">${participantName}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; color: #71717a; font-weight: 500;">Registered Email:</td>
+                <td style="padding: 6px 0; color: #18181b;">${to}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; color: #71717a; font-weight: 500;">Submission Date:</td>
+                <td style="padding: 6px 0; color: #18181b;">${submissionDate}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; color: #71717a; font-weight: 500;">Status:</td>
+                <td style="padding: 6px 0;">
+                  <span style="background-color: #d1fae5; color: #065f46; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase;">
+                    ${status}
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div style="background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 24px;">
+            <p style="color: #065f46; font-size: 12px; margin: 0; line-height: 1.5;">
+              <strong>Important:</strong> Please retain your Registration ID (<strong>${referenceNumber}</strong>) for attendance, entry check-in, and official event inquiries.
+            </p>
+          </div>
+
+          ${
+            viewDetailsUrl
+              ? `
+            <div style="text-align: center; margin-top: 24px;">
+              <a href="${viewDetailsUrl}" style="display: inline-block; background-color: #059669; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 700; padding: 12px 28px; border-radius: 8px;">
+                View Event Page
+              </a>
+            </div>
+          `
+              : ""
+          }
+        </div>
+
+        <!-- Footer -->
+        <div style="background-color: #f4f4f5; padding: 16px 28px; text-align: center; border-top: 1px solid #e4e4e7;">
+          <p style="color: #71717a; font-size: 11px; margin: 0; line-height: 1.5;">
+            This is an automated confirmation notice sent by FormSuite. If you have questions, please reach out to the event organizers.
+          </p>
+        </div>
+      </div>
+    `,
+  };
+
+  return mailer.sendMail(mailOptions);
+}

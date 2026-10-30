@@ -64,6 +64,15 @@ model RegistrationForm {
   status             FormStatus               @default(DRAFT)
   opensAt            DateTime?
   closesAt           DateTime?
+
+  // Registration Capacity Management
+  isUnlimitedCapacity Boolean                  @default(true)
+  maxParticipants     Int?
+
+  // Registration Deadline Management (Stored in UTC, configured in Asia/Kathmandu UTC+05:45)
+  isDeadlineEnabled   Boolean                  @default(false)
+  registrationDeadline DateTime?
+
   createdById        String
   createdBy          AdminUser                @relation(fields: [createdById], references: [id], onDelete: Restrict)
   publishedVersionId String?
