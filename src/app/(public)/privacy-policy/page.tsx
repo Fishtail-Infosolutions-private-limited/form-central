@@ -1,5 +1,5 @@
 import React from "react";
-import { ShieldCheck, Lock, Eye, FileText, UserCheck } from "lucide-react";
+import { ShieldCheck, Lock, Eye, FileText, UserCheck, Shield } from "lucide-react";
 import { prisma } from "@/lib/db/prisma";
 
 export const metadata = {
@@ -15,23 +15,24 @@ export default async function PrivacyPolicyPage() {
   const regFee = setting?.registrationFee || 399;
 
   return (
-    <div className="py-12 sm:py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div className="py-12 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       <div className="text-center space-y-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-saffron">
-          Data Protection & Safeguarding
-        </span>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-maroon tracking-tight">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F4F7FA] border border-[#DCE5ED] text-[#183153] text-xs font-semibold shadow-xs">
+          <Shield className="w-3.5 h-3.5 text-[#356FA8]" />
+          <span>Data Protection & Safeguarding</span>
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-bold text-[#183153] tracking-tight">
           Privacy Policy
         </h1>
-        <p className="text-xs text-stone-500">
-          The Origin Foundation • Janakpur Dham, Nepal • Last updated: October 2026
+        <p className="text-sm text-[#546E7A]">
+          The Origin Foundation • Janakpur Dham, Nepal
         </p>
       </div>
 
-      <div className="p-8 sm:p-12 rounded-xl bg-white border border-cream-dark shadow-xs space-y-8 text-xs sm:text-sm text-stone-600 leading-relaxed">
+      <div className="p-6 sm:p-10 rounded-2xl bg-white border border-[#DCE5ED] shadow-xs space-y-8 text-sm text-[#546E7A] leading-relaxed">
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-maroon flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-saffron" />
+          <h2 className="text-base font-bold text-[#183153] flex items-center gap-2">
+            <ShieldCheck className="w-5 h-5 text-[#356FA8]" />
             <span>1. Commitment to Privacy</span>
           </h2>
           <p>
@@ -43,8 +44,8 @@ export default async function PrivacyPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-maroon flex items-center gap-2">
-            <UserCheck className="w-5 h-5 text-saffron" />
+          <h2 className="text-base font-bold text-[#183153] flex items-center gap-2">
+            <UserCheck className="w-5 h-5 text-[#356FA8]" />
             <span>2. Minor Safeguarding Protocol</span>
           </h2>
           <p>
@@ -59,8 +60,8 @@ export default async function PrivacyPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-maroon flex items-center gap-2">
-            <FileText className="w-5 h-5 text-saffron" />
+          <h2 className="text-base font-bold text-[#183153] flex items-center gap-2">
+            <FileText className="w-5 h-5 text-[#356FA8]" />
             <span>3. Information We Collect</span>
           </h2>
           <p>We collect only the personal information strictly necessary for competition administration:</p>
@@ -73,8 +74,8 @@ export default async function PrivacyPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-maroon flex items-center gap-2">
-            <Lock className="w-5 h-5 text-saffron" />
+          <h2 className="text-base font-bold text-[#183153] flex items-center gap-2">
+            <Lock className="w-5 h-5 text-[#356FA8]" />
             <span>4. Security & Document Access</span>
           </h2>
           <p>
@@ -83,17 +84,17 @@ export default async function PrivacyPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-maroon flex items-center gap-2">
-            <Eye className="w-5 h-5 text-saffron" />
+          <h2 className="text-base font-bold text-[#183153] flex items-center gap-2">
+            <Eye className="w-5 h-5 text-[#356FA8]" />
             <span>5. Contact for Privacy Inquiries</span>
           </h2>
           <p>
             If you have questions about your personal data, guardian records, or desire to update or withdraw an application, please contact:
           </p>
-          <div className="p-4 rounded-xl bg-soft-cream border border-cream-dark space-y-1 text-xs">
-            <p><strong className="text-maroon">The Origin Foundation — Privacy Officer</strong></p>
-            <p>Email: <a href="mailto:originfoundation107@gmail.com" className="text-maroon font-semibold underline">originfoundation107@gmail.com</a></p>
-            <p>Janakpur Dham, Madhesh Province, Nepal</p>
+          <div className="p-4 rounded-xl bg-[#F4F7FA] border border-[#DCE5ED] space-y-1 text-xs">
+            <p><strong className="text-[#183153]">The Origin Foundation — Privacy Officer</strong></p>
+            <p>Email: <a href="mailto:originfoundation107@gmail.com" className="text-[#356FA8] font-semibold underline">originfoundation107@gmail.com</a></p>
+            <p className="text-[#546E7A]">Janakpur Dham, Madhesh Province, Nepal</p>
           </div>
         </section>
       </div>

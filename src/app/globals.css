@@ -2,29 +2,51 @@
 
 :root {
   /* ==========================================================================
-     THE ORIGIN FOUNDATION & MITHILA QUEEN — BRAND COLOR SYSTEM
-     Changing these variables here updates the site-wide color theme!
+     THE ORIGIN FOUNDATION & MITHILA QUEEN DESIGN SYSTEM
+     - White: #FFFFFF
+     - Deep Navy: #183153 (Primary, Headers, Navigation, Dominant Actions)
+     - Warm Blue: #356FA8 (Secondary, Links, Badges, Highlights)
+     - Soft Blue White: #F4F7FA (Card Backgrounds, Section Contrast)
+     - Dark Text: #263238 (Headings, Paragraphs, Form Labels)
+     - Light Border: #DCE5ED (Subtle Dividers, Outlines)
      ========================================================================== */
-  --color-brand-primary: #7F1D2D;          /* Deep Maroon */
-  --color-brand-primary-hover: #5B131E;    /* Dark Maroon */
-  --color-brand-primary-light: #991B1B;    /* Light Crimson / Maroon */
-  --color-brand-accent: #D97706;           /* Saffron / Amber */
-  --color-brand-accent-hover: #B45309;     /* Deep Saffron */
-  --color-brand-gold: #B89150;             /* Antique Heritage Gold */
-  --color-brand-gold-light: #C5A880;       /* Soft Gold */
-  --color-brand-surface: #FFFDF7;          /* Warm Ivory Background */
-  --color-brand-surface-subtle: #F7F1E5;   /* Soft Cream */
-  --color-brand-border: #EADBCE;           /* Subtle Warm Border */
-  --color-brand-border-light: #F2EBE1;     /* Light Border */
-  --color-brand-text: #292524;             /* Charcoal Body Text */
-  --color-brand-text-muted: #78716C;       /* Warm Muted Gray */
+
+  /* Direct Palette Tokens */
+  --color-white: #FFFFFF;
+  --color-deep-navy: #183153;
+  --color-deep-navy-hover: #12243D;
+  --color-deep-navy-light: #244675;
+  --color-warm-blue: #356FA8;
+  --color-warm-blue-hover: #2B5A88;
+  --color-warm-blue-subtle: #EAF1F8;
+  --color-soft-blue-white: #F4F7FA;
+  --color-dark-text: #263238;
+  --color-dark-text-muted: #546E7A;
+  --color-light-border: #DCE5ED;
+  --color-light-border-hover: #CBD8E3;
+
+  /* Semantic Brand Tokens */
+  --color-brand-surface: var(--color-white);                  /* Main background: White */
+  --color-brand-surface-subtle: var(--color-soft-blue-white);  /* Section backgrounds: Soft Blue White */
+  --color-brand-text: var(--color-dark-text);                 /* Text & Headings: Dark Text */
+  --color-brand-text-muted: var(--color-dark-text-muted);     /* Secondary text: Blue-Grey */
+  --color-brand-border: var(--color-light-border);           /* Borders: Light Border */
+  --color-brand-border-light: #EBF1F6;
+  --color-brand-primary: var(--color-deep-navy);              /* Buttons & Navigation: Deep Navy */
+  --color-brand-primary-hover: var(--color-deep-navy-hover);
+  --color-brand-primary-light: var(--color-deep-navy-light);
+  --color-brand-accent: var(--color-warm-blue);               /* Accents & Active states: Warm Blue */
+  --color-brand-accent-hover: var(--color-warm-blue-hover);
+  --color-brand-accent-light: var(--color-warm-blue-subtle);
+  --color-brand-gold: var(--color-warm-blue);
+  --color-brand-gold-light: var(--color-warm-blue-subtle);
   --color-brand-white: #FFFFFF;
 
-  /* Aliases for system interoperability */
+  /* System Root Aliases */
   --background: var(--color-brand-surface);
   --foreground: var(--color-brand-text);
 
-  /* Named tokens */
+  /* Named Tokens Mapped to Active Palette */
   --warm-ivory: var(--color-brand-surface);
   --maroon: var(--color-brand-primary);
   --maroon-dark: var(--color-brand-primary-hover);
@@ -33,31 +55,48 @@
   --saffron-dark: var(--color-brand-accent-hover);
   --soft-cream: var(--color-brand-surface-subtle);
   --cream-dark: var(--color-brand-border);
-  --antique-gold: var(--color-brand-gold);
-  --gold: var(--color-brand-gold);
+  --antique-gold: var(--color-brand-accent);
+  --gold: var(--color-brand-accent);
   --charcoal: var(--color-brand-text);
 
-  /* Legacy color aliases mapped to active brand palette */
+  /* Legacy Navy mappings */
   --navy: var(--color-brand-primary);
   --navy-dark: var(--color-brand-primary-hover);
   --navy-light: var(--color-brand-primary-light);
+  --slate-navy: var(--color-brand-primary);
+
+  /* Clean Poppins Typography Scale across the entire application */
+  --font-serif: var(--font-poppins), 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: var(--font-poppins), 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 @theme {
+  --color-white: #FFFFFF;
+  --color-deep-navy: var(--color-deep-navy);
+  --color-deep-navy-hover: var(--color-deep-navy-hover);
+  --color-deep-navy-light: var(--color-deep-navy-light);
+  --color-warm-blue: var(--color-warm-blue);
+  --color-warm-blue-hover: var(--color-warm-blue-hover);
+  --color-warm-blue-subtle: var(--color-warm-blue-subtle);
+  --color-soft-blue-white: var(--color-soft-blue-white);
+  --color-dark-text: var(--color-dark-text);
+  --color-dark-text-muted: var(--color-dark-text-muted);
+  --color-light-border: var(--color-light-border);
+  --color-light-border-hover: var(--color-light-border-hover);
+
   --color-brand-primary: var(--color-brand-primary);
   --color-brand-primary-hover: var(--color-brand-primary-hover);
   --color-brand-primary-light: var(--color-brand-primary-light);
   --color-brand-accent: var(--color-brand-accent);
   --color-brand-accent-hover: var(--color-brand-accent-hover);
-  --color-brand-gold: var(--color-brand-gold);
-  --color-brand-gold-light: var(--color-brand-gold-light);
+  --color-brand-gold: var(--color-brand-accent);
   --color-brand-surface: var(--color-brand-surface);
   --color-brand-surface-subtle: var(--color-brand-surface-subtle);
   --color-brand-border: var(--color-brand-border);
   --color-brand-border-light: var(--color-brand-border-light);
   --color-brand-text: var(--color-brand-text);
   --color-brand-text-muted: var(--color-brand-text-muted);
-  --color-brand-white: var(--color-brand-white);
+  --color-brand-white: var(--color-white);
 
   --color-warm-ivory: var(--color-brand-surface);
   --color-maroon: var(--color-brand-primary);
@@ -65,23 +104,21 @@
   --color-maroon-light: var(--color-brand-primary-light);
   --color-saffron: var(--color-brand-accent);
   --color-saffron-dark: var(--color-brand-accent-hover);
-  --color-saffron-light: #F59E0B;
+  --color-saffron-light: var(--color-brand-accent-light);
   --color-soft-cream: var(--color-brand-surface-subtle);
   --color-cream-dark: var(--color-brand-border);
-  --color-antique-gold: var(--color-brand-gold);
-  --color-gold: var(--color-brand-gold);
+  --color-antique-gold: var(--color-brand-accent);
+  --color-gold: var(--color-brand-accent);
   --color-charcoal: var(--color-brand-text);
 
-  /* Legacy aliases mapped to variables */
   --color-navy: var(--color-brand-primary);
   --color-navy-dark: var(--color-brand-primary-hover);
-  --color-navy-light: var(--color-brand-primary-light);
-  --color-slate-navy: var(--color-brand-primary-hover);
+  --color-navy-light: var(--color-brand-accent);
+  --color-slate-navy: var(--color-brand-primary);
   --color-ivory: var(--color-brand-surface);
-  --color-white: #FFFFFF;
 
-  --font-serif: var(--font-playfair), 'Playfair Display', Georgia, serif;
-  --font-sans: var(--font-poppins), 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
 }
 
 body {
@@ -107,7 +144,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-brand-gold);
+  background: var(--color-brand-accent);
 }
 
 /* Accessible focus styling */

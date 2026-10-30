@@ -14,6 +14,10 @@ import {
   PanelLeftClose,
   PanelLeft,
   Mail,
+  ClipboardList,
+  Sparkles,
+  Users,
+  MessageSquare,
 } from "lucide-react";
 import { logoutAdminAction } from "@/server/actions/auth-actions";
 import { cn } from "@/lib/utils";
@@ -39,8 +43,10 @@ export function AdminSidebar({
 
   const navigation = [
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { name: "Manage Competition", href: "/admin/forms", icon: Crown },
-    { name: "Mithila Queen Applications", href: "/admin/responses", icon: FileText },
+    { name: "Registration Form", href: "/admin/registration-form", icon: ClipboardList },
+    { name: "Event Settings", href: "/admin/event-settings", icon: Sparkles },
+    { name: "Mithila Queen Applications", href: "/admin/responses", icon: Users },
+    { name: "Inquiries Desk", href: "/admin/inquiries", icon: MessageSquare },
     { name: "Communications", href: "/admin/campaigns", icon: Mail },
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
@@ -48,16 +54,16 @@ export function AdminSidebar({
   return (
     <>
       {/* Mobile Top Header */}
-      <div className="lg:hidden flex items-center justify-between bg-maroon text-white px-4 py-3 border-b border-white/10 sticky top-0 z-40">
+      <div className="lg:hidden flex items-center justify-between bg-[#183153] text-white px-4 py-3 border-b border-white/10 sticky top-0 z-40">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded bg-maroon-dark border border-antique-gold/40 flex items-center justify-center text-antique-gold">
-            <Crown className="w-4 h-4" />
+          <div className="w-8 h-8 rounded-lg bg-[#10233d] border border-[#356FA8]/40 flex items-center justify-center text-[#356FA8]">
+            <Crown className="w-4 h-4 text-white" />
           </div>
-          <span className="font-bold text-base tracking-tight font-serif">The Origin Foundation</span>
+          <span className="font-bold text-base tracking-tight">The Origin Foundation</span>
         </div>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-1.5 rounded text-stone-300 hover:text-white hover:bg-white/10"
+          className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10"
           aria-label="Toggle navigation menu"
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -75,7 +81,7 @@ export function AdminSidebar({
       {/* Sidebar Container */}
       <aside
         className={cn(
-          "fixed top-0 bottom-0 left-0 z-50 bg-maroon text-white flex flex-col border-r border-white/10 transition-all duration-200 ease-in-out lg:translate-x-0",
+          "fixed top-0 bottom-0 left-0 z-50 bg-[#183153] text-white flex flex-col border-r border-white/10 transition-all duration-200 ease-in-out lg:translate-x-0",
           mobileOpen ? "translate-x-0 w-72" : "-translate-x-full lg:translate-x-0",
           isCollapsed ? "lg:w-20" : "lg:w-72"
         )}
@@ -93,10 +99,10 @@ export function AdminSidebar({
             </div>
             {!isCollapsed && (
               <div className="min-w-0">
-                <span className="font-extrabold text-base tracking-tight block leading-tight text-white font-serif truncate">
+                <span className="font-bold text-base tracking-tight block leading-tight text-white truncate">
                   The Origin Foundation
                 </span>
-                <span className="text-[10px] text-antique-gold tracking-wider uppercase font-bold block truncate">
+                <span className="text-[10px] text-[#7ba9d8] tracking-wider uppercase font-semibold block truncate">
                   Janakpur Dham &bull; Admin
                 </span>
               </div>
@@ -108,11 +114,11 @@ export function AdminSidebar({
             <button
               type="button"
               onClick={onToggleCollapse}
-              className="hidden lg:flex p-1.5 rounded text-stone-400 hover:text-white hover:bg-white/10 transition-colors shrink-0"
+              className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors shrink-0"
               title={isCollapsed ? "Expand sidebar" : "Collapse sidebar to icons"}
             >
               {isCollapsed ? (
-                <PanelLeft className="w-4 h-4 text-antique-gold" />
+                <PanelLeft className="w-4 h-4 text-[#7ba9d8]" />
               ) : (
                 <PanelLeftClose className="w-4 h-4" />
               )}
@@ -121,16 +127,25 @@ export function AdminSidebar({
         </div>
 
         {/* Navigation Items */}
-        <nav className="flex-1 px-3 py-3 space-y-1.5 overflow-y-auto">
+        <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto">
           {navigation.map((item) => {
             const isDashboard = item.href === "/admin/dashboard";
-            const isFormsList = item.href === "/admin/forms";
+            const isRegForm = item.href === "/admin/registration-form";
+            const isEventSettings = item.href === "/admin/event-settings";
 
             let isActive = false;
             if (isDashboard) {
               isActive = pathname === "/admin/dashboard";
-            } else if (isFormsList) {
-              isActive = pathname === "/admin/forms" || pathname.startsWith("/admin/forms/");
+            } else if (isRegForm) {
+              isActive =
+                pathname === "/admin/registration-form" ||
+                pathname.startsWith("/admin/registration-form/") ||
+                pathname === "/admin/forms" ||
+                pathname.startsWith("/admin/forms/");
+            } else if (isEventSettings) {
+              isActive =
+                pathname === "/admin/event-settings" ||
+                pathname.startsWith("/admin/event-settings/");
             } else {
               isActive = pathname === item.href || pathname.startsWith(item.href + "/");
             }
@@ -142,15 +157,15 @@ export function AdminSidebar({
                 onClick={() => setMobileOpen(false)}
                 title={isCollapsed ? item.name : undefined}
                 className={cn(
-                  "flex items-center rounded-lg text-xs font-medium transition-all duration-150",
+                  "flex items-center rounded-xl text-xs font-medium transition-all duration-150",
                   isCollapsed ? "justify-center p-3" : "gap-3 px-3 py-2.5",
                   isActive
-                    ? "bg-maroon-dark text-antique-gold font-semibold border border-antique-gold/40 shadow-xs"
-                    : "text-stone-300 hover:bg-white/10 hover:text-white"
+                    ? "bg-[#10233d] text-white font-semibold border border-[#356FA8]/50 shadow-xs"
+                    : "text-slate-300 hover:bg-white/10 hover:text-white"
                 )}
               >
                 <item.icon
-                  className={cn("w-4 h-4 shrink-0", isActive ? "text-antique-gold" : "text-stone-400")}
+                  className={cn("w-4 h-4 shrink-0", isActive ? "text-[#7ba9d8]" : "text-slate-400")}
                 />
                 {!isCollapsed && <span className="truncate">{item.name}</span>}
               </Link>
@@ -159,23 +174,23 @@ export function AdminSidebar({
         </nav>
 
         {/* User Card & Logout */}
-        <div className={cn("border-t border-white/10 bg-maroon-dark p-3", isCollapsed && "px-2 text-center")}>
+        <div className={cn("border-t border-white/10 bg-[#10233d] p-3", isCollapsed && "px-2 text-center")}>
           {!isCollapsed ? (
             <div className="flex items-center gap-3 mb-3 px-1">
-              <div className="w-8 h-8 rounded bg-maroon border border-antique-gold/40 text-antique-gold font-bold flex items-center justify-center text-xs shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-[#183153] border border-[#356FA8]/40 text-[#7ba9d8] font-bold flex items-center justify-center text-xs shrink-0">
                 {admin.name.slice(0, 1).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-semibold text-white truncate leading-tight">
                   {admin.name}
                 </p>
-                <p className="text-[11px] text-stone-400 truncate font-mono">{admin.email}</p>
+                <p className="text-[11px] text-slate-400 truncate font-mono">{admin.email}</p>
               </div>
             </div>
           ) : (
             <div className="mb-2 flex justify-center">
               <div
-                className="w-8 h-8 rounded bg-maroon border border-antique-gold/40 text-antique-gold font-bold flex items-center justify-center text-xs"
+                className="w-8 h-8 rounded-lg bg-[#183153] border border-[#356FA8]/40 text-[#7ba9d8] font-bold flex items-center justify-center text-xs"
                 title={`${admin.name} (${admin.email})`}
               >
                 {admin.name.slice(0, 1).toUpperCase()}
@@ -188,7 +203,7 @@ export function AdminSidebar({
               type="submit"
               title={isCollapsed ? "Sign Out" : undefined}
               className={cn(
-                "w-full flex items-center justify-center text-xs font-semibold text-stone-300 hover:text-white hover:bg-white/10 rounded border border-white/15 transition-colors",
+                "w-full flex items-center justify-center text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-lg border border-white/15 transition-colors",
                 isCollapsed ? "p-2" : "gap-2 px-3 py-2"
               )}
             >

@@ -53,13 +53,13 @@ export function ChangePasswordCard() {
   };
 
   return (
-    <Card className="border-cream-dark shadow-xs bg-warm-ivory">
+    <Card className="border-[#DCE5ED] shadow-xs bg-white">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base font-serif font-bold text-maroon">
+          <CardTitle className="text-base font-bold font-bold text-[#183153]">
             Change Admin Password
           </CardTitle>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-saffron bg-soft-cream px-2 py-0.5 rounded border border-[#B89150]/30">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#356FA8] bg-[#F4F7FA] px-2 py-0.5 rounded border border-[#DCE5ED]">
             Security
           </span>
         </div>
@@ -68,7 +68,7 @@ export function ChangePasswordCard() {
       <CardContent className="pt-1">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <Label className="text-xs font-bold text-maroon">
+            <Label className="text-xs font-bold text-[#183153]">
               Current Password *
             </Label>
             <div className="relative">
@@ -78,7 +78,7 @@ export function ChangePasswordCard() {
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="Enter current password"
                 required
-                className="h-10 text-xs border-cream-dark bg-white pr-9"
+                className="h-10 text-xs border-[#DCE5ED] bg-white pr-9"
               />
               <button
                 type="button"
@@ -92,7 +92,7 @@ export function ChangePasswordCard() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-maroon">
+              <Label className="text-xs font-bold text-[#183153]">
                 New Password (min 8 chars) *
               </Label>
               <div className="relative">
@@ -102,7 +102,7 @@ export function ChangePasswordCard() {
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Min 8 characters"
                   required
-                  className="h-10 text-xs border-cream-dark bg-white pr-9"
+                  className="h-10 text-xs border-[#DCE5ED] bg-white pr-9"
                 />
                 <button
                   type="button"
@@ -115,7 +115,7 @@ export function ChangePasswordCard() {
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-maroon">
+              <Label className="text-xs font-bold text-[#183153]">
                 Confirm New Password *
               </Label>
               <Input
@@ -124,7 +124,7 @@ export function ChangePasswordCard() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm new password"
                 required
-                className="h-10 text-xs border-cream-dark bg-white"
+                className="h-10 text-xs border-[#DCE5ED] bg-white"
               />
             </div>
           </div>
@@ -133,7 +133,7 @@ export function ChangePasswordCard() {
             <Button
               type="submit"
               disabled={isUpdating}
-              className="w-full bg-maroon hover:bg-[#5B131E] text-white font-bold text-xs h-10 rounded-lg shadow-sm gap-2"
+              className="w-full bg-[#183153] hover:bg-[#12243d] text-white font-bold text-xs h-10 rounded-lg shadow-sm gap-2"
             >
               {isUpdating ? (
                 <>
@@ -142,7 +142,7 @@ export function ChangePasswordCard() {
                 </>
               ) : (
                 <>
-                  <ShieldCheck className="w-4 h-4 text-saffron" />
+                  <ShieldCheck className="w-4 h-4 text-[#356FA8]" />
                   <span>Update Password</span>
                 </>
               )}
@@ -153,3 +153,4 @@ export function ChangePasswordCard() {
     </Card>
   );
 }
+

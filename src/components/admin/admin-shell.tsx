@@ -32,7 +32,7 @@ export function AdminShell({ admin, children }: AdminShellProps) {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#F4F7FA] text-[#263238] flex flex-col lg:flex-row">
       <AdminSidebar
         admin={admin}
         isCollapsed={isMounted ? isCollapsed : false}
