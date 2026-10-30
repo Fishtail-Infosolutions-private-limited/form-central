@@ -269,18 +269,18 @@ export function UnifiedSettingsCMS({
   return (
     <div className="space-y-6">
       {/* Editorial Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DFD0] pb-6 bg-[#FFFFFF] p-6 rounded-lg border">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E2E8F0] pb-6 bg-[#FFFFFF] p-6 rounded-lg border">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <MithilaHeritageMandala className="w-5 h-5 text-[#B69A65]" />
-            <span className="text-[11px] font-bold tracking-widest uppercase text-[#B69A65]">
+            <MithilaHeritageMandala className="w-5 h-5 text-[#C5A880]" />
+            <span className="text-[11px] font-bold tracking-widest uppercase text-[#C5A880]">
               Administrative Settings &bull; The Origin Foundation
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#292821] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F] tracking-tight">
             Website & Competition Settings
           </h1>
-          <p className="text-xs sm:text-sm text-[#292821]/70">
+          <p className="text-xs sm:text-sm text-[#0A192F]/70">
             Configure institutional profiles, competition fees, live site copy, legal terms, and cloud integrations.
           </p>
         </div>
@@ -288,15 +288,15 @@ export function UnifiedSettingsCMS({
         <Button
           onClick={handleSaveAll}
           disabled={isSaving}
-          className="gap-2 bg-[#292821] hover:bg-[#292821]/90 text-[#F5F0E6] text-xs h-10 px-5 font-semibold border border-[#B69A65]/40 shadow-none shrink-0"
+          className="gap-2 bg-[#0A192F] hover:bg-[#0A192F]/90 text-[#F1F5F9] text-xs h-10 px-5 font-semibold border border-[#C5A880]/40 shadow-none shrink-0"
         >
-          {isSaving ? <Loader2 className="w-4 h-4 animate-spin text-[#B69A65]" /> : <Save className="w-4 h-4 text-[#B69A65]" />}
+          {isSaving ? <Loader2 className="w-4 h-4 animate-spin text-[#C5A880]" /> : <Save className="w-4 h-4 text-[#C5A880]" />}
           <span>Save All Changes</span>
         </Button>
       </div>
 
       {/* Structured Horizontal Tab Bar */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-[#E8DFD0]">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-[#E2E8F0]">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -306,11 +306,11 @@ export function UnifiedSettingsCMS({
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-3.5 py-2.5 rounded-md text-xs font-semibold whitespace-nowrap transition-all ${
                 isActive
-                  ? "bg-[#292821] text-[#F5F0E6] border border-[#B69A65]/40"
-                  : "bg-[#FFFFFF] text-[#292821]/80 hover:bg-[#FAF5EE] border border-[#E8DFD0]"
+                  ? "bg-[#0A192F] text-[#F1F5F9] border border-[#C5A880]/40"
+                  : "bg-[#FFFFFF] text-[#0A192F]/80 hover:bg-[#F8FAFC] border border-[#E2E8F0]"
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#B69A65]" : "text-[#A64B36]"}`} />
+              <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#C5A880]" : "text-[#A64B36]"}`} />
               <span>{tab.label}</span>
             </button>
           );
@@ -319,98 +319,98 @@ export function UnifiedSettingsCMS({
 
       {/* TAB 1: FOUNDATION INFORMATION */}
       {activeTab === "foundation" && (
-        <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
+            <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
               Institutional Foundation Information
             </CardTitle>
-            <CardDescription className="text-xs text-[#292821]/70">
+            <CardDescription className="text-xs text-[#0A192F]/70">
               Official organization credentials displayed across the public navbar, footer, registration verification, and email signatures.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Organization Name</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Organization Name</Label>
                 <Input
                   value={orgName}
                   onChange={(e) => setOrgName(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Motto & Tagline</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Motto & Tagline</Label>
                 <Input
                   value={orgTagline}
                   onChange={(e) => setOrgTagline(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Official Contact Email</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Official Contact Email</Label>
                 <Input
                   value={officialEmail}
                   onChange={(e) => setOfficialEmail(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Registered Headquarters</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Registered Headquarters</Label>
                 <Input
                   value={registeredAddress}
                   onChange={(e) => setRegisteredAddress(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Primary Helpline Number</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Primary Helpline Number</Label>
                 <Input
                   value={primaryPhone}
                   onChange={(e) => setPrimaryPhone(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Secondary Helpline Number</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Secondary Helpline Number</Label>
                 <Input
                   value={secondaryPhone}
                   onChange={(e) => setSecondaryPhone(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
               </div>
             </div>
 
             {/* Equal Leadership Cards */}
-            <div className="pt-4 border-t border-[#E8DFD0]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#292821] mb-3">
+            <div className="pt-4 border-t border-[#E2E8F0]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-3">
                 Executive Leadership (Equal Representation)
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
+                <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-bold text-[#A64B36] uppercase">Managing Director</span>
                     <span className="text-[10px] text-zinc-500 font-mono">Executive Lead</span>
                   </div>
-                  <div className="text-sm font-serif font-bold text-[#292821]">Gaurav Gupta</div>
-                  <div className="text-xs text-[#292821]/70 font-mono flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-[#B69A65]" />
+                  <div className="text-sm font-serif font-bold text-[#0A192F]">Gaurav Gupta</div>
+                  <div className="text-xs text-[#0A192F]/70 font-mono flex items-center gap-1.5">
+                    <Phone className="w-3.5 h-3.5 text-[#C5A880]" />
                     <span>+977 9704571941</span>
                   </div>
                 </div>
 
-                <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
+                <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-bold text-[#A64B36] uppercase">Managing Director</span>
                     <span className="text-[10px] text-zinc-500 font-mono">Executive Lead</span>
                   </div>
-                  <div className="text-sm font-serif font-bold text-[#292821]">Dipendra Shah Kalwar</div>
-                  <div className="text-xs text-[#292821]/70 font-mono flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-[#B69A65]" />
+                  <div className="text-sm font-serif font-bold text-[#0A192F]">Dipendra Shah Kalwar</div>
+                  <div className="text-xs text-[#0A192F]/70 font-mono flex items-center gap-1.5">
+                    <Phone className="w-3.5 h-3.5 text-[#C5A880]" />
                     <span>+977 981-2005468</span>
                   </div>
                 </div>
@@ -422,42 +422,48 @@ export function UnifiedSettingsCMS({
 
       {/* TAB 2: MITHILA QUEEN SETTINGS */}
       {activeTab === "mithila_queen" && (
-        <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
+            <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
               Mithila Queen Competition Parameters
             </CardTitle>
-            <CardDescription className="text-xs text-[#292821]/70">
+            <CardDescription className="text-xs text-[#0A192F]/70">
               Manage flagship registration status, strictly controlled schedules, and eligibility constraints.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Competition Title</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Competition Title</Label>
                 <Input
                   value={compName}
                   onChange={(e) => setCompName(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Registration Fee (NPR)</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Registration Fee (NPR)</Label>
                 <Input
+                  type="number"
+                  min="0"
+                  step="1"
                   value={regFee}
-                  disabled
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono font-bold"
+                  onChange={(e) => setRegFee(e.target.value)}
+                  className="h-10 text-xs border-slate-200 bg-white font-mono font-bold"
+                  placeholder="399"
                 />
-                <p className="text-[10px] text-[#A64B36] font-medium">Enforced at NPR 399 per official brief.</p>
+                <p className="text-[10px] text-slate-500 font-medium">
+                  Official candidate registration fee collected in Nepalese Rupees.
+                </p>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Registration Status</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Registration Status</Label>
                 <select
                   value={isRegOpen ? "OPEN" : "CLOSED"}
                   onChange={(e) => setIsRegOpen(e.target.value === "OPEN")}
-                  className="w-full h-10 px-3 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] text-xs font-semibold text-[#292821]"
+                  className="w-full h-10 px-3 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] text-xs font-semibold text-[#0A192F]"
                 >
                   <option value="OPEN">Registration Open</option>
                   <option value="CLOSED">Registration Closed</option>
@@ -465,60 +471,60 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Registration Opening Date</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Registration Opening Date</Label>
                 <Input
                   type="datetime-local"
                   value={regOpeningDate}
                   onChange={(e) => setRegOpeningDate(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
                 <p className="text-[10px] text-zinc-500">Scheduled time when form opens automatically.</p>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Registration Deadline / Closing</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Registration Deadline / Closing</Label>
                 <Input
                   type="datetime-local"
                   value={regClosingDate}
                   onChange={(e) => setRegClosingDate(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
                 <p className="text-[10px] text-zinc-500">Scheduled deadline when submissions close.</p>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Event Date & Time</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Event Date & Time</Label>
                 <Input
                   value={eventSchedule}
                   disabled
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-semibold text-[#292821]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-semibold text-[#0A192F]"
                 />
                 <p className="text-[10px] text-zinc-500">Strictly &quot;To Be Announced&quot; (no unverified dates).</p>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Competition Venue</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Competition Venue</Label>
                 <Input
                   value={eventVenue}
                   disabled
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-semibold text-[#292821]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-semibold text-[#0A192F]"
                 />
                 <p className="text-[10px] text-zinc-500">Janakpur Dham &bull; Specific auditorium TBA.</p>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Age Eligibility Window</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Age Eligibility Window</Label>
                 <div className="flex items-center gap-2">
                   <Input
                     value={minAge}
                     onChange={(e) => setMinAge(e.target.value)}
-                    className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] text-center font-mono"
+                    className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] text-center font-mono"
                   />
                   <span className="text-xs text-zinc-500">to</span>
                   <Input
                     value={maxAge}
                     onChange={(e) => setMaxAge(e.target.value)}
-                    className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] text-center font-mono"
+                    className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] text-center font-mono"
                   />
                   <span className="text-xs text-zinc-500">years</span>
                 </div>
@@ -531,51 +537,51 @@ export function UnifiedSettingsCMS({
 
       {/* TAB 3: WEBSITE PAGE CONTENT CMS */}
       {activeTab === "cms" && (
-        <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
+            <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
               Public Website Editorial Copy
             </CardTitle>
-            <CardDescription className="text-xs text-[#292821]/70">
+            <CardDescription className="text-xs text-[#0A192F]/70">
               Customize the institutional statements, hero titles, and live alert banners across the public homepage.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#292821]">Hero Section Headline</Label>
+              <Label className="text-xs font-bold text-[#0A192F]">Hero Section Headline</Label>
               <Input
                 value={heroHeadline}
                 onChange={(e) => setHeroHeadline(e.target.value)}
-                className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#292821]">Hero Section Subtitle</Label>
+              <Label className="text-xs font-bold text-[#0A192F]">Hero Section Subtitle</Label>
               <Textarea
                 rows={2}
                 value={heroSubtitle}
                 onChange={(e) => setHeroSubtitle(e.target.value)}
-                className="text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                className="text-xs border-[#E2E8F0] bg-[#F8FAFC]"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#292821]">About The Origin Foundation Statement</Label>
+              <Label className="text-xs font-bold text-[#0A192F]">About The Origin Foundation Statement</Label>
               <Textarea
                 rows={3}
                 value={aboutStatement}
                 onChange={(e) => setAboutStatement(e.target.value)}
-                className="text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                className="text-xs border-[#E2E8F0] bg-[#F8FAFC]"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#292821]">Site Announcements Ticker Banner</Label>
+              <Label className="text-xs font-bold text-[#0A192F]">Site Announcements Ticker Banner</Label>
               <Input
                 value={announcementBanner}
                 onChange={(e) => setAnnouncementBanner(e.target.value)}
-                className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
               />
             </div>
           </CardContent>
@@ -584,19 +590,19 @@ export function UnifiedSettingsCMS({
 
       {/* TAB 4: PAYMENT SETTINGS */}
       {activeTab === "payment" && (
-        <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
+            <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
               Payment Gateway & eSewa Settings
             </CardTitle>
-            <CardDescription className="text-xs text-[#292821]/70">
+            <CardDescription className="text-xs text-[#0A192F]/70">
               Configure official payment QR code, recipient details, and instructions provided to participants.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Official QR Code Upload & Preview */}
-            <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] flex flex-col sm:flex-row items-center gap-6">
-              <div className="relative w-40 h-40 bg-white border border-[#E8DFD0] rounded-lg p-2 shadow-sm shrink-0 flex items-center justify-center">
+            <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] flex flex-col sm:flex-row items-center gap-6">
+              <div className="relative w-40 h-40 bg-white border border-[#E2E8F0] rounded-lg p-2 shadow-sm shrink-0 flex items-center justify-center">
                 {paymentQrUrl ? (
                   <Image
                     src={paymentQrUrl}
@@ -614,10 +620,10 @@ export function UnifiedSettingsCMS({
               </div>
               <div className="space-y-3 flex-1 text-center sm:text-left">
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#292821]">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#0A192F]">
                     Official Payment QR Code
                   </h4>
-                  <p className="text-xs text-[#292821]/70 mt-1">
+                  <p className="text-xs text-[#0A192F]/70 mt-1">
                     This QR image is displayed in Step 6 of the participant registration wizard and on the post-submission payment screen.
                   </p>
                 </div>
@@ -630,11 +636,11 @@ export function UnifiedSettingsCMS({
                       disabled={isUploadingQr}
                       className="hidden"
                     />
-                    <div className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-[#292821] text-[#F5F0E6] text-xs font-semibold hover:bg-[#292821]/90 transition-colors">
+                    <div className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-[#0A192F] text-[#F1F5F9] text-xs font-semibold hover:bg-[#0A192F]/90 transition-colors">
                       {isUploadingQr ? (
-                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" />
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />
                       ) : (
-                        <Upload className="w-3.5 h-3.5 text-[#B69A65]" />
+                        <Upload className="w-3.5 h-3.5 text-[#C5A880]" />
                       )}
                       <span>{isUploadingQr ? "Uploading..." : "Upload New QR Code"}</span>
                     </div>
@@ -645,7 +651,7 @@ export function UnifiedSettingsCMS({
                       variant="outline"
                       size="sm"
                       onClick={() => setPaymentQrUrl("/assets/brand/origin-foundation-qr.png")}
-                      className="h-8 text-xs border-[#E8DFD0] text-[#292821]"
+                      className="h-8 text-xs border-[#E2E8F0] text-[#0A192F]"
                     >
                       Reset to Default
                     </Button>
@@ -659,67 +665,67 @@ export function UnifiedSettingsCMS({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Payment Provider Name</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Payment Provider Name</Label>
                 <Input
                   value={paymentProviderName}
                   onChange={(e) => setPaymentProviderName(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Official eSewa ID / Merchant Phone</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Official eSewa ID / Merchant Phone</Label>
                 <Input
                   value={esewaId}
                   onChange={(e) => setEsewaId(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Account Beneficiary Name</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Account Beneficiary Name</Label>
                 <Input
                   value={accountHolder}
                   onChange={(e) => setAccountHolder(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Direct Bank Name & Branch</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Direct Bank Name & Branch</Label>
                 <Input
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Bank Account Number</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Bank Account Number</Label>
                 <Input
                   value={accountNumber}
                   onChange={(e) => setAccountNumber(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Payment Reference / Remarks Instructions</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Payment Reference / Remarks Instructions</Label>
                 <Input
                   value={paymentReferenceInstructions}
                   onChange={(e) => setPaymentReferenceInstructions(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#292821]">Payment Instructions for Applicants</Label>
+              <Label className="text-xs font-bold text-[#0A192F]">Payment Instructions for Applicants</Label>
               <Textarea
                 rows={3}
                 value={paymentInstructions}
                 onChange={(e) => setPaymentInstructions(e.target.value)}
-                className="text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                className="text-xs border-[#E2E8F0] bg-[#F8FAFC]"
               />
             </div>
           </CardContent>
@@ -728,61 +734,61 @@ export function UnifiedSettingsCMS({
 
       {/* TAB 5: SOCIAL MEDIA & VIDEO AUDITION */}
       {activeTab === "social_video" && (
-        <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
+            <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
               Social Media Channels & Video Submission Rules
             </CardTitle>
-            <CardDescription className="text-xs text-[#292821]/70">
+            <CardDescription className="text-xs text-[#0A192F]/70">
               Manage the official WhatsApp submission channel and audition guidelines provided to applicants.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Official WhatsApp Audition Helpline</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Official WhatsApp Audition Helpline</Label>
                 <Input
                   value={whatsappContact}
                   onChange={(e) => setWhatsappContact(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Official Facebook Page</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Official Facebook Page</Label>
                 <Input
                   value={facebookUrl}
                   onChange={(e) => setFacebookUrl(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Instagram Handle</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Instagram Handle</Label>
                 <Input
                   value={officialInstagram}
                   onChange={(e) => setOfficialInstagram(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">TikTok Handle</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">TikTok Handle</Label>
                 <Input
                   value={officialTiktok}
                   onChange={(e) => setOfficialTiktok(e.target.value)}
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-10 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#292821]">Video Audition Guidelines & Duration Rules</Label>
+              <Label className="text-xs font-bold text-[#0A192F]">Video Audition Guidelines & Duration Rules</Label>
               <Textarea
                 rows={3}
                 value={videoGuidelines}
                 onChange={(e) => setVideoGuidelines(e.target.value)}
-                className="text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                className="text-xs border-[#E2E8F0] bg-[#F8FAFC]"
               />
             </div>
           </CardContent>
@@ -791,13 +797,13 @@ export function UnifiedSettingsCMS({
 
       {/* TAB 6: FAQS & ANNOUNCEMENTS CMS */}
       {activeTab === "faqs_announcements" && (
-        <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-lg font-serif font-bold text-[#292821]">
+              <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
                 Frequently Asked Questions (FAQs)
               </CardTitle>
-              <CardDescription className="text-xs text-[#292821]/70">
+              <CardDescription className="text-xs text-[#0A192F]/70">
                 Live FAQs displayed on the homepage and registration status portal.
               </CardDescription>
             </div>
@@ -806,7 +812,7 @@ export function UnifiedSettingsCMS({
               onClick={addFaq}
               size="sm"
               variant="outline"
-              className="gap-1.5 border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE] text-xs h-8"
+              className="gap-1.5 border-[#E2E8F0] text-[#0A192F] hover:bg-[#F8FAFC] text-xs h-8"
             >
               <Plus className="w-3.5 h-3.5 text-[#A64B36]" />
               <span>Add FAQ</span>
@@ -814,9 +820,9 @@ export function UnifiedSettingsCMS({
           </CardHeader>
           <CardContent className="space-y-4">
             {faqs.map((faq, idx) => (
-              <div key={idx} className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-3 relative group">
+              <div key={idx} className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-3 relative group">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-[#B69A65] uppercase tracking-wider">
+                  <span className="text-[10px] font-bold text-[#C5A880] uppercase tracking-wider">
                     FAQ #{idx + 1}
                   </span>
                   {faqs.length > 1 && (
@@ -830,20 +836,20 @@ export function UnifiedSettingsCMS({
                   )}
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs font-bold text-[#292821]">Question</Label>
+                  <Label className="text-xs font-bold text-[#0A192F]">Question</Label>
                   <Input
                     value={faq.q}
                     onChange={(e) => updateFaq(idx, "q", e.target.value)}
-                    className="h-9 text-xs bg-[#FFFFFF] border-[#E8DFD0]"
+                    className="h-9 text-xs bg-[#FFFFFF] border-[#E2E8F0]"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs font-bold text-[#292821]">Answer</Label>
+                  <Label className="text-xs font-bold text-[#0A192F]">Answer</Label>
                   <Textarea
                     rows={2}
                     value={faq.a}
                     onChange={(e) => updateFaq(idx, "a", e.target.value)}
-                    className="text-xs bg-[#FFFFFF] border-[#E8DFD0]"
+                    className="text-xs bg-[#FFFFFF] border-[#E2E8F0]"
                   />
                 </div>
               </div>
@@ -854,65 +860,65 @@ export function UnifiedSettingsCMS({
 
       {/* TAB 7: LEGAL POLICIES */}
       {activeTab === "legal" && (
-        <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
+            <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
               Legal Policies & Minor Safeguarding Framework
             </CardTitle>
-            <CardDescription className="text-xs text-[#292821]/70">
+            <CardDescription className="text-xs text-[#0A192F]/70">
               Institutional policies governing competition adjudication, participant terms, and privacy compliance.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
-                <div className="text-xs font-bold text-[#292821] flex items-center justify-between">
+              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
+                <div className="text-xs font-bold text-[#0A192F] flex items-center justify-between">
                   <span>Competition Rules & Eligibility</span>
                   <Link href="/rules" target="_blank" className="text-[#A64B36] hover:underline flex items-center gap-1 text-[11px]">
                     <span>View Live</span>
                     <ExternalLink className="w-3 h-3" />
                   </Link>
                 </div>
-                <p className="text-[11px] text-[#292821]/70">
+                <p className="text-[11px] text-[#0A192F]/70">
                   Defines age constraints (16-28), citizenship verification, code of conduct, and jury adjudication standards.
                 </p>
               </div>
 
-              <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
-                <div className="text-xs font-bold text-[#292821] flex items-center justify-between">
+              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
+                <div className="text-xs font-bold text-[#0A192F] flex items-center justify-between">
                   <span>Terms of Service</span>
                   <Link href="/terms" target="_blank" className="text-[#A64B36] hover:underline flex items-center gap-1 text-[11px]">
                     <span>View Live</span>
                     <ExternalLink className="w-3 h-3" />
                   </Link>
                 </div>
-                <p className="text-[11px] text-[#292821]/70">
+                <p className="text-[11px] text-[#0A192F]/70">
                   Governs website access, intellectual property of Mithila Queen media, and user obligations.
                 </p>
               </div>
 
-              <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
-                <div className="text-xs font-bold text-[#292821] flex items-center justify-between">
+              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
+                <div className="text-xs font-bold text-[#0A192F] flex items-center justify-between">
                   <span>Privacy Policy</span>
                   <Link href="/privacy-policy" target="_blank" className="text-[#A64B36] hover:underline flex items-center gap-1 text-[11px]">
                     <span>View Live</span>
                     <ExternalLink className="w-3 h-3" />
                   </Link>
                 </div>
-                <p className="text-[11px] text-[#292821]/70">
+                <p className="text-[11px] text-[#0A192F]/70">
                   Data protection policies detailing encrypted storage of participant identity proofs, contacts, and photos.
                 </p>
               </div>
 
-              <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
-                <div className="text-xs font-bold text-[#292821] flex items-center justify-between">
+              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
+                <div className="text-xs font-bold text-[#0A192F] flex items-center justify-between">
                   <span>Refund Policy</span>
                   <Link href="/refund-policy" target="_blank" className="text-[#A64B36] hover:underline flex items-center gap-1 text-[11px]">
                     <span>View Live</span>
                     <ExternalLink className="w-3 h-3" />
                   </Link>
                 </div>
-                <p className="text-[11px] text-[#292821]/70">
+                <p className="text-[11px] text-[#0A192F]/70">
                   Covers the NPR 399 entry fee terms: non-refundable once administrative review commences, except upon official cancellation.
                 </p>
               </div>
@@ -925,43 +931,43 @@ export function UnifiedSettingsCMS({
       {activeTab === "integrations" && (
         <div className="space-y-6">
           {/* Google Drive Status */}
-          <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+          <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
             <CardHeader>
               <div className="flex items-center justify-between mb-1">
-                <div className="w-9 h-9 rounded-md bg-[#FAF5EE] text-[#292821] border border-[#B69A65]/40 flex items-center justify-center">
+                <div className="w-9 h-9 rounded-md bg-[#F8FAFC] text-[#0A192F] border border-[#C5A880]/40 flex items-center justify-center">
                   <HardDrive className="w-4 h-4 text-[#A64B36]" />
                 </div>
                 <span
                   className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
                     driveIntegration?.isConnected
-                      ? "bg-[#FAF5EE] text-[#292821] border-[#B69A65]"
-                      : "bg-[#FAF5EE] text-amber-800 border-amber-200"
+                      ? "bg-[#F8FAFC] text-[#0A192F] border-[#C5A880]"
+                      : "bg-[#F8FAFC] text-amber-800 border-amber-200"
                   }`}
                 >
                   {driveIntegration?.isConnected ? "Connected" : "Disconnected"}
                 </span>
               </div>
-              <CardTitle className="text-lg font-serif font-bold text-[#292821]">
+              <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
                 Google Drive Storage Integration
               </CardTitle>
-              <CardDescription className="text-xs text-[#292821]/70">
+              <CardDescription className="text-xs text-[#0A192F]/70">
                 Direct OAuth 2.0 connection to stream large audition video uploads and identity documents into cloud storage.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {driveIntegration?.isConnected ? (
-                <div className="p-3.5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] text-xs text-[#292821] space-y-1">
-                  <div className="font-semibold text-[#292821] flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#B69A65] shrink-0" />
+                <div className="p-3.5 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs text-[#0A192F] space-y-1">
+                  <div className="font-semibold text-[#0A192F] flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#C5A880] shrink-0" />
                     <span className="font-mono text-xs">{driveIntegration.accountEmail}</span>
                   </div>
-                  <div className="text-xs text-[#292821]/70 flex items-center justify-between pt-1 border-t border-[#E8DFD0]">
+                  <div className="text-xs text-[#0A192F]/70 flex items-center justify-between pt-1 border-t border-[#E2E8F0]">
                     <span>Destination Folder:</span>
-                    <span className="font-semibold text-[#292821]">{driveIntegration.folderName || "Root Drive"}</span>
+                    <span className="font-semibold text-[#0A192F]">{driveIntegration.folderName || "Root Drive"}</span>
                   </div>
                 </div>
               ) : (
-                <div className="p-3.5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] text-xs text-[#292821] flex items-start gap-2.5">
+                <div className="p-3.5 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs text-[#0A192F] flex items-start gap-2.5">
                   <AlertCircle className="w-4 h-4 text-[#A64B36] shrink-0 mt-0.5" />
                   <span>
                     Google Drive is disconnected. Connect the official organization account to receive participant video files without exhausting server disk storage.
@@ -972,7 +978,7 @@ export function UnifiedSettingsCMS({
               <Link href="/admin/settings/integrations/google-drive">
                 <Button
                   variant="outline"
-                  className="w-full justify-between text-xs font-semibold h-10 border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE]"
+                  className="w-full justify-between text-xs font-semibold h-10 border-[#E2E8F0] text-[#0A192F] hover:bg-[#F8FAFC]"
                 >
                   <span>
                     {driveIntegration?.isConnected ? "Manage Drive & Change Folder" : "Connect Google Drive Account"}

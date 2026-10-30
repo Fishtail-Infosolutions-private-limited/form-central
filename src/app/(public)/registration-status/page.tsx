@@ -258,25 +258,25 @@ function RegistrationStatusContent() {
     <div className="py-12 sm:py-20 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8DFD0]/60 border border-[#B69A65]/40 text-[#292821] text-xs font-semibold">
-          <Crown className="w-3.5 h-3.5 text-[#B69A65]" />
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E2E8F0]/60 border border-[#C5A880]/40 text-[#0A192F] text-xs font-semibold">
+          <Crown className="w-3.5 h-3.5 text-[#C5A880]" />
           <span>Mithila Queen • Secure Status & Dossier Access</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#292821] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#0A192F] tracking-tight">
           Application Status
         </h1>
-        <p className="text-xs sm:text-sm text-[#3C332A] max-w-lg mx-auto leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#1E293B] max-w-lg mx-auto leading-relaxed">
           Verify your identity via 6-digit email OTP to securely view your application review status, upload payment receipts, edit permitted details, and download your confirmation certificate.
         </p>
       </div>
 
       {/* STEP A: SECURE OTP LOOKUP CARD */}
       {!record && (
-        <div className="p-8 sm:p-10 rounded-lg bg-white border border-[#E8DFD0] shadow-xs space-y-6">
+        <div className="p-8 sm:p-10 rounded-lg bg-white border border-[#E2E8F0] shadow-xs space-y-6">
           {!otpSent ? (
             <form onSubmit={handleRequestOtp} className="space-y-4">
               <div className="space-y-1.5">
-                <Label htmlFor="email" required className="text-xs font-bold text-[#292821]">
+                <Label htmlFor="email" required className="text-xs font-bold text-[#0A192F]">
                   Registered Email Address
                 </Label>
                 <Input
@@ -286,12 +286,12 @@ function RegistrationStatusContent() {
                   onChange={(e) => setEmailInput(e.target.value)}
                   placeholder="e.g. anjali@example.com"
                   required
-                  className="h-10 text-xs border-[#E8DFD0] bg-white"
+                  className="h-10 text-xs border-[#E2E8F0] bg-white"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="refId" className="text-xs font-bold text-[#292821]">
+                <Label htmlFor="refId" className="text-xs font-bold text-[#0A192F]">
                   Registration ID (Optional)
                 </Label>
                 <Input
@@ -299,7 +299,7 @@ function RegistrationStatusContent() {
                   value={registrationIdInput}
                   onChange={(e) => setRegistrationIdInput(e.target.value.toUpperCase())}
                   placeholder="e.g. MQ-2026-X8Y7Z"
-                  className="h-10 text-xs border-[#E8DFD0] bg-white font-mono uppercase"
+                  className="h-10 text-xs border-[#E2E8F0] bg-white font-mono uppercase"
                 />
                 <p className="text-[11px] text-zinc-500">
                   Enter your Registration ID if known, or leave blank to find your record by email.
@@ -309,7 +309,7 @@ function RegistrationStatusContent() {
               <Button
                 type="submit"
                 disabled={isSendingOtp}
-                className="w-full bg-[#292821] hover:bg-[#3C332A] text-[#FAF5EE] text-xs font-bold h-11 rounded-md shadow-xs gap-2"
+                className="w-full bg-[#0A192F] hover:bg-[#1E293B] text-[#F8FAFC] text-xs font-bold h-11 rounded-md shadow-xs gap-2"
               >
                 {isSendingOtp ? (
                   <>
@@ -318,7 +318,7 @@ function RegistrationStatusContent() {
                   </>
                 ) : (
                   <>
-                    <Mail className="w-4 h-4 text-[#B69A65]" />
+                    <Mail className="w-4 h-4 text-[#C5A880]" />
                     <span>Send 6-Digit Access Code</span>
                   </>
                 )}
@@ -326,15 +326,15 @@ function RegistrationStatusContent() {
             </form>
           ) : (
             <form onSubmit={handleVerifyOtp} className="space-y-4">
-              <div className="p-4 rounded-md bg-[#FAF5EE] border border-[#B69A65]/40 text-xs text-[#3C332A] space-y-1">
-                <p className="font-bold text-[#292821]">Access Code Dispatched</p>
+              <div className="p-4 rounded-md bg-[#F8FAFC] border border-[#C5A880]/40 text-xs text-[#1E293B] space-y-1">
+                <p className="font-bold text-[#0A192F]">Access Code Dispatched</p>
                 <p>
-                  We have sent a 6-digit access code to <strong className="font-mono text-[#292821]">{emailInput}</strong>. Enter it below to unlock your application dossier.
+                  We have sent a 6-digit access code to <strong className="font-mono text-[#0A192F]">{emailInput}</strong>. Enter it below to unlock your application dossier.
                 </p>
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="otp" required className="text-xs font-bold text-[#292821]">
+                <Label htmlFor="otp" required className="text-xs font-bold text-[#0A192F]">
                   6-Digit Access Code
                 </Label>
                 <Input
@@ -344,7 +344,7 @@ function RegistrationStatusContent() {
                   placeholder="123456"
                   maxLength={6}
                   required
-                  className="h-12 text-center text-xl font-mono font-bold tracking-widest border-[#B69A65] bg-white"
+                  className="h-12 text-center text-xl font-mono font-bold tracking-widest border-[#C5A880] bg-white"
                 />
               </div>
 
@@ -352,7 +352,7 @@ function RegistrationStatusContent() {
                 <Button
                   type="submit"
                   disabled={isVerifyingOtp || otpCode.length !== 6}
-                  className="flex-1 bg-[#B69A65] hover:bg-[#a68c5b] text-[#292821] text-xs font-bold h-11 rounded-md shadow-xs gap-2"
+                  className="flex-1 bg-[#C5A880] hover:bg-[#B59870] text-[#0A192F] text-xs font-bold h-11 rounded-md shadow-xs gap-2"
                 >
                   {isVerifyingOtp ? (
                     <>
@@ -372,7 +372,7 @@ function RegistrationStatusContent() {
                   variant="outline"
                   disabled={resendCooldown > 0 || isSendingOtp}
                   onClick={handleRequestOtp}
-                  className="border-[#E8DFD0] text-[#292821] text-xs font-semibold h-11 px-4 gap-1.5"
+                  className="border-[#E2E8F0] text-[#0A192F] text-xs font-semibold h-11 px-4 gap-1.5"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>{resendCooldown > 0 ? `Resend (${resendCooldown}s)` : "Resend Code"}</span>
@@ -386,7 +386,7 @@ function RegistrationStatusContent() {
                     setOtpSent(false);
                     setOtpCode("");
                   }}
-                  className="text-xs text-zinc-500 hover:text-[#292821] underline"
+                  className="text-xs text-zinc-500 hover:text-[#0A192F] underline"
                 >
                   Use a different email address
                 </button>
@@ -398,32 +398,32 @@ function RegistrationStatusContent() {
 
       {/* STEP B: VERIFIED APPLICATION DOSSIER */}
       {record && (
-        <div className="p-8 sm:p-10 rounded-lg bg-white border border-[#E8DFD0] shadow-xs space-y-8">
+        <div className="p-8 sm:p-10 rounded-lg bg-white border border-[#E2E8F0] shadow-xs space-y-8">
           {/* Top Banner */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DFD0] pb-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E2E8F0] pb-5">
             <div>
               <span className="text-[11px] uppercase font-bold text-zinc-500 tracking-wider block">
                 Verified Participant Dossier
               </span>
-              <h2 className="text-2xl font-bold font-serif text-[#292821]">
+              <h2 className="text-2xl font-bold font-serif text-[#0A192F]">
                 {record.fullName}
               </h2>
-              <span className="text-xs text-[#3C332A]">{record.province} &bull; {record.district}</span>
+              <span className="text-xs text-[#1E293B]">{record.province} &bull; {record.district}</span>
             </div>
             <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-1">
               <span className="text-[11px] uppercase font-bold text-zinc-500 tracking-wider">
                 Registration ID
               </span>
-              <span className="text-lg font-extrabold font-mono text-[#292821]">
+              <span className="text-lg font-extrabold font-mono text-[#0A192F]">
                 {record.registrationId}
               </span>
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => setIsEditModalOpen(true)}
-                className="border-[#B69A65] text-[#292821] hover:bg-[#FAF5EE] text-xs font-semibold h-8 mt-1 gap-1.5"
+                className="border-[#C5A880] text-[#0A192F] hover:bg-[#F8FAFC] text-xs font-semibold h-8 mt-1 gap-1.5"
               >
-                <Edit3 className="w-3.5 h-3.5 text-[#B69A65]" />
+                <Edit3 className="w-3.5 h-3.5 text-[#C5A880]" />
                 <span>Edit Application Details</span>
               </Button>
             </div>
@@ -432,14 +432,14 @@ function RegistrationStatusContent() {
           {/* Dual Status Indicators: Payment Status & Application Status */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Payment Status Card */}
-            <div className="p-5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] space-y-2">
+            <div className="p-5 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] space-y-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
-                Payment Verification (NPR 399)
+                Payment Verification (NPR {record?.registrationFee || siteSettings?.registrationFee || 399})
               </span>
               <div className="flex items-center gap-2">
                 {record.paymentStatus === "VERIFIED" ? (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#292821] text-[#F5F0E6] border border-[#B69A65]/40">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#B69A65]" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#0A192F] text-[#F1F5F9] border border-[#C5A880]/40">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#C5A880]" />
                     Verified
                   </span>
                 ) : record.paymentStatus === "UNDER_REVIEW" ? (
@@ -459,7 +459,7 @@ function RegistrationStatusContent() {
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-[#3C332A] leading-relaxed">
+              <p className="text-[11px] text-[#1E293B] leading-relaxed">
                 {record.paymentStatus === "VERIFIED" && "Payment confirmed against official bank records."}
                 {record.paymentStatus === "UNDER_REVIEW" && "Submitted receipt is being audited by the finance team."}
                 {record.paymentStatus === "CLARIFICATION_REQUIRED" && "Please provide updated transaction reference."}
@@ -468,14 +468,14 @@ function RegistrationStatusContent() {
             </div>
 
             {/* Application Status Card */}
-            <div className="p-5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] space-y-2">
+            <div className="p-5 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] space-y-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
                 Application Review Status
               </span>
               <div className="flex items-center gap-2">
                 {record.applicationStatus === "APPROVED" ? (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#292821] text-[#F5F0E6] border border-[#B69A65]/40">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#B69A65]" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#0A192F] text-[#F1F5F9] border border-[#C5A880]/40">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#C5A880]" />
                     Approved & Confirmed
                   </span>
                 ) : record.applicationStatus === "REJECTED" ? (
@@ -495,7 +495,7 @@ function RegistrationStatusContent() {
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-[#3C332A] leading-relaxed">
+              <p className="text-[11px] text-[#1E293B] leading-relaxed">
                 {record.applicationStatus === "APPROVED" && "Official participation confirmed."}
                 {record.applicationStatus === "SUBMITTED" && "Application submitted and queued for evaluation."}
                 {record.applicationStatus === "UNDER_REVIEW" && "Application is being reviewed by the organizing committee."}
@@ -506,28 +506,28 @@ function RegistrationStatusContent() {
 
           {/* PAYMENT SUBMISSION BOX (IF PENDING OR CLARIFICATION REQUIRED) */}
           {(record.paymentStatus === "PENDING" || record.paymentStatus === "CLARIFICATION_REQUIRED") && (
-            <div className="p-6 rounded-lg bg-[#FAF5EE] border border-[#B69A65]/50 space-y-4">
+            <div className="p-6 rounded-lg bg-[#F8FAFC] border border-[#C5A880]/50 space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-[#292821]">
-                    Submit Fee Payment Verification (NPR 399)
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-[#0A192F]">
+                    Submit Fee Payment Verification (NPR {record?.registrationFee || siteSettings?.registrationFee || 399})
                   </h4>
-                  <p className="text-xs text-[#3C332A] mt-0.5">
-                    Scan the official QR code to pay NPR 399 and provide your transaction reference.
+                  <p className="text-xs text-[#1E293B] mt-0.5">
+                    Scan the official QR code to pay NPR {record?.registrationFee || siteSettings?.registrationFee || 399} and provide your transaction reference.
                   </p>
                 </div>
-                <QrCode className="w-6 h-6 text-[#B69A65]" />
+                <QrCode className="w-6 h-6 text-[#C5A880]" />
               </div>
 
               {/* QR Image Display */}
-              <div className="w-48 mx-auto bg-white border border-[#E8DFD0] rounded-md p-3 text-center">
+              <div className="w-48 mx-auto bg-white border border-[#E2E8F0] rounded-md p-3 text-center">
                 <img
                   src={siteSettings?.paymentQrCodeUrl || "/assets/brand/origin-foundation-qr.png"}
                   alt="Official Payment QR"
                   className="w-full h-auto object-contain"
                 />
                 <span className="text-[10px] text-zinc-500 font-mono mt-1 block">
-                  The Origin Foundation &bull; NPR 399
+                  The Origin Foundation &bull; NPR {record?.registrationFee || siteSettings?.registrationFee || 399}
                 </span>
               </div>
 
@@ -539,7 +539,7 @@ function RegistrationStatusContent() {
 
               <form onSubmit={handlePaymentSubmit} className="space-y-3 pt-2">
                 <div className="space-y-1">
-                  <Label htmlFor="txn" required className="text-xs font-bold text-[#292821]">
+                  <Label htmlFor="txn" required className="text-xs font-bold text-[#0A192F]">
                     Bank / Digital Wallet Transaction Reference (UTR)
                   </Label>
                   <Input
@@ -548,13 +548,13 @@ function RegistrationStatusContent() {
                     onChange={(e) => setNewTxnRef(e.target.value)}
                     placeholder="e.g. 981200546872 or Fonepay Txn ID"
                     required
-                    className="h-10 text-xs border-[#E8DFD0] bg-white font-mono"
+                    className="h-10 text-xs border-[#E2E8F0] bg-white font-mono"
                   />
                 </div>
                 <Button
                   type="submit"
                   disabled={isReSubmittingPayment}
-                  className="w-full bg-[#B69A65] hover:bg-[#a68c5b] text-[#292821] text-xs font-bold h-10 gap-2"
+                  className="w-full bg-[#C5A880] hover:bg-[#B59870] text-[#0A192F] text-xs font-bold h-10 gap-2"
                 >
                   {isReSubmittingPayment ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
                   <span>Submit Payment Reference for Verification</span>
@@ -565,27 +565,27 @@ function RegistrationStatusContent() {
 
           {/* OFFICIAL PDF DOWNLOAD (IF VERIFIED & APPROVED) */}
           {record.isPdfAvailable && (
-            <div className="p-6 rounded-lg bg-[#292821] text-[#FAF5EE] border border-[#B69A65] space-y-4">
+            <div className="p-6 rounded-lg bg-[#0A192F] text-[#F8FAFC] border border-[#C5A880] space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-white text-base font-serif">
                     Official Registration Confirmation PDF
                   </h3>
-                  <p className="text-xs text-[#B69A65] mt-0.5">
+                  <p className="text-xs text-[#C5A880] mt-0.5">
                     Verified Document &bull; Issued by The Origin Foundation
                   </p>
                 </div>
-                <FileCheck2 className="w-6 h-6 text-[#B69A65]" />
+                <FileCheck2 className="w-6 h-6 text-[#C5A880]" />
               </div>
 
-              <p className="text-xs text-[#E8DFD0]/80 leading-relaxed">
+              <p className="text-xs text-[#E2E8F0]/80 leading-relaxed">
                 Your entry has met all preliminary requirements and payment has been verified. Download your official A4 confirmation certificate for event attendance.
               </p>
 
               <Button
                 onClick={handleDownloadPdf}
                 disabled={isDownloadingPdf}
-                className="w-full bg-[#B69A65] hover:bg-[#a68c5b] text-[#292821] font-bold text-xs h-11 rounded-md shadow-xs gap-2"
+                className="w-full bg-[#C5A880] hover:bg-[#B59870] text-[#0A192F] font-bold text-xs h-11 rounded-md shadow-xs gap-2"
               >
                 {isDownloadingPdf ? (
                   <>
@@ -603,47 +603,47 @@ function RegistrationStatusContent() {
           )}
 
           {/* APPLICATION DETAILS BREAKDOWN */}
-          <div className="space-y-4 pt-4 border-t border-[#E8DFD0]">
-            <h3 className="font-bold font-serif text-base text-[#292821]">
+          <div className="space-y-4 pt-4 border-t border-[#E2E8F0]">
+            <h3 className="font-bold font-serif text-base text-[#0A192F]">
               Submitted Application Details
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="p-3 bg-[#FAF5EE] rounded-md border border-[#E8DFD0]">
+              <div className="p-3 bg-[#F8FAFC] rounded-md border border-[#E2E8F0]">
                 <span className="text-zinc-500 block text-[10px] uppercase font-bold">Email Address</span>
-                <span className="font-mono text-[#292821] font-bold">{record.email}</span>
+                <span className="font-mono text-[#0A192F] font-bold">{record.email}</span>
               </div>
 
-              <div className="p-3 bg-[#FAF5EE] rounded-md border border-[#E8DFD0]">
+              <div className="p-3 bg-[#F8FAFC] rounded-md border border-[#E2E8F0]">
                 <span className="text-zinc-500 block text-[10px] uppercase font-bold">Mobile Phone</span>
-                <span className="font-mono text-[#292821] font-bold">{record.phone}</span>
+                <span className="font-mono text-[#0A192F] font-bold">{record.phone}</span>
               </div>
 
-              <div className="p-3 bg-[#FAF5EE] rounded-md border border-[#E8DFD0]">
+              <div className="p-3 bg-[#F8FAFC] rounded-md border border-[#E2E8F0]">
                 <span className="text-zinc-500 block text-[10px] uppercase font-bold">Date of Birth</span>
-                <span className="text-[#292821] font-bold">{record.dob} {record.isMinor ? "(Minor < 18)" : ""}</span>
+                <span className="text-[#0A192F] font-bold">{record.dob} {record.isMinor ? "(Minor < 18)" : ""}</span>
               </div>
 
-              <div className="p-3 bg-[#FAF5EE] rounded-md border border-[#E8DFD0]">
+              <div className="p-3 bg-[#F8FAFC] rounded-md border border-[#E2E8F0]">
                 <span className="text-zinc-500 block text-[10px] uppercase font-bold">Location</span>
-                <span className="text-[#292821] font-bold">{record.municipality}, {record.district}</span>
+                <span className="text-[#0A192F] font-bold">{record.municipality}, {record.district}</span>
               </div>
             </div>
 
             {record.personalIntro && (
-              <div className="p-4 bg-[#FAF5EE] rounded-md border border-[#E8DFD0] text-xs space-y-1">
+              <div className="p-4 bg-[#F8FAFC] rounded-md border border-[#E2E8F0] text-xs space-y-1">
                 <span className="text-zinc-500 uppercase font-bold text-[10px]">Personal Introduction</span>
-                <p className="text-[#3C332A] leading-relaxed">{record.personalIntro}</p>
+                <p className="text-[#1E293B] leading-relaxed">{record.personalIntro}</p>
               </div>
             )}
           </div>
 
           {/* EDIT LOGS HISTORY */}
           {record.editLogs && record.editLogs.length > 0 && (
-            <div className="space-y-3 pt-4 border-t border-[#E8DFD0]">
+            <div className="space-y-3 pt-4 border-t border-[#E2E8F0]">
               <div className="flex items-center gap-2">
-                <History className="w-4 h-4 text-[#B69A65]" />
-                <h4 className="font-bold text-xs uppercase tracking-wider text-[#292821]">
+                <History className="w-4 h-4 text-[#C5A880]" />
+                <h4 className="font-bold text-xs uppercase tracking-wider text-[#0A192F]">
                   Modification History & Audit Trail
                 </h4>
               </div>
@@ -651,7 +651,7 @@ function RegistrationStatusContent() {
                 {record.editLogs.map((log: any) => (
                   <div key={log.id} className="p-3 rounded bg-zinc-50 border border-zinc-200 text-xs flex justify-between items-center">
                     <div>
-                      <span className="font-bold text-[#292821]">
+                      <span className="font-bold text-[#0A192F]">
                         Updated {Object.keys(log.changedFields || {}).length} fields: {Object.keys(log.changedFields || {}).join(", ")}
                       </span>
                       <span className="text-[11px] text-zinc-500 block">
@@ -674,13 +674,13 @@ function RegistrationStatusContent() {
       {/* EDIT APPLICATION DETAILS MODAL */}
       {isEditModalOpen && record && (
         <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-lg max-w-2xl w-full p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto border border-[#E8DFD0] shadow-xl">
-            <div className="flex items-center justify-between border-b border-[#E8DFD0] pb-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto border border-[#E2E8F0] shadow-xl">
+            <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-4">
               <div>
-                <h3 className="font-serif font-bold text-xl text-[#292821]">
+                <h3 className="font-serif font-bold text-xl text-[#0A192F]">
                   Edit Application Details
                 </h3>
-                <p className="text-xs text-[#3C332A] mt-0.5">
+                <p className="text-xs text-[#1E293B] mt-0.5">
                   Update your participant profile, location, or heritage answers.
                 </p>
               </div>
@@ -702,136 +702,136 @@ function RegistrationStatusContent() {
             <form onSubmit={handleSaveEdits} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <Label htmlFor="edFullName" className="text-xs font-bold text-[#292821]">Full Legal Name</Label>
+                  <Label htmlFor="edFullName" className="text-xs font-bold text-[#0A192F]">Full Legal Name</Label>
                   <Input
                     id="edFullName"
                     value={editFormData.fullName || ""}
                     onChange={(e) => setEditFormData({ ...editFormData, fullName: e.target.value })}
-                    className="h-9 text-xs border-[#E8DFD0]"
+                    className="h-9 text-xs border-[#E2E8F0]"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="edPhone" className="text-xs font-bold text-[#292821]">Mobile Phone</Label>
+                  <Label htmlFor="edPhone" className="text-xs font-bold text-[#0A192F]">Mobile Phone</Label>
                   <Input
                     id="edPhone"
                     value={editFormData.phone || ""}
                     onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
-                    className="h-9 text-xs border-[#E8DFD0]"
+                    className="h-9 text-xs border-[#E2E8F0]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <Label htmlFor="edDob" className="text-xs font-bold text-[#292821]">Date of Birth</Label>
+                  <Label htmlFor="edDob" className="text-xs font-bold text-[#0A192F]">Date of Birth</Label>
                   <Input
                     id="edDob"
                     type="date"
                     value={editFormData.dob || ""}
                     onChange={(e) => setEditFormData({ ...editFormData, dob: e.target.value })}
-                    className="h-9 text-xs border-[#E8DFD0]"
+                    className="h-9 text-xs border-[#E2E8F0]"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="edAltPhone" className="text-xs font-bold text-[#292821]">Alternate Phone</Label>
+                  <Label htmlFor="edAltPhone" className="text-xs font-bold text-[#0A192F]">Alternate Phone</Label>
                   <Input
                     id="edAltPhone"
                     value={editFormData.alternatePhone || ""}
                     onChange={(e) => setEditFormData({ ...editFormData, alternatePhone: e.target.value })}
-                    className="h-9 text-xs border-[#E8DFD0]"
+                    className="h-9 text-xs border-[#E2E8F0]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <Label htmlFor="edMun" className="text-xs font-bold text-[#292821]">Municipality / Rural Mun.</Label>
+                  <Label htmlFor="edMun" className="text-xs font-bold text-[#0A192F]">Municipality / Rural Mun.</Label>
                   <Input
                     id="edMun"
                     value={editFormData.municipality || ""}
                     onChange={(e) => setEditFormData({ ...editFormData, municipality: e.target.value })}
-                    className="h-9 text-xs border-[#E8DFD0]"
+                    className="h-9 text-xs border-[#E2E8F0]"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="edCity" className="text-xs font-bold text-[#292821]">City / Village</Label>
+                  <Label htmlFor="edCity" className="text-xs font-bold text-[#0A192F]">City / Village</Label>
                   <Input
                     id="edCity"
                     value={editFormData.cityVillage || ""}
                     onChange={(e) => setEditFormData({ ...editFormData, cityVillage: e.target.value })}
-                    className="h-9 text-xs border-[#E8DFD0]"
+                    className="h-9 text-xs border-[#E2E8F0]"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <Label htmlFor="edIntro" className="text-xs font-bold text-[#292821]">Personal Introduction</Label>
+                <Label htmlFor="edIntro" className="text-xs font-bold text-[#0A192F]">Personal Introduction</Label>
                 <Textarea
                   id="edIntro"
                   value={editFormData.personalIntro || ""}
                   onChange={(e) => setEditFormData({ ...editFormData, personalIntro: e.target.value })}
                   rows={2}
-                  className="text-xs border-[#E8DFD0] resize-none"
+                  className="text-xs border-[#E2E8F0] resize-none"
                 />
               </div>
 
               <div className="space-y-1">
-                <Label htmlFor="edMotivation" className="text-xs font-bold text-[#292821]">Motivation for Mithila Queen</Label>
+                <Label htmlFor="edMotivation" className="text-xs font-bold text-[#0A192F]">Motivation for Mithila Queen</Label>
                 <Textarea
                   id="edMotivation"
                   value={editFormData.motivationReason || ""}
                   onChange={(e) => setEditFormData({ ...editFormData, motivationReason: e.target.value })}
                   rows={2}
-                  className="text-xs border-[#E8DFD0] resize-none"
+                  className="text-xs border-[#E2E8F0] resize-none"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1">
-                  <Label htmlFor="edIg" className="text-[11px] font-bold text-[#292821]">Instagram</Label>
+                  <Label htmlFor="edIg" className="text-[11px] font-bold text-[#0A192F]">Instagram</Label>
                   <Input
                     id="edIg"
                     value={editFormData.instagramHandle || ""}
                     onChange={(e) => setEditFormData({ ...editFormData, instagramHandle: e.target.value })}
                     placeholder="username"
-                    className="h-8 text-xs border-[#E8DFD0]"
+                    className="h-8 text-xs border-[#E2E8F0]"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="edTt" className="text-[11px] font-bold text-[#292821]">TikTok</Label>
+                  <Label htmlFor="edTt" className="text-[11px] font-bold text-[#0A192F]">TikTok</Label>
                   <Input
                     id="edTt"
                     value={editFormData.tiktokHandle || ""}
                     onChange={(e) => setEditFormData({ ...editFormData, tiktokHandle: e.target.value })}
                     placeholder="username"
-                    className="h-8 text-xs border-[#E8DFD0]"
+                    className="h-8 text-xs border-[#E2E8F0]"
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="edFb" className="text-[11px] font-bold text-[#292821]">Facebook Link</Label>
+                  <Label htmlFor="edFb" className="text-[11px] font-bold text-[#0A192F]">Facebook Link</Label>
                   <Input
                     id="edFb"
                     value={editFormData.facebookUrl || ""}
                     onChange={(e) => setEditFormData({ ...editFormData, facebookUrl: e.target.value })}
                     placeholder="url"
-                    className="h-8 text-xs border-[#E8DFD0]"
+                    className="h-8 text-xs border-[#E2E8F0]"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-[#E8DFD0]">
+              <div className="flex justify-end gap-3 pt-4 border-t border-[#E2E8F0]">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setIsEditModalOpen(false)}
-                  className="text-xs border-[#E8DFD0]"
+                  className="text-xs border-[#E2E8F0]"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={isSavingEdits}
-                  className="bg-[#B69A65] hover:bg-[#a68c5b] text-[#292821] text-xs font-bold gap-2"
+                  className="bg-[#C5A880] hover:bg-[#B59870] text-[#0A192F] text-xs font-bold gap-2"
                 >
                   {isSavingEdits ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
                   <span>Save Updated Information</span>
@@ -850,7 +850,7 @@ export default function RegistrationStatusPage() {
     <Suspense
       fallback={
         <div className="py-24 text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#292821]" />
+          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#0A192F]" />
           <p className="text-xs text-zinc-500 mt-2 font-mono">Loading application lookup...</p>
         </div>
       }

@@ -2,16 +2,21 @@ import React from "react";
 import Link from "next/link";
 import { HelpCircle, Crown, ArrowRight, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MithilaMotif } from "@/components/ui/mithila-motif";
+import { prisma } from "@/lib/db/prisma";
 
 export const metadata = {
   title: "Frequently Asked Questions | The Origin Foundation",
   description:
-    "Official FAQs regarding Mithila Queen registration, NPR 399 fee payment, eligibility, video submission, and PDF confirmation.",
+    "Official FAQs regarding Mithila Queen registration, fee payment, eligibility, video submission, and PDF confirmation.",
 };
 
-export default function FaqPage() {
-  const faqs = [
+export default async function FaqPage() {
+  const setting = await prisma.siteSetting.findUnique({
+    where: { id: "primary" },
+  });
+  const regFee = setting?.registrationFee || 399;
+
+  const faqs = (setting?.faqsJson as any) || [
     {
       category: "Organization & Initiative",
       q: "What is The Origin Foundation?",
@@ -25,7 +30,7 @@ export default function FaqPage() {
     {
       category: "Fee & Payment",
       q: "What is the registration fee?",
-      a: "The registration fee is strictly NPR 399 per registration, payable in Nepalese rupees only.",
+      a: `The registration fee is strictly NPR ${regFee} per registration, payable in Nepalese rupees only.`,
     },
     {
       category: "Fee & Payment",
@@ -68,35 +73,37 @@ export default function FaqPage() {
     <div className="py-12 sm:py-20 space-y-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* HEADER */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8DFD0]/60 border border-[#B69A65]/40 text-[#292821] text-xs font-semibold">
-          <Crown className="w-3.5 h-3.5 text-[#B69A65]" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-slate-200 text-[#0A192F] text-xs font-semibold shadow-xs">
+          <Crown className="w-3.5 h-3.5 text-[#C5A880]" />
           <span>Official Information Desk</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#292821] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#0A192F] tracking-tight">
           Frequently Asked Questions
         </h1>
-        <p className="text-sm text-[#292821] max-w-xl mx-auto leading-relaxed">
+        <p className="text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
           Clear, verified answers regarding The Origin Foundation, Mithila Queen registration, payment verification, and competition guidelines.
         </p>
       </div>
 
       {/* FAQS ACCORDION / LIST */}
       <div className="space-y-4">
-        {faqs.map((faq, i) => (
+        {faqs.map((faq: any, i: number) => (
           <div
             key={i}
-            className="p-6 rounded-md bg-white border border-[#E8DFD0] shadow-2xs space-y-2.5 transition-colors hover:border-[#B69A65]/70"
+            className="p-6 rounded-md bg-white border border-slate-200 shadow-xs space-y-2.5 transition-colors hover:border-[#C5A880]"
           >
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65] bg-[#E8DFD0]/40 px-2 py-0.5 rounded">
-                {faq.category}
-              </span>
-            </div>
-            <h2 className="text-base font-bold text-[#292821] font-serif flex items-start gap-2.5">
-              <HelpCircle className="w-5 h-5 text-[#B69A65] shrink-0 mt-0.5" />
+            {faq.category && (
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                  {faq.category}
+                </span>
+              </div>
+            )}
+            <h2 className="text-base font-bold text-[#0A192F] font-serif flex items-start gap-2.5">
+              <HelpCircle className="w-5 h-5 text-[#C5A880] shrink-0 mt-0.5" />
               <span>{faq.q}</span>
             </h2>
-            <p className="text-xs sm:text-sm text-[#292821] pl-7 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 pl-7 leading-relaxed">
               {faq.a}
             </p>
           </div>
@@ -104,23 +111,23 @@ export default function FaqPage() {
       </div>
 
       {/* STILL HAVE QUESTIONS */}
-      <div className="p-8 rounded-lg bg-[#292821] text-[#FAF5EE] border border-[#292821] text-center space-y-4">
+      <div className="p-8 rounded-lg bg-[#0A192F] text-white border border-[#C5A880]/30 text-center space-y-4 shadow-md">
         <h3 className="text-xl font-bold font-serif text-white">Still have questions?</h3>
-        <p className="text-xs text-[#E8DFD0]/80 max-w-md mx-auto">
+        <p className="text-xs text-slate-300 max-w-md mx-auto">
           Our team in Janakpur Dham is here to assist with any registration or payment inquiries.
         </p>
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-mono">
           <a
             href="mailto:originfoundation107@gmail.com"
-            className="text-[#B69A65] hover:text-white flex items-center gap-1.5"
+            className="text-[#C5A880] hover:text-white flex items-center gap-1.5 transition-colors"
           >
             <Mail className="w-4 h-4" />
             <span>originfoundation107@gmail.com</span>
           </a>
-          <span className="hidden sm:inline text-[#292821]">•</span>
+          <span className="hidden sm:inline text-slate-600">•</span>
           <a
             href="tel:+9779704571941"
-            className="text-[#B69A65] hover:text-white flex items-center gap-1.5"
+            className="text-[#C5A880] hover:text-white flex items-center gap-1.5 transition-colors"
           >
             <Phone className="w-4 h-4" />
             <span>+977 9704571941</span>
@@ -130,4 +137,3 @@ export default function FaqPage() {
     </div>
   );
 }
-

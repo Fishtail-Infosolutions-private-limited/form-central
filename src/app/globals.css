@@ -1,31 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --color-charcoal: #292821;
-  --color-charcoal-dark: #1E1D18;
-  --color-charcoal-light: #38372D;
-  --color-dark-brown: #3C332A;
-  --color-ivory: #F5F0E6;
-  --color-terracotta: #A64B36;
-  --color-terracotta-dark: #873B29;
-  --color-antique-gold: #B69A65;
-  --color-soft-beige: #E8DFD0;
-  --color-sand: #E8DFD0;
+  --color-navy: #0A192F;
+  --color-navy-dark: #071324;
+  --color-navy-light: #162C4E;
+  --color-slate-navy: #1E293B;
+  --color-gold: #C5A880;
+  --color-gold-dark: #A98A5B;
+  --color-gold-light: #DFD3C3;
+  --color-charcoal: #0A192F;
+  --color-charcoal-dark: #071324;
+  --color-charcoal-light: #162C4E;
+  --color-dark-brown: #1E293B;
+  --color-ivory: #F8FAFC;
+  --color-terracotta: #C5A880;
+  --color-terracotta-dark: #A98A5B;
+  --color-antique-gold: #C5A880;
+  --color-soft-beige: #E2E8F0;
+  --color-sand: #E2E8F0;
   --color-white: #FFFFFF;
   --font-serif: var(--font-playfair), 'Playfair Display', Georgia, serif;
   --font-sans: var(--font-poppins), 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Mukta", sans-serif;
 }
 
 :root {
-  --background: #F5F0E6;
-  --foreground: #292821;
-  --charcoal: #292821;
-  --dark-brown: #3C332A;
-  --ivory: #F5F0E6;
-  --terracotta: #A64B36;
-  --antique-gold: #B69A65;
-  --soft-beige: #E8DFD0;
-  --sand: #E8DFD0;
+  --background: #F8FAFC;
+  --foreground: #0A192F;
+  --navy: #0A192F;
+  --navy-dark: #071324;
+  --navy-light: #162C4E;
+  --slate-navy: #1E293B;
+  --gold: #C5A880;
+  --charcoal: #0A192F;
+  --dark-brown: #1E293B;
+  --ivory: #F8FAFC;
+  --terracotta: #C5A880;
+  --antique-gold: #C5A880;
+  --soft-beige: #E2E8F0;
+  --sand: #E2E8F0;
   --white: #FFFFFF;
 }
 
@@ -38,26 +50,26 @@ body {
 
 /* Subtle, restrained scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #F1F5F9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #E8DFD0;
+  background: #CBD5E1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #B69A65;
+  background: #C5A880;
 }
 
 /* Accessible focus styling */
 :focus-visible {
-  outline: 2px solid #B69A65;
+  outline: 2px solid #C5A880;
   outline-offset: 2px;
 }
 

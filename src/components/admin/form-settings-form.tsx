@@ -198,7 +198,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
             <span
               className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border ${
                 form.status === FormStatus.PUBLISHED
-                  ? "bg-[#FAF5EE] text-[#292821] border-[#B69A65]"
+                  ? "bg-[#F8FAFC] text-[#0A192F] border-[#C5A880]"
                   : form.status === FormStatus.CLOSED
                   ? "bg-rose-50 text-[#A64B36] border-rose-200"
                   : "bg-zinc-100 text-zinc-600 border-zinc-200"
@@ -219,7 +219,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
                 size="sm"
                 disabled={isTogglingStatus}
                 onClick={handleToggleCloseStatus}
-                className="h-7 text-xs border-[#B69A65] text-[#292821] hover:bg-[#FAF5EE] font-semibold gap-1"
+                className="h-7 text-xs border-[#C5A880] text-[#0A192F] hover:bg-[#F8FAFC] font-semibold gap-1"
               >
                 {isTogglingStatus ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -331,7 +331,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
           <div className="pt-4 border-t border-zinc-100 space-y-3">
             <div>
               <h3 className="text-sm font-bold text-zinc-900 flex items-center gap-2">
-                <Users className="w-4 h-4 text-[#B69A65]" />
+                <Users className="w-4 h-4 text-[#C5A880]" />
                 <span>2. Registration Capacity</span>
               </h3>
               <p className="text-[11px] text-zinc-500 mt-0.5">
@@ -343,7 +343,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
               <label
                 className={`p-3 rounded-xl border cursor-pointer transition-all flex items-start gap-3 ${
                   capacityType === "unlimited"
-                    ? "border-[#B69A65] bg-[#FAF5EE] ring-1 ring-[#B69A65]"
+                    ? "border-[#C5A880] bg-[#F8FAFC] ring-1 ring-[#C5A880]"
                     : "border-zinc-200 bg-white hover:border-zinc-300"
                 }`}
               >
@@ -353,7 +353,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
                   value="unlimited"
                   checked={capacityType === "unlimited"}
                   onChange={() => setCapacityType("unlimited")}
-                  className="mt-0.5 text-[#B69A65] focus:ring-[#B69A65]"
+                  className="mt-0.5 text-[#C5A880] focus:ring-[#C5A880]"
                 />
                 <div>
                   <span className="text-xs font-bold text-zinc-900 block">Unlimited Participants</span>
@@ -364,7 +364,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
               <label
                 className={`p-3 rounded-xl border cursor-pointer transition-all flex items-start gap-3 ${
                   capacityType === "limited"
-                    ? "border-[#B69A65] bg-[#FAF5EE] ring-1 ring-[#B69A65]"
+                    ? "border-[#C5A880] bg-[#F8FAFC] ring-1 ring-[#C5A880]"
                     : "border-zinc-200 bg-white hover:border-zinc-300"
                 }`}
               >
@@ -374,7 +374,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
                   value="limited"
                   checked={capacityType === "limited"}
                   onChange={() => setCapacityType("limited")}
-                  className="mt-0.5 text-[#B69A65] focus:ring-[#B69A65]"
+                  className="mt-0.5 text-[#C5A880] focus:ring-[#C5A880]"
                 />
                 <div>
                   <span className="text-xs font-bold text-zinc-900 block">Limited Participants</span>
@@ -421,14 +421,14 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
                 <div className="p-3 rounded-lg bg-white border border-zinc-200 space-y-1.5">
                   <div className="flex items-center justify-between text-xs font-semibold">
                     <span className="text-zinc-600">Current Registration Usage:</span>
-                    <span className={isAtOrOverCapacity ? "text-[#A64B36] font-bold" : "text-[#B69A65] font-bold"}>
+                    <span className={isAtOrOverCapacity ? "text-[#A64B36] font-bold" : "text-[#C5A880] font-bold"}>
                       {form.submissionCount} / {isCapValid ? numCap : "—"} ({percentage}%)
                     </span>
                   </div>
                   <div className="w-full h-2 bg-zinc-100 rounded-full overflow-hidden border border-zinc-200">
                     <div
                       className={`h-full transition-all duration-300 ${
-                        isAtOrOverCapacity ? "bg-[#A64B36]" : "bg-[#B69A65]"
+                        isAtOrOverCapacity ? "bg-[#A64B36]" : "bg-[#C5A880]"
                       }`}
                       style={{ width: `${percentage}%` }}
                     />
@@ -448,7 +448,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-bold text-zinc-900 flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-[#B69A65]" />
+                  <Clock className="w-4 h-4 text-[#C5A880]" />
                   <span>3. Registration Deadline</span>
                 </h3>
                 <p className="text-[11px] text-zinc-500 mt-0.5">
@@ -466,9 +466,9 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
                   value="true"
                   checked={isDeadlineEnabled}
                   onChange={(e) => setIsDeadlineEnabled(e.target.checked)}
-                  className="w-4 h-4 rounded text-[#B69A65] focus:ring-[#B69A65]"
+                  className="w-4 h-4 rounded text-[#C5A880] focus:ring-[#C5A880]"
                 />
-                <span className="text-xs font-bold text-[#B69A65]">
+                <span className="text-xs font-bold text-[#C5A880]">
                   {isDeadlineEnabled ? "ON" : "OFF"}
                 </span>
               </label>
@@ -506,7 +506,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
                   />
                 </div>
 
-                <div className="sm:col-span-2 text-[11px] text-[#292821] bg-[#FAF5EE] border border-[#B69A65]/40 rounded-lg p-2.5">
+                <div className="sm:col-span-2 text-[11px] text-[#0A192F] bg-[#F8FAFC] border border-[#C5A880]/40 rounded-lg p-2.5">
                   New participant entries will automatically stop at <strong>{deadlineTime || "23:59"} NPT</strong> on{" "}
                   <strong>{deadlineDate || "the selected date"}</strong>.
                 </div>
@@ -522,7 +522,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
           <div className="pt-4 border-t border-zinc-100 space-y-3">
             <div>
               <h3 className="text-sm font-bold text-zinc-900 flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#B69A65]" />
+                <Calendar className="w-4 h-4 text-[#C5A880]" />
                 <span>4. Event Schedule, Venue & Automated Reminders</span>
               </h3>
               <p className="text-[11px] text-zinc-500 mt-0.5">
@@ -582,46 +582,46 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
                   Automated Participant Reminders (Nepal Time)
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                  <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-[#B69A65]">
+                  <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-[#C5A880]">
                     <input
                       type="checkbox"
                       name="enableReminder7Days"
                       checked={enableReminder7Days}
                       onChange={(e) => setEnableReminder7Days(e.target.checked)}
-                      className="w-4 h-4 rounded text-[#B69A65] focus:ring-[#B69A65]"
+                      className="w-4 h-4 rounded text-[#C5A880] focus:ring-[#C5A880]"
                     />
                     <span className="font-medium text-zinc-800">7 Days Before Event (08:00 AM NPT)</span>
                   </label>
 
-                  <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-[#B69A65]">
+                  <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-[#C5A880]">
                     <input
                       type="checkbox"
                       name="enableReminder3Days"
                       checked={enableReminder3Days}
                       onChange={(e) => setEnableReminder3Days(e.target.checked)}
-                      className="w-4 h-4 rounded text-[#B69A65] focus:ring-[#B69A65]"
+                      className="w-4 h-4 rounded text-[#C5A880] focus:ring-[#C5A880]"
                     />
                     <span className="font-medium text-zinc-800">3 Days Before Event (08:00 AM NPT)</span>
                   </label>
 
-                  <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-[#B69A65]">
+                  <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-[#C5A880]">
                     <input
                       type="checkbox"
                       name="enableReminder1Day"
                       checked={enableReminder1Day}
                       onChange={(e) => setEnableReminder1Day(e.target.checked)}
-                      className="w-4 h-4 rounded text-[#B69A65] focus:ring-[#B69A65]"
+                      className="w-4 h-4 rounded text-[#C5A880] focus:ring-[#C5A880]"
                     />
                     <span className="font-medium text-zinc-800">1 Day Before / Tomorrow (08:00 AM NPT)</span>
                   </label>
 
-                  <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-[#B69A65]">
+                  <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-[#C5A880]">
                     <input
                       type="checkbox"
                       name="enableReminderEventDay"
                       checked={enableReminderEventDay}
                       onChange={(e) => setEnableReminderEventDay(e.target.checked)}
-                      className="w-4 h-4 rounded text-[#B69A65] focus:ring-[#B69A65]"
+                      className="w-4 h-4 rounded text-[#C5A880] focus:ring-[#C5A880]"
                     />
                     <span className="font-medium text-zinc-800">Event Day Morning (05:00 AM NPT)</span>
                   </label>
@@ -635,7 +635,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
             <Link
               href={`/register/${slug || form.slug}`}
               target="_blank"
-              className="text-xs text-[#B69A65] hover:text-[#9A7F4F] font-semibold flex items-center gap-1"
+              className="text-xs text-[#C5A880] hover:text-[#B59870] font-semibold flex items-center gap-1"
             >
               <span>View Public Page</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -644,7 +644,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="bg-[#292821] hover:bg-[#3C332A] text-white font-bold text-xs h-10 px-6 gap-2"
+              className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs h-10 px-6 gap-2"
             >
               {isSubmitting ? (
                 <>
@@ -653,7 +653,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
                 </>
               ) : (
                 <>
-                  <CheckCircle2 className="w-4 h-4 text-[#B69A65]" />
+                  <CheckCircle2 className="w-4 h-4 text-[#C5A880]" />
                   <span>Save Form Settings</span>
                 </>
               )}

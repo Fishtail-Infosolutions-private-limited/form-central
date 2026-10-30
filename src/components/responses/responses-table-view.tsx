@@ -282,11 +282,11 @@ export function ResponsesTableView({
               onClick={() => setReadFilter("UNREAD")}
               className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors flex items-center gap-1.5 ${
                 readFilter === "UNREAD"
-                  ? "bg-white text-[#292821] shadow-2xs font-bold"
+                  ? "bg-white text-[#0A192F] shadow-2xs font-bold"
                   : "text-zinc-600 hover:text-black"
               }`}
             >
-              <span className="w-2 h-2 rounded-full bg-[#B69A65]" />
+              <span className="w-2 h-2 rounded-full bg-[#C5A880]" />
               <span>Unread ({unreadCount})</span>
             </button>
             <button
@@ -305,7 +305,7 @@ export function ResponsesTableView({
 
         {/* Excel Export Button */}
         <a href={getExportUrl()} download>
-          <Button className="bg-[#292821] hover:bg-[#3C332A] text-white font-semibold text-xs h-10 gap-2 shrink-0">
+          <Button className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-semibold text-xs h-10 gap-2 shrink-0">
             <Download className="w-4 h-4" />
             <span>Export to Excel (.xlsx)</span>
           </Button>
@@ -347,7 +347,7 @@ export function ResponsesTableView({
                       <td className="px-5 py-4">
                         <div className="font-bold text-zinc-900 text-sm">{sub.fullName}</div>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="font-mono text-xs text-[#292821] font-bold bg-[#FAF5EE] px-1.5 py-0.2 rounded border border-[#B69A65]">
+                          <span className="font-mono text-xs text-[#0A192F] font-bold bg-[#F8FAFC] px-1.5 py-0.2 rounded border border-[#C5A880]">
                             {sub.referenceNumber}
                           </span>
                           <button
@@ -356,11 +356,11 @@ export function ResponsesTableView({
                               e.stopPropagation();
                               handleCopy(sub.referenceNumber, sub.id);
                             }}
-                            className="text-zinc-400 hover:text-[#B69A65] p-0.5"
+                            className="text-zinc-400 hover:text-[#C5A880] p-0.5"
                             title="Copy reference"
                           >
                             {copiedId === sub.id ? (
-                              <Check className="w-3 h-3 text-[#B69A65]" />
+                              <Check className="w-3 h-3 text-[#C5A880]" />
                             ) : (
                               <Copy className="w-3 h-3" />
                             )}
@@ -382,12 +382,12 @@ export function ResponsesTableView({
                           className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${
                             isRead
                               ? "bg-zinc-100 text-zinc-600 border-zinc-200"
-                              : "bg-[#FAF5EE] text-[#292821] border-[#B69A65] font-bold"
+                              : "bg-[#F8FAFC] text-[#0A192F] border-[#C5A880] font-bold"
                           }`}
                         >
                           <span
                             className={`w-2 h-2 rounded-full ${
-                              isRead ? "bg-zinc-400" : "bg-[#B69A65] animate-pulse"
+                              isRead ? "bg-zinc-400" : "bg-[#C5A880] animate-pulse"
                             }`}
                           />
                           <span>{isRead ? "Read" : "Unread"}</span>
@@ -411,7 +411,7 @@ export function ResponsesTableView({
                                 );
                                 if (vFile) setActiveVideoFile(vFile);
                               }}
-                              className="bg-[#292821] hover:bg-[#3C332A] text-white font-bold text-xs h-8 px-2.5 gap-1 shadow-2xs"
+                              className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs h-8 px-2.5 gap-1 shadow-2xs"
                               title="Play participant video in site"
                             >
                               <Play className="w-3.5 h-3.5 fill-current" />
@@ -423,7 +423,7 @@ export function ResponsesTableView({
                             size="sm"
                             variant="ghost"
                             onClick={() => handleSelectSubmission(sub)}
-                            className="text-[#B69A65] hover:bg-[#FAF5EE] font-semibold text-xs h-8 px-2.5 gap-1"
+                            className="text-[#C5A880] hover:bg-[#F8FAFC] font-semibold text-xs h-8 px-2.5 gap-1"
                           >
                             <Eye className="w-3.5 h-3.5" />
                             <span>Inspect</span>
@@ -465,21 +465,21 @@ export function ResponsesTableView({
               <div className="p-5 bg-black text-white flex items-start justify-between border-b border-zinc-800">
                 <div>
                   <div className="flex items-center gap-2 mb-1.5">
-                    <span className="font-mono text-xs text-[#B69A65] font-bold bg-[#292821] px-2 py-0.5 rounded border border-[#B69A65]/40">
+                    <span className="font-mono text-xs text-[#C5A880] font-bold bg-[#0A192F] px-2 py-0.5 rounded border border-[#C5A880]/40">
                       {selectedSubmission.referenceNumber}
                     </span>
                     <span
                       className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase border ${
                         selectedSubmission.status === SubmissionStatus.APPROVED
                           ? "bg-zinc-800 text-zinc-300 border-zinc-700"
-                          : "bg-[#292821] text-[#FAF5EE] border-[#B69A65]"
+                          : "bg-[#0A192F] text-[#F8FAFC] border-[#C5A880]"
                       }`}
                     >
                       <span
                         className={`w-1.5 h-1.5 rounded-full ${
                           selectedSubmission.status === SubmissionStatus.APPROVED
                             ? "bg-zinc-400"
-                            : "bg-[#B69A65] animate-pulse"
+                            : "bg-[#C5A880] animate-pulse"
                         }`}
                       />
                       <span>
@@ -564,12 +564,12 @@ export function ResponsesTableView({
                             </span>
                             {matchingFile ? (
                               <div className="flex items-center justify-between gap-2 pt-0.5">
-                                <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-[#FAF5EE] text-[#292821] border border-[#B69A65] text-xs font-semibold truncate max-w-[200px]">
+                                <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-[#F8FAFC] text-[#0A192F] border border-[#C5A880] text-xs font-semibold truncate max-w-[200px]">
                                   {matchingFile.storageProvider === "GOOGLE_DRIVE" ||
                                   matchingFile.mimeType.startsWith("video/") ? (
-                                    <Video className="w-3.5 h-3.5 text-[#B69A65] shrink-0" />
+                                    <Video className="w-3.5 h-3.5 text-[#C5A880] shrink-0" />
                                   ) : (
-                                    <FileText className="w-3.5 h-3.5 text-[#B69A65] shrink-0" />
+                                    <FileText className="w-3.5 h-3.5 text-[#C5A880] shrink-0" />
                                   )}
                                   <span className="truncate">{matchingFile.originalName}</span>
                                 </span>
@@ -578,7 +578,7 @@ export function ResponsesTableView({
                                   <Button
                                     size="sm"
                                     onClick={() => setActiveVideoFile(matchingFile)}
-                                    className="h-7 text-[11px] font-bold bg-[#292821] hover:bg-[#3C332A] text-white px-2 gap-1 shrink-0"
+                                    className="h-7 text-[11px] font-bold bg-[#0A192F] hover:bg-[#1E293B] text-white px-2 gap-1 shrink-0"
                                   >
                                     <Play className="w-3 h-3 fill-current" />
                                     <span>Play</span>
@@ -631,7 +631,7 @@ export function ResponsesTableView({
                         >
                           <div className="flex items-center gap-3">
                             {file.storageProvider === "GOOGLE_DRIVE" ? (
-                              <div className="w-9 h-9 rounded-lg bg-[#FAF5EE] text-[#B69A65] flex items-center justify-center">
+                              <div className="w-9 h-9 rounded-lg bg-[#F8FAFC] text-[#C5A880] flex items-center justify-center">
                                 <Video className="w-5 h-5" />
                               </div>
                             ) : (
@@ -660,7 +660,7 @@ export function ResponsesTableView({
                               <Button
                                 size="sm"
                                 onClick={() => setActiveVideoFile(file)}
-                                className="h-8 text-xs gap-1.5 font-bold bg-[#292821] hover:bg-[#3C332A] text-white shadow-2xs"
+                                className="h-8 text-xs gap-1.5 font-bold bg-[#0A192F] hover:bg-[#1E293B] text-white shadow-2xs"
                               >
                                 <Play className="w-3.5 h-3.5 fill-current" />
                                 <span>Play Video</span>
@@ -688,7 +688,7 @@ export function ResponsesTableView({
                 <div className="space-y-3 pt-4 border-t border-zinc-200">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
-                      <Mail className="w-3.5 h-3.5 text-[#B69A65]" />
+                      <Mail className="w-3.5 h-3.5 text-[#C5A880]" />
                       <span>Email Delivery History ({selectedSubmission.campaignRecipients?.length || 0})</span>
                     </span>
                   </div>
@@ -712,9 +712,9 @@ export function ResponsesTableView({
                               <span
                                 className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
                                   rec.status === "DELIVERED"
-                                    ? "bg-[#FAF5EE] text-[#292821]"
+                                    ? "bg-[#F8FAFC] text-[#0A192F]"
                                     : rec.status === "SENT"
-                                    ? "bg-[#FAF5EE] text-[#292821] border border-[#B69A65]"
+                                    ? "bg-[#F8FAFC] text-[#0A192F] border border-[#C5A880]"
                                     : rec.status === "FAILED" || rec.status === "BOUNCED"
                                     ? "bg-rose-50 text-rose-700 border border-rose-200"
                                     : rec.status === "SKIPPED"
@@ -764,7 +764,7 @@ export function ResponsesTableView({
                   <Button
                     size="sm"
                     onClick={() => handleOpenEmailModal(selectedSubmission, "general")}
-                    className="bg-[#292821] hover:bg-[#3C332A] text-white text-xs h-8 font-bold gap-1.5"
+                    className="bg-[#0A192F] hover:bg-[#1E293B] text-white text-xs h-8 font-bold gap-1.5"
                   >
                     <Mail className="w-3.5 h-3.5" />
                     <span>Send Email Notice</span>
@@ -789,7 +789,7 @@ export function ResponsesTableView({
             >
               <div className="p-5 bg-black text-white flex items-center justify-between border-b border-zinc-800">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-[#292821] text-[#B69A65] border border-[#B69A65]/30 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-[#0A192F] text-[#C5A880] border border-[#C5A880]/30 flex items-center justify-center">
                     <Mail className="w-4 h-4" />
                   </div>
                   <div>
@@ -879,7 +879,7 @@ export function ResponsesTableView({
                     type="button"
                     onClick={handleSendEmail}
                     disabled={isSendingEmail}
-                    className="bg-[#292821] hover:bg-[#3C332A] text-white font-semibold text-xs h-9 gap-1.5 px-4"
+                    className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-semibold text-xs h-9 gap-1.5 px-4"
                   >
                     {isSendingEmail ? (
                       <>
@@ -914,7 +914,7 @@ export function ResponsesTableView({
               {/* Video Header */}
               <div className="p-4 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between text-white">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 rounded-lg bg-[#292821] text-[#B69A65] border border-[#B69A65]/40 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[#0A192F] text-[#C5A880] border border-[#C5A880]/40 flex items-center justify-center shrink-0">
                     <Video className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
@@ -957,8 +957,8 @@ export function ResponsesTableView({
 
               {/* Video Footer */}
               <div className="p-3 bg-zinc-950 border-t border-zinc-800 flex items-center justify-between text-xs text-zinc-400">
-                <span className="flex items-center gap-1.5 text-[#B69A65] font-semibold">
-                  <span className="w-2 h-2 rounded-full bg-[#B69A65] animate-pulse" />
+                <span className="flex items-center gap-1.5 text-[#C5A880] font-semibold">
+                  <span className="w-2 h-2 rounded-full bg-[#C5A880] animate-pulse" />
                   <span>Playing video directly inside Mithila Queen Portal</span>
                 </span>
 

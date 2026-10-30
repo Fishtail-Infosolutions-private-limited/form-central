@@ -48,35 +48,35 @@ export function UploadSettingsCard() {
   };
 
   return (
-    <Card className="border-[#E8DFD0] shadow-xs bg-[#FFFFFF]">
+    <Card className="border-[#E2E8F0] shadow-xs bg-[#FFFFFF]">
       <CardHeader>
         <div className="flex items-center justify-between mb-1">
-          <div className="w-9 h-9 rounded-md bg-[#FAF5EE] text-[#B69A65] flex items-center justify-center border border-[#B69A65]/30">
+          <div className="w-9 h-9 rounded-md bg-[#F8FAFC] text-[#C5A880] flex items-center justify-center border border-[#C5A880]/30">
             <UploadCloud className="w-4 h-4 text-[#A64B36]" />
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65] bg-[#FAF5EE] px-2 py-0.5 rounded border border-[#B69A65]/30">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] bg-[#F8FAFC] px-2 py-0.5 rounded border border-[#C5A880]/30">
             System Config
           </span>
         </div>
-        <CardTitle className="text-base font-serif font-bold text-[#292821]">
+        <CardTitle className="text-base font-serif font-bold text-[#0A192F]">
           Upload Limits & Media Storage Policy
         </CardTitle>
-        <CardDescription className="text-xs text-[#292821]/70">
+        <CardDescription className="text-xs text-[#0A192F]/70">
           Configure maximum file sizes and storage destinations for participant audition videos, portrait photographs, and identification proofs.
         </CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-4 pt-0">
         {/* Participant Video */}
-        <div className="p-3.5 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
+        <div className="p-3.5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Video className="w-4 h-4 text-[#A64B36]" />
-              <Label className="text-xs font-bold text-[#292821]">
+              <Label className="text-xs font-bold text-[#0A192F]">
                 Max Participant Audition Video Size
               </Label>
             </div>
-            <span className="text-xs font-mono font-bold text-[#292821] bg-white px-2 py-0.5 rounded border border-[#E8DFD0]">
+            <span className="text-xs font-mono font-bold text-[#0A192F] bg-white px-2 py-0.5 rounded border border-[#E2E8F0]">
               {videoLimit} MB
             </span>
           </div>
@@ -91,8 +91,8 @@ export function UploadSettingsCard() {
                 onClick={() => setVideoLimit(size)}
                 className={`text-xs px-2.5 py-1 rounded font-semibold transition-all border ${
                   videoLimit === size
-                    ? "bg-[#292821] text-[#F5F0E6] border-[#292821]"
-                    : "bg-white text-[#292821] border-[#E8DFD0] hover:bg-[#FAF5EE]"
+                    ? "bg-[#0A192F] text-[#F1F5F9] border-[#0A192F]"
+                    : "bg-white text-[#0A192F] border-[#E2E8F0] hover:bg-[#F8FAFC]"
                 }`}
               >
                 {size} MB
@@ -102,15 +102,15 @@ export function UploadSettingsCard() {
         </div>
 
         {/* Participant Images */}
-        <div className="p-3.5 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
+        <div className="p-3.5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <ImageIcon className="w-4 h-4 text-[#B69A65]" />
-              <Label className="text-xs font-bold text-[#292821]">
+              <ImageIcon className="w-4 h-4 text-[#C5A880]" />
+              <Label className="text-xs font-bold text-[#0A192F]">
                 Max Candidate Photograph Size
               </Label>
             </div>
-            <span className="text-xs font-mono font-bold text-[#292821] bg-white px-2 py-0.5 rounded border border-[#E8DFD0]">
+            <span className="text-xs font-mono font-bold text-[#0A192F] bg-white px-2 py-0.5 rounded border border-[#E2E8F0]">
               {imageLimit} MB
             </span>
           </div>
@@ -125,8 +125,8 @@ export function UploadSettingsCard() {
                 onClick={() => setImageLimit(size)}
                 className={`text-xs px-2.5 py-1 rounded font-semibold transition-all border ${
                   imageLimit === size
-                    ? "bg-[#292821] text-[#F5F0E6] border-[#292821]"
-                    : "bg-white text-[#292821] border-[#E8DFD0] hover:bg-[#FAF5EE]"
+                    ? "bg-[#0A192F] text-[#F1F5F9] border-[#0A192F]"
+                    : "bg-white text-[#0A192F] border-[#E2E8F0] hover:bg-[#F8FAFC]"
                 }`}
               >
                 {size} MB
@@ -136,15 +136,15 @@ export function UploadSettingsCard() {
         </div>
 
         {/* Identity & Legal Documents */}
-        <div className="p-3.5 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
+        <div className="p-3.5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-[#292821]" />
-              <Label className="text-xs font-bold text-[#292821]">
+              <FileText className="w-4 h-4 text-[#0A192F]" />
+              <Label className="text-xs font-bold text-[#0A192F]">
                 Max Identity / Consent Proof Size
               </Label>
             </div>
-            <span className="text-xs font-mono font-bold text-[#292821] bg-white px-2 py-0.5 rounded border border-[#E8DFD0]">
+            <span className="text-xs font-mono font-bold text-[#0A192F] bg-white px-2 py-0.5 rounded border border-[#E2E8F0]">
               {docLimit} MB
             </span>
           </div>
@@ -159,8 +159,8 @@ export function UploadSettingsCard() {
                 onClick={() => setDocLimit(size)}
                 className={`text-xs px-2.5 py-1 rounded font-semibold transition-all border ${
                   docLimit === size
-                    ? "bg-[#292821] text-[#F5F0E6] border-[#292821]"
-                    : "bg-white text-[#292821] border-[#E8DFD0] hover:bg-[#FAF5EE]"
+                    ? "bg-[#0A192F] text-[#F1F5F9] border-[#0A192F]"
+                    : "bg-white text-[#0A192F] border-[#E2E8F0] hover:bg-[#F8FAFC]"
                 }`}
               >
                 {size} MB
@@ -174,16 +174,16 @@ export function UploadSettingsCard() {
             type="button"
             onClick={handleSave}
             disabled={isSaving || isLoading}
-            className="w-full bg-[#292821] hover:bg-[#3C332A] text-[#F5F0E6] text-xs font-semibold h-9 px-4 gap-2 border border-[#B69A65]/40 shadow-xs"
+            className="w-full bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs font-semibold h-9 px-4 gap-2 border border-[#C5A880]/40 shadow-xs"
           >
             {isSaving ? (
               <>
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" />
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />
                 <span>Saving Upload Configuration...</span>
               </>
             ) : (
               <>
-                <Save className="w-3.5 h-3.5 text-[#B69A65]" />
+                <Save className="w-3.5 h-3.5 text-[#C5A880]" />
                 <span>Save Upload Configuration</span>
               </>
             )}

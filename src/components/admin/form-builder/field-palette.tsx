@@ -74,14 +74,14 @@ export function FieldPalette({ onAddField }: FieldPaletteProps) {
               key={item.type}
               type="button"
               onClick={() => onAddField(item.type)}
-              className="flex items-center justify-between p-2 rounded-lg border border-zinc-100 hover:border-[#B69A65] hover:bg-[#FAF5EE] text-left transition-all group w-full"
+              className="flex items-center justify-between p-2 rounded-lg border border-zinc-100 hover:border-[#C5A880] hover:bg-[#F8FAFC] text-left transition-all group w-full"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-6 h-6 rounded-md bg-zinc-100 group-hover:bg-[#292821] group-hover:text-[#F5F0E6] text-zinc-600 flex items-center justify-center shrink-0">
+                <div className="w-6 h-6 rounded-md bg-zinc-100 group-hover:bg-[#0A192F] group-hover:text-[#F1F5F9] text-zinc-600 flex items-center justify-center shrink-0">
                   <item.icon className="w-3.5 h-3.5" />
                 </div>
                 <div className="min-w-0">
-                  <div className="text-xs font-semibold text-zinc-900 group-hover:text-[#292821] truncate">
+                  <div className="text-xs font-semibold text-zinc-900 group-hover:text-[#0A192F] truncate">
                     {item.label}
                   </div>
                   <div className="text-[10px] text-zinc-400 truncate">{item.description}</div>

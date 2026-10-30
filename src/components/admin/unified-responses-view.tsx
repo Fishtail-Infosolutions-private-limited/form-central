@@ -361,7 +361,7 @@ export function UnifiedResponsesView({
   return (
     <div className="space-y-4">
       {/* FILTER & SEARCH CONTROL BAR */}
-      <div className="p-4 rounded-xl bg-white border border-[#E8DFD0] shadow-xs space-y-3">
+      <div className="p-4 rounded-xl bg-white border border-[#E2E8F0] shadow-xs space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Search Box */}
           <div className="relative">
@@ -370,7 +370,7 @@ export function UnifiedResponsesView({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search name, ID, phone, email..."
-              className="pl-9 h-9 text-xs border-[#E8DFD0] bg-[#F5F0E6]/30 font-sans"
+              className="pl-9 h-9 text-xs border-[#E2E8F0] bg-[#F1F5F9]/30 font-sans"
             />
           </div>
 
@@ -379,7 +379,7 @@ export function UnifiedResponsesView({
             <select
               value={formFilter}
               onChange={(e) => setFormFilter(e.target.value)}
-              className="w-full h-9 text-xs border border-[#E8DFD0] rounded-md bg-[#F5F0E6]/30 px-3 text-[#292821] focus:outline-none focus:border-[#B69A65]"
+              className="w-full h-9 text-xs border border-[#E2E8F0] rounded-md bg-[#F1F5F9]/30 px-3 text-[#0A192F] focus:outline-none focus:border-[#C5A880]"
             >
               <option value="ALL">All Competitions & Forms</option>
               {forms.map((f) => (
@@ -395,7 +395,7 @@ export function UnifiedResponsesView({
             <select
               value={paymentFilter}
               onChange={(e) => setPaymentFilter(e.target.value)}
-              className="w-full h-9 text-xs border border-[#E8DFD0] rounded-md bg-[#F5F0E6]/30 px-3 text-[#292821] focus:outline-none focus:border-[#B69A65]"
+              className="w-full h-9 text-xs border border-[#E2E8F0] rounded-md bg-[#F1F5F9]/30 px-3 text-[#0A192F] focus:outline-none focus:border-[#C5A880]"
             >
               <option value="ALL">All Payment States</option>
               <option value="UNDER_REVIEW">Payment: Under Review</option>
@@ -411,7 +411,7 @@ export function UnifiedResponsesView({
             <select
               value={applicationFilter}
               onChange={(e) => setApplicationFilter(e.target.value)}
-              className="w-full h-9 text-xs border border-[#E8DFD0] rounded-md bg-[#F5F0E6]/30 px-3 text-[#292821] focus:outline-none focus:border-[#B69A65]"
+              className="w-full h-9 text-xs border border-[#E2E8F0] rounded-md bg-[#F1F5F9]/30 px-3 text-[#0A192F] focus:outline-none focus:border-[#C5A880]"
             >
               <option value="ALL">All Application States</option>
               <option value="SUBMITTED">Status: Submitted</option>
@@ -424,7 +424,7 @@ export function UnifiedResponsesView({
         </div>
 
         {/* Status Count Summary & Excel Export */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#E8DFD0] text-xs text-[#59574D]">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#E2E8F0] text-xs text-[#59574D]">
           <div className="flex items-center gap-3">
             <span>
               Showing <strong>{filteredApplications.length}</strong> of {applications.length} applications
@@ -449,7 +449,7 @@ export function UnifiedResponsesView({
             size="sm"
             onClick={handleExportExcel}
             disabled={isExportingExcel || filteredApplications.length === 0}
-            className="bg-[#292821] hover:bg-[#3C332A] text-[#F5F0E6] text-xs h-8 px-3 rounded gap-1.5 shadow-none"
+            className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-8 px-3 rounded gap-1.5 shadow-none"
           >
             {isExportingExcel ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -462,10 +462,10 @@ export function UnifiedResponsesView({
       </div>
 
       {/* UNIFIED DATA TABLE */}
-      <div className="rounded-xl border border-[#E8DFD0] bg-white overflow-hidden shadow-xs">
+      <div className="rounded-xl border border-[#E2E8F0] bg-white overflow-hidden shadow-xs">
         {filteredApplications.length === 0 ? (
           <div className="p-12 text-center space-y-2">
-            <p className="text-sm font-semibold text-[#292821]">No matching registrations found</p>
+            <p className="text-sm font-semibold text-[#0A192F]">No matching registrations found</p>
             <p className="text-xs text-zinc-500 max-w-sm mx-auto">
               Try adjusting your search criteria, competition selector, or status filters.
             </p>
@@ -473,7 +473,7 @@ export function UnifiedResponsesView({
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#F5F0E6] text-[#292821] font-semibold border-b border-[#E8DFD0]">
+              <thead className="bg-[#F1F5F9] text-[#0A192F] font-semibold border-b border-[#E2E8F0]">
                 <tr>
                   <th className="py-3 px-4">Registration ID</th>
                   <th className="py-3 px-4">Participant</th>
@@ -485,17 +485,17 @@ export function UnifiedResponsesView({
                   <th className="py-3 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E8DFD0]">
+              <tbody className="divide-y divide-[#E2E8F0]">
                 {filteredApplications.map((app) => (
-                  <tr key={app.id} className="hover:bg-[#F5F0E6]/40 transition-colors">
+                  <tr key={app.id} className="hover:bg-[#F1F5F9]/40 transition-colors">
                     {/* ID */}
-                    <td className="py-3 px-4 font-mono font-bold text-[#292821]">
+                    <td className="py-3 px-4 font-mono font-bold text-[#0A192F]">
                       {app.registrationId}
                     </td>
 
                     {/* Participant */}
                     <td className="py-3 px-4">
-                      <div className="font-semibold text-[#292821]">
+                      <div className="font-semibold text-[#0A192F]">
                         {app.fullName}
                       </div>
                       {app.isMinor && (
@@ -521,7 +521,7 @@ export function UnifiedResponsesView({
                       <span
                         className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
                           app.paymentStatus === "VERIFIED"
-                            ? "bg-[#292821] text-[#F5F0E6] border border-[#B69A65]/40"
+                            ? "bg-[#0A192F] text-[#F1F5F9] border border-[#C5A880]/40"
                             : app.paymentStatus === "UNDER_REVIEW"
                             ? "bg-amber-50 text-amber-800 border border-amber-200"
                             : app.paymentStatus === "CLARIFICATION_REQUIRED"
@@ -538,7 +538,7 @@ export function UnifiedResponsesView({
                       <span
                         className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
                           app.applicationStatus === "APPROVED"
-                            ? "bg-[#292821] text-[#F5F0E6] border border-[#B69A65]/40"
+                            ? "bg-[#0A192F] text-[#F1F5F9] border border-[#C5A880]/40"
                             : app.applicationStatus === "REJECTED"
                             ? "bg-rose-50 text-rose-800 border border-rose-200"
                             : app.applicationStatus === "ACTION_REQUIRED"
@@ -560,7 +560,7 @@ export function UnifiedResponsesView({
                       <Button
                         size="sm"
                         onClick={() => handleOpenDrawer(app)}
-                        className="bg-[#292821] hover:bg-[#3C332A] text-[#F5F0E6] text-xs h-7 px-3 rounded shadow-none font-medium"
+                        className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-7 px-3 rounded shadow-none font-medium"
                       >
                         Review
                       </Button>
@@ -585,41 +585,41 @@ export function UnifiedResponsesView({
           />
 
           {/* Drawer Surface */}
-          <div className="relative w-full max-w-2xl bg-white shadow-2xl flex flex-col h-full border-l border-[#E8DFD0] z-50 overflow-hidden">
+          <div className="relative w-full max-w-2xl bg-white shadow-2xl flex flex-col h-full border-l border-[#E2E8F0] z-50 overflow-hidden">
             {/* Header */}
-            <div className="p-5 border-b border-[#E8DFD0] bg-[#F5F0E6] flex items-center justify-between">
+            <div className="p-5 border-b border-[#E2E8F0] bg-[#F1F5F9] flex items-center justify-between">
               <div>
                 <span className="text-[10px] uppercase font-bold tracking-wider text-[#A64B36] block">
                   {selectedApp.formName} &bull; Participant Dossier
                 </span>
-                <h2 className="text-lg font-bold text-[#292821] font-serif">
+                <h2 className="text-lg font-bold text-[#0A192F] font-serif">
                   {selectedApp.fullName}
                 </h2>
-                <span className="font-mono text-xs font-bold text-[#B69A65]">
+                <span className="font-mono text-xs font-bold text-[#C5A880]">
                   ID: {selectedApp.registrationId}
                 </span>
               </div>
               <button
                 onClick={handleCloseDrawer}
-                className="p-1.5 rounded hover:bg-[#E8DFD0] text-[#292821] transition-colors"
+                className="p-1.5 rounded hover:bg-[#E2E8F0] text-[#0A192F] transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Scrollable Body */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 text-xs text-[#292821]">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 text-xs text-[#0A192F]">
               {/* CURRENT STATUS BADGES & A4 PDF DOWNLOAD */}
-              <div className="p-4 rounded-xl bg-[#F5F0E6] border border-[#E8DFD0] flex flex-wrap items-center justify-between gap-3">
+              <div className="p-4 rounded-xl bg-[#F1F5F9] border border-[#E2E8F0] flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <div>
                     <span className="text-[10px] uppercase font-bold text-zinc-500 block">Payment State</span>
-                    <span className="font-bold text-[#292821]">{selectedApp.paymentStatus}</span>
+                    <span className="font-bold text-[#0A192F]">{selectedApp.paymentStatus}</span>
                   </div>
-                  <div className="h-6 w-px bg-[#E8DFD0]" />
+                  <div className="h-6 w-px bg-[#E2E8F0]" />
                   <div>
                     <span className="text-[10px] uppercase font-bold text-zinc-500 block">Application State</span>
-                    <span className="font-bold text-[#292821]">{selectedApp.applicationStatus}</span>
+                    <span className="font-bold text-[#0A192F]">{selectedApp.applicationStatus}</span>
                   </div>
                 </div>
 
@@ -628,7 +628,7 @@ export function UnifiedResponsesView({
                     size="sm"
                     onClick={handleDownloadPdf}
                     disabled={isDownloadingPdf}
-                    className="bg-[#B69A65] hover:bg-[#a68c59] text-[#292821] font-bold text-xs h-8 px-3 rounded gap-1.5 shadow-none"
+                    className="bg-[#C5A880] hover:bg-[#a68c59] text-[#0A192F] font-bold text-xs h-8 px-3 rounded gap-1.5 shadow-none"
                   >
                     {isDownloadingPdf ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -642,7 +642,7 @@ export function UnifiedResponsesView({
 
               {/* 1. PERSONAL INFORMATION & ADDRESS */}
               <div className="space-y-3">
-                <h3 className="font-bold font-serif text-sm text-[#292821] border-b border-[#E8DFD0] pb-1.5">
+                <h3 className="font-bold font-serif text-sm text-[#0A192F] border-b border-[#E2E8F0] pb-1.5">
                   1. Identification & Geographic Location
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -693,7 +693,7 @@ export function UnifiedResponsesView({
                     </div>
                     <div>
                       <span>Consent Recorded: </span>
-                      <strong className="text-[#292821]">Verified Timestamped</strong>
+                      <strong className="text-[#0A192F]">Verified Timestamped</strong>
                     </div>
                   </div>
                 </div>
@@ -702,14 +702,14 @@ export function UnifiedResponsesView({
               {/* 3. PROFILE & MOTIVATION ANSWERS */}
               {(selectedApp.motivationReason || selectedApp.personalIntro || selectedApp.talentsSkills) && (
                 <div className="space-y-3">
-                  <h3 className="font-bold font-serif text-sm text-[#292821] border-b border-[#E8DFD0] pb-1.5">
+                  <h3 className="font-bold font-serif text-sm text-[#0A192F] border-b border-[#E2E8F0] pb-1.5">
                     2. Cultural Profile & Articulation
                   </h3>
                   <div className="space-y-2">
                     {selectedApp.motivationReason && (
                       <div>
                         <span className="text-[11px] text-zinc-500 block">Motivation for Joining:</span>
-                        <p className="bg-[#F5F0E6]/40 p-2.5 rounded border border-[#E8DFD0] leading-relaxed">
+                        <p className="bg-[#F1F5F9]/40 p-2.5 rounded border border-[#E2E8F0] leading-relaxed">
                           {selectedApp.motivationReason}
                         </p>
                       </div>
@@ -717,7 +717,7 @@ export function UnifiedResponsesView({
                     {selectedApp.talentsSkills && (
                       <div>
                         <span className="text-[11px] text-zinc-500 block">Talents & Skills:</span>
-                        <p className="bg-[#F5F0E6]/40 p-2.5 rounded border border-[#E8DFD0]">
+                        <p className="bg-[#F1F5F9]/40 p-2.5 rounded border border-[#E2E8F0]">
                           {selectedApp.talentsSkills}
                         </p>
                       </div>
@@ -735,14 +735,14 @@ export function UnifiedResponsesView({
               {/* 4. DYNAMIC ANSWERS (From Generic Forms) */}
               {selectedApp.dynamicAnswers && selectedApp.dynamicAnswers.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="font-bold font-serif text-sm text-[#292821] border-b border-[#E8DFD0] pb-1.5">
+                  <h3 className="font-bold font-serif text-sm text-[#0A192F] border-b border-[#E2E8F0] pb-1.5">
                     Dynamic Form Responses
                   </h3>
                   <div className="space-y-2">
                     {selectedApp.dynamicAnswers.map((ans, i) => (
-                      <div key={i} className="p-2.5 rounded bg-[#F5F0E6]/30 border border-[#E8DFD0]">
+                      <div key={i} className="p-2.5 rounded bg-[#F1F5F9]/30 border border-[#E2E8F0]">
                         <span className="text-[11px] font-semibold text-zinc-500 block">{ans.fieldLabel}</span>
-                        <span className="text-xs font-medium text-[#292821]">
+                        <span className="text-xs font-medium text-[#0A192F]">
                           {typeof ans.value === "object" ? JSON.stringify(ans.value) : String(ans.value)}
                         </span>
                       </div>
@@ -753,7 +753,7 @@ export function UnifiedResponsesView({
 
               {/* 5. MEDIA & UPLOADED FILES */}
               <div className="space-y-3">
-                <h3 className="font-bold font-serif text-sm text-[#292821] border-b border-[#E8DFD0] pb-1.5">
+                <h3 className="font-bold font-serif text-sm text-[#0A192F] border-b border-[#E2E8F0] pb-1.5">
                   Uploaded Media & Documents
                 </h3>
                 <div className="flex flex-wrap gap-4">
@@ -764,7 +764,7 @@ export function UnifiedResponsesView({
                         href={selectedApp.profilePhotoUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-block relative w-24 h-32 rounded border border-[#E8DFD0] overflow-hidden bg-zinc-100 hover:opacity-90"
+                        className="inline-block relative w-24 h-32 rounded border border-[#E2E8F0] overflow-hidden bg-zinc-100 hover:opacity-90"
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -778,8 +778,8 @@ export function UnifiedResponsesView({
 
                   {selectedApp.uploadedFiles &&
                     selectedApp.uploadedFiles.map((file) => (
-                      <div key={file.id} className="p-3 rounded border border-[#E8DFD0] bg-[#F5F0E6]/30 text-xs space-y-1">
-                        <span className="font-bold text-[#292821] block truncate max-w-[180px]">
+                      <div key={file.id} className="p-3 rounded border border-[#E2E8F0] bg-[#F1F5F9]/30 text-xs space-y-1">
+                        <span className="font-bold text-[#0A192F] block truncate max-w-[180px]">
                           {file.originalName}
                         </span>
                         <span className="text-[10px] text-zinc-500 block">
@@ -789,7 +789,7 @@ export function UnifiedResponsesView({
                           href={file.storagePath}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-[#B69A65] font-semibold text-[11px] hover:underline flex items-center gap-1"
+                          className="text-[#C5A880] font-semibold text-[11px] hover:underline flex items-center gap-1"
                         >
                           <span>Open File</span>
                           <ExternalLink className="w-3 h-3" />
@@ -800,13 +800,13 @@ export function UnifiedResponsesView({
               </div>
 
               {/* 6. PAYMENT VERIFICATION CENTER (TIER 1) */}
-              <div className="p-4 rounded-xl bg-[#F5F0E6] border border-[#E8DFD0] space-y-3">
+              <div className="p-4 rounded-xl bg-[#F1F5F9] border border-[#E2E8F0] space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-sm text-[#292821] font-serif flex items-center gap-1.5">
+                  <h3 className="font-bold text-sm text-[#0A192F] font-serif flex items-center gap-1.5">
                     <CreditCard className="w-4 h-4 text-[#A64B36]" />
                     <span>Payment Verification & Bank Reconcile</span>
                   </h3>
-                  <span className="font-bold font-mono text-[#292821]">
+                  <span className="font-bold font-mono text-[#0A192F]">
                     NPR {selectedApp.registrationFee}
                   </span>
                 </div>
@@ -814,7 +814,7 @@ export function UnifiedResponsesView({
                 <div className="grid grid-cols-2 gap-3 text-[11px]">
                   <div>
                     <span className="text-zinc-500 block">Transaction Reference / UTR:</span>
-                    <span className="font-mono font-bold text-sm text-[#292821]">
+                    <span className="font-mono font-bold text-sm text-[#0A192F]">
                       {selectedApp.paymentReference || "Not yet submitted"}
                     </span>
                   </div>
@@ -825,7 +825,7 @@ export function UnifiedResponsesView({
                         href={selectedApp.paymentScreenshotUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[#B69A65] font-bold hover:underline flex items-center gap-1 mt-0.5"
+                        className="text-[#C5A880] font-bold hover:underline flex items-center gap-1 mt-0.5"
                       >
                         <span>View Screenshot</span>
                         <ExternalLink className="w-3 h-3" />
@@ -845,15 +845,15 @@ export function UnifiedResponsesView({
 
                 {/* Clarification input field */}
                 {showClarificationInput && (
-                  <div className="space-y-2 pt-2 border-t border-[#E8DFD0]">
-                    <Label className="text-xs font-bold text-[#292821]">
+                  <div className="space-y-2 pt-2 border-t border-[#E2E8F0]">
+                    <Label className="text-xs font-bold text-[#0A192F]">
                       Specific Clarification Required from Applicant:
                     </Label>
                     <Textarea
                       value={clarificationNotes}
                       onChange={(e) => setClarificationNotes(e.target.value)}
                       placeholder="e.g. Transaction UTR does not match bank record. Please re-check receipt."
-                      className="text-xs border-[#E8DFD0] bg-white h-16"
+                      className="text-xs border-[#E2E8F0] bg-white h-16"
                     />
                   </div>
                 )}
@@ -864,7 +864,7 @@ export function UnifiedResponsesView({
                     size="sm"
                     disabled={isVerifyingPayment || selectedApp.paymentStatus === "VERIFIED"}
                     onClick={() => handlePaymentAction("VERIFIED")}
-                    className="bg-[#292821] hover:bg-[#3C332A] text-[#F5F0E6] border border-[#B69A65]/40 text-xs h-8 px-3 rounded shadow-none"
+                    className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] border border-[#C5A880]/40 text-xs h-8 px-3 rounded shadow-none"
                   >
                     {isVerifyingPayment ? (
                       <Loader2 className="w-3 h-3 animate-spin mr-1" />
@@ -894,9 +894,9 @@ export function UnifiedResponsesView({
               </div>
 
               {/* 7. APPLICATION ADJUDICATION (TIER 2) */}
-              <div className="p-4 rounded-xl bg-white border border-[#E8DFD0] space-y-3">
-                <h3 className="font-bold text-sm text-[#292821] font-serif flex items-center gap-1.5">
-                  <FileCheck2 className="w-4 h-4 text-[#B69A65]" />
+              <div className="p-4 rounded-xl bg-white border border-[#E2E8F0] space-y-3">
+                <h3 className="font-bold text-sm text-[#0A192F] font-serif flex items-center gap-1.5">
+                  <FileCheck2 className="w-4 h-4 text-[#C5A880]" />
                   <span>Application Adjudication</span>
                 </h3>
 
@@ -908,20 +908,20 @@ export function UnifiedResponsesView({
 
                 {/* Private Admin Notes */}
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-bold text-[#292821]">
+                  <Label className="text-xs font-bold text-[#0A192F]">
                     Private Administrator Notes (Internal only):
                   </Label>
                   <Textarea
                     value={adminNotes}
                     onChange={(e) => setAdminNotes(e.target.value)}
                     placeholder="Interview feedback, committee remarks, eligibility confirmation..."
-                    className="text-xs border-[#E8DFD0] bg-[#F5F0E6]/30 h-16"
+                    className="text-xs border-[#E2E8F0] bg-[#F1F5F9]/30 h-16"
                   />
                 </div>
 
                 {/* Reason Input for Reject or Action Required */}
                 {(showRejectInput || showActionInput) && (
-                  <div className="space-y-1.5 pt-2 border-t border-[#E8DFD0]">
+                  <div className="space-y-1.5 pt-2 border-t border-[#E2E8F0]">
                     <Label className="text-xs font-bold text-[#A64B36]">
                       {showRejectInput ? "Reason for Rejection:" : "Action Required Details for Applicant:"}
                     </Label>
@@ -933,7 +933,7 @@ export function UnifiedResponsesView({
                           ? "Reason explaining why application was rejected..."
                           : "Specific corrections needed from applicant..."
                       }
-                      className="text-xs border-[#E8DFD0] bg-white h-16"
+                      className="text-xs border-[#E2E8F0] bg-white h-16"
                     />
                   </div>
                 )}
@@ -944,12 +944,12 @@ export function UnifiedResponsesView({
                     size="sm"
                     disabled={isAdjudicating || selectedApp.paymentStatus !== "VERIFIED"}
                     onClick={() => handleApplicationAction("APPROVED")}
-                    className="bg-[#292821] hover:bg-[#3C332A] text-[#F5F0E6] text-xs h-8 px-4 rounded shadow-none font-bold"
+                    className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-8 px-4 rounded shadow-none font-bold"
                   >
                     {isAdjudicating ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />
                     ) : (
-                      <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-[#B69A65]" />
+                      <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-[#C5A880]" />
                     )}
                     <span>Approve & Issue Certificate</span>
                   </Button>

@@ -137,25 +137,25 @@ export default async function AdminAllResponsesPage() {
   return (
     <div className="space-y-6">
       {/* Header with Charcoal and Antique Gold cultural branding */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DFD0] pb-6 bg-[#FFFFFF] p-6 rounded-lg border">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E2E8F0] pb-6 bg-[#FFFFFF] p-6 rounded-lg border">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <MithilaHeritageMandala className="w-5 h-5 text-[#B69A65]" />
-            <span className="text-[11px] font-bold tracking-widest uppercase text-[#B69A65]">
+            <MithilaHeritageMandala className="w-5 h-5 text-[#C5A880]" />
+            <span className="text-[11px] font-bold tracking-widest uppercase text-[#C5A880]">
               The Origin Foundation &bull; Adjudication Desk
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#292821] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F] tracking-tight">
             Applications & Payment Reviews
           </h1>
-          <p className="text-xs sm:text-sm text-[#292821]/70 max-w-2xl">
+          <p className="text-xs sm:text-sm text-[#0A192F]/70 max-w-2xl">
             Unified participant review desk: verify eSewa/bank payments, review minor safeguarding consent, adjudicate Mithila Queen candidates, and manage confirmation passes.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">
-            <div className="text-xs font-semibold text-[#292821]">
+            <div className="text-xs font-semibold text-[#0A192F]">
               {allApplications.length} Total Submissions
             </div>
             <div className="text-[11px] text-[#A64B36] font-medium">
@@ -168,9 +168,9 @@ export default async function AdminAllResponsesPage() {
       {/* Unified Responses Interface */}
       <Suspense
         fallback={
-          <div className="flex items-center justify-center p-16 bg-[#FFFFFF] border border-[#E8DFD0] rounded-lg">
-            <Loader2 className="w-6 h-6 animate-spin text-[#B69A65]" />
-            <span className="ml-3 text-xs font-medium text-[#292821]/70">
+          <div className="flex items-center justify-center p-16 bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg">
+            <Loader2 className="w-6 h-6 animate-spin text-[#C5A880]" />
+            <span className="ml-3 text-xs font-medium text-[#0A192F]/70">
               Loading participant records...
             </span>
           </div>

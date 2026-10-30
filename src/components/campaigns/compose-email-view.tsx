@@ -389,11 +389,11 @@ export function ComposeEmailView({
           </div>
 
           <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#292821] tracking-tight font-serif">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] tracking-tight font-serif">
               Compose Email
             </h1>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#FAF5EE] text-[#B69A65] border border-[#E8DFD0]">
-              <Crown className="w-3 h-3 text-[#B69A65]" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#F8FAFC] text-[#C5A880] border border-[#E2E8F0]">
+              <Crown className="w-3 h-3 text-[#C5A880]" />
               <span>Mithila Queen</span>
             </span>
           </div>
@@ -429,9 +429,9 @@ export function ComposeEmailView({
           <Button
             type="button"
             onClick={() => setIsReviewModalOpen(true)}
-            className="bg-[#292821] hover:bg-[#3C332A] text-white font-bold text-xs h-9 px-4 rounded-xl gap-1.5 shadow-xs"
+            className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs h-9 px-4 rounded-xl gap-1.5 shadow-xs"
           >
-            <Send className="w-3.5 h-3.5 text-[#B69A65]" />
+            <Send className="w-3.5 h-3.5 text-[#C5A880]" />
             <span>Review & Send</span>
           </Button>
         </div>
@@ -445,7 +445,7 @@ export function ComposeEmailView({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <CardTitle className="text-base font-bold text-zinc-900 flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#B69A65]" />
+                  <Mail className="w-4 h-4 text-[#C5A880]" />
                   <span>1. Email Details</span>
                 </CardTitle>
                 <CardDescription className="text-xs text-zinc-500 mt-0.5">
@@ -461,7 +461,7 @@ export function ComposeEmailView({
                 <select
                   value={selectedTemplateId}
                   onChange={(e) => handleTemplateSelect(e.target.value)}
-                  className="text-xs bg-zinc-50 border border-zinc-200 rounded-lg px-2.5 py-1.5 font-medium text-zinc-800 focus:outline-[#B69A65]"
+                  className="text-xs bg-zinc-50 border border-zinc-200 rounded-lg px-2.5 py-1.5 font-medium text-zinc-800 focus:outline-[#C5A880]"
                 >
                   <option value="">Blank Message (Custom)</option>
                   {templates.map((tpl) => (
@@ -488,7 +488,7 @@ export function ComposeEmailView({
                 placeholder="e.g. Mithila Queen Audition Schedule & Verification Update"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="text-sm font-semibold text-zinc-900 border-zinc-200 focus-visible:ring-[#B69A65]"
+                className="text-sm font-semibold text-zinc-900 border-zinc-200 focus-visible:ring-[#C5A880]"
               />
             </div>
 
@@ -503,7 +503,7 @@ export function ComposeEmailView({
                 placeholder="e.g. Round 1 Audition Call - Madhesh Region"
                 value={internalName}
                 onChange={(e) => setInternalName(e.target.value)}
-                className="text-xs text-zinc-700 border-zinc-200 focus-visible:ring-[#B69A65]"
+                className="text-xs text-zinc-700 border-zinc-200 focus-visible:ring-[#C5A880]"
               />
             </div>
           </CardContent>
@@ -515,7 +515,7 @@ export function ComposeEmailView({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <CardTitle className="text-base font-bold text-zinc-900 flex items-center gap-2">
-                  <Users className="w-4 h-4 text-[#B69A65]" />
+                  <Users className="w-4 h-4 text-[#C5A880]" />
                   <span>2. Recipient Selection</span>
                 </CardTitle>
                 <CardDescription className="text-xs text-zinc-500 mt-0.5">
@@ -524,11 +524,11 @@ export function ComposeEmailView({
               </div>
 
               {/* Total Recipient Count Pill */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FAF5EE] border border-[#E8DFD0] text-xs font-bold text-[#292821]">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-bold text-[#0A192F]">
                 {isEstimating ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />
                 ) : (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#B69A65]" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C5A880]" />
                 )}
                 <span>
                   {isEstimating
@@ -566,7 +566,7 @@ export function ComposeEmailView({
                       onClick={() => setSelectedGroup(grp.id)}
                       className={`text-left p-3 rounded-xl border text-xs transition-all relative flex flex-col justify-between ${
                         isSelected
-                          ? "bg-[#292821] text-white border-[#292821] shadow-xs"
+                          ? "bg-[#0A192F] text-white border-[#0A192F] shadow-xs"
                           : "bg-white text-zinc-800 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
                       }`}
                     >
@@ -578,7 +578,7 @@ export function ComposeEmailView({
                           <span
                             className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
                               isSelected
-                                ? "bg-[#B69A65] text-white"
+                                ? "bg-[#C5A880] text-white"
                                 : "bg-zinc-100 text-zinc-700"
                             }`}
                           >
@@ -628,10 +628,10 @@ export function ComposeEmailView({
             </div>
 
             {/* Recipient Privacy & Deduplication Guarantee */}
-            <div className="bg-[#FAF5EE]/70 rounded-xl border border-[#E8DFD0] p-3 flex items-start gap-2.5 text-xs text-zinc-700">
-              <ShieldCheck className="w-4 h-4 text-[#B69A65] shrink-0 mt-0.5" />
+            <div className="bg-[#F8FAFC]/70 rounded-xl border border-[#E2E8F0] p-3 flex items-start gap-2.5 text-xs text-zinc-700">
+              <ShieldCheck className="w-4 h-4 text-[#C5A880] shrink-0 mt-0.5" />
               <div className="space-y-0.5">
-                <span className="font-bold text-[#292821]">
+                <span className="font-bold text-[#0A192F]">
                   Confidential &amp; Individual Delivery (BCC-Safe)
                 </span>
                 <p className="text-[11px] text-zinc-600 leading-relaxed">
@@ -646,7 +646,7 @@ export function ComposeEmailView({
         <Card className="border-zinc-200 shadow-2xs">
           <CardHeader className="pb-3 border-b border-zinc-100">
             <CardTitle className="text-base font-bold text-zinc-900 flex items-center gap-2">
-              <FileText className="w-4 h-4 text-[#B69A65]" />
+              <FileText className="w-4 h-4 text-[#C5A880]" />
               <span>3. Message Content</span>
             </CardTitle>
             <CardDescription className="text-xs text-zinc-500 mt-0.5">
@@ -666,7 +666,7 @@ export function ComposeEmailView({
         <Card className="border-zinc-200 shadow-2xs">
           <CardHeader className="pb-3 border-b border-zinc-100">
             <CardTitle className="text-base font-bold text-zinc-900 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#B69A65]" />
+              <Clock className="w-4 h-4 text-[#C5A880]" />
               <span>4. Delivery Schedule</span>
             </CardTitle>
             <CardDescription className="text-xs text-zinc-500 mt-0.5">
@@ -682,11 +682,11 @@ export function ComposeEmailView({
                 onClick={() => setSendOption("immediate")}
                 className={`p-4 rounded-xl border text-left transition-all flex items-start gap-3 ${
                   sendOption === "immediate"
-                    ? "bg-[#292821] text-white border-[#292821] shadow-xs"
+                    ? "bg-[#0A192F] text-white border-[#0A192F] shadow-xs"
                     : "bg-white text-zinc-800 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
                 }`}
               >
-                <Send className={`w-4 h-4 mt-0.5 shrink-0 ${sendOption === "immediate" ? "text-[#B69A65]" : "text-zinc-400"}`} />
+                <Send className={`w-4 h-4 mt-0.5 shrink-0 ${sendOption === "immediate" ? "text-[#C5A880]" : "text-zinc-400"}`} />
                 <div>
                   <div className="font-bold text-xs">Send Now</div>
                   <p className={`text-[11px] mt-1 ${sendOption === "immediate" ? "text-zinc-300" : "text-zinc-500"}`}>
@@ -701,11 +701,11 @@ export function ComposeEmailView({
                 onClick={() => setSendOption("scheduled")}
                 className={`p-4 rounded-xl border text-left transition-all flex items-start gap-3 ${
                   sendOption === "scheduled"
-                    ? "bg-[#292821] text-white border-[#292821] shadow-xs"
+                    ? "bg-[#0A192F] text-white border-[#0A192F] shadow-xs"
                     : "bg-white text-zinc-800 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
                 }`}
               >
-                <Calendar className={`w-4 h-4 mt-0.5 shrink-0 ${sendOption === "scheduled" ? "text-[#B69A65]" : "text-zinc-400"}`} />
+                <Calendar className={`w-4 h-4 mt-0.5 shrink-0 ${sendOption === "scheduled" ? "text-[#C5A880]" : "text-zinc-400"}`} />
                 <div>
                   <div className="font-bold text-xs">Schedule for Later</div>
                   <p className={`text-[11px] mt-1 ${sendOption === "scheduled" ? "text-zinc-300" : "text-zinc-500"}`}>
@@ -717,9 +717,9 @@ export function ComposeEmailView({
 
             {/* Date & Time Picker when scheduled */}
             {sendOption === "scheduled" && (
-              <div className="bg-[#FAF5EE] rounded-xl border border-[#E8DFD0] p-4 space-y-3">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-[#292821]">
-                  <Clock className="w-4 h-4 text-[#B69A65]" />
+              <div className="bg-[#F8FAFC] rounded-xl border border-[#E2E8F0] p-4 space-y-3">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#0A192F]">
+                  <Clock className="w-4 h-4 text-[#C5A880]" />
                   <span>Configure Schedule in Nepal Time (Asia/Kathmandu UTC+05:45)</span>
                 </div>
 
@@ -732,7 +732,7 @@ export function ComposeEmailView({
                       type="date"
                       value={scheduledDate}
                       onChange={(e) => setScheduledDate(e.target.value)}
-                      className="bg-white text-xs border-zinc-200 focus-visible:ring-[#B69A65]"
+                      className="bg-white text-xs border-zinc-200 focus-visible:ring-[#C5A880]"
                     />
                   </div>
 
@@ -744,7 +744,7 @@ export function ComposeEmailView({
                       type="time"
                       value={scheduledTime}
                       onChange={(e) => setScheduledTime(e.target.value)}
-                      className="bg-white text-xs border-zinc-200 focus-visible:ring-[#B69A65]"
+                      className="bg-white text-xs border-zinc-200 focus-visible:ring-[#C5A880]"
                     />
                   </div>
                 </div>
@@ -763,7 +763,7 @@ export function ComposeEmailView({
         <div className="bg-white border border-zinc-200 rounded-xl p-4 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3 sticky bottom-4 z-30">
           <div className="flex items-center gap-2 text-xs">
             <span className="font-bold text-zinc-700">Estimated Audience:</span>
-            <span className="font-black text-[#292821] font-mono text-sm">
+            <span className="font-black text-[#0A192F] font-mono text-sm">
               {estimatedCount ?? 0} recipient{(estimatedCount ?? 0) === 1 ? "" : "s"}
             </span>
             {hasInvalidManualEmails && (
@@ -799,9 +799,9 @@ export function ComposeEmailView({
               type="button"
               onClick={() => setIsReviewModalOpen(true)}
               disabled={hasInvalidManualEmails || (estimatedCount ?? 0) === 0}
-              className="bg-[#292821] hover:bg-[#3C332A] text-white font-bold text-xs h-9 px-5 rounded-xl gap-2 flex-1 sm:flex-none shadow-xs"
+              className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs h-9 px-5 rounded-xl gap-2 flex-1 sm:flex-none shadow-xs"
             >
-              <Send className="w-3.5 h-3.5 text-[#B69A65]" />
+              <Send className="w-3.5 h-3.5 text-[#C5A880]" />
               <span>Review &amp; Send</span>
             </Button>
           </div>
@@ -814,7 +814,7 @@ export function ComposeEmailView({
           <div className="bg-white rounded-2xl border border-zinc-200 p-6 max-w-md w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Send className="w-4 h-4 text-[#B69A65]" />
+                <Send className="w-4 h-4 text-[#C5A880]" />
                 <h3 className="text-sm font-bold text-zinc-900">Send Test Email</h3>
               </div>
               <button
@@ -857,9 +857,9 @@ export function ComposeEmailView({
                 size="sm"
                 onClick={handleSendTest}
                 disabled={isSendingTest}
-                className="bg-[#292821] hover:bg-[#3C332A] text-white text-xs h-8 px-4 rounded-lg gap-1.5"
+                className="bg-[#0A192F] hover:bg-[#1E293B] text-white text-xs h-8 px-4 rounded-lg gap-1.5"
               >
-                {isSendingTest && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" />}
+                {isSendingTest && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />}
                 <span>{isSendingTest ? "Sending..." : "Send Test Email"}</span>
               </Button>
             </div>
@@ -874,7 +874,7 @@ export function ComposeEmailView({
             {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-zinc-200 bg-zinc-50">
               <div className="flex items-center gap-2">
-                <Eye className="w-4 h-4 text-[#B69A65]" />
+                <Eye className="w-4 h-4 text-[#C5A880]" />
                 <h3 className="text-sm font-bold text-zinc-900">Email Live Preview</h3>
                 <span className="text-[10px] bg-zinc-200 text-zinc-700 px-2 py-0.5 rounded-full font-semibold">
                   Sample Contestant Data
@@ -948,7 +948,7 @@ export function ComposeEmailView({
           <div className="bg-white rounded-2xl border border-zinc-200 p-6 max-w-lg w-full shadow-2xl space-y-5">
             <div className="flex items-center justify-between border-b border-zinc-100 pb-3">
               <div className="flex items-center gap-2">
-                <Send className="w-4 h-4 text-[#B69A65]" />
+                <Send className="w-4 h-4 text-[#C5A880]" />
                 <h3 className="text-base font-bold text-zinc-900">
                   Review Your Email Communication
                 </h3>
@@ -988,7 +988,7 @@ export function ComposeEmailView({
                     <span className="font-bold">{manualEmails.length} address{manualEmails.length > 1 ? "es" : ""}</span>
                   </div>
                 )}
-                <div className="border-t border-zinc-200 pt-1.5 flex items-center justify-between font-bold text-[#292821] text-sm">
+                <div className="border-t border-zinc-200 pt-1.5 flex items-center justify-between font-bold text-[#0A192F] text-sm">
                   <span>Total Deduplicated Recipients:</span>
                   <span className="font-mono">{estimatedCount ?? 0}</span>
                 </div>
@@ -1035,9 +1035,9 @@ export function ComposeEmailView({
                 type="button"
                 onClick={handleFinalSubmit}
                 disabled={isSubmitting || (estimatedCount ?? 0) === 0 || hasInvalidManualEmails}
-                className="bg-[#292821] hover:bg-[#3C332A] text-white text-xs font-bold h-9 px-5 rounded-xl gap-2 shadow-xs"
+                className="bg-[#0A192F] hover:bg-[#1E293B] text-white text-xs font-bold h-9 px-5 rounded-xl gap-2 shadow-xs"
               >
-                {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" />}
+                {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />}
                 <span>
                   {isSubmitting
                     ? "Enqueuing..."

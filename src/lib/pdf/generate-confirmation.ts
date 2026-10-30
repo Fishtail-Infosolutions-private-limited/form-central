@@ -14,6 +14,7 @@ export interface PdfConfirmationData {
   verifiedAt?: Date | null;
   approvedAt?: Date | null;
   verificationCode: string;
+  registrationFee?: number;
 }
 
 export async function generateRegistrationConfirmationPdf(data: PdfConfirmationData): Promise<Uint8Array> {
@@ -26,11 +27,11 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
   const fontOblique = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
 
   // Brand Palette RGB Colors (0 - 1) — Charcoal, Antique Gold, Terracotta & Warm Ivory
-  const colorNavy = rgb(41 / 255, 40 / 255, 33 / 255);       // #292821 (Charcoal)
-  const colorGold = rgb(182 / 255, 154 / 255, 101 / 255);   // #B69A65 (Antique Gold)
-  const colorIvory = rgb(245 / 255, 240 / 255, 230 / 255);  // #F5F0E6 (Warm Ivory)
+  const colorNavy = rgb(10 / 255, 25 / 255, 47 / 255);       // #0A192F (Charcoal)
+  const colorGold = rgb(197 / 255, 168 / 255, 128 / 255);   // #C5A880 (Antique Gold)
+  const colorIvory = rgb(248 / 255, 250 / 255, 252 / 255);  // #F1F5F9 (Warm Ivory)
   const colorTerracotta = rgb(166 / 255, 75 / 255, 54 / 255); // #A64B36 (Terracotta)
-  const colorDark = rgb(41 / 255, 40 / 255, 33 / 255);      // #292821 (Charcoal)
+  const colorDark = rgb(10 / 255, 25 / 255, 47 / 255);      // #0A192F (Charcoal)
   const colorGray = rgb(110 / 255, 108 / 255, 98 / 255);
   const colorSlate = rgb(50 / 255, 60 / 255, 55 / 255);
 
@@ -101,7 +102,7 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
     y: height - 170,
     width: width - 80,
     height: 30,
-    color: rgb(245 / 255, 240 / 255, 230 / 255),
+    color: rgb(248 / 255, 250 / 255, 252 / 255),
     borderColor: colorGold,
     borderWidth: 1,
   });
@@ -136,7 +137,9 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
     color: colorNavy,
   });
 
-  page.drawText("STATUS: APPROVED & PAYMENT VERIFIED (NPR 399)", {
+  const effectiveFee = data.registrationFee || 399;
+
+  page.drawText(`STATUS: APPROVED & PAYMENT VERIFIED (NPR ${effectiveFee})`, {
     x: 55,
     y: yPos - 30,
     size: 9,
@@ -211,7 +214,7 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
       width: 120,
       margin: 1,
       color: {
-        dark: "#292821FF",
+        dark: "#0A192FFF",
         light: "#FFFFFFFF",
       },
     });
@@ -292,7 +295,7 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
   });
 
   page.drawText(
-    "This certificate strictly confirms that your registration application and NPR 399 fee have been received and verified for Mithila Queen.",
+    `This certificate strictly confirms that your registration application and NPR ${effectiveFee} fee have been received and verified for Mithila Queen.`,
     {
       x: 50,
       y: yPos - 22,

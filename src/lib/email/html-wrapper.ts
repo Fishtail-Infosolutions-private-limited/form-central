@@ -34,20 +34,20 @@ export function wrapInFormSuiteEmailLayout({
   </style>
   <![endif]-->
 </head>
-<body style="margin: 0; padding: 0; background-color: #FAF5EE; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #292821;">
-  <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #FAF5EE; padding: 32px 12px;">
+<body style="margin: 0; padding: 0; background-color: #F8FAFC; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #0A192F;">
+  <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F8FAFC; padding: 32px 12px;">
     <tr>
       <td align="center">
         <!-- Main Email Container -->
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border: 1px solid #E8DFD0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
           
           <!-- Header Banner (Charcoal & Gold) -->
           <tr>
-            <td style="background-color: #292821; padding: 28px 24px; text-align: center;">
-              <h1 style="color: #FAF5EE; font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.5px; line-height: 1.2;">
+            <td style="background-color: #0A192F; padding: 28px 24px; text-align: center;">
+              <h1 style="color: #F8FAFC; font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.5px; line-height: 1.2;">
                 ${safeEventTitle}
               </h1>
-              <p style="color: #B69A65; font-size: 11px; font-weight: 700; margin: 8px 0 0 0; text-transform: uppercase; letter-spacing: 1.5px;">
+              <p style="color: #C5A880; font-size: 11px; font-weight: 700; margin: 8px 0 0 0; text-transform: uppercase; letter-spacing: 1.5px;">
                 ${safeBadgeText}
               </p>
             </td>
@@ -55,15 +55,15 @@ export function wrapInFormSuiteEmailLayout({
 
           <!-- Email Content Body -->
           <tr>
-            <td style="padding: 32px 28px; font-size: 14px; line-height: 1.7; color: #3C332A;">
+            <td style="padding: 32px 28px; font-size: 14px; line-height: 1.7; color: #1E293B;">
               ${bodyHtml}
             </td>
           </tr>
 
           <!-- Footer Area -->
           <tr>
-            <td style="background-color: #FAF5EE; padding: 20px 28px; text-align: center; border-top: 1px solid #E8DFD0;">
-              <p style="color: #292821; font-size: 12px; margin: 0 0 8px 0; font-weight: 600;">
+            <td style="background-color: #F8FAFC; padding: 20px 28px; text-align: center; border-top: 1px solid #E2E8F0;">
+              <p style="color: #0A192F; font-size: 12px; margin: 0 0 8px 0; font-weight: 600;">
                 The Origin Foundation &bull; Mithila Queen Official Secretariat
               </p>
               ${
@@ -71,7 +71,7 @@ export function wrapInFormSuiteEmailLayout({
                   ? `
                 <p style="color: #6B7280; font-size: 11px; margin: 0; line-height: 1.5;">
                   You received this email as a registered participant. 
-                  <a href="${escapeHtml(unsubscribeUrl)}" style="color: #B69A65; text-decoration: underline; font-weight: 600;">
+                  <a href="${escapeHtml(unsubscribeUrl)}" style="color: #C5A880; text-decoration: underline; font-weight: 600;">
                     Manage email preferences or unsubscribe
                   </a>.
                 </p>

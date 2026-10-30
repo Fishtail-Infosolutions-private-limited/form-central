@@ -3,30 +3,30 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B69A65] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A880] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
   {
     variants: {
       variant: {
         default:
-          "bg-[#292821] text-[#F5F0E6] shadow-xs hover:bg-[#3C332A] active:bg-[#1E1D18]",
+          "bg-[#0A192F] text-white shadow-xs hover:bg-[#162C4E] active:bg-[#071324]",
         destructive:
-          "bg-[#A64B36] text-white shadow-xs hover:bg-[#8F3E2C] active:bg-[#783323]",
+          "bg-rose-600 text-white shadow-xs hover:bg-rose-700 active:bg-rose-800",
         outline:
-          "border border-[#E8DFD0] bg-[#FFFFFF] text-[#292821] shadow-xs hover:bg-[#FAF5EE] hover:border-[#B69A65]/50",
+          "border border-slate-200 bg-white text-[#0A192F] shadow-xs hover:bg-slate-50 hover:border-[#C5A880]/60",
         secondary:
-          "bg-[#FAF5EE] text-[#292821] border border-[#E8DFD0] shadow-xs hover:bg-[#E8DFD0]",
+          "bg-slate-100 text-[#0A192F] border border-slate-200 shadow-xs hover:bg-slate-200",
         ghost:
-          "text-[#292821] hover:bg-[#FAF5EE] hover:text-[#292821]",
+          "text-[#0A192F] hover:bg-slate-100 hover:text-[#0A192F]",
         link:
-          "text-[#A64B36] underline-offset-4 hover:underline",
+          "text-[#0A192F] hover:text-[#C5A880] underline-offset-4 hover:underline",
         terracotta:
-          "bg-[#A64B36] text-white shadow-xs hover:bg-[#8F3E2C] active:bg-[#783323]",
+          "bg-[#C5A880] text-[#0A192F] font-bold shadow-xs hover:bg-[#B59870]",
         accent:
-          "bg-[#B69A65] text-[#292821] font-semibold hover:bg-[#A38752]",
+          "bg-[#C5A880] text-[#0A192F] font-bold shadow-xs hover:bg-[#B59870]",
         black:
-          "bg-[#292821] text-white shadow-xs hover:bg-[#3C332A] active:bg-[#1E1D18]",
+          "bg-[#0A192F] text-white shadow-xs hover:bg-[#162C4E] active:bg-[#071324]",
         forest:
-          "bg-[#292821] text-[#F5F0E6] shadow-xs hover:bg-[#3C332A] active:bg-[#1E1D18]",
+          "bg-[#0A192F] text-white shadow-xs hover:bg-[#162C4E]",
       },
       size: {
         default: "h-10 px-4 py-2",

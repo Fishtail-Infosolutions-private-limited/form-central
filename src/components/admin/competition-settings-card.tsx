@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Crown, Save, Loader2, Calendar, Phone, Mail, MessageCircle, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { getSiteSettingsAction, updateSiteSettingsAction } from "@/server/actions/site-settings-actions";
 
 export function CompetitionSettingsCard() {
   const [fee, setFee] = useState("399");
@@ -19,24 +20,59 @@ export function CompetitionSettingsCard() {
   const [hashtags, setHashtags] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await getSiteSettingsAction();
+        if (res.success && res.setting) {
+          if (res.setting.registrationFee) setFee(String(res.setting.registrationFee));
+          if (res.setting.eventSchedule) setSchedule(res.setting.eventSchedule);
+          if (res.setting.eventVenue) setVenue(res.setting.eventVenue);
+          if (res.setting.whatsappContact) setWhatsapp(res.setting.whatsappContact);
+          if (res.setting.officialEmail) setEmail(res.setting.officialEmail);
+          if (res.setting.officialInstagram) setInsta(res.setting.officialInstagram);
+          if (res.setting.officialTiktok) setTiktok(res.setting.officialTiktok);
+          if (res.setting.requiredHashtags) setHashtags(res.setting.requiredHashtags);
+        }
+      } catch (e) {}
+    }
+    load();
+  }, []);
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    // Simulate safe setting update
-    setTimeout(() => {
+    try {
+      const res = await updateSiteSettingsAction({
+        registrationFee: parseInt(fee, 10) || 399,
+        eventSchedule: schedule,
+        eventVenue: venue,
+        whatsappContact: whatsapp,
+        officialEmail: email,
+        officialInstagram: insta,
+        officialTiktok: tiktok,
+        requiredHashtags: hashtags,
+      });
+      if (res.success) {
+        toast.success("Competition & website settings successfully updated!");
+      } else {
+        toast.error(res.error || "Failed to update settings");
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Failed to update settings");
+    } finally {
       setIsSaving(false);
-      toast.success("Competition & website settings successfully updated!");
-    }, 600);
+    }
   };
 
   return (
     <Card className="border-zinc-200 shadow-xs md:col-span-2">
       <CardHeader>
         <div className="flex items-center justify-between mb-1">
-          <div className="w-10 h-10 rounded-md bg-[#292821] text-[#B69A65] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-md bg-[#0A192F] text-[#C5A880] flex items-center justify-center">
             <Crown className="w-5 h-5 stroke-[1.8]" />
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65] bg-[#292821] px-2 py-0.5 rounded">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] bg-[#0A192F] px-2 py-0.5 rounded">
             Mithila Queen CMS
           </span>
         </div>
@@ -57,12 +93,15 @@ export function CompetitionSettingsCard() {
               </Label>
               <Input
                 id="fee"
+                type="number"
+                min="0"
+                step="1"
                 value={fee}
                 onChange={(e) => setFee(e.target.value)}
-                disabled
-                className="h-10 text-xs border-zinc-200 bg-zinc-50 font-mono font-bold"
+                className="h-10 text-xs border-zinc-200 bg-white font-mono font-bold"
+                placeholder="399"
               />
-              <p className="text-[10px] text-zinc-500">Fixed at NPR 399 per official brief.</p>
+              <p className="text-[10px] text-zinc-500">Official fee collected in Nepalese Rupees per registration.</p>
             </div>
 
             <div className="space-y-1.5">
@@ -165,9 +204,9 @@ export function CompetitionSettingsCard() {
             <Button
               type="submit"
               disabled={isSaving}
-              className="bg-[#292821] hover:bg-[#3C332A] text-[#FAF5EE] text-xs font-bold h-10 px-5 rounded-md shadow-xs gap-2"
+              className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F8FAFC] text-xs font-bold h-10 px-5 rounded-md shadow-xs gap-2"
             >
-              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 text-[#B69A65]" />}
+              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 text-[#C5A880]" />}
               <span>Save Competition Configuration</span>
             </Button>
           </div>

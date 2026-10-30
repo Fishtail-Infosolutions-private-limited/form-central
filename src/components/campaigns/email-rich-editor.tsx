@@ -141,9 +141,9 @@ export function EmailRichEditor({ value, onChange, disabled = false }: EmailRich
   return (
     <div className="space-y-3">
       {/* Visual Editor Card */}
-      <div className="rounded-xl border border-zinc-200 bg-white overflow-hidden shadow-2xs focus-within:border-[#B69A65] focus-within:ring-2 focus-within:ring-[#B69A65]/15 transition-all">
+      <div className="rounded-xl border border-zinc-200 bg-white overflow-hidden shadow-2xs focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/15 transition-all">
         {/* Toolbar */}
-        <div className="flex flex-wrap items-center gap-1 p-2 bg-[#FAF5EE]/70 border-b border-zinc-200 text-zinc-700">
+        <div className="flex flex-wrap items-center gap-1 p-2 bg-[#F8FAFC]/70 border-b border-zinc-200 text-zinc-700">
           {/* Paragraph / Headings */}
           <button
             type="button"
@@ -268,17 +268,17 @@ export function EmailRichEditor({ value, onChange, disabled = false }: EmailRich
           onInput={handleInput}
           onKeyUp={saveSelection}
           onMouseUp={saveSelection}
-          className="min-h-[260px] p-4 text-xs sm:text-sm text-zinc-800 leading-relaxed outline-none focus:outline-none bg-white font-sans prose prose-sm max-w-none prose-p:my-2 prose-headings:font-bold prose-headings:text-zinc-900 prose-a:text-[#B69A65] prose-a:underline"
+          className="min-h-[260px] p-4 text-xs sm:text-sm text-zinc-800 leading-relaxed outline-none focus:outline-none bg-white font-sans prose prose-sm max-w-none prose-p:my-2 prose-headings:font-bold prose-headings:text-zinc-900 prose-a:text-[#C5A880] prose-a:underline"
           style={{ minHeight: "260px" }}
         />
       </div>
 
       {/* Personalize Your Email (Dynamic Variables Section) */}
-      <div className="bg-[#FAF5EE] rounded-xl border border-[#E8DFD0] p-3.5 space-y-2.5">
+      <div className="bg-[#F8FAFC] rounded-xl border border-[#E2E8F0] p-3.5 space-y-2.5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
           <div className="flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-[#B69A65]" />
-            <h4 className="text-xs font-bold text-[#292821] tracking-tight">
+            <Sparkles className="w-4 h-4 text-[#C5A880]" />
+            <h4 className="text-xs font-bold text-[#0A192F] tracking-tight">
               Personalize Your Email
             </h4>
             <span className="text-[10px] text-zinc-500 hidden md:inline">
@@ -287,7 +287,7 @@ export function EmailRichEditor({ value, onChange, disabled = false }: EmailRich
           </div>
 
           {/* Category Tabs */}
-          <div className="flex items-center gap-1 bg-white/70 p-0.5 rounded-lg border border-[#E8DFD0]">
+          <div className="flex items-center gap-1 bg-white/70 p-0.5 rounded-lg border border-[#E2E8F0]">
             {(
               [
                 { key: "participant", label: "Participant" },
@@ -302,7 +302,7 @@ export function EmailRichEditor({ value, onChange, disabled = false }: EmailRich
                 onClick={() => setActiveTab(tab.key)}
                 className={`px-2.5 py-1 text-[11px] font-semibold rounded-md transition-all ${
                   activeTab === tab.key
-                    ? "bg-[#292821] text-white shadow-2xs"
+                    ? "bg-[#0A192F] text-white shadow-2xs"
                     : "text-zinc-600 hover:text-zinc-900"
                 }`}
               >
@@ -325,14 +325,14 @@ export function EmailRichEditor({ value, onChange, disabled = false }: EmailRich
                 title={`${variable.description} (Example: "${variable.sampleValue}")`}
                 className={`group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all ${
                   isJustInserted
-                    ? "bg-[#292821] text-white scale-95"
-                    : "bg-white text-zinc-800 border border-[#E8DFD0] hover:border-[#B69A65] hover:bg-[#FAF5EE]"
+                    ? "bg-[#0A192F] text-white scale-95"
+                    : "bg-white text-zinc-800 border border-[#E2E8F0] hover:border-[#C5A880] hover:bg-[#F8FAFC]"
                 }`}
               >
                 {isJustInserted ? (
-                  <Check className="w-3 h-3 text-[#B69A65]" />
+                  <Check className="w-3 h-3 text-[#C5A880]" />
                 ) : (
-                  <span className="text-[10px] font-mono text-[#B69A65] font-bold">
+                  <span className="text-[10px] font-mono text-[#C5A880] font-bold">
                     +
                   </span>
                 )}

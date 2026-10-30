@@ -433,18 +433,18 @@ export function BuilderWorkspace({
   return (
     <div className="flex flex-col gap-4 min-h-[600px]">
       {/* Workspace Sub-Header */}
-      <div className="bg-[#FFFFFF] p-4 rounded-lg border border-[#E8DFD0] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[#FFFFFF] p-4 rounded-lg border border-[#E2E8F0] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-md bg-[#FAF5EE] border border-[#B69A65]/40 text-[#B69A65] flex items-center justify-center shrink-0">
-            <Crown className="w-5 h-5 text-[#B69A65]" />
+          <div className="w-9 h-9 rounded-md bg-[#F8FAFC] border border-[#C5A880]/40 text-[#C5A880] flex items-center justify-center shrink-0">
+            <Crown className="w-5 h-5 text-[#C5A880]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-serif font-bold text-[#292821]">
+              <h2 className="text-sm font-serif font-bold text-[#0A192F]">
                 {form.name} &bull; Form Customizer
               </h2>
               {publishedVersionNumber && (
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#FAF5EE] border border-[#E8DFD0] text-[#292821] font-semibold">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#F8FAFC] border border-[#E2E8F0] text-[#0A192F] font-semibold">
                   v{publishedVersionNumber} Live
                 </span>
               )}
@@ -458,7 +458,7 @@ export function BuilderWorkspace({
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2 shrink-0">
           {hasUnsavedChanges && (
-            <span className="text-[10px] font-semibold text-[#A64B36] bg-[#FAF5EE] border border-[#A64B36]/30 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+            <span className="text-[10px] font-semibold text-[#A64B36] bg-[#F8FAFC] border border-[#A64B36]/30 px-2.5 py-1 rounded-full flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#A64B36] animate-pulse" />
               <span>Unsaved changes</span>
             </span>
@@ -469,7 +469,7 @@ export function BuilderWorkspace({
             variant="outline"
             size="sm"
             onClick={() => setIsPaletteOpen(!isPaletteOpen)}
-            className="text-xs h-8 font-semibold gap-1.5 border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE]"
+            className="text-xs h-8 font-semibold gap-1.5 border-[#E2E8F0] text-[#0A192F] hover:bg-[#F8FAFC]"
           >
             <Plus className="w-3.5 h-3.5 text-[#A64B36]" />
             <span>{isPaletteOpen ? "Close Palette" : "Add Question"}</span>
@@ -480,9 +480,9 @@ export function BuilderWorkspace({
             variant="outline"
             size="sm"
             onClick={() => setIsPreviewOpen(true)}
-            className="text-xs h-8 font-semibold gap-1.5 border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE]"
+            className="text-xs h-8 font-semibold gap-1.5 border-[#E2E8F0] text-[#0A192F] hover:bg-[#F8FAFC]"
           >
-            <Eye className="w-3.5 h-3.5 text-[#B69A65]" />
+            <Eye className="w-3.5 h-3.5 text-[#C5A880]" />
             <span>Full Form Preview</span>
           </Button>
 
@@ -492,12 +492,12 @@ export function BuilderWorkspace({
             size="sm"
             disabled={isSaving}
             onClick={handleSaveDraft}
-            className="text-xs h-8 font-semibold gap-1.5 border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE]"
+            className="text-xs h-8 font-semibold gap-1.5 border-[#E2E8F0] text-[#0A192F] hover:bg-[#F8FAFC]"
           >
             {isSaving ? (
-              <Loader2 className="w-3 h-3 animate-spin text-[#B69A65]" />
+              <Loader2 className="w-3 h-3 animate-spin text-[#C5A880]" />
             ) : (
-              <Save className="w-3.5 h-3.5 text-[#B69A65]" />
+              <Save className="w-3.5 h-3.5 text-[#C5A880]" />
             )}
             <span>Save Draft</span>
           </Button>
@@ -521,10 +521,10 @@ export function BuilderWorkspace({
 
       {/* Field Palette Popout Tray */}
       {isPaletteOpen && (
-        <div className="bg-[#FFFFFF] p-4 rounded-lg border border-[#B69A65]/40 shadow-sm animate-in fade-in slide-in-from-top-2">
-          <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E8DFD0]">
+        <div className="bg-[#FFFFFF] p-4 rounded-lg border border-[#C5A880]/40 shadow-sm animate-in fade-in slide-in-from-top-2">
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E2E8F0]">
             <div>
-              <h3 className="font-serif font-bold text-xs uppercase tracking-wider text-[#292821]">
+              <h3 className="font-serif font-bold text-xs uppercase tracking-wider text-[#0A192F]">
                 Add Question to Step {activeStepIndex + 1}: {currentStep.title}
               </h3>
               <p className="text-[11px] text-zinc-500">
@@ -533,7 +533,7 @@ export function BuilderWorkspace({
             </div>
             <button
               onClick={() => setIsPaletteOpen(false)}
-              className="p-1 rounded text-zinc-400 hover:text-[#292821]"
+              className="p-1 rounded text-zinc-400 hover:text-[#0A192F]"
             >
               <X className="w-4 h-4" />
             </button>
@@ -547,13 +547,13 @@ export function BuilderWorkspace({
         <div
           className={`px-4 py-2.5 rounded-lg border flex items-center justify-between text-xs shrink-0 ${
             message.type === "success"
-              ? "bg-[#FAF5EE] border-[#B69A65]/40 text-[#292821]"
+              ? "bg-[#F8FAFC] border-[#C5A880]/40 text-[#0A192F]"
               : "bg-red-50 border-red-200 text-red-800"
           }`}
         >
           <div className="flex items-center gap-2 font-medium">
             {message.type === "success" ? (
-              <CheckCircle2 className="w-4 h-4 text-[#B69A65] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-[#C5A880] shrink-0" />
             ) : (
               <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
             )}
@@ -598,13 +598,13 @@ export function BuilderWorkspace({
               onClose={() => setSelectedFieldId(null)}
             />
           ) : (
-            <div className="bg-[#FFFFFF] rounded-lg border border-[#E8DFD0] p-6 h-full flex flex-col justify-between overflow-y-auto">
+            <div className="bg-[#FFFFFF] rounded-lg border border-[#E2E8F0] p-6 h-full flex flex-col justify-between overflow-y-auto">
               <div className="space-y-4">
-                <div className="border-b border-[#E8DFD0] pb-3">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65]">
+                <div className="border-b border-[#E2E8F0] pb-3">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880]">
                     Live Step Preview &bull; Step {activeStepIndex + 1}
                   </span>
-                  <h3 className="font-serif font-bold text-lg text-[#292821]">
+                  <h3 className="font-serif font-bold text-lg text-[#0A192F]">
                     {currentStep.title}
                   </h3>
                   {currentStep.description && (
@@ -619,10 +619,10 @@ export function BuilderWorkspace({
                     <div
                       key={f.id}
                       onClick={() => setSelectedFieldId(f.id)}
-                      className="p-3.5 rounded-md border border-[#E8DFD0] bg-[#FAF5EE]/40 hover:border-[#B69A65] transition-colors cursor-pointer group"
+                      className="p-3.5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC]/40 hover:border-[#C5A880] transition-colors cursor-pointer group"
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <label className="text-xs font-bold text-[#292821] flex items-center gap-1.5">
+                        <label className="text-xs font-bold text-[#0A192F] flex items-center gap-1.5">
                           <span>{f.label}</span>
                           {f.required && <span className="text-[#A64B36]">*</span>}
                         </label>
@@ -633,7 +633,7 @@ export function BuilderWorkspace({
                       {f.description && (
                         <p className="text-[11px] text-zinc-500 mb-2">{f.description}</p>
                       )}
-                      <div className="h-8 rounded bg-white border border-[#E8DFD0] px-3 flex items-center text-xs text-zinc-400">
+                      <div className="h-8 rounded bg-white border border-[#E2E8F0] px-3 flex items-center text-xs text-zinc-400">
                         {f.placeholder || `[${f.type} input placeholder]`}
                       </div>
                     </div>
@@ -641,7 +641,7 @@ export function BuilderWorkspace({
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#E8DFD0] text-center">
+              <div className="pt-4 border-t border-[#E2E8F0] text-center">
                 <p className="text-xs text-zinc-500">
                   Click any question on the left panel to configure its label, validation, choices, or instructions.
                 </p>
@@ -666,24 +666,24 @@ export function BuilderWorkspace({
         <div
           role="alert"
           aria-live="assertive"
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 w-[92vw] max-w-lg bg-[#292821] text-[#F5F0E6] rounded-lg shadow-2xl border border-[#B69A65]/40 overflow-hidden"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 w-[92vw] max-w-lg bg-[#0A192F] text-[#F1F5F9] rounded-lg shadow-2xl border border-[#C5A880]/40 overflow-hidden"
         >
           <div className="p-3 sm:p-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded bg-[#1E1D18] border border-[#B69A65]/30 flex items-center justify-center shrink-0 text-[#B69A65]">
+              <div className="w-8 h-8 rounded bg-[#071324] border border-[#C5A880]/30 flex items-center justify-center shrink-0 text-[#C5A880]">
                 <RotateCcw className="w-4 h-4" />
               </div>
               <div className="min-w-0">
                 <div className="text-xs font-bold text-white truncate">
                   Deleted &ldquo;{deletedStepSnapshot.step.title}&rdquo;
                 </div>
-                <div className="text-[11px] text-[#E8DFD0]/70 flex items-center gap-1.5">
+                <div className="text-[11px] text-[#E2E8F0]/70 flex items-center gap-1.5">
                   <span>
                     {deletedStepSnapshot.step.fields.length}{" "}
                     {deletedStepSnapshot.step.fields.length === 1 ? "question" : "questions"}
                   </span>
                   <span>&bull;</span>
-                  <span className="text-[#B69A65] font-medium font-mono">
+                  <span className="text-[#C5A880] font-medium font-mono">
                     Undo expires in {undoSecondsLeft}s
                   </span>
                 </div>
@@ -707,7 +707,7 @@ export function BuilderWorkspace({
               <button
                 type="button"
                 onClick={handleDismissUndo}
-                className="p-1.5 text-zinc-400 hover:text-white rounded hover:bg-[#3C332A] transition-colors"
+                className="p-1.5 text-zinc-400 hover:text-white rounded hover:bg-[#1E293B] transition-colors"
                 title="Dismiss undo"
                 aria-label="Dismiss"
               >
@@ -717,9 +717,9 @@ export function BuilderWorkspace({
           </div>
 
           {/* 10-second Animated Countdown Progress Bar */}
-          <div className="w-full bg-[#1E1D18] h-1 overflow-hidden">
+          <div className="w-full bg-[#071324] h-1 overflow-hidden">
             <div
-              className="bg-[#B69A65] h-full transition-all duration-100 ease-linear"
+              className="bg-[#C5A880] h-full transition-all duration-100 ease-linear"
               style={{
                 width: `${undoProgressPercent}%`,
               }}

@@ -88,7 +88,7 @@ export function GmailRecipientInput({
     <div className="space-y-2">
       <div
         className={`min-h-[52px] w-full rounded-xl border bg-white p-2 text-xs transition-all flex flex-wrap items-center gap-1.5 cursor-text ${
-          disabled ? "opacity-60 bg-zinc-50 cursor-not-allowed" : "border-zinc-200 focus-within:border-[#B69A65] focus-within:ring-2 focus-within:ring-[#B69A65]/15"
+          disabled ? "opacity-60 bg-zinc-50 cursor-not-allowed" : "border-zinc-200 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/15"
         }`}
         onClick={(e) => {
           const input = e.currentTarget.querySelector("input");
@@ -108,7 +108,7 @@ export function GmailRecipientInput({
               key={`${email}-${idx}`}
               className={`inline-flex items-center gap-1.5 pl-2.5 pr-1 py-1 rounded-full text-xs font-medium transition-all ${
                 isValid
-                  ? "bg-[#FAF5EE] text-[#292821] border border-[#E8DFD0]"
+                  ? "bg-[#F8FAFC] text-[#0A192F] border border-[#E2E8F0]"
                   : "bg-rose-50 text-rose-800 border border-rose-200"
               }`}
             >

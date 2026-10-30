@@ -539,6 +539,9 @@ export async function submitMithilaQueenRegistrationAction(formData: {
     }
 
     // Find existing draft or create new
+    const siteSetting = await prisma.siteSetting.findUnique({ where: { id: "primary" } }).catch(() => null);
+    const effectiveFee = siteSetting?.registrationFee ?? 399;
+
     const existingDraft = await prisma.mithilaQueenRegistration.findFirst({
       where: { email: cleanEmail },
       orderBy: { createdAt: "desc" },
@@ -591,7 +594,7 @@ export async function submitMithilaQueenRegistrationAction(formData: {
           additionalPhotoUrl: formData.additionalPhotoUrl || null,
           documentUrl: formData.documentUrl || null,
 
-          registrationFee: 399,
+          registrationFee: effectiveFee,
           paymentStatus: PaymentStatus.PENDING,
           applicationStatus: ApplicationStatus.SUBMITTED,
           inProgressStep: 7,
@@ -643,7 +646,7 @@ export async function submitMithilaQueenRegistrationAction(formData: {
           additionalPhotoUrl: formData.additionalPhotoUrl || null,
           documentUrl: formData.documentUrl || null,
 
-          registrationFee: 399,
+          registrationFee: effectiveFee,
           paymentStatus: PaymentStatus.PENDING,
           applicationStatus: ApplicationStatus.SUBMITTED,
           inProgressStep: 7,
@@ -706,7 +709,7 @@ export async function submitMithilaQueenRegistrationAction(formData: {
       to: registration.email,
       fullName: registration.fullName,
       registrationId: registration.registrationId,
-      feeAmount: 399,
+      feeAmount: effectiveFee,
       paymentPageUrl,
     }).catch((emailErr) => {
       console.error("Non-blocking submission email error:", emailErr);
@@ -716,7 +719,7 @@ export async function submitMithilaQueenRegistrationAction(formData: {
       success: true,
       registrationId: registration.registrationId,
       fullName: registration.fullName,
-      feeAmount: 399,
+      feeAmount: effectiveFee,
     };
   } catch (err: unknown) {
     console.error("Mithila Queen submission error:", err);
@@ -1233,6 +1236,7 @@ export async function downloadApprovedPdfAction({
       verifiedAt: reg.paymentVerifiedAt,
       approvedAt: reg.approvedAt,
       verificationCode,
+      registrationFee: reg.registrationFee,
     });
 
     return {
@@ -1354,7 +1358,7 @@ export async function adminAdjudicateApplicationAction({
     if (reg.paymentStatus !== PaymentStatus.VERIFIED) {
       return {
         success: false,
-        error: "Cannot approve application. The NPR 399 payment must be independently verified first.",
+        error: `Cannot approve application. The NPR ${reg.registrationFee} payment must be independently verified first.`,
       };
     }
 
@@ -1372,6 +1376,7 @@ export async function adminAdjudicateApplicationAction({
       verifiedAt: reg.paymentVerifiedAt || new Date(),
       approvedAt: new Date(),
       verificationCode,
+      registrationFee: reg.registrationFee,
     });
 
     await prisma.$transaction(async (tx) => {

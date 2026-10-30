@@ -37,30 +37,30 @@ export function DeleteFormCard({
   };
 
   return (
-    <Card className="border-[#E8DFD0] bg-white shadow-xs overflow-hidden mt-8">
-      <CardHeader className="bg-[#FAF5EE]/70 border-b border-[#E8DFD0] pb-4">
+    <Card className="border-[#E2E8F0] bg-white shadow-xs overflow-hidden mt-8">
+      <CardHeader className="bg-[#F8FAFC]/70 border-b border-[#E2E8F0] pb-4">
         <div className="flex items-center gap-2 text-[#A64B36] font-bold text-xs uppercase tracking-wider">
           <Trash2 className="w-4 h-4 text-[#A64B36]" />
           <span>Danger Zone</span>
         </div>
-        <CardTitle className="text-lg font-bold text-[#292821]">
+        <CardTitle className="text-lg font-bold text-[#0A192F]">
           Delete This Registration Form
         </CardTitle>
-        <CardDescription className="text-xs text-[#292821]/60">
+        <CardDescription className="text-xs text-[#0A192F]/60">
           Permanently delete &quot;{formName}&quot; and all of its associated version snapshots, participant responses, and uploaded file records.
         </CardDescription>
       </CardHeader>
 
       <CardContent className="p-6 space-y-4">
         {error && (
-          <div className="p-3 bg-[#FAF5EE] border border-rose-200 rounded-xl text-xs text-[#A64B36] flex items-center gap-2">
+          <div className="p-3 bg-[#F8FAFC] border border-rose-200 rounded-xl text-xs text-[#A64B36] flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-[#A64B36] shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         {submissionCount > 0 && (
-          <div className="p-3 bg-[#FAF5EE] border border-[#E8DFD0] rounded-xl text-xs text-[#292821]">
+          <div className="p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-xs text-[#0A192F]">
             <strong>Warning:</strong> This form currently contains{" "}
             <strong>{submissionCount} participant submission(s)</strong>. Deleting will permanently remove them from the system.
           </div>
@@ -72,15 +72,15 @@ export function DeleteFormCard({
               type="button"
               variant="outline"
               onClick={() => setIsConfirming(true)}
-              className="text-[#A64B36] hover:text-[#A64B36] hover:bg-rose-50 border-[#E8DFD0] text-xs font-bold gap-2"
+              className="text-[#A64B36] hover:text-[#A64B36] hover:bg-rose-50 border-[#E2E8F0] text-xs font-bold gap-2"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>Delete Form</span>
             </Button>
           </div>
         ) : (
-          <div className="p-4 bg-[#FAF5EE] border border-rose-200 rounded-xl space-y-3">
-            <p className="text-xs font-bold text-[#292821]">
+          <div className="p-4 bg-[#F8FAFC] border border-rose-200 rounded-xl space-y-3">
+            <p className="text-xs font-bold text-[#0A192F]">
               Confirm Deletion: Are you absolutely sure? This action cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-2.5">

@@ -170,7 +170,7 @@ export function RichTextEditor({
 
   return (
     <div
-      className={`rounded-xl border border-zinc-300 bg-white shadow-2xs overflow-hidden focus-within:border-[#292821] focus-within:ring-2 focus-within:ring-[#B69A65]/20 transition-all ${className}`}
+      className={`rounded-xl border border-zinc-300 bg-white shadow-2xs overflow-hidden focus-within:border-[#0A192F] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all ${className}`}
     >
       {/* Hidden input to support native Server Actions & forms */}
       <input type="hidden" id={id} name={name} value={currentHtml} />
@@ -183,7 +183,7 @@ export function RichTextEditor({
           onClick={() => toggleHeading("h1")}
           className={`px-2 py-1 rounded text-xs font-bold transition-colors flex items-center gap-1 ${
             activeStyles.h1
-              ? "bg-[#292821] text-white"
+              ? "bg-[#0A192F] text-white"
               : "hover:bg-zinc-200 text-zinc-800"
           }`}
           title="Heading 1"
@@ -197,7 +197,7 @@ export function RichTextEditor({
           onClick={() => toggleHeading("h2")}
           className={`px-2 py-1 rounded text-xs font-bold transition-colors flex items-center gap-1 ${
             activeStyles.h2
-              ? "bg-[#292821] text-white"
+              ? "bg-[#0A192F] text-white"
               : "hover:bg-zinc-200 text-zinc-800"
           }`}
           title="Heading 2"
@@ -214,7 +214,7 @@ export function RichTextEditor({
           onClick={() => exec("bold")}
           className={`p-1.5 rounded transition-colors ${
             activeStyles.bold
-              ? "bg-[#292821] text-white"
+              ? "bg-[#0A192F] text-white"
               : "hover:bg-zinc-200 text-zinc-700"
           }`}
           title="Bold (Ctrl+B)"
@@ -227,7 +227,7 @@ export function RichTextEditor({
           onClick={() => exec("italic")}
           className={`p-1.5 rounded transition-colors ${
             activeStyles.italic
-              ? "bg-[#292821] text-white"
+              ? "bg-[#0A192F] text-white"
               : "hover:bg-zinc-200 text-zinc-700"
           }`}
           title="Italic (Ctrl+I)"
@@ -240,7 +240,7 @@ export function RichTextEditor({
           onClick={() => exec("underline")}
           className={`p-1.5 rounded transition-colors ${
             activeStyles.underline
-              ? "bg-[#292821] text-white"
+              ? "bg-[#0A192F] text-white"
               : "hover:bg-zinc-200 text-zinc-700"
           }`}
           title="Underline (Ctrl+U)"
@@ -253,7 +253,7 @@ export function RichTextEditor({
           onClick={() => exec("strikeThrough")}
           className={`p-1.5 rounded transition-colors ${
             activeStyles.strike
-              ? "bg-[#292821] text-white"
+              ? "bg-[#0A192F] text-white"
               : "hover:bg-zinc-200 text-zinc-700"
           }`}
           title="Strikethrough"
@@ -269,7 +269,7 @@ export function RichTextEditor({
           onClick={() => exec("insertUnorderedList")}
           className={`p-1.5 rounded transition-colors ${
             activeStyles.ul
-              ? "bg-[#292821] text-white"
+              ? "bg-[#0A192F] text-white"
               : "hover:bg-zinc-200 text-zinc-700"
           }`}
           title="Bullet List"
@@ -282,7 +282,7 @@ export function RichTextEditor({
           onClick={() => exec("insertOrderedList")}
           className={`p-1.5 rounded transition-colors ${
             activeStyles.ol
-              ? "bg-[#292821] text-white"
+              ? "bg-[#0A192F] text-white"
               : "hover:bg-zinc-200 text-zinc-700"
           }`}
           title="Numbered List"
@@ -295,7 +295,7 @@ export function RichTextEditor({
           onClick={toggleQuote}
           className={`p-1.5 rounded transition-colors ${
             activeStyles.quote
-              ? "bg-[#292821] text-white"
+              ? "bg-[#0A192F] text-white"
               : "hover:bg-zinc-200 text-zinc-700"
           }`}
           title="Quote Block"
@@ -351,7 +351,7 @@ export function RichTextEditor({
         onKeyUp={updateActiveStyles}
         onMouseUp={updateActiveStyles}
         style={{ minHeight }}
-        className="p-3 text-xs text-zinc-800 leading-relaxed outline-hidden overflow-y-auto focus:outline-hidden prose prose-sm max-w-none [&_h1]:text-base [&_h1]:font-extrabold [&_h1]:text-black [&_h1]:my-1.5 [&_h2]:text-sm [&_h2]:font-bold [&_h2]:text-zinc-900 [&_h2]:my-1 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-1 [&_blockquote]:border-l-2 [&_blockquote]:border-[#B69A65] [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-zinc-600 [&_pre]:bg-zinc-900 [&_pre]:text-zinc-100 [&_pre]:p-2 [&_pre]:rounded [&_pre]:text-[11px]"
+        className="p-3 text-xs text-zinc-800 leading-relaxed outline-hidden overflow-y-auto focus:outline-hidden prose prose-sm max-w-none [&_h1]:text-base [&_h1]:font-extrabold [&_h1]:text-black [&_h1]:my-1.5 [&_h2]:text-sm [&_h2]:font-bold [&_h2]:text-zinc-900 [&_h2]:my-1 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-1 [&_blockquote]:border-l-2 [&_blockquote]:border-[#C5A880] [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-zinc-600 [&_pre]:bg-zinc-900 [&_pre]:text-zinc-100 [&_pre]:p-2 [&_pre]:rounded [&_pre]:text-[11px]"
         data-placeholder={placeholder}
       />
     </div>

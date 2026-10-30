@@ -3,34 +3,34 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#C5A880] focus:ring-offset-2",
   {
     variants: {
       variant: {
         default:
-          "border border-[#E8DFD0] bg-[#FAF5EE] text-[#292821]",
+          "border border-slate-200 bg-slate-100 text-[#0A192F]",
         secondary:
-          "border border-[#E8DFD0] bg-[#E8DFD0]/60 text-[#292821]",
+          "border border-slate-200 bg-white text-[#0A192F]",
         destructive:
-          "border-transparent bg-[#A64B36] text-white font-medium",
+          "border-transparent bg-rose-600 text-white font-medium",
         outline:
-          "border border-[#E8DFD0] text-[#292821] bg-white",
+          "border border-slate-300 text-[#0A192F] bg-white",
         warning:
-          "border border-[#B69A65]/40 bg-[#FAF5EE] text-[#B69A65]",
+          "border border-amber-300 bg-amber-50 text-amber-900",
         accent:
-          "border border-[#B69A65]/40 bg-[#FAF5EE] text-[#A64B36]",
+          "border border-[#C5A880]/40 bg-slate-50 text-[#C5A880]",
         published:
-          "border-transparent bg-[#292821] text-[#F5F0E6] font-semibold",
+          "border-transparent bg-[#0A192F] text-white font-semibold",
         draft:
-          "border border-[#E8DFD0] bg-[#FAF5EE] text-[#3C332A] font-medium",
+          "border border-slate-200 bg-slate-100 text-slate-700 font-medium",
         closed:
-          "border-transparent bg-[#3C332A] text-white font-medium",
+          "border-transparent bg-slate-700 text-white font-medium",
         black:
-          "border-transparent bg-[#292821] text-white font-medium",
+          "border-transparent bg-[#0A192F] text-white font-medium",
         forest:
-          "border-transparent bg-[#292821] text-[#F5F0E6] font-medium",
+          "border-transparent bg-[#0A192F] text-white font-medium",
         terracotta:
-          "border-transparent bg-[#A64B36] text-white font-medium",
+          "border-transparent bg-[#C5A880] text-[#0A192F] font-bold",
       },
     },
     defaultVariants: {

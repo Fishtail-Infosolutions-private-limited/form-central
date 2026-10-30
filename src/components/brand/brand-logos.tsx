@@ -4,8 +4,8 @@ import React from "react";
 // THE ORIGIN FOUNDATION — OFFICIAL LOGO & SEAL
 // Rooted in Identity. Driven by Purpose.
 // Janakpur Dham, Nepal
-// Palette: Deep Forest/Charcoal (#292821), Warm Ivory (#F5F0E6), Terracotta (#A64B36),
-// Antique Gold (#B69A65), Dark Brown (#3C332A), Soft Beige (#E8DFD0)
+// Palette: Deep Navy (#0A192F), Crisp White (#FFFFFF), Slate Navy (#1E293B),
+// Restrained Gold (#C5A880), Soft Slate (#E2E8F0)
 // ============================================================================
 
 export function OriginFoundationLogo({
@@ -14,15 +14,15 @@ export function OriginFoundationLogo({
   className = "",
 }: {
   variant?: "full" | "mark" | "stacked" | "inline";
-  theme?: "light" | "dark"; // "light" = for dark charcoal background; "dark" = for light ivory background
+  theme?: "light" | "dark"; // "light" = for dark navy background; "dark" = for light background
   className?: string;
 }) {
   const isLight = theme === "light";
-  const primaryTextColor = isLight ? "#F5F0E6" : "#292821";
-  const secondaryTextColor = isLight ? "#B69A65" : "#A64B36";
-  const subtextColor = isLight ? "#E8DFD0" : "#59574D";
-  const goldColor = "#B69A65";
-  const charcoalColor = "#292821";
+  const primaryTextColor = isLight ? "#FFFFFF" : "#0A192F";
+  const secondaryTextColor = isLight ? "#C5A880" : "#A98A5B";
+  const subtextColor = isLight ? "#E2E8F0" : "#64748B";
+  const goldColor = "#C5A880";
+  const navyColor = "#0A192F";
 
   // The Emblem Mark: Sacred Lotus + Rising Sun of Janakpur + Geometric 'O' of Origin
   const EmblemMark = (
@@ -36,8 +36,8 @@ export function OriginFoundationLogo({
       <circle cx="50" cy="50" r="47" stroke={goldColor} strokeWidth="1.2" opacity="0.9" />
       <circle cx="50" cy="50" r="43" stroke={goldColor} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.6" />
 
-      {/* Charcoal Medallion Background */}
-      <circle cx="50" cy="50" r="41" fill={charcoalColor} />
+      {/* Deep Navy Medallion Background */}
+      <circle cx="50" cy="50" r="41" fill={navyColor} />
 
       {/* Sun Ray Accents (Surya of Janakpur) */}
       <g stroke={goldColor} strokeWidth="1" strokeLinecap="round" opacity="0.95">
@@ -160,11 +160,11 @@ export function MithilaQueenLogo({
   className?: string;
 }) {
   const isLight = theme === "light";
-  const primaryTextColor = isLight ? "#F5F0E6" : "#292821";
-  const goldColor = "#B69A65";
-  const terracottaColor = "#A64B36";
-  const forestColor = "#292821";
-  const subtextColor = isLight ? "#E8DFD0" : "#59574D";
+  const primaryTextColor = isLight ? "#FFFFFF" : "#0A192F";
+  const goldColor = "#C5A880";
+  const terracottaColor = "#C5A880";
+  const navyColor = "#0A192F";
+  const subtextColor = isLight ? "#E2E8F0" : "#64748B";
 
   // The Royal Mithila Queen Crest: Regal Crown + Traditional Mayur Flourish
   const CrestMark = (
@@ -197,26 +197,26 @@ export function MithilaQueenLogo({
         opacity="0.5"
       />
 
-      {/* Charcoal Fill */}
-      <rect x="12" y="12" width="76" height="76" rx="10" fill="#292821" />
+      {/* Deep Navy Fill */}
+      <rect x="12" y="12" width="76" height="76" rx="10" fill="#0A192F" />
 
       {/* Regal Mithila Crown */}
       <path
         d="M26 58 L28 35 L40 46 L50 24 L60 46 L72 35 L74 58 Z"
         fill={goldColor}
       />
-      {/* Crown Base Band with Terracotta Insets */}
-      <rect x="25" y="58" width="50" height="7" rx="1" fill="#292821" stroke={goldColor} strokeWidth="1" />
-      <circle cx="34" cy="61.5" r="1.6" fill="#F5F0E6" />
-      <circle cx="50" cy="61.5" r="2" fill={terracottaColor} />
-      <circle cx="66" cy="61.5" r="1.6" fill="#F5F0E6" />
+      {/* Crown Base Band with Gold Insets */}
+      <rect x="25" y="58" width="50" height="7" rx="1" fill="#0A192F" stroke={goldColor} strokeWidth="1" />
+      <circle cx="34" cy="61.5" r="1.6" fill="#FFFFFF" />
+      <circle cx="50" cy="61.5" r="2" fill={goldColor} />
+      <circle cx="66" cy="61.5" r="1.6" fill="#FFFFFF" />
 
       {/* Crown Tip Pearls */}
-      <circle cx="28" cy="34" r="2" fill="#F5F0E6" />
-      <circle cx="40" cy="45" r="1.5" fill="#F5F0E6" />
-      <circle cx="50" cy="23" r="2.8" fill="#F5F0E6" />
-      <circle cx="60" cy="45" r="1.5" fill="#F5F0E6" />
-      <circle cx="72" cy="34" r="2" fill="#F5F0E6" />
+      <circle cx="28" cy="34" r="2" fill="#FFFFFF" />
+      <circle cx="40" cy="45" r="1.5" fill="#FFFFFF" />
+      <circle cx="50" cy="23" r="2.8" fill="#FFFFFF" />
+      <circle cx="60" cy="45" r="1.5" fill="#FFFFFF" />
+      <circle cx="72" cy="34" r="2" fill="#FFFFFF" />
 
       {/* Twin Mayur (Peacock) Flourishes under crown */}
       <path
@@ -225,7 +225,7 @@ export function MithilaQueenLogo({
         strokeWidth="1.4"
         strokeLinecap="round"
       />
-      <circle cx="50" cy="74" r="2" fill={terracottaColor} />
+      <circle cx="50" cy="74" r="2" fill={goldColor} />
       <path
         d="M32 78 Q50 82 68 78"
         stroke={goldColor}
@@ -243,13 +243,13 @@ export function MithilaQueenLogo({
   if (variant === "badge") {
     return (
       <div
-        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#B69A65]/40 bg-[#292821] text-[#F5F0E6] select-none ${className}`}
+        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#C5A880]/40 bg-[#0A192F] text-white select-none ${className}`}
       >
         <div className="w-5 h-5 shrink-0">{CrestMark}</div>
-        <span className="text-xs font-serif font-bold tracking-wider text-[#F5F0E6] uppercase">
+        <span className="text-xs font-serif font-bold tracking-wider text-white uppercase">
           Mithila Queen
         </span>
-        <span className="text-[10px] text-[#B69A65] font-sans font-semibold tracking-wide">
+        <span className="text-[10px] text-[#C5A880] font-sans font-semibold tracking-wide">
           2026
         </span>
       </div>
@@ -268,7 +268,7 @@ export function MithilaQueenLogo({
             Mithila Queen
           </span>
           <span
-            className="text-xs font-serif italic text-[#A64B36] mt-0.5"
+            className="text-xs font-serif italic text-[#C5A880] mt-0.5"
           >
             Celebrating Mithila&apos;s Culture, Confidence & Talent
           </span>
@@ -297,7 +297,7 @@ export function MithilaQueenLogo({
           Mithila Queen
         </span>
         <span
-          className="text-[11px] font-serif italic text-[#A64B36] leading-tight mt-0.5"
+          className="text-[11px] font-serif italic text-[#C5A880] leading-tight mt-0.5"
         >
           Culture &bull; Confidence &bull; Talent
         </span>
@@ -320,7 +320,7 @@ export function MithilaQueenLogo({
 
 export function MithilaHeritageMandala({
   className = "w-72 h-72",
-  accent = "#B69A65",
+  accent = "#C5A880",
 }: {
   className?: string;
   accent?: string;

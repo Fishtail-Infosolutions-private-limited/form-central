@@ -141,9 +141,9 @@ export function FormCanvas({
   };
 
   return (
-    <div className="bg-[#FFFFFF] rounded-lg border border-[#E8DFD0] shadow-xs flex flex-col h-full overflow-hidden">
+    <div className="bg-[#FFFFFF] rounded-lg border border-[#E2E8F0] shadow-xs flex flex-col h-full overflow-hidden">
       {/* Top Step Selector Tabs */}
-      <div className="bg-[#FAF5EE] border-b border-[#E8DFD0] px-4 pt-3 flex items-center justify-between gap-3 overflow-x-auto">
+      <div className="bg-[#F8FAFC] border-b border-[#E2E8F0] px-4 pt-3 flex items-center justify-between gap-3 overflow-x-auto">
         <div className="flex items-center gap-1.5 min-w-0">
           {steps.map((step, idx) => {
             const isActive = idx === activeStepIndex;
@@ -158,13 +158,13 @@ export function FormCanvas({
                 }}
                 className={`flex items-center gap-2 px-3.5 py-2 text-xs rounded-t-md transition-all border-t-2 border-x whitespace-nowrap ${
                   isActive
-                    ? "bg-[#FFFFFF] text-[#292821] border-t-[#A64B36] border-x-[#E8DFD0] font-bold shadow-2xs"
-                    : "bg-[#FAF5EE] text-[#292821]/70 border-transparent hover:bg-[#E8DFD0]/60 font-medium"
+                    ? "bg-[#FFFFFF] text-[#0A192F] border-t-[#A64B36] border-x-[#E2E8F0] font-bold shadow-2xs"
+                    : "bg-[#F8FAFC] text-[#0A192F]/70 border-transparent hover:bg-[#E2E8F0]/60 font-medium"
                 }`}
               >
                 <span
                   className={`w-4 h-4 rounded text-[10px] flex items-center justify-center font-bold ${
-                    isActive ? "bg-[#292821] text-[#F5F0E6]" : "bg-[#E8DFD0] text-[#292821]"
+                    isActive ? "bg-[#0A192F] text-[#F1F5F9]" : "bg-[#E2E8F0] text-[#0A192F]"
                   }`}
                 >
                   {idx + 1}
@@ -180,7 +180,7 @@ export function FormCanvas({
             variant="outline"
             type="button"
             onClick={onAddStep}
-            className="h-8 text-xs text-[#292821] border-dashed border-[#E8DFD0] hover:border-[#B69A65] hover:bg-[#FAF5EE] gap-1 px-3 font-semibold ml-1 shrink-0"
+            className="h-8 text-xs text-[#0A192F] border-dashed border-[#E2E8F0] hover:border-[#C5A880] hover:bg-[#F8FAFC] gap-1 px-3 font-semibold ml-1 shrink-0"
           >
             <Plus className="w-3.5 h-3.5 text-[#A64B36]" />
             <span>Add Step</span>
@@ -189,7 +189,7 @@ export function FormCanvas({
       </div>
 
       {/* Step Header */}
-      <div className="p-4 border-b border-[#E8DFD0] bg-[#FFFFFF] flex items-center justify-between gap-4">
+      <div className="p-4 border-b border-[#E2E8F0] bg-[#FFFFFF] flex items-center justify-between gap-4">
         <div className="flex-1">
           {isEditingStepTitle ? (
             <div className="flex items-center gap-2 max-w-md">
@@ -197,18 +197,18 @@ export function FormCanvas({
                 type="text"
                 value={stepTitleInput}
                 onChange={(e) => setStepTitleInput(e.target.value)}
-                className="text-xs font-bold text-[#292821] border border-[#E8DFD0] bg-[#FAF5EE] rounded px-3 py-1 flex-1 focus:outline-[#B69A65]"
+                className="text-xs font-bold text-[#0A192F] border border-[#E2E8F0] bg-[#F8FAFC] rounded px-3 py-1 flex-1 focus:outline-[#C5A880]"
                 autoFocus
                 onKeyDown={(e) => e.key === "Enter" && handleSaveStepTitle()}
               />
-              <Button size="sm" onClick={handleSaveStepTitle} className="h-8 text-xs bg-[#292821] text-[#F5F0E6] font-bold gap-1">
-                <Check className="w-3.5 h-3.5 text-[#B69A65]" />
+              <Button size="sm" onClick={handleSaveStepTitle} className="h-8 text-xs bg-[#0A192F] text-[#F1F5F9] font-bold gap-1">
+                <Check className="w-3.5 h-3.5 text-[#C5A880]" />
                 <span>Save</span>
               </Button>
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-serif font-bold text-[#292821]">
+              <h3 className="text-sm font-serif font-bold text-[#0A192F]">
                 Step {activeStepIndex + 1}: {currentStep.title}
               </h3>
               <button
@@ -217,7 +217,7 @@ export function FormCanvas({
                   setStepTitleInput(currentStep.title);
                   setIsEditingStepTitle(true);
                 }}
-                className="p-1 rounded text-zinc-400 hover:text-[#292821] hover:bg-[#FAF5EE] transition-colors"
+                className="p-1 rounded text-zinc-400 hover:text-[#0A192F] hover:bg-[#F8FAFC] transition-colors"
                 title="Rename step"
               >
                 <Pencil className="w-3.5 h-3.5" />
@@ -228,8 +228,8 @@ export function FormCanvas({
 
         <div className="flex items-center gap-3">
           {activeStepIndex === 0 ? (
-            <span className="text-[10px] font-bold text-[#B69A65] bg-[#FAF5EE] border border-[#B69A65]/40 px-2.5 py-1 rounded flex items-center gap-1.5">
-              <Lock className="w-3 h-3 text-[#B69A65]" />
+            <span className="text-[10px] font-bold text-[#C5A880] bg-[#F8FAFC] border border-[#C5A880]/40 px-2.5 py-1 rounded flex items-center gap-1.5">
+              <Lock className="w-3 h-3 text-[#C5A880]" />
               <span>Mandatory OTP Verification Step</span>
             </span>
           ) : (
@@ -249,13 +249,13 @@ export function FormCanvas({
       </div>
 
       {/* Canvas Field List */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2.5 bg-[#FAF5EE]/40">
+      <div className="flex-1 overflow-y-auto p-4 space-y-2.5 bg-[#F8FAFC]/40">
         {currentStep.fields.length === 0 ? (
-          <div className="border border-dashed border-[#E8DFD0] rounded-lg p-10 text-center bg-[#FFFFFF] space-y-2">
-            <div className="w-9 h-9 rounded-md bg-[#FAF5EE] text-[#B69A65] mx-auto flex items-center justify-center border border-[#B69A65]/30">
+          <div className="border border-dashed border-[#E2E8F0] rounded-lg p-10 text-center bg-[#FFFFFF] space-y-2">
+            <div className="w-9 h-9 rounded-md bg-[#F8FAFC] text-[#C5A880] mx-auto flex items-center justify-center border border-[#C5A880]/30">
               <FileQuestion className="w-4 h-4 text-[#A64B36]" />
             </div>
-            <h4 className="font-serif font-bold text-xs text-[#292821]">No questions in this step</h4>
+            <h4 className="font-serif font-bold text-xs text-[#0A192F]">No questions in this step</h4>
             <p className="text-[11px] text-zinc-500 max-w-xs mx-auto">
               Select questions or uploads from the Field Palette to add them to Step {activeStepIndex + 1}.
             </p>
@@ -279,10 +279,10 @@ export function FormCanvas({
                 onClick={() => onSelectField(field)}
                 className={`group p-3.5 rounded-lg border transition-all cursor-pointer bg-[#FFFFFF] relative ${
                   isDragging
-                    ? "opacity-40 border-dashed border-[#B69A65] bg-[#FAF5EE] scale-[0.99]"
+                    ? "opacity-40 border-dashed border-[#C5A880] bg-[#F8FAFC] scale-[0.99]"
                     : isSelected
-                    ? "border-[#B69A65] ring-2 ring-[#B69A65]/20 shadow-xs bg-[#FAF5EE]/30"
-                    : "border-[#E8DFD0] hover:border-[#B69A65]/60 hover:shadow-2xs"
+                    ? "border-[#C5A880] ring-2 ring-[#C5A880]/20 shadow-xs bg-[#F8FAFC]/30"
+                    : "border-[#E2E8F0] hover:border-[#C5A880]/60 hover:shadow-2xs"
                 } ${
                   isDragOver && dropPosition === "top"
                     ? "before:absolute before:-top-1 before:left-2 before:right-2 before:h-0.5 before:bg-[#A64B36] before:z-20"
@@ -305,19 +305,19 @@ export function FormCanvas({
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-bold text-xs text-[#292821] truncate">
+                        <span className="font-bold text-xs text-[#0A192F] truncate">
                           {field.label}
                         </span>
                         {field.required && (
-                          <span className="text-[10px] font-bold text-[#A64B36] bg-[#FAF5EE] px-1.5 py-0.5 rounded border border-[#E8DFD0]">
+                          <span className="text-[10px] font-bold text-[#A64B36] bg-[#F8FAFC] px-1.5 py-0.5 rounded border border-[#E2E8F0]">
                             Required
                           </span>
                         )}
-                        <span className="text-[10px] font-semibold text-[#292821]/80 bg-[#FAF5EE] border border-[#E8DFD0] px-1.5 py-0.5 rounded uppercase">
+                        <span className="text-[10px] font-semibold text-[#0A192F]/80 bg-[#F8FAFC] border border-[#E2E8F0] px-1.5 py-0.5 rounded uppercase">
                           {field.type.replace("-", " ")}
                         </span>
                         {field.isSystem && (
-                          <span className="text-[10px] font-bold text-[#B69A65] bg-[#FAF5EE] px-1.5 py-0.5 rounded flex items-center gap-1 border border-[#B69A65]/30">
+                          <span className="text-[10px] font-bold text-[#C5A880] bg-[#F8FAFC] px-1.5 py-0.5 rounded flex items-center gap-1 border border-[#C5A880]/30">
                             <Lock className="w-2.5 h-2.5" />
                             <span>Protected</span>
                           </span>
@@ -338,7 +338,7 @@ export function FormCanvas({
                       type="button"
                       disabled={fIdx === 0}
                       onClick={() => onMoveField(activeStepIndex, fIdx, "up")}
-                      className="p-1.5 rounded text-zinc-400 hover:text-[#292821] hover:bg-[#FAF5EE] disabled:opacity-20 transition-colors"
+                      className="p-1.5 rounded text-zinc-400 hover:text-[#0A192F] hover:bg-[#F8FAFC] disabled:opacity-20 transition-colors"
                       title="Move Up"
                     >
                       <ChevronUp className="w-3.5 h-3.5" />
@@ -347,7 +347,7 @@ export function FormCanvas({
                       type="button"
                       disabled={fIdx === currentStep.fields.length - 1}
                       onClick={() => onMoveField(activeStepIndex, fIdx, "down")}
-                      className="p-1.5 rounded text-zinc-400 hover:text-[#292821] hover:bg-[#FAF5EE] disabled:opacity-20 transition-colors"
+                      className="p-1.5 rounded text-zinc-400 hover:text-[#0A192F] hover:bg-[#F8FAFC] disabled:opacity-20 transition-colors"
                       title="Move Down"
                     >
                       <ChevronDown className="w-3.5 h-3.5" />
@@ -355,7 +355,7 @@ export function FormCanvas({
                     <button
                       type="button"
                       onClick={() => onDuplicateField(activeStepIndex, fIdx)}
-                      className="p-1.5 rounded text-zinc-400 hover:text-[#292821] hover:bg-[#FAF5EE] transition-colors"
+                      className="p-1.5 rounded text-zinc-400 hover:text-[#0A192F] hover:bg-[#F8FAFC] transition-colors"
                       title="Duplicate Question"
                     >
                       <Copy className="w-3.5 h-3.5" />

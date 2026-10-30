@@ -36,13 +36,15 @@ export default async function HomePage() {
     where: { id: "primary" },
   });
 
+  const regFee = setting?.registrationFee || 399;
+
   const prizes = (setting?.prizesJson as any) || [
     {
       position: "First Prize",
       title: "iPhone 18 Pro Max, Red, 512 GB",
       status: "Proposed by organizers",
       badge: "Flagship Award",
-      accent: "border-[#B69A65] bg-[#FFFFFF]",
+      accent: "border-[#C5A880] bg-white",
       highlight: true,
     },
     {
@@ -51,7 +53,7 @@ export default async function HomePage() {
       value: "Approx. NPR 30,000 estimated value",
       status: "Proposed value",
       badge: "Runner Up",
-      accent: "border-[#E8DFD0] bg-[#FFFFFF]",
+      accent: "border-slate-200 bg-white",
       highlight: false,
     },
     {
@@ -59,7 +61,7 @@ export default async function HomePage() {
       title: "Smartphone or Quality Electronic Device",
       status: "To be confirmed",
       badge: "Third Place",
-      accent: "border-[#E8DFD0] bg-[#FFFFFF]",
+      accent: "border-slate-200 bg-white",
       highlight: false,
     },
     {
@@ -67,7 +69,7 @@ export default async function HomePage() {
       title: "Honorable Recognition & Special Awards",
       status: "Details to be announced later",
       badge: "Special Honors",
-      accent: "border-[#E8DFD0] bg-[#FFFFFF]",
+      accent: "border-slate-200 bg-white",
       highlight: false,
     },
   ];
@@ -129,7 +131,7 @@ export default async function HomePage() {
     { num: "4", title: "Social Media Presence", desc: "At least one required (Instagram, TikTok, Facebook). No passwords" },
     { num: "5", title: "Photo & Media Upload", desc: "Profile photo and optional document securely uploaded" },
     { num: "6", title: "Rules & Minor Consent", desc: "Rules agreement + legal guardian consent timestamp if under 18" },
-    { num: "7", title: "Review & QR Payment", desc: "Generate MQ-YYYY-XXXXXX reference and submit NPR 399 transfer" },
+    { num: "7", title: "Review & QR Payment", desc: `Generate MQ-YYYY-XXXXXX reference and submit NPR ${regFee} transfer` },
   ];
 
   const faqs = (setting?.faqsJson as any) || [
@@ -143,7 +145,7 @@ export default async function HomePage() {
     },
     {
       q: "What is the registration fee?",
-      a: "The registration fee is strictly NPR 399 per registration, collected in Nepalese rupees only. Payment is made via verified QR code with transaction reference submission.",
+      a: `The registration fee is strictly NPR ${regFee} per registration, collected in Nepalese rupees only. Payment is made via verified QR code with transaction reference submission.`,
     },
     {
       q: "When will the event take place?",
@@ -159,41 +161,41 @@ export default async function HomePage() {
   return (
     <div className="space-y-16 sm:space-y-24 pb-16">
       {/* ==================================================================== */}
-      {/* HERO SECTION — CULTURAL MAJESTY & REGISTRATION */}
+      {/* HERO SECTION — DEEP NAVY & GOLD */}
       {/* ==================================================================== */}
-      <section className="relative overflow-hidden bg-[#292821] text-[#F5F0E6] pt-14 pb-20 sm:pt-24 sm:pb-28 border-b-2 border-[#B69A65]/40">
+      <section className="relative overflow-hidden bg-[#0A192F] text-white pt-14 pb-20 sm:pt-24 sm:pb-28 border-b border-[#C5A880]/30">
         {/* Subtle Cultural Motif Watermark */}
         <div className="absolute -right-20 -bottom-20 w-96 h-96 opacity-10 pointer-events-none">
-          <MithilaHeritageMandala className="w-full h-full text-[#B69A65]" />
+          <MithilaHeritageMandala className="w-full h-full text-[#C5A880]" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-6">
             {/* Super Header Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3C332A] border border-[#B69A65]/40 text-xs font-semibold text-[#B69A65] tracking-wide">
-              <span className="w-2 h-2 rounded-full bg-[#B69A65] animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#162C4E] border border-[#C5A880]/40 text-xs font-semibold text-[#C5A880] tracking-wide">
+              <span className="w-2 h-2 rounded-full bg-[#C5A880] animate-pulse" />
               <span>The Origin Foundation &bull; Janakpur Dham, Nepal</span>
             </div>
 
             {/* Headline */}
             <div className="space-y-2">
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-black tracking-tight text-[#FFFFFF] leading-[1.08]">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-black tracking-tight text-white leading-[1.08]">
                 Mithila Queen
               </h1>
-              <p className="text-xl sm:text-2xl font-serif text-[#B69A65] italic font-normal">
+              <p className="text-xl sm:text-2xl font-serif text-[#C5A880] italic font-normal">
                 Celebrating Mithila&apos;s Culture, Confidence & Talent
               </p>
             </div>
 
             {/* Subtitle / Positioning */}
-            <p className="text-sm sm:text-base text-[#E8DFD0]/90 leading-relaxed font-sans max-w-2xl">
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans max-w-2xl">
               An institutional platform created to celebrate cultural identity, articulate personal voice, and champion the creativity of young women across Janakpur Dham and Nepal.
             </p>
 
             {/* Registration Status Banner */}
-            <div className="p-3.5 rounded-md bg-[#3C332A] border border-[#B69A65]/40 flex items-center justify-between text-xs text-[#E8DFD0]">
+            <div className="p-3.5 rounded-md bg-[#162C4E] border border-[#C5A880]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-200">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-[#B69A65]" />
+                <Clock className="w-4 h-4 text-[#C5A880] shrink-0" />
                 <span>
                   {isRegistrationOpen
                     ? "Official Registrations Are Currently Open"
@@ -201,14 +203,14 @@ export default async function HomePage() {
                   {closingDateFormatted && isRegistrationOpen ? ` &bull; Deadline: ${closingDateFormatted}` : ""}
                 </span>
               </div>
-              <span className="font-mono font-bold text-[#B69A65]">Fee: NPR {setting?.registrationFee || 399}</span>
+              <span className="font-mono font-bold text-[#C5A880] shrink-0">Fee: NPR {regFee}</span>
             </div>
 
             {/* CTA Action Buttons */}
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <Link href="/register" className="w-full sm:w-auto">
-                <Button className="w-full bg-[#B69A65] hover:bg-[#a68c5b] text-[#292821] font-bold text-xs h-12 px-8 rounded-md shadow-sm gap-2">
-                  <span>Register for Mithila Queen (NPR {setting?.registrationFee || 399})</span>
+                <Button className="w-full bg-[#C5A880] hover:bg-[#B59870] text-[#0A192F] font-bold text-xs h-12 px-8 rounded-md shadow-sm gap-2">
+                  <span>Register for Mithila Queen (NPR {regFee})</span>
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
@@ -216,34 +218,34 @@ export default async function HomePage() {
               <Link href="/registration-status" className="w-full sm:w-auto">
                 <Button
                   variant="outline"
-                  className="w-full border-[#B69A65]/60 text-[#FAF5EE] hover:bg-[#3C332A] hover:text-[#FFFFFF] text-xs font-semibold h-12 px-6 rounded-md gap-2"
+                  className="w-full border-slate-700 bg-transparent text-slate-200 hover:bg-[#162C4E] hover:text-white text-xs font-semibold h-12 px-6 rounded-md gap-2"
                 >
-                  <Search className="w-4 h-4 text-[#B69A65]" />
+                  <Search className="w-4 h-4 text-[#C5A880]" />
                   <span>Check Application Status</span>
                 </Button>
               </Link>
             </div>
 
             {/* Official Organizing Bulletin Bar */}
-            <div className="pt-6 border-t border-[#B69A65]/30 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-[#E8DFD0]/90">
+            <div className="pt-6 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-300">
               <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#B69A65] shrink-0" />
+                <Calendar className="w-4 h-4 text-[#C5A880] shrink-0" />
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-[#B69A65] block">Schedule</span>
+                  <span className="text-[10px] uppercase font-bold text-[#C5A880] block">Schedule</span>
                   <span className="font-semibold text-white">{setting?.eventSchedule || "To Be Announced"}</span>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#B69A65] shrink-0" />
+                <MapPin className="w-4 h-4 text-[#C5A880] shrink-0" />
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-[#B69A65] block">Headquarters</span>
+                  <span className="text-[10px] uppercase font-bold text-[#C5A880] block">Headquarters</span>
                   <span className="font-semibold text-white">{setting?.location || "Janakpur Dham, Nepal"}</span>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#B69A65] shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-[#C5A880] shrink-0" />
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-[#B69A65] block">Eligibility</span>
+                  <span className="text-[10px] uppercase font-bold text-[#C5A880] block">Eligibility</span>
                   <span className="font-semibold text-white">Any Girl &bull; Newcomers Welcome</span>
                 </div>
               </div>
@@ -256,29 +258,29 @@ export default async function HomePage() {
       {/* DEDICATED INLINE APPLICATION STATUS & RESUME SECTION */}
       {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-6 sm:p-8 rounded-lg bg-white border border-[#E8DFD0] shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="p-6 sm:p-8 rounded-lg bg-white border border-slate-200 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#B69A65]">
-              <Search className="w-3.5 h-3.5 text-[#B69A65]" />
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C5A880]">
+              <Search className="w-3.5 h-3.5 text-[#C5A880]" />
               <span>Already Registered or Resuming Draft?</span>
             </div>
-            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#292821]">
+            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#0A192F]">
               Check Your Status or Resume Application
             </h3>
-            <p className="text-xs text-[#3C332A] max-w-xl leading-relaxed">
+            <p className="text-xs text-slate-600 max-w-xl leading-relaxed">
               If you have already started or submitted an application, enter your verified email to track payment verification, complete drafts, edit allowed details, or download your official confirmation certificate.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto shrink-0">
             <Link href="/registration-status" className="w-full sm:w-auto">
-              <Button className="w-full bg-[#292821] hover:bg-[#3C332A] text-[#FAF5EE] font-bold text-xs h-11 px-6 rounded-md gap-2">
+              <Button className="w-full bg-[#0A192F] hover:bg-[#162C4E] text-white font-bold text-xs h-11 px-6 rounded-md gap-2">
                 <span>Check Application Status</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#B69A65]" />
+                <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
               </Button>
             </Link>
             <Link href="/register" className="w-full sm:w-auto">
-              <Button variant="outline" className="w-full border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE] text-xs font-semibold h-11 px-5">
+              <Button variant="outline" className="w-full border-slate-300 text-[#0A192F] hover:bg-slate-100 text-xs font-semibold h-11 px-5">
                 Resume Draft
               </Button>
             </Link>
@@ -290,48 +292,48 @@ export default async function HomePage() {
       {/* EXECUTIVE STATEMENT — FROM THE MANAGING DIRECTORS */}
       {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-12 rounded-lg bg-[#FFFFFF] border border-[#E8DFD0] relative overflow-hidden">
+        <div className="p-8 sm:p-12 rounded-lg bg-white border border-slate-200 relative overflow-hidden shadow-xs">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             <div className="lg:col-span-8 space-y-4">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
                 <span>Executive Statement</span>
-                <span className="text-[#E8DFD0]">&bull;</span>
+                <span className="text-slate-300">&bull;</span>
                 <span>The Origin Foundation</span>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#292821] leading-snug">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F] leading-snug">
                 &ldquo;Rooted in our cultural identity. Driven by genuine community purpose.&rdquo;
               </h2>
 
-              <p className="text-sm text-[#3C332A] leading-relaxed">
+              <p className="text-sm text-slate-600 leading-relaxed">
                 The Origin Foundation was established in Janakpur Dham out of a profound commitment to our heritage. For generations, Mithila&apos;s art, language, and cultural wisdom have inspired civilizations. Through <strong>Mithila Queen</strong>, our goal is to offer a respected, national-level stage where girls from across our communities can celebrate who they are, showcase their talents, and step forward with confidence.
               </p>
 
-              <p className="text-sm text-[#3C332A] leading-relaxed">
+              <p className="text-sm text-slate-600 leading-relaxed">
                 This is intentionally designed as a cultural and talent-oriented platform—not merely a physical beauty contest. We invite every eligible girl to participate with pride.
               </p>
 
               {/* Managing Directors Joint Signature (Equal Visual Weight) */}
-              <div className="pt-4 border-t border-[#E8DFD0] grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-0.5 p-3 rounded-md bg-[#FAF5EE] border border-[#E8DFD0]">
-                  <p className="font-serif font-bold text-[#292821] text-sm">Gaurav Gupta</p>
-                  <p className="text-xs text-[#A64B36] font-medium">Managing Director</p>
-                  <p className="text-[11px] text-[#3C332A]/70 font-mono">+977 9704571941</p>
+              <div className="pt-4 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-0.5 p-3.5 rounded-md bg-slate-50 border border-slate-200">
+                  <p className="font-serif font-bold text-[#0A192F] text-sm">Gaurav Gupta</p>
+                  <p className="text-xs text-[#C5A880] font-semibold">Managing Director</p>
+                  <p className="text-[11px] text-slate-500 font-mono">+977 9704571941</p>
                 </div>
-                <div className="space-y-0.5 p-3 rounded-md bg-[#FAF5EE] border border-[#E8DFD0]">
-                  <p className="font-serif font-bold text-[#292821] text-sm">Dipendra Shah Kalwar</p>
-                  <p className="text-xs text-[#A64B36] font-medium">Managing Director</p>
-                  <p className="text-[11px] text-[#3C332A]/70 font-mono">+977 981-2005468</p>
+                <div className="space-y-0.5 p-3.5 rounded-md bg-slate-50 border border-slate-200">
+                  <p className="font-serif font-bold text-[#0A192F] text-sm">Dipendra Shah Kalwar</p>
+                  <p className="text-xs text-[#C5A880] font-semibold">Managing Director</p>
+                  <p className="text-[11px] text-slate-500 font-mono">+977 981-2005468</p>
                 </div>
               </div>
             </div>
 
             {/* Foundation Seal Right Column */}
-            <div className="lg:col-span-4 flex flex-col items-center justify-center p-6 rounded-lg bg-[#FAF5EE] border border-[#E8DFD0] text-center space-y-3">
+            <div className="lg:col-span-4 flex flex-col items-center justify-center p-6 rounded-lg bg-slate-50 border border-slate-200 text-center space-y-3">
               <OriginFoundationLogo variant="stacked" theme="light" />
-              <div className="pt-3 border-t border-[#E8DFD0] w-full text-[11px] text-[#3C332A]/80">
+              <div className="pt-3 border-t border-slate-200 w-full text-[11px] text-slate-600">
                 <span>Official Secretariat: </span>
-                <strong className="text-[#292821]">Janakpur Dham, Nepal</strong>
+                <strong className="text-[#0A192F]">Janakpur Dham, Nepal</strong>
               </div>
             </div>
           </div>
@@ -343,13 +345,13 @@ export default async function HomePage() {
       {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="max-w-2xl space-y-2">
-          <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
+          <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
             The Foundation Philosophy
           </span>
-          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#292821]">
+          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0A192F]">
             Four Core Pillars of Mithila Queen
           </h2>
-          <p className="text-xs sm:text-sm text-[#3C332A]/75">
+          <p className="text-xs sm:text-sm text-slate-600">
             How the competition is evaluated and conducted, emphasizing cultural knowledge, voice, and artistic talent.
           </p>
         </div>
@@ -358,21 +360,21 @@ export default async function HomePage() {
           {pillars.map((pillar, idx) => (
             <div
               key={idx}
-              className="p-7 rounded-lg bg-[#FFFFFF] border border-[#E8DFD0] hover:border-[#B69A65] transition-colors space-y-3"
+              className="p-7 rounded-lg bg-white border border-slate-200 hover:border-[#C5A880] transition-colors space-y-3 shadow-xs"
             >
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#A64B36]">
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C5A880]">
                   Pillar 0{idx + 1}
                 </span>
-                <span className="text-xs text-[#3C332A]/50 font-mono">Core Value</span>
+                <span className="text-xs text-slate-400 font-mono">Core Value</span>
               </div>
-              <h3 className="text-xl font-serif font-bold text-[#292821]">
+              <h3 className="text-xl font-serif font-bold text-[#0A192F]">
                 {pillar.title}
               </h3>
-              <p className="text-xs font-semibold text-[#B69A65]">
+              <p className="text-xs font-semibold text-[#C5A880]">
                 {pillar.subtitle}
               </p>
-              <p className="text-xs text-[#3C332A] leading-relaxed pt-1">
+              <p className="text-xs text-slate-600 leading-relaxed pt-1">
                 {pillar.description}
               </p>
             </div>
@@ -383,23 +385,23 @@ export default async function HomePage() {
       {/* ==================================================================== */}
       {/* PROPOSED PRIZE POOL SECTION */}
       {/* ==================================================================== */}
-      <section className="bg-[#FFFFFF] py-16 sm:py-20 border-y border-[#E8DFD0]">
+      <section className="bg-white py-16 sm:py-20 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div className="space-y-2 max-w-xl">
-              <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
                 Recognition & Rewards
               </span>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#292821]">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F]">
                 Prize Structure for Mithila Queen
               </h2>
-              <p className="text-xs sm:text-sm text-[#3C332A]/75">
+              <p className="text-xs sm:text-sm text-slate-600">
                 Prizes proposed by the organizers to honor excellence, creative talent, and regional representation.
               </p>
             </div>
 
-            <div className="p-3 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] text-[11px] text-[#3C332A] max-w-sm">
-              <span className="font-bold text-[#292821] block">Organizer Disclosure:</span>
+            <div className="p-3.5 rounded-md bg-slate-50 border border-slate-200 text-[11px] text-slate-600 max-w-sm">
+              <span className="font-bold text-[#0A192F] block">Organizer Disclosure:</span>
               <span>All unconfirmed awards are labeled per transparency guidelines. Final prize specifications will be confirmed prior to stage rounds.</span>
             </div>
           </div>
@@ -408,34 +410,34 @@ export default async function HomePage() {
             {prizes.map((p: any, idx: number) => (
               <div
                 key={idx}
-                className={`p-6 rounded-lg border transition-all flex flex-col justify-between space-y-4 ${p.accent || "border-[#E8DFD0] bg-[#FFFFFF]"} ${
-                  p.highlight ? "ring-1 ring-[#B69A65]" : ""
+                className={`p-6 rounded-lg border transition-all flex flex-col justify-between space-y-4 ${p.accent || "border-slate-200 bg-white"} ${
+                  p.highlight ? "ring-1 ring-[#C5A880] border-[#C5A880]" : "border-slate-200 bg-white"
                 }`}
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#A64B36]">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#C5A880]">
                       {p.badge || "Prize"}
                     </span>
-                    <span className="text-xs font-bold font-mono text-[#292821]">
+                    <span className="text-xs font-bold font-mono text-[#0A192F]">
                       0{idx + 1}
                     </span>
                   </div>
-                  <h3 className="font-serif font-bold text-base text-[#292821]">
+                  <h3 className="font-serif font-bold text-base text-[#0A192F]">
                     {p.position}
                   </h3>
-                  <p className="text-sm font-semibold text-[#292821]">
+                  <p className="text-sm font-semibold text-[#0A192F]">
                     {p.title}
                   </p>
                   {p.value && (
-                    <p className="text-xs text-[#3C332A]/60 font-mono">
+                    <p className="text-xs text-slate-500 font-mono">
                       {p.value}
                     </p>
                   )}
                 </div>
 
-                <div className="pt-3 border-t border-[#E8DFD0]">
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#FAF5EE] text-[#292821] border border-[#E8DFD0]">
+                <div className="pt-3 border-t border-slate-100">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 text-[#0A192F] border border-slate-200">
                     {p.status}
                   </span>
                 </div>
@@ -450,13 +452,13 @@ export default async function HomePage() {
       {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
+          <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
             How to Register
           </span>
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#292821]">
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F]">
             The 7-Step Online Registration Journey
           </h2>
-          <p className="text-xs sm:text-sm text-[#3C332A]/75">
+          <p className="text-xs sm:text-sm text-slate-600">
             A structured, multi-step application with immediate reference ID generation and payment verification.
           </p>
         </div>
@@ -465,17 +467,17 @@ export default async function HomePage() {
           {registrationSteps.map((s) => (
             <div
               key={s.num}
-              className="p-4 rounded-lg bg-[#FFFFFF] border border-[#E8DFD0] space-y-2 flex flex-col justify-between"
+              className="p-4 rounded-lg bg-white border border-slate-200 space-y-2 flex flex-col justify-between shadow-xs hover:border-[#C5A880] transition-colors"
             >
               <div className="space-y-1.5">
-                <div className="w-7 h-7 rounded-md bg-[#292821] text-[#B69A65] flex items-center justify-center font-mono font-bold text-xs">
+                <div className="w-7 h-7 rounded-md bg-[#0A192F] text-[#C5A880] flex items-center justify-center font-mono font-bold text-xs">
                   {s.num}
                 </div>
-                <h3 className="text-xs font-serif font-bold text-[#292821]">
+                <h3 className="text-xs font-serif font-bold text-[#0A192F]">
                   {s.title}
                 </h3>
               </div>
-              <p className="text-[11px] text-[#3C332A]/75 leading-snug">
+              <p className="text-[11px] text-slate-500 leading-snug">
                 {s.desc}
               </p>
             </div>
@@ -484,27 +486,27 @@ export default async function HomePage() {
 
         <div className="text-center pt-2">
           <Link href="/register">
-            <Button className="bg-[#292821] hover:bg-[#3C332A] text-[#FAF5EE] font-bold text-xs h-11 px-7 rounded-md border border-[#B69A65]/40 shadow-none gap-2">
+            <Button className="bg-[#0A192F] hover:bg-[#162C4E] text-white font-bold text-xs h-11 px-7 rounded-md border border-[#C5A880]/30 shadow-sm gap-2">
               <span>Begin Step 1: Personal Information</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#B69A65]" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
             </Button>
           </Link>
         </div>
       </section>
 
       {/* ==================================================================== */}
-      {/* VIDEO AUDITION & WHATSAPP SUBMISSION */}
+      {/* VIDEO AUDITION & WHATSAPP SUBMISSION (DEEP NAVY BAND) */}
       {/* ==================================================================== */}
-      <section className="bg-[#292821] text-[#F5F0E6] py-16 sm:py-20 border-y border-[#B69A65]/30">
+      <section className="bg-[#0A192F] text-white py-16 sm:py-20 border-y border-[#C5A880]/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           <div className="max-w-2xl space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
+            <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
               Video Audition Process
             </span>
-            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#FFFFFF]">
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-white">
               How to Submit Your Introduction Video
             </h2>
-            <p className="text-xs sm:text-sm text-[#E8DFD0]/80">
+            <p className="text-xs sm:text-sm text-slate-300">
               The video audition allows the organizing committee to witness your confidence, articulation, and talent directly.
             </p>
           </div>
@@ -513,39 +515,39 @@ export default async function HomePage() {
             {videoSteps.map((s) => (
               <div
                 key={s.step}
-                className="p-6 rounded-lg bg-[#3C332A] border border-[#B69A65]/30 space-y-3"
+                className="p-6 rounded-lg bg-[#162C4E] border border-slate-700/60 space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="w-8 h-8 rounded-md bg-[#B69A65] text-[#292821] flex items-center justify-center font-bold text-xs font-mono">
+                  <span className="w-8 h-8 rounded-md bg-[#C5A880] text-[#0A192F] flex items-center justify-center font-bold text-xs font-mono">
                     {s.step}
                   </span>
-                  <Video className="w-4 h-4 text-[#B69A65]" />
+                  <Video className="w-4 h-4 text-[#C5A880]" />
                 </div>
-                <h3 className="text-base font-serif font-bold text-[#FFFFFF]">
+                <h3 className="text-base font-serif font-bold text-white">
                   {s.title}
                 </h3>
-                <p className="text-xs text-[#E8DFD0]/80 leading-relaxed">
+                <p className="text-xs text-slate-300 leading-relaxed">
                   {s.desc}
                 </p>
               </div>
             ))}
           </div>
 
-          <div className="p-6 rounded-lg bg-[#201E18] border border-[#B69A65]/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="p-6 rounded-lg bg-[#071324] border border-[#C5A880]/30 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="space-y-1">
-              <span className="text-xs font-bold text-[#B69A65] uppercase tracking-wider block">
+              <span className="text-xs font-bold text-[#C5A880] uppercase tracking-wider block">
                 Direct WhatsApp Video Audition Submission
               </span>
               <p className="text-sm font-semibold text-white">
                 Send your video directly to Managing Director Gaurav Gupta:{" "}
-                <span className="font-mono text-[#B69A65]">+977 9704571941</span>
+                <span className="font-mono text-[#C5A880]">+977 9704571941</span>
               </p>
             </div>
             <a
               href="https://wa.me/9779704571941"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#B69A65] hover:bg-[#a88a55] text-[#292821] text-xs font-bold h-10 px-5 rounded-md transition-colors shrink-0"
+              className="inline-flex items-center gap-2 bg-[#C5A880] hover:bg-[#B59870] text-[#0A192F] text-xs font-bold h-10 px-5 rounded-md transition-colors shrink-0"
             >
               <span>Message on WhatsApp</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -562,10 +564,10 @@ export default async function HomePage() {
           {/* FAQ Column (7 cols) */}
           <div className="lg:col-span-7 space-y-6">
             <div className="space-y-1">
-              <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
                 Frequently Asked Questions
               </span>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#292821]">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F]">
                 Questions on Registration & Process
               </h2>
             </div>
@@ -574,13 +576,13 @@ export default async function HomePage() {
               {faqs.map((faq: any, i: number) => (
                 <div
                   key={i}
-                  className="p-5 rounded-lg bg-[#FFFFFF] border border-[#E8DFD0] space-y-2"
+                  className="p-5 rounded-lg bg-white border border-slate-200 space-y-2 shadow-xs"
                 >
-                  <h3 className="font-serif font-bold text-sm text-[#292821] flex items-center gap-2">
-                    <HelpCircle className="w-4 h-4 text-[#A64B36] shrink-0" />
+                  <h3 className="font-serif font-bold text-sm text-[#0A192F] flex items-center gap-2">
+                    <HelpCircle className="w-4 h-4 text-[#C5A880] shrink-0" />
                     <span>{faq.q}</span>
                   </h3>
-                  <p className="text-xs text-[#3C332A] leading-relaxed pl-6">
+                  <p className="text-xs text-slate-600 leading-relaxed pl-6">
                     {faq.a}
                   </p>
                 </div>
@@ -589,9 +591,9 @@ export default async function HomePage() {
 
             <div>
               <Link href="/faq">
-                <Button variant="outline" className="border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE] text-xs h-10 px-5 rounded-md gap-2 font-semibold">
+                <Button variant="outline" className="border-slate-300 text-[#0A192F] hover:bg-slate-100 text-xs h-10 px-5 rounded-md gap-2 font-semibold">
                   <span>View All Official FAQs</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#A64B36]" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
                 </Button>
               </Link>
             </div>
@@ -599,57 +601,57 @@ export default async function HomePage() {
 
           {/* Contact Desk Column (5 cols) */}
           <div className="lg:col-span-5">
-            <div className="p-7 rounded-lg bg-[#FFFFFF] border border-[#E8DFD0] space-y-6">
+            <div className="p-7 rounded-lg bg-white border border-slate-200 space-y-6 shadow-xs">
               <div className="space-y-1.5">
-                <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
+                <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
                   Official Organizing Secretariat
                 </span>
-                <h3 className="text-xl font-serif font-bold text-[#292821]">
+                <h3 className="text-xl font-serif font-bold text-[#0A192F]">
                   The Origin Foundation
                 </h3>
-                <p className="text-xs text-[#3C332A]/70">
+                <p className="text-xs text-slate-500">
                   Janakpur Dham, Madhesh Province, Nepal
                 </p>
               </div>
 
-              <div className="space-y-3 text-xs text-[#3C332A]">
-                <div className="p-3.5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#A64B36] block">
+              <div className="space-y-3 text-xs text-slate-600">
+                <div className="p-3.5 rounded-md bg-slate-50 border border-slate-200 space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] block">
                     Managing Director
                   </span>
-                  <p className="font-serif font-bold text-[#292821] text-sm">Gaurav Gupta</p>
+                  <p className="font-serif font-bold text-[#0A192F] text-sm">Gaurav Gupta</p>
                   <a
                     href="tel:+9779704571941"
-                    className="text-[#292821] hover:text-[#A64B36] font-mono text-xs flex items-center gap-1.5 pt-0.5"
+                    className="text-[#0A192F] hover:text-[#C5A880] font-mono text-xs flex items-center gap-1.5 pt-0.5"
                   >
-                    <Phone className="w-3 h-3 text-[#B69A65]" />
+                    <Phone className="w-3 h-3 text-[#C5A880]" />
                     <span>+977 9704571941</span>
                   </a>
                 </div>
 
-                <div className="p-3.5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#A64B36] block">
+                <div className="p-3.5 rounded-md bg-slate-50 border border-slate-200 space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] block">
                     Managing Director
                   </span>
-                  <p className="font-serif font-bold text-[#292821] text-sm">Dipendra Shah Kalwar</p>
+                  <p className="font-serif font-bold text-[#0A192F] text-sm">Dipendra Shah Kalwar</p>
                   <a
                     href="tel:+9779812005468"
-                    className="text-[#292821] hover:text-[#A64B36] font-mono text-xs flex items-center gap-1.5 pt-0.5"
+                    className="text-[#0A192F] hover:text-[#C5A880] font-mono text-xs flex items-center gap-1.5 pt-0.5"
                   >
-                    <Phone className="w-3 h-3 text-[#B69A65]" />
+                    <Phone className="w-3 h-3 text-[#C5A880]" />
                     <span>+977 981-2005468</span>
                   </a>
                 </div>
 
-                <div className="p-3.5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#A64B36] block">
+                <div className="p-3.5 rounded-md bg-slate-50 border border-slate-200 space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] block">
                     Official Email
                   </span>
                   <a
                     href="mailto:originfoundation107@gmail.com"
-                    className="text-[#292821] hover:text-[#A64B36] font-mono font-medium text-xs flex items-center gap-1.5"
+                    className="text-[#0A192F] hover:text-[#C5A880] font-mono font-medium text-xs flex items-center gap-1.5"
                   >
-                    <Mail className="w-3.5 h-3.5 text-[#B69A65]" />
+                    <Mail className="w-3.5 h-3.5 text-[#C5A880]" />
                     <span>originfoundation107@gmail.com</span>
                   </a>
                 </div>
@@ -657,7 +659,7 @@ export default async function HomePage() {
 
               <div className="pt-2">
                 <Link href="/contact" className="w-full block">
-                  <Button className="w-full bg-[#292821] hover:bg-[#3C332A] text-[#FAF5EE] text-xs font-semibold h-10 rounded-md border border-[#B69A65]/40 shadow-none">
+                  <Button className="w-full bg-[#0A192F] hover:bg-[#162C4E] text-white text-xs font-semibold h-10 rounded-md border border-[#C5A880]/30 shadow-none">
                     Open Contact & Inquiry Desk
                   </Button>
                 </Link>

@@ -255,18 +255,18 @@ export function CompetitionWorkspace({
   return (
     <div className="space-y-6 pb-12">
       {/* Top Banner */}
-      <div className="bg-[#FFFFFF] p-6 rounded-lg border border-[#E8DFD0] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-[#FFFFFF] p-6 rounded-lg border border-[#E2E8F0] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <MithilaHeritageMandala className="w-5 h-5 text-[#B69A65]" />
-            <span className="text-[11px] font-bold tracking-widest uppercase text-[#B69A65]">
+            <MithilaHeritageMandala className="w-5 h-5 text-[#C5A880]" />
+            <span className="text-[11px] font-bold tracking-widest uppercase text-[#C5A880]">
               Dedicated Competition Workspace &bull; The Origin Foundation
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#292821] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F] tracking-tight">
             Manage Competition: Mithila Queen
           </h1>
-          <p className="text-xs sm:text-sm text-[#292821]/70">
+          <p className="text-xs sm:text-sm text-[#0A192F]/70">
             One dedicated flagship competition. Customize questions, payment QR, dates, rules, and public preview.
           </p>
         </div>
@@ -276,7 +276,7 @@ export function CompetitionWorkspace({
             <Button
               variant="outline"
               size="sm"
-              className="gap-1.5 border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE] text-xs h-9 font-semibold"
+              className="gap-1.5 border-[#E2E8F0] text-[#0A192F] hover:bg-[#F8FAFC] text-xs h-9 font-semibold"
             >
               <span>Test Live Form</span>
               <ExternalLink className="w-3.5 h-3.5 text-[#A64B36]" />
@@ -286,7 +286,7 @@ export function CompetitionWorkspace({
       </div>
 
       {/* Structured Horizontal Workspace Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[#E8DFD0]">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[#E2E8F0]">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -296,11 +296,11 @@ export function CompetitionWorkspace({
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-3.5 py-2.5 rounded-md text-xs font-semibold whitespace-nowrap transition-all ${
                 isActive
-                  ? "bg-[#292821] text-[#F5F0E6] border border-[#B69A65]/40"
-                  : "bg-[#FFFFFF] text-[#292821]/80 hover:bg-[#FAF5EE] border border-[#E8DFD0]"
+                  ? "bg-[#0A192F] text-[#F1F5F9] border border-[#C5A880]/40"
+                  : "bg-[#FFFFFF] text-[#0A192F]/80 hover:bg-[#F8FAFC] border border-[#E2E8F0]"
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#B69A65]" : "text-[#A64B36]"}`} />
+              <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#C5A880]" : "text-[#A64B36]"}`} />
               <span>{tab.label}</span>
             </button>
           );
@@ -311,16 +311,16 @@ export function CompetitionWorkspace({
       {activeTab === "overview" && (
         <div className="space-y-6">
           {/* Summary Card */}
-          <div className="bg-[#FFFFFF] rounded-lg border border-[#E8DFD0] p-6 shadow-xs space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E8DFD0]">
+          <div className="bg-[#FFFFFF] rounded-lg border border-[#E2E8F0] p-6 shadow-xs space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E2E8F0]">
               <div className="space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65]">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880]">
                   Flagship Competition Summary
                 </span>
-                <h2 className="text-xl font-serif font-bold text-[#292821]">
+                <h2 className="text-xl font-serif font-bold text-[#0A192F]">
                   Mithila Queen 2026
                 </h2>
-                <p className="text-xs text-[#292821]/70">
+                <p className="text-xs text-[#0A192F]/70">
                   Organized by <strong>The Origin Foundation</strong> &bull; Janakpur Dham, Nepal
                 </p>
               </div>
@@ -329,8 +329,8 @@ export function CompetitionWorkspace({
                 <span
                   className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${
                     isRegOpen
-                      ? "bg-[#292821] text-[#F5F0E6] border-[#B69A65]/40"
-                      : "bg-[#FAF5EE] text-[#A64B36] border-[#A64B36]/30"
+                      ? "bg-[#0A192F] text-[#F1F5F9] border-[#C5A880]/40"
+                      : "bg-[#F8FAFC] text-[#A64B36] border-[#A64B36]/30"
                   }`}
                 >
                   {isRegOpen ? "Registration Open" : "Registration Closed"}
@@ -340,73 +340,73 @@ export function CompetitionWorkspace({
 
             {/* Quick Metrics */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE]">
+              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC]">
                 <span className="text-[11px] text-zinc-500 font-medium">Official Entry Fee</span>
-                <div className="text-2xl font-serif font-black text-[#292821] mt-1">NPR 399</div>
-                <span className="text-[10px] text-zinc-400 font-mono">Enforced per brief</span>
+                <div className="text-2xl font-serif font-black text-[#0A192F] mt-1">NPR {regFee}</div>
+                <span className="text-[10px] text-zinc-400 font-mono">Configurable in settings</span>
               </div>
 
-              <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE]">
+              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC]">
                 <span className="text-[11px] text-zinc-500 font-medium">Total Registrations</span>
-                <div className="text-2xl font-serif font-black text-[#292821] mt-1">{stats.totalRegs}</div>
+                <div className="text-2xl font-serif font-black text-[#0A192F] mt-1">{stats.totalRegs}</div>
                 <span className="text-[10px] text-zinc-400 font-mono">All entries initiated</span>
               </div>
 
-              <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE]">
+              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC]">
                 <span className="text-[11px] text-zinc-500 font-medium">Completed Dossiers</span>
-                <div className="text-2xl font-serif font-black text-[#292821] mt-1">{stats.completedRegs}</div>
+                <div className="text-2xl font-serif font-black text-[#0A192F] mt-1">{stats.completedRegs}</div>
                 <span className="text-[10px] text-zinc-400 font-mono">Finished 7 steps</span>
               </div>
 
-              <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE]">
+              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC]">
                 <span className="text-[11px] text-zinc-500 font-medium">Verified Payments</span>
-                <div className="text-2xl font-serif font-black text-[#292821] mt-1">{stats.verifiedPayments}</div>
+                <div className="text-2xl font-serif font-black text-[#0A192F] mt-1">{stats.verifiedPayments}</div>
                 <span className="text-[10px] text-zinc-400 font-mono">Manually approved</span>
               </div>
             </div>
 
             {/* Primary Action Buttons */}
             <div className="pt-2">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#292821] mb-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-3">
                 Workspace Quick Actions
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button
                   type="button"
                   onClick={() => setActiveTab("builder")}
-                  className="p-4 rounded-md border border-[#E8DFD0] bg-[#FFFFFF] hover:bg-[#FAF5EE] hover:border-[#B69A65] text-left transition-all group"
+                  className="p-4 rounded-md border border-[#E2E8F0] bg-[#FFFFFF] hover:bg-[#F8FAFC] hover:border-[#C5A880] text-left transition-all group"
                 >
                   <div className="flex items-center justify-between">
                     <FileText className="w-4 h-4 text-[#A64B36]" />
                     <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
                   </div>
-                  <div className="text-xs font-bold text-[#292821] mt-2">Edit Registration Form</div>
+                  <div className="text-xs font-bold text-[#0A192F] mt-2">Edit Registration Form</div>
                   <p className="text-[11px] text-zinc-500 mt-0.5">Customize questions and steps in two-panel editor</p>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setActiveTab("payment")}
-                  className="p-4 rounded-md border border-[#E8DFD0] bg-[#FFFFFF] hover:bg-[#FAF5EE] hover:border-[#B69A65] text-left transition-all group"
+                  className="p-4 rounded-md border border-[#E2E8F0] bg-[#FFFFFF] hover:bg-[#F8FAFC] hover:border-[#C5A880] text-left transition-all group"
                 >
                   <div className="flex items-center justify-between">
-                    <CreditCard className="w-4 h-4 text-[#B69A65]" />
+                    <CreditCard className="w-4 h-4 text-[#C5A880]" />
                     <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
                   </div>
-                  <div className="text-xs font-bold text-[#292821] mt-2">Configure Payment & QR</div>
+                  <div className="text-xs font-bold text-[#0A192F] mt-2">Configure Payment & QR</div>
                   <p className="text-[11px] text-zinc-500 mt-0.5">Upload official QR code image and instructions</p>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setActiveTab("schedule")}
-                  className="p-4 rounded-md border border-[#E8DFD0] bg-[#FFFFFF] hover:bg-[#FAF5EE] hover:border-[#B69A65] text-left transition-all group"
+                  className="p-4 rounded-md border border-[#E2E8F0] bg-[#FFFFFF] hover:bg-[#F8FAFC] hover:border-[#C5A880] text-left transition-all group"
                 >
                   <div className="flex items-center justify-between">
                     <Calendar className="w-4 h-4 text-[#A64B36]" />
                     <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
                   </div>
-                  <div className="text-xs font-bold text-[#292821] mt-2">Manage Schedule & Dates</div>
+                  <div className="text-xs font-bold text-[#0A192F] mt-2">Manage Schedule & Dates</div>
                   <p className="text-[11px] text-zinc-500 mt-0.5">Set opening date, closing deadline, and venue</p>
                 </button>
               </div>
@@ -434,29 +434,29 @@ export function CompetitionWorkspace({
 
       {/* TAB 3: PAYMENT CONFIGURATION */}
       {activeTab === "payment" && (
-        <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-lg font-serif font-bold text-[#292821]">
+              <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
                 Official Payment Gateway & QR Configuration
               </CardTitle>
-              <CardDescription className="text-xs text-[#292821]/70">
+              <CardDescription className="text-xs text-[#0A192F]/70">
                 Manage the official Mithila Queen payment QR code image, provider account details, and participant instructions.
               </CardDescription>
             </div>
             <Button
               onClick={() => handleSaveSettings("Payment Settings")}
               disabled={isSaving}
-              className="gap-1.5 bg-[#292821] hover:bg-[#3C332A] text-[#F5F0E6] text-xs h-9 px-4 font-semibold border border-[#B69A65]/40"
+              className="gap-1.5 bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-9 px-4 font-semibold border border-[#C5A880]/40"
             >
-              {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" /> : <Save className="w-3.5 h-3.5 text-[#B69A65]" />}
+              {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" /> : <Save className="w-3.5 h-3.5 text-[#C5A880]" />}
               <span>Save Payment Settings</span>
             </Button>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Official QR Code Upload Area */}
-            <div className="p-5 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] flex flex-col sm:flex-row items-center gap-6">
-              <div className="relative w-44 h-44 bg-white border border-[#E8DFD0] rounded-lg p-2.5 shadow-xs shrink-0 flex items-center justify-center">
+            <div className="p-5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] flex flex-col sm:flex-row items-center gap-6">
+              <div className="relative w-44 h-44 bg-white border border-[#E2E8F0] rounded-lg p-2.5 shadow-xs shrink-0 flex items-center justify-center">
                 {paymentQrUrl ? (
                   <Image
                     src={paymentQrUrl}
@@ -474,10 +474,10 @@ export function CompetitionWorkspace({
               </div>
               <div className="space-y-3 flex-1 text-center sm:text-left">
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#292821]">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#0A192F]">
                     Official Mithila Queen Payment QR Image
                   </h4>
-                  <p className="text-xs text-[#292821]/70 mt-1 leading-relaxed">
+                  <p className="text-xs text-[#0A192F]/70 mt-1 leading-relaxed">
                     This official QR is presented to every participant in Step 7 of registration and on their post-submission payment screen.
                   </p>
                 </div>
@@ -490,11 +490,11 @@ export function CompetitionWorkspace({
                       disabled={isUploadingQr}
                       className="hidden"
                     />
-                    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-md bg-[#292821] text-[#F5F0E6] text-xs font-semibold hover:bg-[#3C332A] transition-colors">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-md bg-[#0A192F] text-[#F1F5F9] text-xs font-semibold hover:bg-[#1E293B] transition-colors">
                       {isUploadingQr ? (
-                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" />
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />
                       ) : (
-                        <Upload className="w-3.5 h-3.5 text-[#B69A65]" />
+                        <Upload className="w-3.5 h-3.5 text-[#C5A880]" />
                       )}
                       <span>{isUploadingQr ? "Uploading..." : "Upload New QR Image"}</span>
                     </div>
@@ -505,7 +505,7 @@ export function CompetitionWorkspace({
                       variant="outline"
                       size="sm"
                       onClick={() => setPaymentQrUrl("/assets/brand/origin-foundation-qr.png")}
-                      className="h-8 text-xs border-[#E8DFD0] text-[#292821] hover:bg-[#FFFFFF]"
+                      className="h-8 text-xs border-[#E2E8F0] text-[#0A192F] hover:bg-[#FFFFFF]"
                     >
                       Reset to Default QR
                     </Button>
@@ -519,79 +519,97 @@ export function CompetitionWorkspace({
 
             {/* Provider and Account Details */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5 sm:col-span-2">
+                <Label className="text-xs font-bold text-[#0A192F]">Registration Fee (NPR)</Label>
+                <div className="flex items-center gap-3">
+                  <Input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={regFee}
+                    onChange={(e) => setRegFee(e.target.value)}
+                    className="h-10 text-xs border-slate-200 bg-white font-mono font-bold max-w-xs"
+                    placeholder="399"
+                  />
+                  <span className="text-[11px] text-slate-500 font-medium">
+                    Collected in Nepalese Rupees per registered participant.
+                  </span>
+                </div>
+              </div>
+
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Payment Provider Name</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Payment Provider Name</Label>
                 <Input
                   value={paymentProviderName}
                   onChange={(e) => setPaymentProviderName(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-9 text-xs border-slate-200 bg-white"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Official eSewa ID / Merchant Phone</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Official eSewa ID / Merchant Phone</Label>
                 <Input
                   value={esewaId}
                   onChange={(e) => setEsewaId(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Account Beneficiary Name</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Account Beneficiary Name</Label>
                 <Input
                   value={accountHolder}
                   onChange={(e) => setAccountHolder(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Direct Bank Name & Branch</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Direct Bank Name & Branch</Label>
                 <Input
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Bank Account Number</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Bank Account Number</Label>
                 <Input
                   value={accountNumber}
                   onChange={(e) => setAccountNumber(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Remarks / Transaction Reference Instructions</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Remarks / Transaction Reference Instructions</Label>
                 <Input
                   value={paymentReferenceInstructions}
                   onChange={(e) => setPaymentReferenceInstructions(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#292821]">Full Payment Instructions for Applicants</Label>
+              <Label className="text-xs font-bold text-[#0A192F]">Full Payment Instructions for Applicants</Label>
               <Textarea
                 rows={3}
                 value={paymentInstructions}
                 onChange={(e) => setPaymentInstructions(e.target.value)}
-                className="text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                className="text-xs border-[#E2E8F0] bg-[#F8FAFC]"
               />
             </div>
 
             {/* Private Storage & Manual Verification Notice */}
-            <div className="p-4 rounded-md bg-[#FAF5EE] border border-[#B69A65]/30 text-xs text-[#292821] flex items-start gap-3">
-              <ShieldCheck className="w-5 h-5 text-[#B69A65] shrink-0 mt-0.5" />
+            <div className="p-4 rounded-md bg-[#F8FAFC] border border-[#C5A880]/30 text-xs text-[#0A192F] flex items-start gap-3">
+              <ShieldCheck className="w-5 h-5 text-[#C5A880] shrink-0 mt-0.5" />
               <div className="space-y-1">
-                <div className="font-bold text-[#292821]">
+                <div className="font-bold text-[#0A192F]">
                   Private Screenshot Storage & Manual Verification Policy
                 </div>
-                <p className="text-[11px] text-[#292821]/70 leading-relaxed">
+                <p className="text-[11px] text-[#0A192F]/70 leading-relaxed">
                   Participants upload transaction receipts and payment screenshots privately. Uploading a screenshot <strong>never</strong> automatically marks payment as verified. Administrators must inspect bank/eSewa statements and manually approve entries in the Applications portal.
                 </p>
               </div>
@@ -602,33 +620,33 @@ export function CompetitionWorkspace({
 
       {/* TAB 4: REGISTRATION SCHEDULE */}
       {activeTab === "schedule" && (
-        <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-lg font-serif font-bold text-[#292821]">
+              <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
                 Registration Schedule & Event Timeline
               </CardTitle>
-              <CardDescription className="text-xs text-[#292821]/70">
+              <CardDescription className="text-xs text-[#0A192F]/70">
                 Control the automated opening date, closing deadline, and event schedule in Nepal Standard Time (UTC+05:45).
               </CardDescription>
             </div>
             <Button
               onClick={() => handleSaveSettings("Schedule")}
               disabled={isSaving}
-              className="gap-1.5 bg-[#292821] hover:bg-[#3C332A] text-[#F5F0E6] text-xs h-9 px-4 font-semibold border border-[#B69A65]/40"
+              className="gap-1.5 bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-9 px-4 font-semibold border border-[#C5A880]/40"
             >
-              {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" /> : <Save className="w-3.5 h-3.5 text-[#B69A65]" />}
+              {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" /> : <Save className="w-3.5 h-3.5 text-[#C5A880]" />}
               <span>Save Schedule</span>
             </Button>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Current Registration Status</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Current Registration Status</Label>
                 <select
                   value={isRegOpen ? "OPEN" : "CLOSED"}
                   onChange={(e) => setIsRegOpen(e.target.value === "OPEN")}
-                  className="w-full h-9 px-3 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] text-xs font-semibold text-[#292821]"
+                  className="w-full h-9 px-3 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] text-xs font-semibold text-[#0A192F]"
                 >
                   <option value="OPEN">Registration Open</option>
                   <option value="CLOSED">Registration Closed</option>
@@ -636,43 +654,43 @@ export function CompetitionWorkspace({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Registration Opening Date & Time</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Registration Opening Date & Time</Label>
                 <Input
                   type="datetime-local"
                   value={regOpeningDate}
                   onChange={(e) => setRegOpeningDate(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
                 <p className="text-[10px] text-zinc-500">Scheduled time when form opens automatically.</p>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Registration Closing Deadline & Time</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Registration Closing Deadline & Time</Label>
                 <Input
                   type="datetime-local"
                   value={regClosingDate}
                   onChange={(e) => setRegClosingDate(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
                 <p className="text-[10px] text-zinc-500">Scheduled deadline when submissions close.</p>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Grand Finale / Auditions Date</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Grand Finale / Auditions Date</Label>
                 <Input
                   value={eventSchedule}
                   onChange={(e) => setEventSchedule(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
                 <p className="text-[10px] text-zinc-500">Displays on public pages (default: &quot;To Be Announced&quot;).</p>
               </div>
 
               <div className="space-y-1.5 sm:col-span-2">
-                <Label className="text-xs font-bold text-[#292821]">Audition & Finale Venue</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Audition & Finale Venue</Label>
                 <Input
                   value={eventVenue}
                   onChange={(e) => setEventVenue(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
                 <p className="text-[10px] text-zinc-500">Official venue in Janakpur Dham, Nepal.</p>
               </div>
@@ -683,78 +701,78 @@ export function CompetitionWorkspace({
 
       {/* TAB 5: COMPETITION INFORMATION */}
       {activeTab === "information" && (
-        <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-lg font-serif font-bold text-[#292821]">
+              <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
                 Competition Guidelines & Editorial Content
               </CardTitle>
-              <CardDescription className="text-xs text-[#292821]/70">
+              <CardDescription className="text-xs text-[#0A192F]/70">
                 Update competition title, age criteria, audition video rules, and FAQs.
               </CardDescription>
             </div>
             <Button
               onClick={() => handleSaveSettings("Competition Information")}
               disabled={isSaving}
-              className="gap-1.5 bg-[#292821] hover:bg-[#3C332A] text-[#F5F0E6] text-xs h-9 px-4 font-semibold border border-[#B69A65]/40"
+              className="gap-1.5 bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-9 px-4 font-semibold border border-[#C5A880]/40"
             >
-              {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" /> : <Save className="w-3.5 h-3.5 text-[#B69A65]" />}
+              {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" /> : <Save className="w-3.5 h-3.5 text-[#C5A880]" />}
               <span>Save Information</span>
             </Button>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Competition Title</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Competition Title</Label>
                 <Input
                   value={compName}
                   onChange={(e) => setCompName(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Competition Motto & Tagline</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Competition Motto & Tagline</Label>
                 <Input
                   value={compTagline}
                   onChange={(e) => setCompTagline(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Official WhatsApp Audition Helpline</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Official WhatsApp Audition Helpline</Label>
                 <Input
                   value={whatsappContact}
                   onChange={(e) => setWhatsappContact(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#292821]">Official Instagram Handle</Label>
+                <Label className="text-xs font-bold text-[#0A192F]">Official Instagram Handle</Label>
                 <Input
                   value={officialInstagram}
                   onChange={(e) => setOfficialInstagram(e.target.value)}
-                  className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#292821]">Audition Video Submission Instructions</Label>
+              <Label className="text-xs font-bold text-[#0A192F]">Audition Video Submission Instructions</Label>
               <Textarea
                 rows={2}
                 value={videoGuidelines}
                 onChange={(e) => setVideoGuidelines(e.target.value)}
-                className="text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                className="text-xs border-[#E2E8F0] bg-[#F8FAFC]"
               />
             </div>
 
             {/* FAQs Management */}
-            <div className="pt-4 border-t border-[#E8DFD0]">
+            <div className="pt-4 border-t border-[#E2E8F0]">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#292821]">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#0A192F]">
                   Frequently Asked Questions (FAQs)
                 </h4>
                 <Button
@@ -762,7 +780,7 @@ export function CompetitionWorkspace({
                   size="sm"
                   variant="outline"
                   onClick={addFaq}
-                  className="h-7 text-xs border-[#E8DFD0] hover:bg-[#FAF5EE] text-[#292821] gap-1"
+                  className="h-7 text-xs border-[#E2E8F0] hover:bg-[#F8FAFC] text-[#0A192F] gap-1"
                 >
                   <Plus className="w-3 h-3 text-[#A64B36]" />
                   <span>Add FAQ</span>
@@ -771,9 +789,9 @@ export function CompetitionWorkspace({
 
               <div className="space-y-3">
                 {faqs.map((faq, idx) => (
-                  <div key={idx} className="p-3.5 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
+                  <div key={idx} className="p-3.5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-[#B69A65] uppercase">
+                      <span className="text-[10px] font-bold text-[#C5A880] uppercase">
                         Question #{idx + 1}
                       </span>
                       {faqs.length > 1 && (
@@ -790,14 +808,14 @@ export function CompetitionWorkspace({
                       value={faq.q}
                       onChange={(e) => updateFaq(idx, "q", e.target.value)}
                       placeholder="Question..."
-                      className="h-8 text-xs bg-white border-[#E8DFD0]"
+                      className="h-8 text-xs bg-white border-[#E2E8F0]"
                     />
                     <Textarea
                       rows={2}
                       value={faq.a}
                       onChange={(e) => updateFaq(idx, "a", e.target.value)}
                       placeholder="Answer..."
-                      className="text-xs bg-white border-[#E8DFD0]"
+                      className="text-xs bg-white border-[#E2E8F0]"
                     />
                   </div>
                 ))}
@@ -816,18 +834,18 @@ export function CompetitionWorkspace({
             slug={form.slug}
           />
 
-          <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+          <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
             <CardHeader>
-              <CardTitle className="text-sm font-serif font-bold text-[#292821]">
+              <CardTitle className="text-sm font-serif font-bold text-[#0A192F]">
                 Live Public Registration Portal
               </CardTitle>
-              <CardDescription className="text-xs text-[#292821]/70">
+              <CardDescription className="text-xs text-[#0A192F]/70">
                 Direct access to the live public registration flow for Mithila Queen 2026.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2 text-xs">
-                <div className="font-bold text-[#292821]">Primary Public URL:</div>
+              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2 text-xs">
+                <div className="font-bold text-[#0A192F]">Primary Public URL:</div>
                 <div className="font-mono text-[11px] text-[#A64B36]">
                   /register/mithila-queen
                 </div>
@@ -837,9 +855,9 @@ export function CompetitionWorkspace({
               </div>
 
               <Link href="/register/mithila-queen" target="_blank">
-                <Button className="w-full text-xs h-9 bg-[#292821] hover:bg-[#3C332A] text-[#F5F0E6] font-semibold gap-2 border border-[#B69A65]/40 shadow-xs">
+                <Button className="w-full text-xs h-9 bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] font-semibold gap-2 border border-[#C5A880]/40 shadow-xs">
                   <span>Open Registration Form in New Tab</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-[#B69A65]" />
+                  <ExternalLink className="w-3.5 h-3.5 text-[#C5A880]" />
                 </Button>
               </Link>
             </CardContent>
