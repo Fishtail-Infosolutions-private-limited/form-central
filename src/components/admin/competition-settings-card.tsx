@@ -33,10 +33,10 @@ export function CompetitionSettingsCard() {
     <Card className="border-zinc-200 shadow-xs md:col-span-2">
       <CardHeader>
         <div className="flex items-center justify-between mb-1">
-          <div className="w-10 h-10 rounded-xl bg-[#0A192F] text-[#C5A880] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-md bg-[#172B24] text-[#B69A65] flex items-center justify-center">
             <Crown className="w-5 h-5 stroke-[1.8]" />
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] bg-[#0A192F] px-2 py-0.5 rounded">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65] bg-[#172B24] px-2 py-0.5 rounded">
             Mithila Queen CMS
           </span>
         </div>
@@ -165,9 +165,9 @@ export function CompetitionSettingsCard() {
             <Button
               type="submit"
               disabled={isSaving}
-              className="bg-[#0A192F] hover:bg-[#243B53] text-[#FDFBF7] text-xs font-bold h-10 px-5 rounded-xl shadow-xs gap-2"
+              className="bg-[#172B24] hover:bg-[#292821] text-[#FAF5EE] text-xs font-bold h-10 px-5 rounded-md shadow-xs gap-2"
             >
-              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 text-[#C5A880]" />}
+              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 text-[#B69A65]" />}
               <span>Save Competition Configuration</span>
             </Button>
           </div>

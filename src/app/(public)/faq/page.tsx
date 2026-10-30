@@ -68,14 +68,14 @@ export default function FaqPage() {
     <div className="py-12 sm:py-20 space-y-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* HEADER */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E9E2D5]/60 border border-[#C5A880]/40 text-[#0A192F] text-xs font-semibold">
-          <Crown className="w-3.5 h-3.5 text-[#C5A880]" />
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8DFD0]/60 border border-[#B69A65]/40 text-[#172B24] text-xs font-semibold">
+          <Crown className="w-3.5 h-3.5 text-[#B69A65]" />
           <span>Official Information Desk</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#0A192F] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#172B24] tracking-tight">
           Frequently Asked Questions
         </h1>
-        <p className="text-sm text-[#243B53] max-w-xl mx-auto leading-relaxed">
+        <p className="text-sm text-[#292821] max-w-xl mx-auto leading-relaxed">
           Clear, verified answers regarding The Origin Foundation, Mithila Queen registration, payment verification, and competition guidelines.
         </p>
       </div>
@@ -85,18 +85,18 @@ export default function FaqPage() {
         {faqs.map((faq, i) => (
           <div
             key={i}
-            className="p-6 rounded-2xl bg-white border border-[#E9E2D5] shadow-2xs space-y-2.5 transition-colors hover:border-[#C5A880]/70"
+            className="p-6 rounded-md bg-white border border-[#E8DFD0] shadow-2xs space-y-2.5 transition-colors hover:border-[#B69A65]/70"
           >
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] bg-[#E9E2D5]/40 px-2 py-0.5 rounded">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65] bg-[#E8DFD0]/40 px-2 py-0.5 rounded">
                 {faq.category}
               </span>
             </div>
-            <h2 className="text-base font-bold text-[#0A192F] font-serif flex items-start gap-2.5">
-              <HelpCircle className="w-5 h-5 text-[#C5A880] shrink-0 mt-0.5" />
+            <h2 className="text-base font-bold text-[#172B24] font-serif flex items-start gap-2.5">
+              <HelpCircle className="w-5 h-5 text-[#B69A65] shrink-0 mt-0.5" />
               <span>{faq.q}</span>
             </h2>
-            <p className="text-xs sm:text-sm text-[#243B53] pl-7 leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#292821] pl-7 leading-relaxed">
               {faq.a}
             </p>
           </div>
@@ -104,23 +104,23 @@ export default function FaqPage() {
       </div>
 
       {/* STILL HAVE QUESTIONS */}
-      <div className="p-8 rounded-3xl bg-[#0A192F] text-[#FDFBF7] border border-[#243B53] text-center space-y-4">
+      <div className="p-8 rounded-lg bg-[#172B24] text-[#FAF5EE] border border-[#292821] text-center space-y-4">
         <h3 className="text-xl font-bold font-serif text-white">Still have questions?</h3>
-        <p className="text-xs text-[#E9E2D5]/80 max-w-md mx-auto">
+        <p className="text-xs text-[#E8DFD0]/80 max-w-md mx-auto">
           Our team in Janakpur Dham is here to assist with any registration or payment inquiries.
         </p>
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-mono">
           <a
             href="mailto:originfoundation107@gmail.com"
-            className="text-[#C5A880] hover:text-white flex items-center gap-1.5"
+            className="text-[#B69A65] hover:text-white flex items-center gap-1.5"
           >
             <Mail className="w-4 h-4" />
             <span>originfoundation107@gmail.com</span>
           </a>
-          <span className="hidden sm:inline text-[#243B53]">•</span>
+          <span className="hidden sm:inline text-[#292821]">•</span>
           <a
             href="tel:+9779704571941"
-            className="text-[#C5A880] hover:text-white flex items-center gap-1.5"
+            className="text-[#B69A65] hover:text-white flex items-center gap-1.5"
           >
             <Phone className="w-4 h-4" />
             <span>+977 9704571941</span>

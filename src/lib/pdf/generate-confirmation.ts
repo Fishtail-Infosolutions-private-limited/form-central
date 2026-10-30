@@ -25,13 +25,14 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
   const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontOblique = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
 
-  // Brand Palette RGB Colors (0 - 1)
-  const colorNavy = rgb(10 / 255, 25 / 255, 47 / 255);       // #0A192F
-  const colorGold = rgb(197 / 255, 168 / 255, 128 / 255);   // #C5A880
-  const colorIvory = rgb(253 / 255, 251 / 255, 247 / 255);   // #FDFBF7
-  const colorSlate = rgb(36 / 255, 59 / 255, 83 / 255);      // #243B53
-  const colorDark = rgb(20 / 255, 20 / 255, 20 / 255);
-  const colorGray = rgb(100 / 255, 100 / 255, 100 / 255);
+  // Brand Palette RGB Colors (0 - 1) — Forest Green, Antique Gold, Terracotta & Warm Ivory
+  const colorNavy = rgb(23 / 255, 43 / 255, 36 / 255);       // #172B24 (Forest Green)
+  const colorGold = rgb(182 / 255, 154 / 255, 101 / 255);   // #B69A65 (Antique Gold)
+  const colorIvory = rgb(245 / 255, 240 / 255, 230 / 255);  // #F5F0E6 (Warm Ivory)
+  const colorTerracotta = rgb(166 / 255, 75 / 255, 54 / 255); // #A64B36 (Terracotta)
+  const colorDark = rgb(41 / 255, 40 / 255, 33 / 255);      // #292821 (Charcoal)
+  const colorGray = rgb(110 / 255, 108 / 255, 98 / 255);
+  const colorSlate = rgb(50 / 255, 60 / 255, 55 / 255);
 
   // 1. Decorative Double Outer Border
   page.drawRectangle({
@@ -210,7 +211,7 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
       width: 120,
       margin: 1,
       color: {
-        dark: "#0A192FFF",
+        dark: "#172B24FF",
         light: "#FFFFFFFF",
       },
     });

@@ -13,46 +13,46 @@ export default function RulesPage() {
   return (
     <div className="py-12 sm:py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       <div className="text-center space-y-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
+        <span className="text-xs font-bold uppercase tracking-wider text-[#B69A65]">
           The Origin Foundation Official Standards
         </span>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#0A192F] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#172B24] tracking-tight">
           Competition Rules & Eligibility
         </h1>
-        <p className="text-xs text-[#243B53]">
+        <p className="text-xs text-[#292821]">
           Mithila Queen • Janakpur Dham, Nepal
         </p>
       </div>
 
-      <div className="p-8 sm:p-12 rounded-3xl bg-white border border-[#E9E2D5] shadow-xs space-y-8 text-xs sm:text-sm text-[#243B53] leading-relaxed">
+      <div className="p-8 sm:p-12 rounded-lg bg-white border border-[#E8DFD0] shadow-xs space-y-8 text-xs sm:text-sm text-[#292821] leading-relaxed">
         <section className="space-y-4">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F] border-b border-[#E9E2D5] pb-2">
+          <h2 className="text-lg font-bold font-serif text-[#172B24] border-b border-[#E8DFD0] pb-2">
             1. Core Eligibility Rules
           </h2>
           <div className="space-y-3">
             <div className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[#C5A880] shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-5 h-5 text-[#B69A65] shrink-0 mt-0.5" />
               <div>
                 <strong>Gender:</strong> Girls only. Any girl belonging to or identifying with the cultural heritage of Mithila is eligible to apply.
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[#C5A880] shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-5 h-5 text-[#B69A65] shrink-0 mt-0.5" />
               <div>
                 <strong>Age:</strong> There is no minimum age requirement. For participants below 18 years of age, a parent or legal guardian must provide verified consent during the registration process.
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[#C5A880] shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-5 h-5 text-[#B69A65] shrink-0 mt-0.5" />
               <div>
                 <strong>Marital Status:</strong> Both unmarried and married girls are warmly eligible to participate without discrimination.
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[#C5A880] shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-5 h-5 text-[#B69A65] shrink-0 mt-0.5" />
               <div>
                 <strong>Prior Experience:</strong> No previous stage, modeling, or competition experience is required. First-time participants are evaluated on an equal footing with past competitors.
               </div>
@@ -61,7 +61,7 @@ export default function RulesPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F] border-b border-[#E9E2D5] pb-2">
+          <h2 className="text-lg font-bold font-serif text-[#172B24] border-b border-[#E8DFD0] pb-2">
             2. Video Audition Requirements
           </h2>
           <p>
@@ -76,7 +76,7 @@ export default function RulesPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F] border-b border-[#E9E2D5] pb-2">
+          <h2 className="text-lg font-bold font-serif text-[#172B24] border-b border-[#E8DFD0] pb-2">
             3. Registration Fee & Payment
           </h2>
           <p>
@@ -85,7 +85,7 @@ export default function RulesPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F] border-b border-[#E9E2D5] pb-2">
+          <h2 className="text-lg font-bold font-serif text-[#172B24] border-b border-[#E8DFD0] pb-2">
             4. Event Schedule & Venue
           </h2>
           <p>
@@ -95,7 +95,7 @@ export default function RulesPage() {
 
         <div className="pt-4 flex justify-center">
           <Link href="/register">
-            <Button className="bg-[#C5A880] hover:bg-[#b8986d] text-[#0A192F] font-bold text-xs h-11 px-7 rounded-xl shadow-xs gap-2">
+            <Button className="bg-[#B69A65] hover:bg-[#b8986d] text-[#172B24] font-bold text-xs h-11 px-7 rounded-md shadow-xs gap-2">
               <span>Accept Rules & Register (NPR 399)</span>
               <ArrowRight className="w-4 h-4" />
             </Button>

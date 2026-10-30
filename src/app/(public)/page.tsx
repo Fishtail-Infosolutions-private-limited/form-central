@@ -3,24 +3,19 @@ import Link from "next/link";
 import {
   ArrowRight,
   ShieldCheck,
-  CheckCircle2,
   Calendar,
   MapPin,
   Phone,
   Mail,
   Video,
-  Award,
   HelpCircle,
   ExternalLink,
   ChevronRight,
   Sparkles,
-  Heart,
-  FileCheck2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   OriginFoundationLogo,
-  MithilaQueenLogo,
   MithilaHeritageMandala,
 } from "@/components/brand/brand-logos";
 
@@ -37,7 +32,7 @@ export default function HomePage() {
       title: "iPhone 18 Pro Max, Red, 512 GB",
       status: "Proposed by organizers",
       badge: "Flagship Award",
-      accent: "border-[#C5A880] bg-white",
+      accent: "border-[#B69A65] bg-[#FFFFFF]",
       highlight: true,
     },
     {
@@ -46,7 +41,7 @@ export default function HomePage() {
       value: "Approx. NPR 30,000 estimated value",
       status: "Proposed value",
       badge: "Runner Up",
-      accent: "border-[#E9E2D5] bg-white",
+      accent: "border-[#E8DFD0] bg-[#FFFFFF]",
       highlight: false,
     },
     {
@@ -54,7 +49,7 @@ export default function HomePage() {
       title: "Smartphone or Quality Electronic Device",
       status: "To be confirmed",
       badge: "Third Place",
-      accent: "border-[#E9E2D5] bg-white",
+      accent: "border-[#E8DFD0] bg-[#FFFFFF]",
       highlight: false,
     },
     {
@@ -62,7 +57,7 @@ export default function HomePage() {
       title: "Honorable Recognition & Special Awards",
       status: "Details to be announced later",
       badge: "Special Honors",
-      accent: "border-[#E9E2D5] bg-white",
+      accent: "border-[#E8DFD0] bg-[#FFFFFF]",
       highlight: false,
     },
   ];
@@ -151,44 +146,44 @@ export default function HomePage() {
       {/* ==================================================================== */}
       {/* HERO SECTION — EDITORIAL CULTURAL COMPOSITION */}
       {/* ==================================================================== */}
-      <section className="relative bg-[#0A192F] text-[#FDFBF7] py-20 sm:py-28 overflow-hidden border-b border-[#243B53]">
+      <section className="relative bg-[#172B24] text-[#F5F0E6] py-20 sm:py-28 overflow-hidden border-b border-[#B69A65]/30">
         {/* Subtle patterned backdrop */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#C5A880_1px,transparent_1px)] [background-size:24px_24px]" />
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[radial-gradient(#B69A65_1px,transparent_1px)] [background-size:24px_24px]" />
 
-        {/* Floating Mithila Heritage Mandala (Right ambient illustration) */}
-        <div className="absolute -right-20 top-1/2 -translate-y-1/2 opacity-20 pointer-events-none hidden lg:block">
-          <MithilaHeritageMandala className="w-[520px] h-[520px]" accent="#C5A880" />
+        {/* Ambient Mithila Heritage Mandala (Right ambient illustration) */}
+        <div className="absolute -right-20 top-1/2 -translate-y-1/2 opacity-15 pointer-events-none hidden lg:block">
+          <MithilaHeritageMandala className="w-[520px] h-[520px]" accent="#B69A65" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl space-y-7">
             {/* Kicker Pill */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#243B53]/50 border border-[#C5A880]/40 text-[#C5A880] text-xs font-semibold tracking-wider uppercase">
-              <span className="w-2 h-2 rounded-full bg-[#C5A880] animate-pulse" />
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#172B24]/90 border border-[#B69A65]/50 text-[#B69A65] text-xs font-semibold tracking-wider uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#B69A65]" />
               <span>The Origin Foundation Presents &bull; Janakpur Dham</span>
             </div>
 
             {/* Display Headline */}
             <div className="space-y-3">
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black font-serif tracking-tight text-[#FFFFFF] leading-[1.08]">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-[#FFFFFF] leading-[1.08]">
                 Mithila Queen
               </h1>
-              <p className="text-xl sm:text-2xl text-[#C5A880] font-serif italic font-normal tracking-wide">
+              <p className="text-xl sm:text-2xl text-[#B69A65] font-serif italic font-normal tracking-wide">
                 Celebrating Mithila&apos;s Culture, Confidence & Talent.
               </p>
             </div>
 
             {/* Respectful Mission Paragraph */}
-            <p className="text-sm sm:text-base text-[#E9E2D5]/90 leading-relaxed font-sans max-w-2xl">
+            <p className="text-sm sm:text-base text-[#E8DFD0]/90 leading-relaxed font-sans max-w-2xl">
               An authentic cultural and talent-oriented competition based in Janakpur Dham, Nepal. Open to girls of any age, unmarried or married, with no prior pageant experience required. A distinguished platform framed around cultural heritage, artistic knowledge, and self-confidence.
             </p>
 
             {/* Action Buttons */}
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
               <Link href="/register" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto bg-[#C5A880] hover:bg-[#b8986d] text-[#0A192F] font-bold text-sm h-12 px-7 rounded-xl shadow-[0_4px_16px_rgba(197,168,128,0.3)] transition-all gap-2.5 group">
+                <Button className="w-full sm:w-auto bg-[#B69A65] hover:bg-[#a88a55] text-[#172B24] font-bold text-sm h-12 px-7 rounded-md transition-all gap-2.5 shadow-none group">
                   <span>Register for Mithila Queen</span>
-                  <span className="text-xs bg-[#0A192F]/15 px-2 py-0.5 rounded font-mono font-bold">
+                  <span className="text-xs bg-[#172B24]/15 px-2 py-0.5 rounded font-mono font-bold">
                     NPR 399
                   </span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -198,7 +193,7 @@ export default function HomePage() {
               <Link href="/mithila-queen" className="w-full sm:w-auto">
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto border-[#C5A880]/50 text-[#FDFBF7] hover:bg-[#243B53]/60 hover:text-[#FFFFFF] text-sm h-12 px-6 rounded-xl font-medium"
+                  className="w-full sm:w-auto border-[#B69A65]/50 text-[#F5F0E6] hover:bg-[#172B24]/80 hover:text-[#FFFFFF] text-sm h-12 px-6 rounded-md font-medium shadow-none"
                 >
                   Competition Overview & Rules
                 </Button>
@@ -206,25 +201,25 @@ export default function HomePage() {
             </div>
 
             {/* Official Organizing Bulletin Bar */}
-            <div className="pt-6 border-t border-[#243B53]/80 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-[#E9E2D5]/80">
+            <div className="pt-6 border-t border-[#B69A65]/30 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-[#E8DFD0]/90">
               <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#C5A880] shrink-0" />
+                <Calendar className="w-4 h-4 text-[#B69A65] shrink-0" />
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-[#C5A880] block">Schedule</span>
+                  <span className="text-[10px] uppercase font-bold text-[#B69A65] block">Schedule</span>
                   <span className="font-semibold text-white">To Be Announced</span>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#C5A880] shrink-0" />
+                <MapPin className="w-4 h-4 text-[#B69A65] shrink-0" />
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-[#C5A880] block">Headquarters</span>
+                  <span className="text-[10px] uppercase font-bold text-[#B69A65] block">Headquarters</span>
                   <span className="font-semibold text-white">Janakpur Dham, Nepal</span>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#C5A880] shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-[#B69A65] shrink-0" />
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-[#C5A880] block">Eligibility</span>
+                  <span className="text-[10px] uppercase font-bold text-[#B69A65] block">Eligibility</span>
                   <span className="font-semibold text-white">Any Girl &bull; Newcomers Welcome</span>
                 </div>
               </div>
@@ -237,48 +232,48 @@ export default function HomePage() {
       {/* EXECUTIVE STATEMENT — FROM THE MANAGING DIRECTORS */}
       {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-12 rounded-3xl bg-white border border-[#E9E2D5] shadow-[0_2px_14px_rgba(10,25,47,0.04)] relative overflow-hidden">
+        <div className="p-8 sm:p-12 rounded-lg bg-[#FFFFFF] border border-[#E8DFD0] relative overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             <div className="lg:col-span-8 space-y-4">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
                 <span>Executive Statement</span>
-                <span className="text-[#E9E2D5]">&bull;</span>
+                <span className="text-[#E8DFD0]">&bull;</span>
                 <span>The Origin Foundation</span>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif leading-snug">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#172B24] leading-snug">
                 &ldquo;Rooted in our cultural identity. Driven by genuine community purpose.&rdquo;
               </h2>
 
-              <p className="text-sm text-[#243B53] leading-relaxed">
+              <p className="text-sm text-[#292821]/80 leading-relaxed">
                 The Origin Foundation was established in Janakpur Dham out of a profound commitment to our heritage. For generations, Mithila&apos;s art, language, and cultural wisdom have inspired civilizations. Through <strong>Mithila Queen</strong>, our goal is to offer a respected, national-level stage where girls from across our communities can celebrate who they are, showcase their talents, and step forward with confidence.
               </p>
 
-              <p className="text-sm text-[#243B53] leading-relaxed">
+              <p className="text-sm text-[#292821]/80 leading-relaxed">
                 This is intentionally designed as a cultural and talent-oriented platform—not merely a physical beauty contest. We invite every eligible girl to participate with pride.
               </p>
 
-              {/* Managing Directors Joint Signature */}
-              <div className="pt-4 border-t border-[#E9E2D5] grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-0.5">
-                  <p className="font-bold text-[#0A192F] text-sm font-serif">Gaurav Gupta</p>
-                  <p className="text-xs text-[#C5A880] font-medium">Managing Director</p>
-                  <p className="text-[11px] text-zinc-500 font-mono">+977 9704571941</p>
+              {/* Managing Directors Joint Signature (Equal Visual Weight) */}
+              <div className="pt-4 border-t border-[#E8DFD0] grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-0.5 p-3 rounded-md bg-[#FAF5EE] border border-[#E8DFD0]">
+                  <p className="font-serif font-bold text-[#172B24] text-sm">Gaurav Gupta</p>
+                  <p className="text-xs text-[#A64B36] font-medium">Managing Director</p>
+                  <p className="text-[11px] text-[#292821]/70 font-mono">+977 9704571941</p>
                 </div>
-                <div className="space-y-0.5">
-                  <p className="font-bold text-[#0A192F] text-sm font-serif">Dipendra Shah Kalwar</p>
-                  <p className="text-xs text-[#C5A880] font-medium">Managing Director</p>
-                  <p className="text-[11px] text-zinc-500 font-mono">+977 981-2005468</p>
+                <div className="space-y-0.5 p-3 rounded-md bg-[#FAF5EE] border border-[#E8DFD0]">
+                  <p className="font-serif font-bold text-[#172B24] text-sm">Dipendra Shah Kalwar</p>
+                  <p className="text-xs text-[#A64B36] font-medium">Managing Director</p>
+                  <p className="text-[11px] text-[#292821]/70 font-mono">+977 981-2005468</p>
                 </div>
               </div>
             </div>
 
             {/* Foundation Seal Right Column */}
-            <div className="lg:col-span-4 flex flex-col items-center justify-center p-6 rounded-2xl bg-[#FDFBF7] border border-[#E9E2D5] text-center space-y-3">
-              <OriginFoundationLogo variant="stacked" theme="dark" />
-              <div className="pt-3 border-t border-[#E9E2D5] w-full text-[11px] text-[#243B53]">
+            <div className="lg:col-span-4 flex flex-col items-center justify-center p-6 rounded-lg bg-[#FAF5EE] border border-[#E8DFD0] text-center space-y-3">
+              <OriginFoundationLogo variant="stacked" theme="light" />
+              <div className="pt-3 border-t border-[#E8DFD0] w-full text-[11px] text-[#292821]/80">
                 <span>Official Secretariat: </span>
-                <strong className="text-[#0A192F]">Janakpur Dham, Nepal</strong>
+                <strong className="text-[#172B24]">Janakpur Dham, Nepal</strong>
               </div>
             </div>
           </div>
@@ -286,40 +281,40 @@ export default function HomePage() {
       </section>
 
       {/* ==================================================================== */}
-      {/* 4 CORE CULTURAL PILLARS (EDITORIAL SPREAD) */}
+      {/* 4 CORE CULTURAL PILLARS */}
       {/* ==================================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="max-w-2xl space-y-2">
-          <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+          <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
             The Foundation Philosophy
           </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0A192F] font-serif">
+          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#172B24]">
             Four Core Pillars of Mithila Queen
           </h2>
-          <p className="text-xs sm:text-sm text-[#243B53]">
-            How the competition is evaluated and conducted, emphasizing substance, knowledge, and talent.
+          <p className="text-xs sm:text-sm text-[#292821]/75">
+            How the competition is evaluated and conducted, emphasizing cultural knowledge, voice, and artistic talent.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {pillars.map((pillar, idx) => (
             <div
               key={idx}
-              className="p-7 sm:p-8 rounded-3xl bg-white border border-[#E9E2D5] hover:border-[#C5A880] transition-colors shadow-xs space-y-3"
+              className="p-7 rounded-lg bg-[#FFFFFF] border border-[#E8DFD0] hover:border-[#B69A65] transition-colors space-y-3"
             >
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C5A880]">
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#A64B36]">
                   Pillar 0{idx + 1}
                 </span>
-                <span className="text-xs text-zinc-400 font-mono">Core Value</span>
+                <span className="text-xs text-[#292821]/50 font-mono">Core Value</span>
               </div>
-              <h3 className="text-xl font-bold font-serif text-[#0A192F]">
+              <h3 className="text-xl font-serif font-bold text-[#172B24]">
                 {pillar.title}
               </h3>
-              <p className="text-xs font-medium text-[#C5A880] font-sans">
+              <p className="text-xs font-semibold text-[#B69A65]">
                 {pillar.subtitle}
               </p>
-              <p className="text-xs text-[#243B53] leading-relaxed pt-1">
+              <p className="text-xs text-[#292821]/80 leading-relaxed pt-1">
                 {pillar.description}
               </p>
             </div>
@@ -328,25 +323,25 @@ export default function HomePage() {
       </section>
 
       {/* ==================================================================== */}
-      {/* PROPOSED PRIZE POOL SECTION (HONEST & TRANSPARENT) */}
+      {/* PROPOSED PRIZE POOL SECTION */}
       {/* ==================================================================== */}
-      <section className="bg-white py-16 sm:py-20 border-y border-[#E9E2D5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <section className="bg-[#FFFFFF] py-16 sm:py-20 border-y border-[#E8DFD0]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div className="space-y-2 max-w-xl">
-              <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
                 Recognition & Rewards
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#172B24]">
                 Prize Structure for Mithila Queen
               </h2>
-              <p className="text-xs sm:text-sm text-[#243B53]">
+              <p className="text-xs sm:text-sm text-[#292821]/75">
                 Prizes proposed by the organizers to honor excellence, creative talent, and regional representation.
               </p>
             </div>
 
-            <div className="p-3 rounded-xl bg-[#FDFBF7] border border-[#E9E2D5] text-[11px] text-[#243B53] max-w-sm">
-              <span className="font-bold text-[#0A192F] block">Organizer Disclosure:</span>
+            <div className="p-3 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] text-[11px] text-[#292821]/80 max-w-sm">
+              <span className="font-bold text-[#172B24] block">Organizer Disclosure:</span>
               <span>All unconfirmed awards are labeled per transparency guidelines. Final prize specifications will be confirmed prior to stage rounds.</span>
             </div>
           </div>
@@ -355,34 +350,34 @@ export default function HomePage() {
             {prizes.map((p, idx) => (
               <div
                 key={idx}
-                className={`p-6 rounded-2xl border transition-all flex flex-col justify-between space-y-4 ${p.accent} ${
-                  p.highlight ? "shadow-sm ring-1 ring-[#C5A880]" : "shadow-xs"
+                className={`p-6 rounded-lg border transition-all flex flex-col justify-between space-y-4 ${p.accent} ${
+                  p.highlight ? "ring-1 ring-[#B69A65]" : ""
                 }`}
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#C5A880]">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#A64B36]">
                       {p.badge}
                     </span>
-                    <span className="text-xs font-bold font-mono text-[#0A192F]">
+                    <span className="text-xs font-bold font-mono text-[#172B24]">
                       0{idx + 1}
                     </span>
                   </div>
-                  <h3 className="font-serif font-bold text-base text-[#0A192F]">
+                  <h3 className="font-serif font-bold text-base text-[#172B24]">
                     {p.position}
                   </h3>
-                  <p className="text-sm font-semibold text-[#243B53]">
+                  <p className="text-sm font-semibold text-[#292821]">
                     {p.title}
                   </p>
                   {p.value && (
-                    <p className="text-xs text-zinc-500 font-mono">
+                    <p className="text-xs text-[#292821]/60 font-mono">
                       {p.value}
                     </p>
                   )}
                 </div>
 
-                <div className="pt-3 border-t border-[#E9E2D5]">
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#FDFBF7] text-[#243B53] border border-[#E9E2D5]">
+                <div className="pt-3 border-t border-[#E8DFD0]">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#FAF5EE] text-[#292821] border border-[#E8DFD0]">
                     {p.status}
                   </span>
                 </div>
@@ -395,16 +390,16 @@ export default function HomePage() {
       {/* ==================================================================== */}
       {/* 7-STEP REGISTRATION ROADMAP */}
       {/* ==================================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+          <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
             How to Register
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#172B24]">
             The 7-Step Online Registration Journey
           </h2>
-          <p className="text-xs sm:text-sm text-[#243B53]">
-            A seamless, transparent multi-step application with immediate reference ID generation and payment verification.
+          <p className="text-xs sm:text-sm text-[#292821]/75">
+            A structured, multi-step application with immediate reference ID generation and payment verification.
           </p>
         </div>
 
@@ -412,17 +407,17 @@ export default function HomePage() {
           {registrationSteps.map((step) => (
             <div
               key={step.num}
-              className="p-4 rounded-2xl bg-white border border-[#E9E2D5] shadow-xs space-y-2 flex flex-col justify-between"
+              className="p-4 rounded-lg bg-[#FFFFFF] border border-[#E8DFD0] space-y-2 flex flex-col justify-between"
             >
               <div className="space-y-1.5">
-                <div className="w-7 h-7 rounded-lg bg-[#0A192F] text-[#C5A880] flex items-center justify-center font-mono font-bold text-xs">
+                <div className="w-7 h-7 rounded-md bg-[#172B24] text-[#B69A65] flex items-center justify-center font-mono font-bold text-xs">
                   {step.num}
                 </div>
-                <h3 className="text-xs font-bold text-[#0A192F] font-serif">
+                <h3 className="text-xs font-serif font-bold text-[#172B24]">
                   {step.title}
                 </h3>
               </div>
-              <p className="text-[11px] text-[#243B53] leading-snug">
+              <p className="text-[11px] text-[#292821]/75 leading-snug">
                 {step.desc}
               </p>
             </div>
@@ -431,27 +426,27 @@ export default function HomePage() {
 
         <div className="text-center pt-2">
           <Link href="/register">
-            <Button className="bg-[#0A192F] hover:bg-[#243B53] text-[#FDFBF7] font-bold text-xs h-11 px-7 rounded-xl shadow-xs gap-2">
+            <Button className="bg-[#172B24] hover:bg-[#172B24]/90 text-[#F5F0E6] font-bold text-xs h-11 px-7 rounded-md border border-[#B69A65]/40 shadow-none gap-2">
               <span>Begin Step 1: Personal Information</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#B69A65]" />
             </Button>
           </Link>
         </div>
       </section>
 
       {/* ==================================================================== */}
-      {/* VIDEO AUDITION & WHATSAPP SUBMISSION (CONFIRMED WORKFLOW) */}
+      {/* VIDEO AUDITION & WHATSAPP SUBMISSION */}
       {/* ==================================================================== */}
-      <section className="bg-[#0A192F] text-[#FDFBF7] py-16 sm:py-20 border-y border-[#243B53]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <section className="bg-[#172B24] text-[#F5F0E6] py-16 sm:py-20 border-y border-[#B69A65]/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           <div className="max-w-2xl space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+            <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
               Video Audition Process
             </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#FFFFFF] font-serif">
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#FFFFFF]">
               How to Submit Your Introduction Video
             </h2>
-            <p className="text-xs sm:text-sm text-[#E9E2D5]/80">
+            <p className="text-xs sm:text-sm text-[#E8DFD0]/80">
               The video audition allows the organizing committee to witness your confidence, articulation, and talent directly.
             </p>
           </div>
@@ -460,39 +455,39 @@ export default function HomePage() {
             {videoSteps.map((step) => (
               <div
                 key={step.step}
-                className="p-6 rounded-2xl bg-[#243B53]/40 border border-[#243B53] space-y-3"
+                className="p-6 rounded-lg bg-[#172B24]/80 border border-[#B69A65]/30 space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <span className="w-8 h-8 rounded-lg bg-[#C5A880] text-[#0A192F] flex items-center justify-center font-bold text-xs font-mono">
+                  <span className="w-8 h-8 rounded-md bg-[#B69A65] text-[#172B24] flex items-center justify-center font-bold text-xs font-mono">
                     {step.step}
                   </span>
-                  <Video className="w-4 h-4 text-[#C5A880]" />
+                  <Video className="w-4 h-4 text-[#B69A65]" />
                 </div>
-                <h3 className="text-base font-bold text-[#FFFFFF] font-serif">
+                <h3 className="text-base font-serif font-bold text-[#FFFFFF]">
                   {step.title}
                 </h3>
-                <p className="text-xs text-[#E9E2D5]/80 leading-relaxed">
+                <p className="text-xs text-[#E8DFD0]/80 leading-relaxed">
                   {step.desc}
                 </p>
               </div>
             ))}
           </div>
 
-          <div className="p-6 rounded-2xl bg-[#071120] border border-[#243B53] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="p-6 rounded-lg bg-[#11201A] border border-[#B69A65]/40 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="space-y-1">
-              <span className="text-xs font-bold text-[#C5A880] uppercase tracking-wider block">
+              <span className="text-xs font-bold text-[#B69A65] uppercase tracking-wider block">
                 Direct WhatsApp Video Audition Submission
               </span>
               <p className="text-sm font-semibold text-white">
                 Send your video directly to Managing Director Gaurav Gupta:{" "}
-                <span className="font-mono text-[#C5A880]">+977 9704571941</span>
+                <span className="font-mono text-[#B69A65]">+977 9704571941</span>
               </p>
             </div>
             <a
               href="https://wa.me/9779704571941"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#C5A880] hover:bg-[#b8986d] text-[#0A192F] text-xs font-bold h-10 px-5 rounded-xl transition-colors shrink-0"
+              className="inline-flex items-center gap-2 bg-[#B69A65] hover:bg-[#a88a55] text-[#172B24] text-xs font-bold h-10 px-5 rounded-md transition-colors shrink-0"
             >
               <span>Message on WhatsApp</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -505,29 +500,29 @@ export default function HomePage() {
       {/* FREQUENTLY ASKED QUESTIONS & CONTACT DESK */}
       {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* FAQ Column (7 cols) */}
           <div className="lg:col-span-7 space-y-6">
             <div className="space-y-1">
-              <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
                 Frequently Asked Questions
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#172B24]">
                 Questions on Registration & Process
               </h2>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               {faqs.map((faq, i) => (
                 <div
                   key={i}
-                  className="p-5 rounded-2xl bg-white border border-[#E9E2D5] shadow-xs space-y-2"
+                  className="p-5 rounded-lg bg-[#FFFFFF] border border-[#E8DFD0] space-y-2"
                 >
-                  <h3 className="font-bold text-sm text-[#0A192F] font-serif flex items-center gap-2">
-                    <HelpCircle className="w-4 h-4 text-[#C5A880] shrink-0" />
+                  <h3 className="font-serif font-bold text-sm text-[#172B24] flex items-center gap-2">
+                    <HelpCircle className="w-4 h-4 text-[#A64B36] shrink-0" />
                     <span>{faq.q}</span>
                   </h3>
-                  <p className="text-xs text-[#243B53] leading-relaxed pl-6">
+                  <p className="text-xs text-[#292821]/80 leading-relaxed pl-6">
                     {faq.a}
                   </p>
                 </div>
@@ -536,9 +531,9 @@ export default function HomePage() {
 
             <div>
               <Link href="/faq">
-                <Button variant="outline" className="border-[#243B53]/30 text-[#0A192F] hover:bg-[#E9E2D5]/50 text-xs h-10 px-5 rounded-xl gap-2 font-semibold">
+                <Button variant="outline" className="border-[#E8DFD0] text-[#172B24] hover:bg-[#FAF5EE] text-xs h-10 px-5 rounded-md gap-2 font-semibold">
                   <span>View All 10 Official FAQs</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#A64B36]" />
                 </Button>
               </Link>
             </div>
@@ -546,57 +541,57 @@ export default function HomePage() {
 
           {/* Contact Desk Column (5 cols) */}
           <div className="lg:col-span-5">
-            <div className="p-7 sm:p-8 rounded-3xl bg-white border border-[#E9E2D5] shadow-xs space-y-6">
+            <div className="p-7 rounded-lg bg-[#FFFFFF] border border-[#E8DFD0] space-y-6">
               <div className="space-y-1.5">
-                <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+                <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
                   Official Organizing Secretariat
                 </span>
-                <h3 className="text-xl font-bold text-[#0A192F] font-serif">
+                <h3 className="text-xl font-serif font-bold text-[#172B24]">
                   The Origin Foundation
                 </h3>
-                <p className="text-xs text-[#243B53]">
+                <p className="text-xs text-[#292821]/70">
                   Janakpur Dham, Madhesh Province, Nepal
                 </p>
               </div>
 
-              <div className="space-y-3 text-xs text-[#243B53]">
-                <div className="p-3.5 rounded-xl bg-[#FDFBF7] border border-[#E9E2D5] space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+              <div className="space-y-3 text-xs text-[#292821]">
+                <div className="p-3.5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#A64B36] block">
                     Managing Director
                   </span>
-                  <p className="font-bold text-[#0A192F] text-sm font-serif">Gaurav Gupta</p>
+                  <p className="font-serif font-bold text-[#172B24] text-sm">Gaurav Gupta</p>
                   <a
                     href="tel:+9779704571941"
-                    className="text-[#C5A880] hover:underline font-mono text-xs flex items-center gap-1.5 pt-0.5"
+                    className="text-[#172B24] hover:text-[#A64B36] font-mono text-xs flex items-center gap-1.5 pt-0.5"
                   >
-                    <Phone className="w-3 h-3" />
+                    <Phone className="w-3 h-3 text-[#B69A65]" />
                     <span>+977 9704571941</span>
                   </a>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#FDFBF7] border border-[#E9E2D5] space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                <div className="p-3.5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#A64B36] block">
                     Managing Director
                   </span>
-                  <p className="font-bold text-[#0A192F] text-sm font-serif">Dipendra Shah Kalwar</p>
+                  <p className="font-serif font-bold text-[#172B24] text-sm">Dipendra Shah Kalwar</p>
                   <a
                     href="tel:+9779812005468"
-                    className="text-[#C5A880] hover:underline font-mono text-xs flex items-center gap-1.5 pt-0.5"
+                    className="text-[#172B24] hover:text-[#A64B36] font-mono text-xs flex items-center gap-1.5 pt-0.5"
                   >
-                    <Phone className="w-3 h-3" />
+                    <Phone className="w-3 h-3 text-[#B69A65]" />
                     <span>+977 981-2005468</span>
                   </a>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#FDFBF7] border border-[#E9E2D5] space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                <div className="p-3.5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#A64B36] block">
                     Official Email
                   </span>
                   <a
                     href="mailto:originfoundation107@gmail.com"
-                    className="text-[#0A192F] hover:text-[#C5A880] font-mono font-medium text-xs flex items-center gap-1.5"
+                    className="text-[#172B24] hover:text-[#A64B36] font-mono font-medium text-xs flex items-center gap-1.5"
                   >
-                    <Mail className="w-3.5 h-3.5 text-[#C5A880]" />
+                    <Mail className="w-3.5 h-3.5 text-[#B69A65]" />
                     <span>originfoundation107@gmail.com</span>
                   </a>
                 </div>
@@ -604,7 +599,7 @@ export default function HomePage() {
 
               <div className="pt-2">
                 <Link href="/contact" className="w-full block">
-                  <Button className="w-full bg-[#0A192F] hover:bg-[#243B53] text-[#FDFBF7] text-xs font-bold h-10 rounded-xl">
+                  <Button className="w-full bg-[#172B24] hover:bg-[#172B24]/90 text-[#F5F0E6] text-xs font-semibold h-10 rounded-md border border-[#B69A65]/40 shadow-none">
                     Open Contact & Inquiry Desk
                   </Button>
                 </Link>

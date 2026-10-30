@@ -150,22 +150,22 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] flex flex-col justify-center items-center p-4 text-[#0A192F] selection:bg-[#0A192F] selection:text-[#FDFBF7]">
+    <div className="min-h-screen bg-[#F5F0E6] flex flex-col justify-center items-center p-4 text-[#172B24] selection:bg-[#172B24] selection:text-[#F5F0E6]">
       <div className="w-full max-w-md">
         {/* Brand Header */}
         <div className="text-center mb-6">
           <Link href="/" className="inline-block hover:opacity-90 transition-opacity mb-2">
             <OriginFoundationLogo variant="stacked" theme="dark" />
           </Link>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E9E2D5]/60 border border-[#C5A880]/40 text-[#0A192F] text-[10.5px] font-bold uppercase tracking-wider mt-2">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#C5A880]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8DFD0]/60 border border-[#B69A65]/40 text-[#172B24] text-[10.5px] font-bold uppercase tracking-wider mt-2">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#B69A65]" />
             <span>Executive Admin Portal &bull; Mithila Queen</span>
           </div>
         </div>
 
         {/* Main Card */}
-        <Card className="border-[#E9E2D5] bg-white shadow-xs rounded-2xl overflow-hidden">
-          <CardHeader className="pb-4 border-b border-[#E9E2D5]">
+        <Card className="border-[#E8DFD0] bg-white shadow-xs rounded-md overflow-hidden">
+          <CardHeader className="pb-4 border-b border-[#E8DFD0]">
             <CardTitle className="text-xl font-bold text-zinc-900">
               {mode === "LOGIN"
                 ? "Sign In"
@@ -193,14 +193,14 @@ export function LoginForm() {
           <CardContent className="p-6">
             {/* Error Banners */}
             {mode === "LOGIN" && loginState?.error && (
-              <div className="mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2.5">
+              <div className="mb-5 p-3.5 rounded-md bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2.5">
                 <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
                 <span className="font-medium">{loginState.error}</span>
               </div>
             )}
 
             {mode !== "LOGIN" && resetError && (
-              <div className="mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2.5">
+              <div className="mb-5 p-3.5 rounded-md bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2.5">
                 <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
                 <span className="font-medium">{resetError}</span>
               </div>
@@ -223,7 +223,7 @@ export function LoginForm() {
                     onChange={(e) => setLoginEmail(e.target.value)}
                     required
                     error={Boolean(loginState?.fieldErrors?.email)}
-                    className="h-10 text-sm border-zinc-300 focus:border-emerald-600 focus:ring-emerald-600 bg-white"
+                    className="h-10 text-sm border-zinc-300 focus:border-[#B69A65] focus:ring-[#B69A65] bg-white"
                   />
                   {loginState?.fieldErrors?.email && (
                     <p className="text-xs text-red-600 font-medium">{loginState.fieldErrors.email[0]}</p>
@@ -244,7 +244,7 @@ export function LoginForm() {
                         setMode("FORGOT_EMAIL");
                         setResetError(null);
                       }}
-                      className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:underline"
+                      className="text-xs font-semibold text-[#A64B36] hover:text-[#172B24] hover:underline"
                     >
                       Forgot Password?
                     </button>
@@ -260,7 +260,7 @@ export function LoginForm() {
                     onChange={(e) => setLoginPassword(e.target.value)}
                     required
                     error={Boolean(loginState?.fieldErrors?.password)}
-                    className="h-10 text-sm border-zinc-300 focus:border-emerald-600 focus:ring-emerald-600 bg-white font-mono"
+                    className="h-10 text-sm border-zinc-300 focus:border-[#B69A65] focus:ring-[#B69A65] bg-white font-mono"
                   />
                   {loginState?.fieldErrors?.password && (
                     <p className="text-xs text-red-600 font-medium">{loginState.fieldErrors.password[0]}</p>
@@ -271,7 +271,7 @@ export function LoginForm() {
                   <Button
                     type="submit"
                     disabled={isLoginPending}
-                    className="w-full h-10 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-all shadow-xs gap-2"
+                    className="w-full h-10 text-xs bg-[#172B24] hover:bg-[#172B24]/90 border border-[#B69A65]/40 text-[#F5F0E6] text-white font-bold transition-all shadow-xs gap-2"
                   >
                     {isLoginPending ? (
                       <>
@@ -314,7 +314,7 @@ export function LoginForm() {
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-10 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold gap-2"
+                    className="w-full h-10 text-xs bg-[#172B24] hover:bg-[#172B24]/90 border border-[#B69A65]/40 text-[#F5F0E6] text-white font-bold gap-2"
                   >
                     {isLoading ? (
                       <>
@@ -377,7 +377,7 @@ export function LoginForm() {
                   <Button
                     type="submit"
                     disabled={isLoading || otpCode.length !== 6}
-                    className="w-full h-10 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold gap-2"
+                    className="w-full h-10 text-xs bg-[#172B24] hover:bg-[#172B24]/90 border border-[#B69A65]/40 text-[#F5F0E6] text-white font-bold gap-2"
                   >
                     {isLoading ? (
                       <>
@@ -445,7 +445,7 @@ export function LoginForm() {
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-10 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold gap-2"
+                    className="w-full h-10 text-xs bg-[#172B24] hover:bg-[#172B24]/90 border border-[#B69A65]/40 text-[#F5F0E6] text-white font-bold gap-2"
                   >
                     {isLoading ? (
                       <>
@@ -466,7 +466,7 @@ export function LoginForm() {
             {/* 5. SUCCESS CONFIRMATION */}
             {mode === "SUCCESS" && (
               <div className="text-center py-4 space-y-4">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center border border-emerald-200">
+                <div className="w-14 h-14 rounded-md bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center border border-emerald-200">
                   <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
                 </div>
 
@@ -492,7 +492,7 @@ export function LoginForm() {
                       setLoginEmail(resetEmail);
                     }
                   }}
-                  className="w-full h-10 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold gap-2"
+                  className="w-full h-10 text-xs bg-[#172B24] hover:bg-[#172B24]/90 border border-[#B69A65]/40 text-[#F5F0E6] text-white font-bold gap-2"
                 >
                   <span>Sign In Now</span>
                   <ArrowRight className="w-4 h-4" />

@@ -1,7 +1,7 @@
 import React from "react";
 import { Crown, Sparkles, MapPin, Calendar, ShieldCheck } from "lucide-react";
 import { MithilaQueenWizard } from "@/components/registration/mithila-queen-wizard";
-import { MithilaMotif } from "@/components/ui/mithila-motif";
+import { MithilaHeritageMandala } from "@/components/brand/brand-logos";
 
 export const metadata = {
   title: "Mithila Queen Registration | The Origin Foundation",
@@ -11,18 +11,18 @@ export const metadata = {
 
 export default function RegisterPage() {
   return (
-    <div className="py-12 sm:py-20 space-y-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Header */}
+    <div className="py-10 sm:py-16 space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Editorial Header */}
       <div className="max-w-2xl mx-auto text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#E9E2D5]/60 border border-[#C5A880]/40 text-[#0A192F] text-xs font-semibold">
-          <Crown className="w-3.5 h-3.5 text-[#C5A880]" />
-          <span>The Origin Foundation • Janakpur Dham</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFFFFF] border border-[#E8DFD0] text-[#172B24] text-xs font-semibold">
+          <MithilaHeritageMandala className="w-3.5 h-3.5 text-[#B69A65]" />
+          <span>The Origin Foundation &bull; Janakpur Dham</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#0A192F] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#172B24] tracking-tight">
           Mithila Queen Registration
         </h1>
-        <p className="text-xs sm:text-sm text-[#243B53] leading-relaxed max-w-xl mx-auto">
-          Celebrating Mithila&apos;s Culture, Confidence & Talent. Fill in the seven steps below to register your participation.
+        <p className="text-xs sm:text-sm text-[#292821]/75 leading-relaxed max-w-xl mx-auto">
+          Celebrating Mithila&apos;s Culture, Confidence & Talent. Complete the structured 7-step application below to register your candidacy.
         </p>
       </div>
 
@@ -31,4 +31,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-

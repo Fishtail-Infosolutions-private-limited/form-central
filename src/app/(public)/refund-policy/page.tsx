@@ -11,20 +11,20 @@ export default function RefundPolicyPage() {
   return (
     <div className="py-12 sm:py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       <div className="text-center space-y-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
+        <span className="text-xs font-bold uppercase tracking-wider text-[#B69A65]">
           Financial Transparency
         </span>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#0A192F] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#172B24] tracking-tight">
           Refund & Cancellation Policy
         </h1>
-        <p className="text-xs text-[#243B53]">
+        <p className="text-xs text-[#292821]">
           The Origin Foundation • Janakpur Dham, Nepal
         </p>
       </div>
 
-      <div className="p-8 sm:p-12 rounded-3xl bg-white border border-[#E9E2D5] shadow-xs space-y-8 text-xs sm:text-sm text-[#243B53] leading-relaxed">
+      <div className="p-8 sm:p-12 rounded-lg bg-white border border-[#E8DFD0] shadow-xs space-y-8 text-xs sm:text-sm text-[#292821] leading-relaxed">
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F]">
+          <h2 className="text-lg font-bold font-serif text-[#172B24]">
             1. Registration Fee Overview
           </h2>
           <p>
@@ -33,7 +33,7 @@ export default function RefundPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F]">
+          <h2 className="text-lg font-bold font-serif text-[#172B24]">
             2. General Non-Refundable Nature
           </h2>
           <p>
@@ -42,7 +42,7 @@ export default function RefundPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F]">
+          <h2 className="text-lg font-bold font-serif text-[#172B24]">
             3. Duplicate & Erroneous Payments
           </h2>
           <p>
@@ -50,13 +50,13 @@ export default function RefundPolicyPage() {
           </p>
           <ul className="list-disc pl-5 space-y-1.5">
             <li>The applicant must notify the organizers within <strong>7 calendar days</strong> of the transaction.</li>
-            <li>Submit full bank statements, transaction IDs, and sender account details to <a href="mailto:originfoundation107@gmail.com" className="text-[#0A192F] font-semibold underline">originfoundation107@gmail.com</a>.</li>
+            <li>Submit full bank statements, transaction IDs, and sender account details to <a href="mailto:originfoundation107@gmail.com" className="text-[#172B24] font-semibold underline">originfoundation107@gmail.com</a>.</li>
             <li>Upon independent financial reconciliation by our finance team, verified duplicate excess amounts will be returned to the originating source account.</li>
           </ul>
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F]">
+          <h2 className="text-lg font-bold font-serif text-[#172B24]">
             4. Event Postponement or Schedule Adjustments
           </h2>
           <p>
@@ -65,15 +65,15 @@ export default function RefundPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F]">
+          <h2 className="text-lg font-bold font-serif text-[#172B24]">
             5. Contact for Payment Reconciliation
           </h2>
           <p>
             For any billing questions or payment clarification inquiries, please contact:
           </p>
-          <div className="p-4 rounded-xl bg-[#FDFBF7] border border-[#E9E2D5] space-y-1 text-xs">
+          <div className="p-4 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] space-y-1 text-xs">
             <p><strong>The Origin Foundation — Payment Support</strong></p>
-            <p>Email: <a href="mailto:originfoundation107@gmail.com" className="text-[#0A192F] font-semibold underline">originfoundation107@gmail.com</a></p>
+            <p>Email: <a href="mailto:originfoundation107@gmail.com" className="text-[#172B24] font-semibold underline">originfoundation107@gmail.com</a></p>
             <p>Gaurav Gupta: +977 9704571941 | Dipendra Shah Kalwar: +977 981-2005468</p>
             <p>Janakpur Dham, Madhesh Province, Nepal</p>
           </div>

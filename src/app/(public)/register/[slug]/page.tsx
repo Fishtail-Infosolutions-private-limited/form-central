@@ -52,8 +52,8 @@ export default async function PublicRegistrationPage({
   if (!availability.isAvailable) {
     return (
       <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full bg-white p-8 text-center rounded-2xl shadow-sm border border-zinc-200">
-          <div className="w-14 h-14 bg-zinc-100 text-zinc-900 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <Card className="max-w-md w-full bg-white p-8 text-center rounded-md shadow-sm border border-zinc-200">
+          <div className="w-14 h-14 bg-zinc-100 text-zinc-900 rounded-md flex items-center justify-center mx-auto mb-4">
             {availability.status === "CAPACITY_FULL" ? (
               <Users className="w-7 h-7 text-rose-600" />
             ) : availability.status === "DEADLINE_PASSED" ? (
@@ -95,7 +95,7 @@ export default async function PublicRegistrationPage({
   if (!publishedVersion) {
     return (
       <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full bg-white p-8 text-center rounded-2xl border border-zinc-200 shadow-sm">
+        <Card className="max-w-md w-full bg-white p-8 text-center rounded-md border border-zinc-200 shadow-sm">
           <p className="text-sm text-zinc-600">No published version found for this event form.</p>
         </Card>
       </div>

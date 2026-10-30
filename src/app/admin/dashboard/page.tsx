@@ -11,36 +11,61 @@ import {
   ArrowRight,
   PlusCircle,
   Eye,
-  HardDrive,
-  AlertCircle,
   AlertTriangle,
-  CreditCard,
   FileCheck2,
+  XCircle,
+  HelpCircle,
+  Mail,
+  Send,
+  Calendar,
+  MapPin,
+  Sparkles,
+  ArrowUpRight,
+  ShieldCheck,
+  History,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { MithilaHeritageMandala } from "@/components/brand/brand-logos";
 import { formatNepalDateTime } from "@/lib/utils/timezone";
+
+export const metadata = {
+  title: "Admin Dashboard | The Origin Foundation",
+};
 
 export default async function AdminDashboardPage() {
   const admin = await requireAdmin();
 
-  // Query actual metrics for Mithila Queen and forms
+  // Query merged metrics across Mithila Queen and Generic Forms
   const [
     totalMithilaQueens,
     paymentsUnderReview,
     paymentsVerified,
-    applicationsApproved,
+    paymentsClarification,
+    appsUnderReview,
+    appsApproved,
+    appsRejected,
+    appsActionRequired,
     recentMithilaQueenRegistrations,
     totalForms,
     publishedForms,
     driveIntegration,
     forms,
+    totalSubmissions,
+    sentEmailsCount,
+    failedEmailsCount,
+    campaignsCount,
+    recentAuditLogs,
+    recentPaymentReviews,
   ] = await Promise.all([
     prisma.mithilaQueenRegistration.count(),
     prisma.mithilaQueenRegistration.count({ where: { paymentStatus: "UNDER_REVIEW" } }),
     prisma.mithilaQueenRegistration.count({ where: { paymentStatus: "VERIFIED" } }),
+    prisma.mithilaQueenRegistration.count({ where: { paymentStatus: "CLARIFICATION_REQUIRED" } }),
+    prisma.mithilaQueenRegistration.count({ where: { applicationStatus: { in: ["UNDER_REVIEW", "SUBMITTED"] } } }),
     prisma.mithilaQueenRegistration.count({ where: { applicationStatus: "APPROVED" } }),
+    prisma.mithilaQueenRegistration.count({ where: { applicationStatus: "REJECTED" } }),
+    prisma.mithilaQueenRegistration.count({ where: { applicationStatus: "ACTION_REQUIRED" } }),
     prisma.mithilaQueenRegistration.findMany({
       take: 6,
       orderBy: { submittedAt: "desc" },
@@ -51,7 +76,7 @@ export default async function AdminDashboardPage() {
       where: { id: "primary" },
     }),
     prisma.registrationForm.findMany({
-      take: 5,
+      take: 4,
       orderBy: { createdAt: "desc" },
       include: {
         _count: {
@@ -59,204 +84,360 @@ export default async function AdminDashboardPage() {
         },
       },
     }),
+    prisma.registrationSubmission.count(),
+    prisma.emailCampaignRecipient.count({ where: { status: { in: ["SENT", "DELIVERED"] } } }),
+    prisma.emailCampaignRecipient.count({ where: { status: { in: ["FAILED", "BOUNCED"] } } }),
+    prisma.emailCampaign.count(),
+    prisma.auditLog.findMany({
+      take: 6,
+      orderBy: { createdAt: "desc" },
+      include: { actor: { select: { name: true, email: true } } },
+    }),
+    prisma.paymentReviewLog.findMany({
+      take: 6,
+      orderBy: { createdAt: "desc" },
+      include: {
+        reviewer: { select: { name: true, email: true } },
+        registration: { select: { registrationId: true, fullName: true } },
+      },
+    }),
   ]);
 
+  const grandTotalRegistrations = totalMithilaQueens + totalSubmissions;
+
   return (
-    <div className="space-y-6">
-      {/* Dashboard Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-5">
-        <div>
-          <span className="text-[11px] font-bold uppercase tracking-wider text-[#C5A880]">
-            The Origin Foundation • Janakpur Dham
-          </span>
-          <h1 className="text-3xl font-extrabold text-[#0A192F] font-serif tracking-tight">
+    <div className="space-y-8">
+      {/* Editorial Cultural Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DFD0] pb-6 bg-[#FFFFFF] p-6 rounded-lg border">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <MithilaHeritageMandala className="w-5 h-5 text-[#B69A65]" />
+            <span className="text-[11px] font-bold tracking-widest uppercase text-[#B69A65]">
+              The Origin Foundation &bull; Janakpur Dham
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#172B24] tracking-tight">
             Origin Foundation Command Center
           </h1>
-          <p className="text-xs text-zinc-500 mt-0.5">
-            Signed in as <strong>{admin.name}</strong> ({admin.email})
+          <p className="text-xs sm:text-sm text-[#292821]/70">
+            Signed in as <strong className="text-[#172B24]">{admin.name}</strong> ({admin.email}) &bull; Nepal Standard Time (UTC+05:45)
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <Link href="/admin/responses">
-            <Button className="gap-2 bg-[#0A192F] hover:bg-[#243B53] text-[#FDFBF7] text-xs h-9 font-bold shadow-xs">
-              <Crown className="w-4 h-4 text-[#C5A880]" />
+            <Button className="gap-2 bg-[#172B24] hover:bg-[#172B24]/90 text-[#F5F0E6] text-xs h-9 font-medium border border-[#B69A65]/40 shadow-none">
+              <Crown className="w-4 h-4 text-[#B69A65]" />
               <span>Review Applications</span>
             </Button>
           </Link>
           <Link href="/admin/forms/new">
-            <Button variant="outline" className="gap-2 border-zinc-300 text-xs h-9 font-semibold">
-              <PlusCircle className="w-4 h-4 text-zinc-600" />
+            <Button variant="outline" className="gap-2 border-[#E8DFD0] text-[#172B24] hover:bg-[#F5F0E6] text-xs h-9 font-medium shadow-none">
+              <PlusCircle className="w-4 h-4 text-[#A64B36]" />
               <span>New Form</span>
             </Button>
           </Link>
         </div>
       </div>
 
-      {/* Google Drive Status Notification (Warning Alert banner if disconnected) */}
+      {/* Google Drive Status Alert if disconnected */}
       {!driveIntegration?.isConnected && (
-        <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+        <div className="p-4 rounded-lg bg-[#FAF5EE] border border-[#B69A65]/30 text-[#172B24] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-amber-100 border border-amber-300 text-amber-700 flex items-center justify-center shrink-0">
-              <AlertTriangle className="w-4 h-4 text-amber-600" />
+            <div className="w-9 h-9 rounded-md bg-[#F5F0E6] border border-[#B69A65]/50 text-[#A64B36] flex items-center justify-center shrink-0">
+              <AlertTriangle className="w-4 h-4 text-[#A64B36]" />
             </div>
             <div>
-              <p className="text-xs font-bold text-amber-900">Google Drive is not connected</p>
-              <p className="text-[11px] text-amber-700">
-                Connect your Google account in Settings to receive registration video uploads and documents directly into Drive.
+              <p className="text-xs font-bold text-[#172B24]">Google Drive is not connected</p>
+              <p className="text-[11px] text-[#292821]/80">
+                Connect your institutional Google account in Settings to receive participant audition videos and citizenship proofs directly into Drive.
               </p>
             </div>
           </div>
-          <Link href="/admin/settings/integrations/google-drive">
-            <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs h-8 px-3 shrink-0 shadow-2xs">
+          <Link href="/admin/settings?tab=integrations">
+            <Button size="sm" className="bg-[#A64B36] hover:bg-[#A64B36]/90 text-[#FFFFFF] text-xs h-8 px-3 shrink-0 shadow-none">
               Connect Drive
             </Button>
           </Link>
         </div>
       )}
 
-      {/* MITHILA QUEEN PRIMARY METRICS */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-[#0A192F] font-serif flex items-center gap-2">
-            <Crown className="w-4 h-4 text-[#C5A880]" />
-            <span>Mithila Queen 2026 • Live Registration Metrics</span>
+      {/* FLAGSHIP COMPETITION HERO STATUS BANNER */}
+      <div className="bg-[#172B24] text-[#F5F0E6] rounded-lg p-6 border border-[#B69A65]/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="space-y-2 max-w-xl">
+          <div className="flex items-center gap-2">
+            <Crown className="w-5 h-5 text-[#B69A65]" />
+            <span className="text-xs font-bold uppercase tracking-widest text-[#B69A65]">
+              Flagship Competition &bull; 2026 Edition
+            </span>
+          </div>
+          <h2 className="text-2xl font-serif font-bold text-[#F5F0E6] tracking-tight">
+            Mithila Queen
           </h2>
-          <span className="text-xs text-zinc-500 font-mono">Fee: NPR 399</span>
+          <p className="text-xs text-[#E8DFD0]/90 leading-relaxed">
+            Celebrating Mithila&apos;s Culture, Confidence & Talent. Janakpur Dham, Nepal. Registration Fee: NPR 399. Official event date & time are currently <span className="font-semibold text-[#B69A65]">To Be Announced</span>.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+          <div className="bg-[#172B24]/80 border border-[#B69A65]/40 rounded-md p-3 px-4 min-w-[120px] text-center">
+            <div className="text-[10px] uppercase font-bold tracking-wider text-[#B69A65]">Total Applicants</div>
+            <div className="text-2xl font-serif font-bold text-[#FFFFFF]">{totalMithilaQueens}</div>
+          </div>
+          <div className="bg-[#172B24]/80 border border-[#B69A65]/40 rounded-md p-3 px-4 min-w-[120px] text-center">
+            <div className="text-[10px] uppercase font-bold tracking-wider text-emerald-400">Verified Paid</div>
+            <div className="text-2xl font-serif font-bold text-emerald-300">{paymentsVerified}</div>
+          </div>
+          <div className="bg-[#172B24]/80 border border-[#B69A65]/40 rounded-md p-3 px-4 min-w-[120px] text-center">
+            <div className="text-[10px] uppercase font-bold tracking-wider text-[#E8DFD0]">Approved Final</div>
+            <div className="text-2xl font-serif font-bold text-[#FFFFFF]">{appsApproved}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* UNIFIED CLICKABLE METRICS GRID */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[#172B24] font-serif flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#B69A65]" />
+            <span>Registration & Review Statistics</span>
+          </h2>
+          <span className="text-xs text-[#292821]/60">Click any card to filter applications</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="border-[#E9E2D5] shadow-xs hover:border-[#C5A880] transition-colors bg-white">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-semibold uppercase tracking-wider text-[#0A192F]">
-                Total Registrations
-              </CardTitle>
-              <div className="w-8 h-8 rounded-lg bg-[#0A192F] text-[#C5A880] flex items-center justify-center">
-                <Users className="w-4 h-4" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-extrabold text-[#0A192F]">{totalMithilaQueens}</div>
-              <p className="text-xs text-zinc-500 mt-1">
-                Submitted applicant records
-              </p>
-            </CardContent>
-          </Card>
+          {/* Total Registrations */}
+          <Link href="/admin/responses" className="group block">
+            <Card className="border-[#E8DFD0] hover:border-[#172B24] transition-all bg-[#FFFFFF] shadow-none h-full">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-semibold uppercase tracking-wider text-[#172B24]">
+                  Total Registrations
+                </CardTitle>
+                <div className="w-8 h-8 rounded bg-[#172B24] text-[#B69A65] flex items-center justify-center">
+                  <Users className="w-4 h-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-serif font-bold text-[#172B24]">{grandTotalRegistrations}</div>
+                <div className="flex items-center justify-between mt-2 text-xs text-[#292821]/70">
+                  <span>{totalMithilaQueens} Queen &bull; {totalSubmissions} Others</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#B69A65] opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
 
-          <Card className="border-[#E9E2D5] shadow-xs hover:border-amber-400 transition-colors bg-white">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-semibold uppercase tracking-wider text-amber-800">
-                Payments Under Review
-              </CardTitle>
-              <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-                <Clock className="w-4 h-4" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-extrabold text-amber-700">{paymentsUnderReview}</div>
-              <p className="text-xs text-zinc-500 mt-1">
-                Awaiting bank receipt verification
-              </p>
-            </CardContent>
-          </Card>
+          {/* Payments Pending Verification */}
+          <Link href="/admin/responses?paymentStatus=UNDER_REVIEW" className="group block">
+            <Card className="border-[#E8DFD0] hover:border-[#A64B36] transition-all bg-[#FFFFFF] shadow-none h-full">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-semibold uppercase tracking-wider text-[#A64B36]">
+                  Payments Pending Review
+                </CardTitle>
+                <div className="w-8 h-8 rounded bg-[#FAF5EE] text-[#A64B36] border border-[#A64B36]/30 flex items-center justify-center">
+                  <Clock className="w-4 h-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-serif font-bold text-[#A64B36]">{paymentsUnderReview}</div>
+                <div className="flex items-center justify-between mt-2 text-xs text-[#292821]/70">
+                  <span>Awaiting receipt confirmation</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#A64B36] opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
 
-          <Card className="border-[#E9E2D5] shadow-xs hover:border-emerald-400 transition-colors bg-white">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
-                Payments Verified
-              </CardTitle>
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                <CheckCircle2 className="w-4 h-4" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-extrabold text-emerald-700">{paymentsVerified}</div>
-              <p className="text-xs text-zinc-500 mt-1">
-                Settled & verified entries
-              </p>
-            </CardContent>
-          </Card>
+          {/* Payments Verified */}
+          <Link href="/admin/responses?paymentStatus=VERIFIED" className="group block">
+            <Card className="border-[#E8DFD0] hover:border-emerald-600 transition-all bg-[#FFFFFF] shadow-none h-full">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
+                  Payments Verified
+                </CardTitle>
+                <div className="w-8 h-8 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
+                  <CheckCircle2 className="w-4 h-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-serif font-bold text-emerald-700">{paymentsVerified}</div>
+                <div className="flex items-center justify-between mt-2 text-xs text-[#292821]/70">
+                  <span>eSewa & bank verified entries</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
 
-          <Card className="border-[#E9E2D5] shadow-xs hover:border-[#0A192F] transition-colors bg-white">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-semibold uppercase tracking-wider text-[#0A192F]">
-                Approved Participants
-              </CardTitle>
-              <div className="w-8 h-8 rounded-lg bg-[#0A192F] text-white flex items-center justify-center">
-                <FileCheck2 className="w-4 h-4" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-extrabold text-[#0A192F]">{applicationsApproved}</div>
-              <p className="text-xs text-zinc-500 mt-1">
-                PDF confirmation generated
-              </p>
-            </CardContent>
-          </Card>
+          {/* Approved Participants */}
+          <Link href="/admin/responses?applicationStatus=APPROVED" className="group block">
+            <Card className="border-[#E8DFD0] hover:border-[#172B24] transition-all bg-[#FFFFFF] shadow-none h-full">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-semibold uppercase tracking-wider text-[#172B24]">
+                  Approved Candidates
+                </CardTitle>
+                <div className="w-8 h-8 rounded bg-[#172B24] text-[#FFFFFF] flex items-center justify-center">
+                  <FileCheck2 className="w-4 h-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-serif font-bold text-[#172B24]">{appsApproved}</div>
+                <div className="flex items-center justify-between mt-2 text-xs text-[#292821]/70">
+                  <span>Adjudicated with passes</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#B69A65] opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Under Review */}
+          <Link href="/admin/responses?applicationStatus=UNDER_REVIEW" className="group block">
+            <Card className="border-[#E8DFD0] hover:border-[#B69A65] transition-all bg-[#FFFFFF] shadow-none h-full">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-semibold uppercase tracking-wider text-[#B69A65]">
+                  Applications Under Review
+                </CardTitle>
+                <div className="w-8 h-8 rounded bg-[#FAF5EE] text-[#B69A65] border border-[#B69A65]/40 flex items-center justify-center">
+                  <HelpCircle className="w-4 h-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-serif font-bold text-[#172B24]">{appsUnderReview}</div>
+                <div className="flex items-center justify-between mt-2 text-xs text-[#292821]/70">
+                  <span>In jury adjudication queue</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#B69A65] opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Action Required */}
+          <Link href="/admin/responses?applicationStatus=ACTION_REQUIRED" className="group block">
+            <Card className="border-[#E8DFD0] hover:border-amber-600 transition-all bg-[#FFFFFF] shadow-none h-full">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-semibold uppercase tracking-wider text-amber-800">
+                  Action Required
+                </CardTitle>
+                <div className="w-8 h-8 rounded bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center">
+                  <AlertTriangle className="w-4 h-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-serif font-bold text-amber-700">{appsActionRequired + paymentsClarification}</div>
+                <div className="flex items-center justify-between mt-2 text-xs text-[#292821]/70">
+                  <span>Receipt or minor doc resubmission</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-amber-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Rejected */}
+          <Link href="/admin/responses?applicationStatus=REJECTED" className="group block">
+            <Card className="border-[#E8DFD0] hover:border-rose-600 transition-all bg-[#FFFFFF] shadow-none h-full">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-semibold uppercase tracking-wider text-rose-800">
+                  Rejected Applications
+                </CardTitle>
+                <div className="w-8 h-8 rounded bg-rose-50 text-rose-700 border border-rose-200 flex items-center justify-center">
+                  <XCircle className="w-4 h-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-serif font-bold text-rose-700">{appsRejected}</div>
+                <div className="flex items-center justify-between mt-2 text-xs text-[#292821]/70">
+                  <span>Did not meet criteria</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Email Campaigns */}
+          <Link href="/admin/campaigns" className="group block">
+            <Card className="border-[#E8DFD0] hover:border-[#172B24] transition-all bg-[#FFFFFF] shadow-none h-full">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-xs font-semibold uppercase tracking-wider text-[#172B24]">
+                  Email Campaigns
+                </CardTitle>
+                <div className="w-8 h-8 rounded bg-[#172B24] text-[#B69A65] flex items-center justify-center">
+                  <Mail className="w-4 h-4" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-serif font-bold text-[#172B24]">{campaignsCount}</div>
+                <div className="flex items-center justify-between mt-2 text-xs text-[#292821]/70">
+                  <span>{sentEmailsCount} sent &bull; {failedEmailsCount} failed</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#B69A65] opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
       </div>
 
       {/* 2-COLUMN MAIN CONTENT GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* RECENT MITHILA QUEEN APPLICATIONS TABLE (2 cols) */}
-        <div className="lg:col-span-2 space-y-3">
+        <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-bold text-[#0A192F] font-serif tracking-tight">
-                Recent Mithila Queen Applications
+              <h2 className="text-base font-serif font-bold text-[#172B24] tracking-tight">
+                Recent Mithila Queen Registrations
               </h2>
-              <p className="text-xs text-zinc-500">
-                Latest participant entries with real-time payment and adjudication states.
+              <p className="text-xs text-[#292821]/70">
+                Latest submissions with real-time verification status.
               </p>
             </div>
             <Link
               href="/admin/responses"
-              className="text-xs font-bold text-[#0A192F] hover:text-[#C5A880] flex items-center gap-1"
+              className="text-xs font-semibold text-[#A64B36] hover:text-[#172B24] flex items-center gap-1"
             >
-              <span>Open All Applications</span>
+              <span>View All Applications</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <Card className="overflow-hidden border-[#E9E2D5] shadow-xs">
+          <Card className="overflow-hidden border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
             {recentMithilaQueenRegistrations.length === 0 ? (
               <div className="p-12 text-center">
-                <div className="w-12 h-12 rounded-full bg-zinc-100 text-zinc-400 mx-auto flex items-center justify-center mb-3">
-                  <Crown className="w-6 h-6 text-[#C5A880]" />
+                <div className="w-12 h-12 rounded-full bg-[#FAF5EE] text-[#B69A65] mx-auto flex items-center justify-center mb-3">
+                  <Crown className="w-6 h-6" />
                 </div>
-                <h3 className="font-semibold text-zinc-800 text-sm">No Mithila Queen registrations yet</h3>
-                <p className="text-xs text-zinc-500 max-w-sm mx-auto mt-1">
-                  Once participants submit their 7-step application on the website, their records will appear here.
+                <h3 className="font-serif font-bold text-[#172B24] text-sm">No Mithila Queen registrations yet</h3>
+                <p className="text-xs text-[#292821]/60 max-w-sm mx-auto mt-1">
+                  Once applicants submit the registration form, their full dossiers will appear here for review.
                 </p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-[#FDFBF7] text-zinc-600 border-b border-[#E9E2D5] font-semibold">
+                  <thead className="bg-[#FAF5EE] text-[#172B24] border-b border-[#E8DFD0] font-semibold">
                     <tr>
-                      <th className="py-3 px-4">Registration ID</th>
-                      <th className="py-3 px-4">Participant Name</th>
-                      <th className="py-3 px-4">Contact</th>
-                      <th className="py-3 px-4">Location</th>
-                      <th className="py-3 px-4">Payment Status</th>
-                      <th className="py-3 px-4">Application Status</th>
-                      <th className="py-3 px-4 text-right">Action</th>
+                      <th className="py-3 px-4 font-serif">Reg ID</th>
+                      <th className="py-3 px-4 font-serif">Candidate</th>
+                      <th className="py-3 px-4 font-serif">District</th>
+                      <th className="py-3 px-4 font-serif">Payment</th>
+                      <th className="py-3 px-4 font-serif">Status</th>
+                      <th className="py-3 px-4 text-right font-serif">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E9E2D5]">
+                  <tbody className="divide-y divide-[#E8DFD0]">
                     {recentMithilaQueenRegistrations.map((reg) => (
-                      <tr key={reg.id} className="hover:bg-zinc-50 transition-colors">
-                        <td className="py-3 px-4 font-mono font-bold text-[#0A192F]">
+                      <tr key={reg.id} className="hover:bg-[#FAF5EE]/60 transition-colors">
+                        <td className="py-3 px-4 font-mono font-bold text-[#172B24]">
                           {reg.registrationId}
                         </td>
-                        <td className="py-3 px-4 font-semibold text-zinc-900">
-                          {reg.fullName} {reg.isMinor ? <span className="text-[10px] text-amber-700 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">Minor</span> : ""}
+                        <td className="py-3 px-4">
+                          <div className="font-semibold text-[#172B24]">{reg.fullName}</div>
+                          {reg.isMinor && (
+                            <span className="text-[10px] text-[#A64B36] font-bold bg-[#FAF5EE] px-1.5 py-0.2 rounded border border-[#A64B36]/30">
+                              Minor (Under 18)
+                            </span>
+                          )}
                         </td>
-                        <td className="py-3 px-4 text-zinc-600 font-mono">
-                          {reg.email}
-                        </td>
-                        <td className="py-3 px-4 text-zinc-600">
-                          {reg.district}, {reg.province}
+                        <td className="py-3 px-4 text-[#292821]/70">
+                          {reg.district || "Janakpur Dham"}
                         </td>
                         <td className="py-3 px-4">
                           <span
@@ -270,27 +451,27 @@ export default async function AdminDashboardPage() {
                                 : "bg-zinc-100 text-zinc-600 border border-zinc-200"
                             }`}
                           >
-                            {reg.paymentStatus}
+                            {reg.paymentStatus.replace("_", " ")}
                           </span>
                         </td>
                         <td className="py-3 px-4">
                           <span
                             className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                               reg.applicationStatus === "APPROVED"
-                                ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                                ? "bg-[#172B24] text-[#FFFFFF]"
                                 : reg.applicationStatus === "REJECTED"
                                 ? "bg-rose-50 text-rose-800 border border-rose-200"
                                 : reg.applicationStatus === "ACTION_REQUIRED"
                                 ? "bg-amber-50 text-amber-800 border border-amber-200"
-                                : "bg-blue-50 text-blue-800 border border-blue-200"
+                                : "bg-[#FAF5EE] text-[#B69A65] border border-[#B69A65]/40"
                             }`}
                           >
-                            {reg.applicationStatus}
+                            {reg.applicationStatus.replace("_", " ")}
                           </span>
                         </td>
                         <td className="py-3 px-4 text-right">
                           <Link href="/admin/responses">
-                            <Button size="sm" variant="outline" className="text-xs h-7 px-2.5 border-[#E9E2D5] text-[#0A192F] hover:bg-[#E9E2D5]/50">
+                            <Button size="sm" variant="outline" className="text-xs h-7 px-2.5 border-[#E8DFD0] text-[#172B24] hover:bg-[#FAF5EE]">
                               Inspect
                             </Button>
                           </Link>
@@ -304,86 +485,105 @@ export default async function AdminDashboardPage() {
           </Card>
         </div>
 
-        {/* Competition Forms Quick Overview (1 col) */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-zinc-900 tracking-tight">Active Forms</h2>
-            <Link
-              href="/admin/forms"
-              className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
-            >
-              <span>Manage</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
+        {/* RECENT ADMINISTRATIVE ACTIVITIES & FORMS (1 col) */}
+        <div className="space-y-6">
+          {/* Active Forms */}
           <div className="space-y-3">
-            {forms.length === 0 ? (
-              <Card className="p-6 text-center border-dashed border-zinc-200 bg-white">
-                <p className="text-xs text-zinc-500 mb-3">No registration forms created yet.</p>
-                <Link href="/admin/forms/new">
-                  <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold">
-                    Create First Form
-                  </Button>
-                </Link>
-              </Card>
-            ) : (
-              forms.map((form) => {
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-serif font-bold text-[#172B24] tracking-tight">Active Forms</h2>
+              <Link
+                href="/admin/forms"
+                className="text-xs font-semibold text-[#A64B36] hover:text-[#172B24] flex items-center gap-1"
+              >
+                <span>Manage</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="space-y-2">
+              {forms.map((form) => {
                 const isActive = form.status === "PUBLISHED";
                 return (
                   <Card
                     key={form.id}
-                    className="p-4 border-zinc-200 hover:border-zinc-300 transition-all hover:shadow-xs"
+                    className="p-3 border-[#E8DFD0] bg-[#FFFFFF] shadow-none hover:border-[#B69A65]/70 transition-all"
                   >
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-2 mb-0.5">
                           <span
-                            className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                            className={`inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider ${
                               isActive
                                 ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
                                 : "bg-zinc-100 text-zinc-600 border border-zinc-200"
                             }`}
                           >
-                            {isActive ? "Active" : "Inactive"}
+                            {isActive ? "Active" : "Draft"}
                           </span>
-                          <span className="text-xs text-zinc-400 font-mono truncate">
+                          <span className="text-[11px] text-[#292821]/50 font-mono truncate">
                             /{form.slug}
                           </span>
                         </div>
-                        <h3 className="font-bold text-sm text-zinc-900 truncate">{form.name}</h3>
-                        <p className="text-xs text-zinc-500 line-clamp-1 mt-0.5">
-                          {form.description || "No description provided"}
-                        </p>
+                        <h3 className="font-bold text-xs text-[#172B24] truncate">{form.name}</h3>
                       </div>
-                    </div>
-
-                    <div className="mt-3 pt-3 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-500">
-                      <span className="font-semibold text-zinc-700">
-                        {form._count.submissions} {form._count.submissions === 1 ? "submission" : "submissions"}
-                      </span>
-                      <div className="flex items-center gap-2">
+                      <div className="text-right shrink-0">
+                        <div className="text-xs font-semibold text-[#172B24]">
+                          {form._count.submissions} subs
+                        </div>
                         <Link
-                          href={`/register/${form.slug}`}
-                          target="_blank"
-                          className="text-zinc-500 hover:text-emerald-700 font-medium flex items-center gap-0.5"
+                          href={`/admin/forms/${form.id}/builder`}
+                          className="text-[11px] text-[#A64B36] hover:underline"
                         >
-                          <Eye className="w-3.5 h-3.5" />
-                          <span>Live</span>
-                        </Link>
-                        <Link
-                          href={`/admin/forms/${form.id}`}
-                          className="text-emerald-700 hover:text-emerald-800 font-semibold flex items-center gap-0.5"
-                        >
-                          <span>Edit</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
+                          Builder
                         </Link>
                       </div>
                     </div>
                   </Card>
                 );
-              })
-            )}
+              })}
+            </div>
+          </div>
+
+          {/* Recent Administrative Activity Log */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-serif font-bold text-[#172B24] tracking-tight flex items-center gap-1.5">
+                <History className="w-4 h-4 text-[#B69A65]" />
+                <span>Admin Activity</span>
+              </h2>
+            </div>
+
+            <Card className="p-4 border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
+              {recentPaymentReviews.length === 0 && recentAuditLogs.length === 0 ? (
+                <p className="text-xs text-[#292821]/60 text-center py-4">No recent administrative events recorded.</p>
+              ) : (
+                <div className="space-y-3">
+                  {recentPaymentReviews.slice(0, 4).map((log) => (
+                    <div key={log.id} className="text-xs border-b border-[#E8DFD0]/60 pb-2.5 last:border-0 last:pb-0">
+                      <div className="flex items-center justify-between text-[11px] text-[#292821]/60">
+                        <span className="font-semibold text-[#172B24]">{log.reviewer.name}</span>
+                        <span>{formatNepalDateTime(log.createdAt)}</span>
+                      </div>
+                      <div className="text-[#292821] mt-0.5">
+                        Updated payment for <strong className="font-mono text-[#172B24]">{log.registration.registrationId}</strong> to{" "}
+                        <span className="font-bold text-[#A64B36]">{log.status}</span>
+                      </div>
+                    </div>
+                  ))}
+                  {recentAuditLogs.slice(0, 3).map((log) => (
+                    <div key={log.id} className="text-xs border-b border-[#E8DFD0]/60 pb-2.5 last:border-0 last:pb-0">
+                      <div className="flex items-center justify-between text-[11px] text-[#292821]/60">
+                        <span className="font-semibold text-[#172B24]">{log.actor?.name || log.actorEmail}</span>
+                        <span>{formatNepalDateTime(log.createdAt)}</span>
+                      </div>
+                      <div className="text-[#292821] mt-0.5">
+                        {log.action.replace("_", " ")} on <span className="font-mono text-[#172B24]">{log.entityType}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
           </div>
         </div>
       </div>
