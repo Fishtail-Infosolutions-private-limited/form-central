@@ -161,6 +161,18 @@ export function BuilderWorkspace({
     setHasUnsavedChanges(true);
   };
 
+  // Reorder fields directly (e.g. via drag-and-drop)
+  const handleReorderFields = (stepIndex: number, newFields: FormFieldDefinition[]) => {
+    setSchema((prev) => {
+      const updatedSteps = [...prev.steps];
+      const step = { ...updatedSteps[stepIndex] };
+      step.fields = newFields.map((f, i) => ({ ...f, order: i }));
+      updatedSteps[stepIndex] = step;
+      return { ...prev, steps: updatedSteps };
+    });
+    setHasUnsavedChanges(true);
+  };
+
   // Duplicate field
   const handleDuplicateField = (stepIndex: number, fieldIndex: number) => {
     setSchema((prev) => {
@@ -431,6 +443,7 @@ export function BuilderWorkspace({
             onUpdateStepMeta={handleUpdateStepMeta}
             onSelectField={(f) => setSelectedFieldId(f.id)}
             onMoveField={handleMoveField}
+            onReorderFields={handleReorderFields}
             onDuplicateField={handleDuplicateField}
             onDeleteField={handleDeleteField}
           />

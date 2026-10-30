@@ -15,6 +15,7 @@ import {
   Sparkles,
   Pencil,
   Check,
+  GripVertical,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -28,8 +29,31 @@ interface FormCanvasProps {
   onUpdateStepMeta: (index: number, title: string, description?: string) => void;
   onSelectField: (field: FormFieldDefinition) => void;
   onMoveField: (stepIndex: number, fieldIndex: number, direction: "up" | "down") => void;
+  onReorderFields?: (stepIndex: number, newFields: FormFieldDefinition[]) => void;
   onDuplicateField: (stepIndex: number, fieldIndex: number) => void;
   onDeleteField: (stepIndex: number, fieldIndex: number) => void;
+}
+
+function reorderFields(
+  fields: FormFieldDefinition[],
+  fromIndex: number,
+  toIndex: number,
+  position: "top" | "bottom"
+): FormFieldDefinition[] {
+  if (fromIndex === toIndex) return fields;
+  const result = [...fields];
+  const [removed] = result.splice(fromIndex, 1);
+
+  let insertAt = toIndex;
+  if (fromIndex < toIndex) {
+    insertAt = position === "top" ? toIndex - 1 : toIndex;
+  } else {
+    insertAt = position === "top" ? toIndex : toIndex + 1;
+  }
+
+  insertAt = Math.max(0, Math.min(insertAt, result.length));
+  result.splice(insertAt, 0, removed);
+  return result;
 }
 
 export function FormCanvas({
@@ -42,12 +66,76 @@ export function FormCanvas({
   onUpdateStepMeta,
   onSelectField,
   onMoveField,
+  onReorderFields,
   onDuplicateField,
   onDeleteField,
 }: FormCanvasProps) {
   const currentStep = steps[activeStepIndex] || steps[0];
   const [isEditingStepTitle, setIsEditingStepTitle] = useState(false);
   const [stepTitleInput, setStepTitleInput] = useState(currentStep?.title || "");
+
+  // Drag and Drop States
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [dropPosition, setDropPosition] = useState<"top" | "bottom" | null>(null);
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    const target = e.target as HTMLElement;
+    if (target.closest("button") || target.closest("input") || target.closest("select")) {
+      e.preventDefault();
+      return;
+    }
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", index.toString());
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    if (draggedIndex === null) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const midY = rect.top + rect.height / 2;
+    const pos = e.clientY < midY ? "top" : "bottom";
+
+    setDragOverIndex(index);
+    setDropPosition(pos);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    const related = e.relatedTarget as Node | null;
+    if (!e.currentTarget.contains(related)) {
+      setDragOverIndex(null);
+      setDropPosition(null);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, targetIndex: number) => {
+    e.preventDefault();
+    if (draggedIndex === null || !onReorderFields) {
+      setDraggedIndex(null);
+      setDragOverIndex(null);
+      setDropPosition(null);
+      return;
+    }
+
+    if (draggedIndex !== targetIndex) {
+      const pos = dropPosition || "bottom";
+      const reordered = reorderFields(currentStep.fields, draggedIndex, targetIndex, pos);
+      onReorderFields(activeStepIndex, reordered);
+    }
+
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+    setDropPosition(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+    setDropPosition(null);
+  };
 
   const handleSaveStepTitle = () => {
     if (stepTitleInput.trim()) {
@@ -138,6 +226,13 @@ export function FormCanvas({
               >
                 <Pencil className="w-3.5 h-3.5" />
               </button>
+
+              {currentStep.fields.length > 1 && (
+                <span className="text-[10px] text-zinc-400 font-medium hidden sm:inline-flex items-center gap-1 ml-2 bg-zinc-50 border border-zinc-200 px-2 py-0.5 rounded-md">
+                  <GripVertical className="w-3 h-3 text-zinc-400" />
+                  <span>Drag items to reorder</span>
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -179,20 +274,46 @@ export function FormCanvas({
         ) : (
           currentStep.fields.map((field, fIdx) => {
             const isSelected = field.id === selectedFieldId;
+            const isDragging = draggedIndex === fIdx;
+            const isDragOver =
+              dragOverIndex === fIdx && draggedIndex !== null && draggedIndex !== fIdx;
 
             return (
               <div
                 key={field.id}
+                draggable
+                onDragStart={(e) => handleDragStart(e, fIdx)}
+                onDragOver={(e) => handleDragOver(e, fIdx)}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, fIdx)}
+                onDragEnd={handleDragEnd}
                 onClick={() => onSelectField(field)}
-                className={`group p-4 rounded-xl border transition-all cursor-pointer bg-white relative ${
-                  isSelected
+                className={`group p-3.5 sm:p-4 rounded-xl border transition-all cursor-pointer bg-white relative ${
+                  isDragging
+                    ? "opacity-40 border-dashed border-emerald-500 bg-emerald-50/20 scale-[0.99]"
+                    : isSelected
                     ? "border-emerald-600 ring-2 ring-emerald-500/20 shadow-sm"
                     : "border-zinc-200 hover:border-zinc-300 hover:shadow-xs"
+                } ${
+                  isDragOver && dropPosition === "top"
+                    ? "before:absolute before:-top-1.5 before:left-2 before:right-2 before:h-1 before:bg-emerald-600 before:rounded-full before:shadow-[0_0_8px_rgba(16,185,129,0.9)] before:z-20"
+                    : ""
+                } ${
+                  isDragOver && dropPosition === "bottom"
+                    ? "after:absolute after:-bottom-1.5 after:left-2 after:right-2 after:h-1 after:bg-emerald-600 after:rounded-full after:shadow-[0_0_8px_rgba(16,185,129,0.9)] after:z-20"
+                    : ""
                 }`}
               >
-                <div className="flex items-center justify-between gap-4">
-                  {/* Field Info */}
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-3 sm:gap-4">
+                  {/* Drag Handle & Field Info */}
+                  <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                    <div
+                      className="p-1 -ml-1 text-zinc-300 group-hover:text-zinc-600 hover:text-black cursor-grab active:cursor-grabbing transition-colors shrink-0"
+                      title="Drag to reorder"
+                    >
+                      <GripVertical className="w-4 h-4" />
+                    </div>
+
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-bold text-sm text-black truncate">
