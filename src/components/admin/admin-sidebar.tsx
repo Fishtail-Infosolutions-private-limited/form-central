@@ -15,6 +15,7 @@ import {
   X,
   PanelLeftClose,
   PanelLeft,
+  Mail,
 } from "lucide-react";
 import { logoutAdminAction } from "@/server/actions/auth-actions";
 import { cn } from "@/lib/utils";
@@ -42,6 +43,7 @@ export function AdminSidebar({
     { name: "Registration Forms", href: "/admin/forms", icon: FileText },
     { name: "Create Form", href: "/admin/forms/new", icon: PlusCircle },
     { name: "All Responses", href: "/admin/responses", icon: Inbox },
+    { name: "Email Campaigns", href: "/admin/campaigns", icon: Mail },
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
 

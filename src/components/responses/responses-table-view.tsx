@@ -69,6 +69,19 @@ interface SubmissionItem {
     mimeType: string;
     fileSize: number;
   }[];
+  campaignRecipients?: {
+    id: string;
+    status: string;
+    attemptCount: number;
+    lastError: string | null;
+    sentAt: Date | string | null;
+    deliveredAt: Date | string | null;
+    campaign: {
+      id: string;
+      name: string;
+      subject: string;
+    };
+  }[];
 }
 
 interface ResponsesTableViewProps {
@@ -663,6 +676,66 @@ export function ResponsesTableView({
                                   <ExternalLink className="w-3 h-3" />
                                 </Button>
                               </a>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Participant Email Delivery History */}
+                <div className="space-y-3 pt-4 border-t border-zinc-200">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
+                      <Mail className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Email Delivery History ({selectedSubmission.campaignRecipients?.length || 0})</span>
+                    </span>
+                  </div>
+
+                  {!selectedSubmission.campaignRecipients || selectedSubmission.campaignRecipients.length === 0 ? (
+                    <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 text-center text-zinc-400 text-xs">
+                      No automated campaign or notification emails have been sent to this participant yet.
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {selectedSubmission.campaignRecipients.map((rec) => (
+                        <div
+                          key={rec.id}
+                          className="p-3 rounded-xl bg-zinc-50 border border-zinc-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                        >
+                          <div className="min-w-0 space-y-0.5">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-bold text-zinc-900 text-xs truncate">
+                                {rec.campaign.subject}
+                              </span>
+                              <span
+                                className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                                  rec.status === "DELIVERED"
+                                    ? "bg-emerald-100 text-emerald-800"
+                                    : rec.status === "SENT"
+                                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                    : rec.status === "FAILED" || rec.status === "BOUNCED"
+                                    ? "bg-rose-50 text-rose-700 border border-rose-200"
+                                    : rec.status === "SKIPPED"
+                                    ? "bg-zinc-200 text-zinc-700"
+                                    : "bg-amber-50 text-amber-700 border border-amber-200"
+                                }`}
+                              >
+                                {rec.status}
+                              </span>
+                            </div>
+                            <div className="text-[11px] text-zinc-500 flex items-center gap-1.5">
+                              <span>Campaign: <strong>{rec.campaign.name}</strong></span>
+                              <span>&bull;</span>
+                              <span>
+                                {rec.sentAt ? formatDateTime(new Date(rec.sentAt)) : "Queued"}
+                              </span>
+                            </div>
+                            {rec.lastError && (
+                              <p className="text-[10px] text-rose-600 mt-1 truncate" title={rec.lastError}>
+                                Error: {rec.lastError}
+                              </p>
                             )}
                           </div>
                         </div>

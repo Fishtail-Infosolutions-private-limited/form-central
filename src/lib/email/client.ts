@@ -1,4 +1,3 @@
-import "server-only";
 import nodemailer, { type Transporter } from "nodemailer";
 
 let transporter: Transporter | null = null;

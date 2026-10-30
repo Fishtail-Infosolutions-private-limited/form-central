@@ -226,13 +226,6 @@ export function FormCanvas({
               >
                 <Pencil className="w-3.5 h-3.5" />
               </button>
-
-              {currentStep.fields.length > 1 && (
-                <span className="text-[10px] text-zinc-400 font-medium hidden sm:inline-flex items-center gap-1 ml-2 bg-zinc-50 border border-zinc-200 px-2 py-0.5 rounded-md">
-                  <GripVertical className="w-3 h-3 text-zinc-400" />
-                  <span>Drag items to reorder</span>
-                </span>
-              )}
             </div>
           )}
         </div>

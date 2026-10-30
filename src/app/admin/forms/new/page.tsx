@@ -29,6 +29,15 @@ export default function CreateFormPage() {
   const [deadlineDate, setDeadlineDate] = useState("");
   const [deadlineTime, setDeadlineTime] = useState("23:59");
 
+  // Event Date, Venue & Automated Reminders State (Nepal Time)
+  const [eventDate, setEventDate] = useState("");
+  const [eventTime, setEventTime] = useState("06:30");
+  const [eventVenue, setEventVenue] = useState("");
+  const [enableReminder7Days, setEnableReminder7Days] = useState(false);
+  const [enableReminder3Days, setEnableReminder3Days] = useState(false);
+  const [enableReminder1Day, setEnableReminder1Day] = useState(false);
+  const [enableReminderEventDay, setEnableReminderEventDay] = useState(false);
+
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setName(val);
@@ -331,6 +340,118 @@ export default function CreateFormPage() {
                   Registration deadline is currently <strong>disabled</strong>. The event remains open until manually closed or full.
                 </div>
               )}
+            </div>
+
+            {/* EVENT DATE, VENUE & AUTOMATED REMINDERS */}
+            <div className="pt-4 border-t border-zinc-100 space-y-3">
+              <div>
+                <h3 className="text-sm font-bold text-zinc-900 flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-emerald-600" />
+                  <span>4. Event Schedule, Venue & Automated Reminders</span>
+                </h3>
+                <p className="text-[11px] text-zinc-500 mt-0.5">
+                  Configure competition date & venue. Automatic reminders will be scheduled for verified participants in Nepal Time (Asia/Kathmandu).
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="eventDate" className="text-xs font-bold text-zinc-800">
+                      Event Date (Nepal Date)
+                    </Label>
+                    <Input
+                      id="eventDate"
+                      name="eventDate"
+                      type="date"
+                      value={eventDate}
+                      onChange={(e) => setEventDate(e.target.value)}
+                      className="h-9 text-xs border-zinc-300 bg-white"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="eventTime" className="text-xs font-bold text-zinc-800">
+                      Reporting / Start Time (NPT)
+                    </Label>
+                    <Input
+                      id="eventTime"
+                      name="eventTime"
+                      type="time"
+                      value={eventTime}
+                      onChange={(e) => setEventTime(e.target.value)}
+                      className="h-9 text-xs border-zinc-300 bg-white"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="eventVenue" className="text-xs font-bold text-zinc-800">
+                      Event Venue / Location
+                    </Label>
+                    <Input
+                      id="eventVenue"
+                      name="eventVenue"
+                      type="text"
+                      placeholder="e.g. Pokhara Rangashala"
+                      value={eventVenue}
+                      onChange={(e) => setEventVenue(e.target.value)}
+                      className="h-9 text-xs border-zinc-300 bg-white"
+                    />
+                  </div>
+                </div>
+
+                {/* Automated Reminder Toggles */}
+                <div className="pt-3 border-t border-zinc-200/80 space-y-2">
+                  <span className="text-[11px] font-bold text-zinc-700 uppercase tracking-wider block">
+                    Automated Participant Reminders (Nepal Time)
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-emerald-500">
+                      <input
+                        type="checkbox"
+                        name="enableReminder7Days"
+                        checked={enableReminder7Days}
+                        onChange={(e) => setEnableReminder7Days(e.target.checked)}
+                        className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500"
+                      />
+                      <span className="font-medium text-zinc-800">7 Days Before Event (08:00 AM NPT)</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-emerald-500">
+                      <input
+                        type="checkbox"
+                        name="enableReminder3Days"
+                        checked={enableReminder3Days}
+                        onChange={(e) => setEnableReminder3Days(e.target.checked)}
+                        className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500"
+                      />
+                      <span className="font-medium text-zinc-800">3 Days Before Event (08:00 AM NPT)</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-emerald-500">
+                      <input
+                        type="checkbox"
+                        name="enableReminder1Day"
+                        checked={enableReminder1Day}
+                        onChange={(e) => setEnableReminder1Day(e.target.checked)}
+                        className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500"
+                      />
+                      <span className="font-medium text-zinc-800">1 Day Before / Tomorrow (08:00 AM NPT)</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 p-2 rounded-lg bg-white border border-zinc-200 cursor-pointer hover:border-emerald-500">
+                      <input
+                        type="checkbox"
+                        name="enableReminderEventDay"
+                        checked={enableReminderEventDay}
+                        onChange={(e) => setEnableReminderEventDay(e.target.checked)}
+                        className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500"
+                      />
+                      <span className="font-medium text-zinc-800">Event Day Morning (05:00 AM NPT)</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* ACTION BUTTONS */}

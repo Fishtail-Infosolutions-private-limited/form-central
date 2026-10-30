@@ -91,6 +91,12 @@ export default async function FormSettingsPage({
           maxParticipants: form.maxParticipants,
           isDeadlineEnabled: form.isDeadlineEnabled,
           registrationDeadline: form.registrationDeadline,
+          eventDate: form.eventDate,
+          eventVenue: form.eventVenue,
+          enableReminder7Days: form.enableReminder7Days,
+          enableReminder3Days: form.enableReminder3Days,
+          enableReminder1Day: form.enableReminder1Day,
+          enableReminderEventDay: form.enableReminderEventDay,
           submissionCount: form._count.submissions,
         }}
       />

@@ -41,6 +41,29 @@ enum UploadStatus {
   ATTACHED
 }
 
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  QUEUED
+  PROCESSING
+  PAUSED
+  COMPLETED
+  CANCELLED
+  FAILED
+}
+
+enum RecipientDeliveryStatus {
+  PENDING
+  QUEUED
+  PROCESSING
+  SENT
+  DELIVERED
+  FAILED
+  BOUNCED
+  SKIPPED
+  CANCELLED
+}
+
 model AdminUser {
   id           String             @id @default(uuid())
   email        String             @unique
@@ -73,6 +96,14 @@ model RegistrationForm {
   isDeadlineEnabled   Boolean                  @default(false)
   registrationDeadline DateTime?
 
+  // Event Date, Venue & Automated Reminders (Asia/Kathmandu UTC+05:45)
+  eventDate           DateTime?
+  eventVenue          String?
+  enableReminder7Days Boolean                  @default(false)
+  enableReminder3Days Boolean                  @default(false)
+  enableReminder1Day  Boolean                  @default(false)
+  enableReminderEventDay Boolean               @default(false)
+
   createdById        String
   createdBy          AdminUser                @relation(fields: [createdById], references: [id], onDelete: Restrict)
   publishedVersionId String?
@@ -82,6 +113,7 @@ model RegistrationForm {
   versions           FormVersion[]
   submissions        RegistrationSubmission[]
   verifications      EmailVerification[]
+  campaigns          EmailCampaign[]
 
   @@index([slug])
   @@index([status])
@@ -151,6 +183,7 @@ model RegistrationSubmission {
 
   answers             SubmissionAnswer[]
   uploadedFiles       UploadedFile[]
+  campaignRecipients  EmailCampaignRecipient[]
 
   @@index([formId])
   @@index([formVersionId])
@@ -231,5 +264,118 @@ model GoogleDriveIntegration {
   updatedAt       DateTime  @updatedAt
 
   @@map("google_drive_integrations")
+}
+
+model EmailTemplate {
+  id          String          @id @default(uuid())
+  name        String
+  category    String          @default("ANNOUNCEMENT") // ANNOUNCEMENT, REMINDER, CONFIRMATION, STATUS_UPDATE, CUSTOM
+  subject     String
+  bodyText    String          @db.Text
+  bodyHtml    String          @db.Text
+  isSystem    Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  campaigns   EmailCampaign[]
+
+  @@map("email_templates")
+}
+
+model EmailCampaign {
+  id                 String                   @id @default(uuid())
+  name               String
+  formId             String
+  form               RegistrationForm         @relation(fields: [formId], references: [id], onDelete: Cascade)
+  templateId         String?
+  template           EmailTemplate?           @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  subject            String
+  content            String                   @db.Text
+  recipientCriteria  Json                     // { type: string, categoryValue?: string, manualIds?: string[], excludeCampaignId?: string }
+  scheduledAt        DateTime?                // Stored in UTC (Asia/Kathmandu conversion)
+  timezone           String                   @default("Asia/Kathmandu")
+  status             CampaignStatus           @default(DRAFT)
+  totalRecipients    Int                      @default(0)
+  sentCount          Int                      @default(0)
+  failedCount        Int                      @default(0)
+  skippedCount       Int                      @default(0)
+  createdById        String?
+  startedAt          DateTime?
+  completedAt        DateTime?
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+
+  recipients         EmailCampaignRecipient[]
+  logs               EmailDeliveryLog[]
+
+  @@index([formId])
+  @@index([status])
+  @@index([scheduledAt])
+  @@index([createdAt])
+  @@map("email_campaigns")
+}
+
+model EmailCampaignRecipient {
+  id                String                  @id @default(uuid())
+  campaignId        String
+  campaign          EmailCampaign           @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  registrationId    String
+  registration      RegistrationSubmission  @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  email             String
+  fullName          String
+  status            RecipientDeliveryStatus @default(QUEUED)
+  attemptCount      Int                     @default(0)
+  maxAttempts       Int                     @default(3)
+  nextRetryAt       DateTime?
+  providerMessageId String?
+  lastError         String?                 @db.Text
+  lockedAt          DateTime?
+  lockedBy          String?
+  sentAt            DateTime?
+  deliveredAt       DateTime?
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+
+  logs              EmailDeliveryLog[]
+
+  @@unique([campaignId, registrationId])
+  @@index([campaignId, status])
+  @@index([registrationId])
+  @@index([status, nextRetryAt])
+  @@index([lockedAt])
+  @@map("email_campaign_recipients")
+}
+
+model EmailDeliveryLog {
+  id             String                  @id @default(uuid())
+  campaignId     String?
+  campaign       EmailCampaign?          @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  recipientId    String?
+  recipient      EmailCampaignRecipient? @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  registrationId String?
+  email          String
+  event          String                  // QUEUED, ATTEMPT_FAILED, SENT, DELIVERED, BOUNCED, SKIPPED, RETRIED, CANCELLED
+  details        String?                 @db.Text
+  metadata       Json?
+  createdAt      DateTime                @default(now())
+
+  @@index([campaignId])
+  @@index([recipientId])
+  @@index([email])
+  @@index([createdAt])
+  @@map("email_delivery_logs")
+}
+
+model EmailUnsubscribe {
+  id        String   @id @default(uuid())
+  email     String
+  formId    String?
+  reason    String?
+  token     String   @unique @default(uuid())
+  createdAt DateTime @default(now())
+
+  @@unique([email, formId])
+  @@index([email])
+  @@map("email_unsubscribes")
 }
 

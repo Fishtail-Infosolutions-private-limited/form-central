@@ -31,6 +31,18 @@ export default async function FormResponsesPage({
           },
           answers: true,
           uploadedFiles: true,
+          campaignRecipients: {
+            include: {
+              campaign: {
+                select: {
+                  id: true,
+                  name: true,
+                  subject: true,
+                },
+              },
+            },
+            orderBy: { createdAt: "desc" },
+          },
         },
       },
     },

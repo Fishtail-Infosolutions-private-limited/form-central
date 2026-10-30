@@ -99,6 +99,18 @@ export function formatNepalDateTime(dateInput: Date | string | null | undefined)
 }
 
 /**
+ * Convenience alias for formatting Nepal time.
+ */
+export function formatNepalTime(dateInput: Date | string | null | undefined, _customFormat?: string): string {
+  return formatNepalDateTime(dateInput);
+}
+
+/**
+ * Alias for nepalDateAndTimeToUtc
+ */
+export const parseNepalTimeToUtc = nepalDateAndTimeToUtc;
+
+/**
  * Checks if a given deadline (stored in UTC) has passed.
  */
 export function isPastDeadline(deadlineInput: Date | string | null | undefined): boolean {

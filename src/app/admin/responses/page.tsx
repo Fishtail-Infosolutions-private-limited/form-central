@@ -20,6 +20,18 @@ export default async function AdminAllResponsesPage() {
         },
         answers: true,
         uploadedFiles: true,
+        campaignRecipients: {
+          include: {
+            campaign: {
+              select: {
+                id: true,
+                name: true,
+                subject: true,
+              },
+            },
+          },
+          orderBy: { createdAt: "desc" },
+        },
       },
     }),
     prisma.registrationForm.findMany({

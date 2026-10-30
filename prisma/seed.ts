@@ -1,5 +1,6 @@
 import { PrismaClient, AdminRole, FormStatus } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { ensureDefaultEmailTemplates } from "../src/lib/email/templates/default-templates";
 
 const prisma = new PrismaClient();
 
@@ -240,6 +241,10 @@ async function main() {
 
     console.log(`✅ Sample competition form created: /register/${sampleSlug}`);
   }
+
+  // 3. Seed Default Bulk Email Templates
+  await ensureDefaultEmailTemplates(prisma);
+  console.log("✅ Default email templates seeded successfully!");
 
   console.log("✨ Seeding finished successfully!");
 }

@@ -10,6 +10,7 @@ import { FormStatus } from "@prisma/client";
 import { FormSchemaDefinition } from "@/types/form";
 import { deleteMultiplePhysicalFiles } from "@/lib/storage/cleanup";
 import { nepalDateAndTimeToUtc } from "@/lib/utils/timezone";
+import { syncEventRemindersForForm } from "@/lib/email/reminders";
 
 const createFormSchema = z.object({
   name: z.string().min(3, "Form name must be at least 3 characters").trim(),
@@ -175,6 +176,24 @@ export async function createFormAction(formData: FormData) {
     }
   }
 
+  // Event Date & Venue (Nepal Time)
+  const eventDateStr = formData.get("eventDate") as string;
+  const eventTimeStr = (formData.get("eventTime") as string) || "08:00";
+  let eventDate: Date | null = null;
+  if (eventDateStr) {
+    try {
+      eventDate = nepalDateAndTimeToUtc(eventDateStr, eventTimeStr);
+    } catch {
+      // Ignored if invalid
+    }
+  }
+
+  const eventVenue = (formData.get("eventVenue") as string) || null;
+  const enableReminder7Days = formData.get("enableReminder7Days") === "true" || formData.get("enableReminder7Days") === "on";
+  const enableReminder3Days = formData.get("enableReminder3Days") === "true" || formData.get("enableReminder3Days") === "on";
+  const enableReminder1Day = formData.get("enableReminder1Day") === "true" || formData.get("enableReminder1Day") === "on";
+  const enableReminderEventDay = formData.get("enableReminderEventDay") === "true" || formData.get("enableReminderEventDay") === "on";
+
   const initialSchema = getInitialFormSchema();
 
   // Create form and version 1 draft
@@ -190,6 +209,12 @@ export async function createFormAction(formData: FormData) {
       maxParticipants,
       isDeadlineEnabled,
       registrationDeadline,
+      eventDate,
+      eventVenue,
+      enableReminder7Days,
+      enableReminder3Days,
+      enableReminder1Day,
+      enableReminderEventDay,
       status: FormStatus.DRAFT,
       createdById: admin.id,
       versions: {
@@ -291,6 +316,26 @@ export async function updateFormSettingsAction(formId: string, formData: FormDat
     registrationDeadline = existingForm.registrationDeadline;
   }
 
+  // Event Date, Venue & Automated Reminders (Nepal Time)
+  const eventDateStr = formData.get("eventDate") as string;
+  const eventTimeStr = (formData.get("eventTime") as string) || "08:00";
+  let eventDate: Date | null = existingForm.eventDate;
+  if (eventDateStr) {
+    try {
+      eventDate = nepalDateAndTimeToUtc(eventDateStr, eventTimeStr);
+    } catch {
+      // Keep existing if invalid
+    }
+  } else if (eventDateStr === "") {
+    eventDate = null;
+  }
+
+  const eventVenue = (formData.get("eventVenue") as string) || null;
+  const enableReminder7Days = formData.get("enableReminder7Days") === "true" || formData.get("enableReminder7Days") === "on";
+  const enableReminder3Days = formData.get("enableReminder3Days") === "true" || formData.get("enableReminder3Days") === "on";
+  const enableReminder1Day = formData.get("enableReminder1Day") === "true" || formData.get("enableReminder1Day") === "on";
+  const enableReminderEventDay = formData.get("enableReminderEventDay") === "true" || formData.get("enableReminderEventDay") === "on";
+
   await prisma.registrationForm.update({
     where: { id: formId },
     data: {
@@ -304,8 +349,21 @@ export async function updateFormSettingsAction(formId: string, formData: FormDat
       maxParticipants,
       isDeadlineEnabled,
       registrationDeadline,
+      eventDate,
+      eventVenue,
+      enableReminder7Days,
+      enableReminder3Days,
+      enableReminder1Day,
+      enableReminderEventDay,
     },
   });
+
+  // Synchronize automated scheduled reminders based on updated date & toggles
+  try {
+    await syncEventRemindersForForm(formId);
+  } catch (err) {
+    console.error("[RemindersSync] Error syncing event reminders:", err);
+  }
 
   await prisma.auditLog.create({
     data: {
