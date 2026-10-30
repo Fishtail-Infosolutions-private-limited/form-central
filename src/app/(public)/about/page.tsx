@@ -1,127 +1,160 @@
 import React from "react";
 import Link from "next/link";
-import { Crown, Sparkles, MapPin, Mail, Phone, Heart, Users, Target, Compass, ArrowRight } from "lucide-react";
+import { MapPin, Mail, Phone, Heart, Users, Target, Compass, ArrowRight, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MithilaMotif, MithilaCornerMotif } from "@/components/ui/mithila-motif";
+import { OriginFoundationLogo, MithilaHeritageMandala } from "@/components/brand/brand-logos";
 
 export const metadata = {
   title: "About The Origin Foundation | Janakpur Dham, Nepal",
   description:
-    "Rooted in Identity. Driven by Purpose. Learn about The Origin Foundation, its mission, core values, and cultural commitment in Janakpur Dham, Nepal.",
+    "Rooted in Identity. Driven by Purpose. Discover the mission, values, and leadership of The Origin Foundation based in Janakpur Dham, Nepal.",
 };
 
 export default function AboutPage() {
-  const values = [
+  const principles = [
     {
       title: "Cultural Authenticity",
-      desc: "Celebrating Mithila's artistic, linguistic, and historical identity with respect and accuracy.",
+      description:
+        "Honoring Mithila's artistic traditions, Maithili language, civilizational literature, and sacred folk customs with historical respect and accuracy.",
     },
     {
-      title: "Empowerment & Confidence",
-      desc: "Providing a dignified stage for women and girls to develop self-confidence and showcase talent.",
+      title: "Confidence & Individual Talent",
+      description:
+        "Providing an uplifting platform where young women gain stage poise, public voice, and the self-belief to represent their communities.",
     },
     {
-      title: "Inclusivity & Dignity",
-      desc: "Open to eligible participants across all communities, married and unmarried, with equal opportunity.",
+      title: "Inclusivity & Equal Dignity",
+      description:
+        "Open to all eligible girls across all communities, married and unmarried, of any age. Newcomers without stage experience are embraced with equal fairness.",
     },
     {
-      title: "Institutional Integrity",
-      desc: "Transparent rules, fair evaluation, independent payment audits, and responsible community leadership.",
+      title: "Administrative Integrity",
+      description:
+        "Transparent fee structure (NPR 399), independent banking verification, zero hidden costs, and honest, accessible communication by organizers.",
     },
   ];
 
   return (
-    <div className="py-12 sm:py-20 space-y-16">
+    <div className="space-y-16 sm:space-y-24 py-12 sm:py-20">
+      {/* ==================================================================== */}
       {/* HEADER BANNER */}
+      {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E9E2D5]/60 border border-[#C5A880]/40 text-[#0A192F] text-xs font-semibold">
-            <Crown className="w-3.5 h-3.5 text-[#C5A880]" />
-            <span>Janakpur Dham, Nepal</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E9E2D5]/70 border border-[#C5A880]/40 text-[#0A192F] text-xs font-semibold tracking-wider uppercase">
+            <span>Janakpur Dham &bull; Madhesh Province &bull; Nepal</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#0A192F] tracking-tight">
+
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black font-serif text-[#0A192F] tracking-tight">
             The Origin Foundation
           </h1>
-          <p className="text-lg sm:text-xl text-[#C5A880] font-serif italic">
-            Rooted in Identity. Driven by Purpose.
+
+          <p className="text-xl text-[#C5A880] font-serif italic">
+            &ldquo;Rooted in Identity. Driven by Purpose.&rdquo;
           </p>
-          <p className="text-sm text-[#243B53] leading-relaxed max-w-2xl mx-auto">
-            A cultural platform established in Janakpur Dham, Nepal, with a clear purpose: honoring cultural roots while opening pathways for talent, confidence, and community representation.
+
+          <p className="text-sm sm:text-base text-[#243B53] leading-relaxed max-w-2xl mx-auto pt-2">
+            An independent cultural platform based in Janakpur Dham, Nepal, created to preserve regional heritage, celebrate creative talents, and foster opportunities for participation, confidence, and community representation.
           </p>
         </div>
       </section>
 
-      {/* STORY & VISION */}
+      {/* ==================================================================== */}
+      {/* STORY & MISSION (DUAL HERO SPREAD) */}
+      {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
-          <div className="p-8 sm:p-10 rounded-3xl bg-white border border-[#E9E2D5] shadow-xs space-y-5 relative flex flex-col justify-between">
-            <MithilaCornerMotif className="w-10 h-10 text-[#C5A880] absolute top-4 right-4" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Story Card */}
+          <div className="lg:col-span-7 p-8 sm:p-12 rounded-3xl bg-white border border-[#E9E2D5] shadow-xs space-y-5 flex flex-col justify-between">
             <div className="space-y-4">
-              <div className="w-11 h-11 rounded-xl bg-[#0A192F] text-[#C5A880] flex items-center justify-center">
-                <Compass className="w-5 h-5 stroke-[1.8]" />
-              </div>
-              <h2 className="text-2xl font-bold font-serif text-[#0A192F]">
-                Our Story & Purpose
+              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C5A880]">
+                Institutional Origins
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold font-serif text-[#0A192F]">
+                Our Background & Founding Story
               </h2>
               <p className="text-sm text-[#243B53] leading-relaxed">
-                The Origin Foundation is being developed as an initiative based in Janakpur Dham—the historic heart of Mithila civilization. Our foundation emerges from a shared recognition that our regional heritage, art, and values deserve prominent, dignified, and contemporary platforms.
+                The Origin Foundation was established in Janakpur Dham—the historic heart of ancient Mithila civilization. Our platform grew from a shared recognition among community organizers that while Mithila boasts world-renowned art and literature, young women across our region often lack a dedicated, prestigious platform to articulate their cultural knowledge and creative voice.
               </p>
               <p className="text-sm text-[#243B53] leading-relaxed">
-                We believe cultural preservation is not about looking backward; it is about providing young women with the confidence, public voice, and artistic expression to carry Mithila&apos;s pride forward into the modern world.
+                We believe cultural preservation is active and forward-looking. Through our flagship initiative, <strong>Mithila Queen</strong>, we bring together tradition and contemporary aspirations—offering an inspiring stage where cultural pride translates into self-confidence, artistic expression, and community leadership.
               </p>
             </div>
+
             <div className="pt-4 border-t border-[#E9E2D5] text-xs text-[#243B53] flex items-center justify-between">
-              <span>Operating Base:</span>
-              <strong className="text-[#0A192F]">Janakpur Dham, Madhesh Province, Nepal</strong>
+              <span>Primary Operating Center:</span>
+              <strong className="text-[#0A192F]">Janakpur Dham, Nepal</strong>
             </div>
           </div>
 
-          <div className="p-8 sm:p-10 rounded-3xl bg-[#0A192F] text-[#FDFBF7] border border-[#243B53] shadow-xs space-y-5 flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-11 h-11 rounded-xl bg-[#243B53] text-[#C5A880] flex items-center justify-center">
-                <Target className="w-5 h-5 stroke-[1.8]" />
-              </div>
-              <h2 className="text-2xl font-bold font-serif text-[#FFFFFF]">
-                Our Mission & Vision
+          {/* Mission & Vision Card */}
+          <div className="lg:col-span-5 p-8 sm:p-12 rounded-3xl bg-[#0A192F] text-[#FDFBF7] border border-[#243B53] shadow-md space-y-6 flex flex-col justify-between relative overflow-hidden">
+            <div className="space-y-5 relative z-10">
+              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C5A880]">
+                Our Purpose
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold font-serif text-[#FFFFFF]">
+                Vision & Mission
               </h2>
-              <p className="text-sm text-[#E9E2D5]/85 leading-relaxed">
-                <strong>Mission:</strong> To create authentic opportunities for cultural representation, youth empowerment, and artistic excellence through transparent competitions, workshops, and community showcases.
-              </p>
-              <p className="text-sm text-[#E9E2D5]/85 leading-relaxed">
-                <strong>Vision:</strong> A society where cultural roots are celebrated as sources of strength, confidence, and leadership, enabling women of all backgrounds to stand tall on regional and national stages.
-              </p>
+
+              <div className="space-y-2">
+                <p className="text-xs uppercase font-bold tracking-wider text-[#C5A880]">
+                  Our Mission
+                </p>
+                <p className="text-xs sm:text-sm text-[#E9E2D5]/90 leading-relaxed">
+                  To create credible, dignified, and inclusive platforms for cultural celebration, artistic growth, and female empowerment through well-organized competitions, talent showcases, and community programs.
+                </p>
+              </div>
+
+              <div className="space-y-2 pt-2 border-t border-[#243B53]">
+                <p className="text-xs uppercase font-bold tracking-wider text-[#C5A880]">
+                  Our Vision
+                </p>
+                <p className="text-xs sm:text-sm text-[#E9E2D5]/90 leading-relaxed">
+                  A society where regional heritage is honored as a vital foundation for self-worth, mutual respect, and contemporary leadership across Nepal and beyond.
+                </p>
+              </div>
             </div>
-            <div className="pt-4 border-t border-[#243B53] text-xs text-[#C5A880] flex items-center justify-between">
-              <span>Flagship Platform:</span>
-              <strong className="text-[#FFFFFF]">Mithila Queen</strong>
+
+            <div className="pt-4 border-t border-[#243B53] text-xs text-[#C5A880] flex items-center justify-between relative z-10">
+              <span>Flagship Initiative:</span>
+              <strong className="text-white">Mithila Queen</strong>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CORE VALUES */}
+      {/* ==================================================================== */}
+      {/* 4 GUIDING PRINCIPLES */}
+      {/* ==================================================================== */}
       <section className="bg-white py-16 sm:py-20 border-y border-[#E9E2D5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
-              Guiding Principles
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="max-w-2xl space-y-2">
+            <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#C5A880]">
+              Institutional Standards
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
-              Our Core Values
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0A192F] font-serif">
+              Our Core Principles
             </h2>
+            <p className="text-xs sm:text-sm text-[#243B53]">
+              The bedrock values that guide our administration, communication, and event evaluation.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((v, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-[#FDFBF7] border border-[#E9E2D5] space-y-3">
-                <div className="w-8 h-8 rounded-lg bg-[#0A192F] text-[#C5A880] flex items-center justify-center font-bold text-xs">
-                  0{i + 1}
-                </div>
-                <h3 className="text-base font-bold text-[#0A192F] font-serif">
-                  {v.title}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            {principles.map((item, idx) => (
+              <div
+                key={idx}
+                className="p-7 rounded-2xl bg-[#FDFBF7] border border-[#E9E2D5] space-y-3"
+              >
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C5A880]">
+                  Principle 0{idx + 1}
+                </span>
+                <h3 className="text-lg font-bold font-serif text-[#0A192F]">
+                  {item.title}
                 </h3>
                 <p className="text-xs text-[#243B53] leading-relaxed">
-                  {v.desc}
+                  {item.description}
                 </p>
               </div>
             ))}
@@ -129,100 +162,128 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* LEADERSHIP SECTION (EQUAL VISUAL IMPORTANCE) */}
+      {/* ==================================================================== */}
+      {/* EXECUTIVE LEADERSHIP DIRECTORY (EQUAL VISUAL WEIGHT) */}
+      {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
+          <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#C5A880]">
             Executive Governance
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
             Managing Directors
           </h2>
           <p className="text-xs sm:text-sm text-[#243B53]">
-            Leading The Origin Foundation with shared responsibility, cultural pride, and administrative transparency.
+            Leading The Origin Foundation with equal visual importance, shared operational accountability, and direct participant accessibility.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Gaurav Gupta */}
-          <div className="p-8 rounded-3xl bg-white border border-[#E9E2D5] shadow-xs space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-xl font-bold text-[#0A192F] font-serif">
-                  Gaurav Gupta
-                </h3>
-                <p className="text-xs font-medium text-[#C5A880]">
-                  Managing Director
-                </p>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-[#0A192F] text-[#C5A880] flex items-center justify-center font-bold text-sm">
-                GG
-              </div>
+          <div className="p-8 rounded-3xl bg-white border border-[#E9E2D5] shadow-xs space-y-5 hover:border-[#C5A880] transition-colors">
+            <div className="space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] block">
+                Executive Leadership
+              </span>
+              <h3 className="text-2xl font-bold text-[#0A192F] font-serif">
+                Gaurav Gupta
+              </h3>
+              <p className="text-xs font-semibold text-[#243B53]">
+                Managing Director &bull; Operations & Administration
+              </p>
             </div>
+
             <p className="text-xs text-[#243B53] leading-relaxed">
-              Managing Director coordinating operational planning, participant relations, and competition management for Mithila Queen.
+              Overseeing platform management, participant relations, video audition intake, and day-to-day administrative execution for Mithila Queen and foundation initiatives.
             </p>
-            <div className="pt-3 border-t border-[#E9E2D5] space-y-1 text-xs">
-              <a
-                href="tel:+9779704571941"
-                className="text-[#0A192F] hover:text-[#C5A880] font-semibold flex items-center gap-2 font-mono"
-              >
-                <Phone className="w-3.5 h-3.5 text-[#C5A880]" />
-                <span>+977 9704571941</span>
-              </a>
+
+            <div className="pt-4 border-t border-[#E9E2D5] space-y-2 text-xs">
+              <div className="flex items-center justify-between text-[#243B53]">
+                <span>Direct Contact:</span>
+                <a
+                  href="tel:+9779704571941"
+                  className="font-mono font-bold text-[#0A192F] hover:text-[#C5A880] transition-colors"
+                >
+                  +977 9704571941
+                </a>
+              </div>
+              <div className="flex items-center justify-between text-[#243B53]">
+                <span>WhatsApp Video Auditions:</span>
+                <a
+                  href="https://wa.me/9779704571941"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono font-bold text-emerald-700 hover:underline"
+                >
+                  Verified
+                </a>
+              </div>
             </div>
           </div>
 
           {/* Dipendra Shah Kalwar */}
-          <div className="p-8 rounded-3xl bg-white border border-[#E9E2D5] shadow-xs space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-xl font-bold text-[#0A192F] font-serif">
-                  Dipendra Shah Kalwar
-                </h3>
-                <p className="text-xs font-medium text-[#C5A880]">
-                  Managing Director
-                </p>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-[#0A192F] text-[#C5A880] flex items-center justify-center font-bold text-sm">
-                DS
-              </div>
+          <div className="p-8 rounded-3xl bg-white border border-[#E9E2D5] shadow-xs space-y-5 hover:border-[#C5A880] transition-colors">
+            <div className="space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] block">
+                Executive Leadership
+              </span>
+              <h3 className="text-2xl font-bold text-[#0A192F] font-serif">
+                Dipendra Shah Kalwar
+              </h3>
+              <p className="text-xs font-semibold text-[#243B53]">
+                Managing Director &bull; Strategic Outreach & Community Relations
+              </p>
             </div>
+
             <p className="text-xs text-[#243B53] leading-relaxed">
-              Managing Director leading strategic outreach, institutional partnerships, and regional engagement across Janakpur Dham and Madhesh Province.
+              Leading institutional relationships, regional community outreach across Madhesh Province, event coordination, and strategic partnerships for The Origin Foundation.
             </p>
-            <div className="pt-3 border-t border-[#E9E2D5] space-y-1 text-xs">
-              <a
-                href="tel:+9779812005468"
-                className="text-[#0A192F] hover:text-[#C5A880] font-semibold flex items-center gap-2 font-mono"
-              >
-                <Phone className="w-3.5 h-3.5 text-[#C5A880]" />
-                <span>+977 981-2005468</span>
-              </a>
+
+            <div className="pt-4 border-t border-[#E9E2D5] space-y-2 text-xs">
+              <div className="flex items-center justify-between text-[#243B53]">
+                <span>Direct Contact:</span>
+                <a
+                  href="tel:+9779812005468"
+                  className="font-mono font-bold text-[#0A192F] hover:text-[#C5A880] transition-colors"
+                >
+                  +977 981-2005468
+                </a>
+              </div>
+              <div className="flex items-center justify-between text-[#243B53]">
+                <span>Location:</span>
+                <span className="font-semibold text-[#0A192F]">Janakpur Dham, Nepal</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="text-center text-xs text-zinc-500 max-w-md mx-auto">
-          Additional organizing team members and coordinators will be published following official organizational approval.
+        <div className="p-4 rounded-2xl bg-white border border-[#E9E2D5] max-w-2xl mx-auto text-center text-xs text-zinc-500">
+          <p>
+            Per foundation policy, other organizing committee members and departmental coordinators will be published following official organizational appointment.
+          </p>
         </div>
       </section>
 
+      {/* ==================================================================== */}
       {/* CALL TO ACTION */}
+      {/* ==================================================================== */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-        <MithilaMotif className="w-full h-3 text-[#C5A880]/40 mx-auto" />
         <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
-          Join Us in Celebrating Mithila
+          Ready to Express Your Cultural Identity?
         </h2>
+        <p className="text-xs sm:text-sm text-[#243B53] max-w-xl mx-auto">
+          Registrations for Mithila Queen 2026 are currently open. Join us in celebrating Mithila&apos;s heritage, confidence, and creative talent.
+        </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link href="/register">
-            <Button className="bg-[#C5A880] hover:bg-[#b8986d] text-[#0A192F] font-bold text-xs h-11 px-6 rounded-xl shadow-xs">
-              Register for Mithila Queen (NPR 399)
+            <Button className="bg-[#C5A880] hover:bg-[#b8986d] text-[#0A192F] font-bold text-xs h-11 px-6 rounded-xl shadow-xs gap-2">
+              <span>Register for Mithila Queen (NPR 399)</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </Link>
           <Link href="/contact">
             <Button variant="outline" className="border-[#243B53]/20 text-[#0A192F] text-xs h-11 px-6 rounded-xl font-medium">
-              Get in Touch with Organizers
+              Contact Organizing Secretariat
             </Button>
           </Link>
         </div>
@@ -230,4 +291,3 @@ export default function AboutPage() {
     </div>
   );
 }
-

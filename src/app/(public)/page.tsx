@@ -1,8 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import {
-  Crown,
-  Sparkles,
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
@@ -10,23 +8,26 @@ import {
   MapPin,
   Phone,
   Mail,
+  Video,
   Award,
-  Users,
-  HeartHandshake,
   HelpCircle,
   ExternalLink,
   ChevronRight,
-  Gift,
+  Sparkles,
+  Heart,
   FileCheck2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MithilaMotif, MithilaCornerMotif } from "@/components/ui/mithila-motif";
+import {
+  OriginFoundationLogo,
+  MithilaQueenLogo,
+  MithilaHeritageMandala,
+} from "@/components/brand/brand-logos";
 
 export const metadata = {
-  title: "The Origin Foundation | Mithila Queen - Janakpur Dham, Nepal",
+  title: "The Origin Foundation | Mithila Queen — Janakpur Dham, Nepal",
   description:
-    "Rooted in Identity. Driven by Purpose. The Origin Foundation presents Mithila Queen: Celebrating Mithila's Culture, Confidence & Talent.",
+    "The Origin Foundation presents Mithila Queen: Celebrating Mithila's Culture, Confidence & Talent. An official cultural and talent competition based in Janakpur Dham, Nepal.",
 };
 
 export default function HomePage() {
@@ -34,47 +35,96 @@ export default function HomePage() {
     {
       position: "First Prize",
       title: "iPhone 18 Pro Max, Red, 512 GB",
-      tag: "Proposed by Organizers",
-      accent: "border-[#C5A880] bg-[#FDFBF7]",
+      status: "Proposed by organizers",
+      badge: "Flagship Award",
+      accent: "border-[#C5A880] bg-white",
+      highlight: true,
     },
     {
       position: "Second Prize",
-      title: "MAC Beauty Products",
-      value: "Approx. NPR 30,000 value",
-      tag: "Proposed Value",
-      accent: "border-[#243B53]/20 bg-[#FDFBF7]",
+      title: "MAC Beauty Products Collection",
+      value: "Approx. NPR 30,000 estimated value",
+      status: "Proposed value",
+      badge: "Runner Up",
+      accent: "border-[#E9E2D5] bg-white",
+      highlight: false,
     },
     {
       position: "Third Prize",
-      title: "Smartphone / Premium Electronics",
-      tag: "To Be Confirmed",
-      accent: "border-[#243B53]/20 bg-[#FDFBF7]",
+      title: "Smartphone or Quality Electronic Device",
+      status: "To be confirmed",
+      badge: "Third Place",
+      accent: "border-[#E9E2D5] bg-white",
+      highlight: false,
     },
     {
       position: "Fourth & Fifth Prize",
-      title: "Special Recognition & Awards",
-      tag: "Details to be Announced",
-      accent: "border-[#243B53]/20 bg-[#FDFBF7]",
+      title: "Honorable Recognition & Special Awards",
+      status: "Details to be announced later",
+      badge: "Special Honors",
+      accent: "border-[#E9E2D5] bg-white",
+      highlight: false,
     },
   ];
 
-  const highlights = [
+  const pillars = [
     {
-      title: "Girls Only (Any Age)",
-      desc: "Open to all girls. Both unmarried and married participants are warmly eligible. Minor participants require guardian consent.",
+      title: "Cultural Pride & Identity",
+      subtitle: "Honoring Maithili Heritage",
+      description:
+        "Mithila Queen is grounded in the civilizational richness of Janakpur Dham—its classical folk art, historic language, traditions, and timeless values. Cultural appreciation takes precedence over mere appearance.",
     },
     {
-      title: "No Prior Experience Required",
-      desc: "Newcomers are welcome. Passion for Mithila heritage, confidence, and personal talent are prioritized over past stage titles.",
+      title: "Confidence & Articulation",
+      subtitle: "Fostering Dignified Public Voice",
+      description:
+        "We provide a nurturing, respectful national stage where participants develop public speaking, graceful self-expression, and the courage to represent their aspirations before a wider audience.",
     },
     {
-      title: "Cultural & Talent Expression",
-      desc: "A respectful cultural platform celebrating artistic expression, traditional heritage, knowledge, and regional pride.",
+      title: "Creative & Artistic Talent",
+      subtitle: "Championing Diverse Expression",
+      description:
+        "Whether through fine arts, Maithili folk music, dance, literature, poetry, or community initiative, individual talent is celebrated and evaluated with genuine fairness and impartiality.",
     },
     {
-      title: "Transparent NPR 399 Fee",
-      desc: "Fair registration fee with verified QR code payment and independent administrative bank verification.",
+      title: "Inclusive Participation",
+      subtitle: "Welcoming All Communities",
+      description:
+        "Open to all girls, both unmarried and married, of any age (with safeguarding consent for minors). No previous stage experience is required; first-time newcomers are celebrated.",
     },
+  ];
+
+  const videoSteps = [
+    {
+      step: "01",
+      title: "Create Your Introduction Video",
+      desc: "Record a short video introducing yourself, expressing your motivation, and demonstrating your talent or thoughts on Mithila heritage.",
+    },
+    {
+      step: "02",
+      title: "Publish on Social Media",
+      desc: "Post your video on your personal TikTok and Instagram profiles using the official tags and hashtags once announced.",
+    },
+    {
+      step: "03",
+      title: "Submit on WhatsApp to Gaurav Gupta",
+      desc: "Send the original video file directly on WhatsApp to Managing Director Gaurav Gupta at +977 9704571941.",
+    },
+    {
+      step: "04",
+      title: "Administrative Verification",
+      desc: "Our review desk verifies your tags, video, and registration record for official evaluation.",
+    },
+  ];
+
+  const registrationSteps = [
+    { num: "1", title: "Personal Details & Address", desc: "Full legal name, DOB (minor check), contact, geographical address" },
+    { num: "2", title: "Profile & Motivation", desc: "Talents, spoken languages, reasons for joining, voluntary education" },
+    { num: "3", title: "Additional Details", desc: "Height field omitted pending organizer confirmation" },
+    { num: "4", title: "Social Media Presence", desc: "At least one required (Instagram, TikTok, Facebook). No passwords" },
+    { num: "5", title: "Photo & Media Upload", desc: "Profile photo and optional document securely uploaded" },
+    { num: "6", title: "Rules & Minor Consent", desc: "Rules agreement + legal guardian consent timestamp if under 18" },
+    { num: "7", title: "Review & QR Payment", desc: "Generate MQ-YYYY-XXXXXX reference and submit NPR 399 transfer" },
   ];
 
   const faqs = [
@@ -88,133 +138,146 @@ export default function HomePage() {
     },
     {
       q: "What is the registration fee?",
-      a: "The official registration fee is strictly NPR 399 per registration, collected in Nepalese rupees only.",
+      a: "The registration fee is strictly NPR 399 per registration, collected in Nepalese rupees only. Payment is made via verified QR code with transaction reference submission.",
     },
     {
       q: "When will the event take place?",
-      a: "Event Schedule: To Be Announced. Format: Online registration via this official website. Any physical event or venue details will be published once officially confirmed by the organizers.",
+      a: "Event Schedule: To Be Announced. Online registration is currently active via this official website. Any physical event or venue details will be published once officially confirmed by the organizers.",
     },
   ];
 
   return (
-    <div className="space-y-16 sm:space-y-24">
-      {/* HERO SECTION */}
+    <div className="space-y-16 sm:space-y-24 pb-16">
+      {/* ==================================================================== */}
+      {/* HERO SECTION — EDITORIAL CULTURAL COMPOSITION */}
+      {/* ==================================================================== */}
       <section className="relative bg-[#0A192F] text-[#FDFBF7] py-20 sm:py-28 overflow-hidden border-b border-[#243B53]">
         {/* Subtle patterned backdrop */}
-        <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#C5A880_1px,transparent_1px)] [background-size:24px_24px]" />
-        
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#C5A880_1px,transparent_1px)] [background-size:24px_24px]" />
+
+        {/* Floating Mithila Heritage Mandala (Right ambient illustration) */}
+        <div className="absolute -right-20 top-1/2 -translate-y-1/2 opacity-20 pointer-events-none hidden lg:block">
+          <MithilaHeritageMandala className="w-[520px] h-[520px]" accent="#C5A880" />
+        </div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            {/* Cultural Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#243B53]/60 border border-[#C5A880]/40 text-[#C5A880] text-xs font-semibold tracking-wide">
-              <Crown className="w-4 h-4" />
-              <span>Flagship Initiative of The Origin Foundation</span>
-              <span className="text-[#243B53]">•</span>
-              <span className="text-[#FDFBF7]/80">Janakpur Dham, Nepal</span>
+          <div className="max-w-3xl space-y-7">
+            {/* Kicker Pill */}
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#243B53]/50 border border-[#C5A880]/40 text-[#C5A880] text-xs font-semibold tracking-wider uppercase">
+              <span className="w-2 h-2 rounded-full bg-[#C5A880] animate-pulse" />
+              <span>The Origin Foundation Presents &bull; Janakpur Dham</span>
             </div>
 
-            {/* Main Headline */}
-            <h1 className="text-4xl sm:text-6xl font-black font-serif tracking-tight text-[#FFFFFF] leading-tight sm:leading-[1.15]">
-              Mithila Queen
-            </h1>
+            {/* Display Headline */}
+            <div className="space-y-3">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black font-serif tracking-tight text-[#FFFFFF] leading-[1.08]">
+                Mithila Queen
+              </h1>
+              <p className="text-xl sm:text-2xl text-[#C5A880] font-serif italic font-normal tracking-wide">
+                Celebrating Mithila&apos;s Culture, Confidence & Talent.
+              </p>
+            </div>
 
-            {/* Tagline */}
-            <p className="text-xl sm:text-2xl text-[#C5A880] font-serif italic font-medium">
-              Celebrating Mithila&apos;s Culture, Confidence & Talent.
+            {/* Respectful Mission Paragraph */}
+            <p className="text-sm sm:text-base text-[#E9E2D5]/90 leading-relaxed font-sans max-w-2xl">
+              An authentic cultural and talent-oriented competition based in Janakpur Dham, Nepal. Open to girls of any age, unmarried or married, with no prior pageant experience required. A distinguished platform framed around cultural heritage, artistic knowledge, and self-confidence.
             </p>
 
-            {/* Brief Introduction */}
-            <p className="text-sm sm:text-base text-[#E9E2D5]/85 leading-relaxed max-w-2xl mx-auto font-sans">
-              An authentic cultural and talent-oriented platform empowering girls across Mithila to express their identity, creativity, and regional pride on a prestigious national stage.
-            </p>
-
-            {/* Action CTAs */}
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+            {/* Action Buttons */}
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
               <Link href="/register" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto bg-[#C5A880] hover:bg-[#b8986d] text-[#0A192F] font-bold text-sm h-12 px-7 rounded-xl shadow-md transition-all gap-2">
-                  <span>Register Now</span>
-                  <span className="text-xs bg-[#0A192F]/15 px-2 py-0.5 rounded font-mono">NPR 399</span>
-                  <ArrowRight className="w-4 h-4" />
+                <Button className="w-full sm:w-auto bg-[#C5A880] hover:bg-[#b8986d] text-[#0A192F] font-bold text-sm h-12 px-7 rounded-xl shadow-[0_4px_16px_rgba(197,168,128,0.3)] transition-all gap-2.5 group">
+                  <span>Register for Mithila Queen</span>
+                  <span className="text-xs bg-[#0A192F]/15 px-2 py-0.5 rounded font-mono font-bold">
+                    NPR 399
+                  </span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
               </Link>
 
               <Link href="/mithila-queen" className="w-full sm:w-auto">
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto border-[#C5A880]/60 text-[#FDFBF7] hover:bg-[#243B53]/50 hover:text-[#FFFFFF] text-sm h-12 px-6 rounded-xl font-medium"
+                  className="w-full sm:w-auto border-[#C5A880]/50 text-[#FDFBF7] hover:bg-[#243B53]/60 hover:text-[#FFFFFF] text-sm h-12 px-6 rounded-xl font-medium"
                 >
-                  Discover Mithila Queen
+                  Competition Overview & Rules
                 </Button>
               </Link>
             </div>
 
-            {/* Micro details */}
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-xs text-[#E9E2D5]/70">
-              <div className="flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-[#C5A880]" />
-                <span>Event Schedule: <strong>To Be Announced</strong></span>
+            {/* Official Organizing Bulletin Bar */}
+            <div className="pt-6 border-t border-[#243B53]/80 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-[#E9E2D5]/80">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-[#C5A880] shrink-0" />
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-[#C5A880] block">Schedule</span>
+                  <span className="font-semibold text-white">To Be Announced</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-[#C5A880]" />
-                <span>Format: <strong>Online Registration Portal</strong></span>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-[#C5A880] shrink-0" />
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-[#C5A880] block">Headquarters</span>
+                  <span className="font-semibold text-white">Janakpur Dham, Nepal</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-[#C5A880]" />
-                <span>No Prior Experience Needed</span>
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#C5A880] shrink-0" />
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-[#C5A880] block">Eligibility</span>
+                  <span className="font-semibold text-white">Any Girl &bull; Newcomers Welcome</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 1: ABOUT THE FOUNDATION */}
+      {/* ==================================================================== */}
+      {/* EXECUTIVE STATEMENT — FROM THE MANAGING DIRECTORS */}
+      {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7 space-y-5">
-            <div className="space-y-1">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880] font-sans">
-                About The Organization
-              </span>
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0A192F] font-serif">
-                The Origin Foundation
-              </h2>
-              <p className="text-sm font-medium text-[#243B53] italic">
-                Rooted in Identity. Driven by Purpose.
-              </p>
-            </div>
-
-            <p className="text-sm text-[#243B53] leading-relaxed">
-              The Origin Foundation is being developed as an organization based in Janakpur Dham, Nepal, with an ambition to celebrate cultural identity, encourage talent, and create genuine opportunities for participation and representation.
-            </p>
-
-            <p className="text-sm text-[#243B53] leading-relaxed">
-              Its proposed flagship initiative, <strong>Mithila Queen</strong>, is a competition intended to bring together participants who want to express their talent, confidence, creativity, and connection with Mithila&apos;s rich cultural heritage.
-            </p>
-
-            <div className="pt-2">
-              <Link href="/about">
-                <Button variant="outline" className="border-[#243B53]/30 text-[#0A192F] hover:bg-[#E9E2D5]/50 gap-2 font-semibold text-xs h-10 px-4 rounded-xl">
-                  <span>Learn More About Our Vision</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-
-          <div className="lg:col-span-5">
-            <div className="p-7 rounded-2xl bg-white border border-[#E9E2D5] shadow-xs space-y-4 relative">
-              <MithilaCornerMotif className="w-10 h-10 text-[#C5A880] absolute top-4 right-4" />
-              <div className="w-12 h-12 rounded-xl bg-[#0A192F] text-[#C5A880] flex items-center justify-center">
-                <Crown className="w-6 h-6 stroke-[1.8]" />
+        <div className="p-8 sm:p-12 rounded-3xl bg-white border border-[#E9E2D5] shadow-[0_2px_14px_rgba(10,25,47,0.04)] relative overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div className="lg:col-span-8 space-y-4">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+                <span>Executive Statement</span>
+                <span className="text-[#E9E2D5]">&bull;</span>
+                <span>The Origin Foundation</span>
               </div>
-              <h3 className="text-lg font-bold text-[#0A192F] font-serif">
-                A Respectful National Platform
-              </h3>
-              <p className="text-xs text-[#243B53] leading-relaxed">
-                Mithila Queen is framed around heritage, knowledge, creativity, and confidence—never merely appearance. We believe authentic cultural representation honors history while welcoming modern talent.
+
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif leading-snug">
+                &ldquo;Rooted in our cultural identity. Driven by genuine community purpose.&rdquo;
+              </h2>
+
+              <p className="text-sm text-[#243B53] leading-relaxed">
+                The Origin Foundation was established in Janakpur Dham out of a profound commitment to our heritage. For generations, Mithila&apos;s art, language, and cultural wisdom have inspired civilizations. Through <strong>Mithila Queen</strong>, our goal is to offer a respected, national-level stage where girls from across our communities can celebrate who they are, showcase their talents, and step forward with confidence.
               </p>
-              <div className="pt-2 border-t border-[#E9E2D5] flex items-center justify-between text-xs text-[#243B53]">
-                <span>Headquarters:</span>
+
+              <p className="text-sm text-[#243B53] leading-relaxed">
+                This is intentionally designed as a cultural and talent-oriented platform—not merely a physical beauty contest. We invite every eligible girl to participate with pride.
+              </p>
+
+              {/* Managing Directors Joint Signature */}
+              <div className="pt-4 border-t border-[#E9E2D5] grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-0.5">
+                  <p className="font-bold text-[#0A192F] text-sm font-serif">Gaurav Gupta</p>
+                  <p className="text-xs text-[#C5A880] font-medium">Managing Director</p>
+                  <p className="text-[11px] text-zinc-500 font-mono">+977 9704571941</p>
+                </div>
+                <div className="space-y-0.5">
+                  <p className="font-bold text-[#0A192F] text-sm font-serif">Dipendra Shah Kalwar</p>
+                  <p className="text-xs text-[#C5A880] font-medium">Managing Director</p>
+                  <p className="text-[11px] text-zinc-500 font-mono">+977 981-2005468</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Foundation Seal Right Column */}
+            <div className="lg:col-span-4 flex flex-col items-center justify-center p-6 rounded-2xl bg-[#FDFBF7] border border-[#E9E2D5] text-center space-y-3">
+              <OriginFoundationLogo variant="stacked" theme="dark" />
+              <div className="pt-3 border-t border-[#E9E2D5] w-full text-[11px] text-[#243B53]">
+                <span>Official Secretariat: </span>
                 <strong className="text-[#0A192F]">Janakpur Dham, Nepal</strong>
               </div>
             </div>
@@ -222,249 +285,334 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 2: COMPETITION HIGHLIGHTS */}
-      <section className="bg-white py-16 sm:py-20 border-y border-[#E9E2D5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
-              Eligibility & Guidelines
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
-              Who Can Participate in Mithila Queen?
-            </h2>
-            <p className="text-xs sm:text-sm text-[#243B53]">
-              The competition welcomes eligible participants across Mithila with simple, transparent rules.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {highlights.map((h, i) => (
-              <Card key={i} className="border-[#E9E2D5] shadow-2xs hover:border-[#C5A880] transition-colors rounded-2xl">
-                <CardHeader className="pb-2">
-                  <div className="w-9 h-9 rounded-lg bg-[#0A192F] text-[#C5A880] flex items-center justify-center font-bold text-xs mb-2">
-                    0{i + 1}
-                  </div>
-                  <CardTitle className="text-base font-bold text-[#0A192F] font-serif">
-                    {h.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-xs text-[#243B53] leading-relaxed">
-                    {h.desc}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center pt-2">
-            <Link href="/rules">
-              <Button variant="ghost" className="text-xs font-bold text-[#0A192F] hover:text-[#C5A880] gap-1.5">
-                <span>View Complete Rules & Regulations</span>
-                <ChevronRight className="w-4 h-4" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 3: PRIZE STRUCTURE */}
+      {/* ==================================================================== */}
+      {/* 4 CORE CULTURAL PILLARS (EDITORIAL SPREAD) */}
+      {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
-            Awards & Recognition
+        <div className="max-w-2xl space-y-2">
+          <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+            The Foundation Philosophy
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
-            Prize Structure
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0A192F] font-serif">
+            Four Core Pillars of Mithila Queen
           </h2>
           <p className="text-xs sm:text-sm text-[#243B53]">
-            Official rewards proposed by the organizers to honor excellence, confidence, and cultural articulation.
+            How the competition is evaluated and conducted, emphasizing substance, knowledge, and talent.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {prizes.map((p, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          {pillars.map((pillar, idx) => (
             <div
-              key={i}
-              className={`p-6 rounded-2xl border ${p.accent} shadow-2xs flex flex-col justify-between space-y-4`}
+              key={idx}
+              className="p-7 sm:p-8 rounded-3xl bg-white border border-[#E9E2D5] hover:border-[#C5A880] transition-colors shadow-xs space-y-3"
             >
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
-                    {p.position}
-                  </span>
-                  <Award className="w-4 h-4 text-[#C5A880]" />
-                </div>
-                <h3 className="text-base font-bold text-[#0A192F] font-serif">
-                  {p.title}
-                </h3>
-                {p.value && (
-                  <p className="text-xs font-semibold text-[#243B53] font-mono">
-                    {p.value}
-                  </p>
-                )}
-              </div>
-
-              <div className="pt-3 border-t border-[#E9E2D5]">
-                <span className="inline-block text-[10px] font-bold uppercase tracking-wider bg-[#E9E2D5]/60 text-[#243B53] px-2 py-0.5 rounded border border-[#E9E2D5]">
-                  {p.tag}
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C5A880]">
+                  Pillar 0{idx + 1}
                 </span>
+                <span className="text-xs text-zinc-400 font-mono">Core Value</span>
               </div>
+              <h3 className="text-xl font-bold font-serif text-[#0A192F]">
+                {pillar.title}
+              </h3>
+              <p className="text-xs font-medium text-[#C5A880] font-sans">
+                {pillar.subtitle}
+              </p>
+              <p className="text-xs text-[#243B53] leading-relaxed pt-1">
+                {pillar.description}
+              </p>
             </div>
           ))}
         </div>
-
-        <p className="text-[11px] text-zinc-500 text-center max-w-xl mx-auto italic">
-          * Note: Third, fourth, and fifth prize details are subject to final organizer confirmation before event commencement.
-        </p>
       </section>
 
-      {/* SECTION 4: LEADERSHIP SECTION */}
-      <section className="bg-[#0A192F] text-[#FDFBF7] py-16 sm:py-20 border-y border-[#243B53]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
-              Foundation Leadership
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#FFFFFF] font-serif">
-              Managing Directors
-            </h2>
-            <p className="text-xs sm:text-sm text-[#E9E2D5]/80">
-              Steering The Origin Foundation and Mithila Queen with cultural authenticity, institutional discipline, and equal responsibility.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            {/* Gaurav Gupta */}
-            <div className="p-7 rounded-2xl bg-[#243B53]/30 border border-[#243B53] space-y-4 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-[#FFFFFF] font-serif">
-                    Gaurav Gupta
-                  </h3>
-                  <p className="text-xs text-[#C5A880] font-medium tracking-wide">
-                    Managing Director
-                  </p>
-                </div>
-                <div className="w-10 h-10 rounded-xl bg-[#0A192F] border border-[#C5A880]/50 text-[#C5A880] flex items-center justify-center font-bold">
-                  GG
-                </div>
-              </div>
-              <p className="text-xs text-[#E9E2D5]/80 leading-relaxed">
-                Overseeing participant coordination, operational logistics, and official communications for Mithila Queen.
+      {/* ==================================================================== */}
+      {/* PROPOSED PRIZE POOL SECTION (HONEST & TRANSPARENT) */}
+      {/* ==================================================================== */}
+      <section className="bg-white py-16 sm:py-20 border-y border-[#E9E2D5]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="space-y-2 max-w-xl">
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+                Recognition & Rewards
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
+                Prize Structure for Mithila Queen
+              </h2>
+              <p className="text-xs sm:text-sm text-[#243B53]">
+                Prizes proposed by the organizers to honor excellence, creative talent, and regional representation.
               </p>
-              <div className="pt-3 border-t border-[#243B53] text-xs">
-                <a
-                  href="tel:+9779704571941"
-                  className="text-[#C5A880] hover:text-white flex items-center gap-2 font-mono"
-                >
-                  <Phone className="w-3.5 h-3.5" />
-                  <span>+977 9704571941</span>
-                </a>
-              </div>
             </div>
 
-            {/* Dipendra Shah Kalwar */}
-            <div className="p-7 rounded-2xl bg-[#243B53]/30 border border-[#243B53] space-y-4 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-[#FFFFFF] font-serif">
-                    Dipendra Shah Kalwar
-                  </h3>
-                  <p className="text-xs text-[#C5A880] font-medium tracking-wide">
-                    Managing Director
-                  </p>
-                </div>
-                <div className="w-10 h-10 rounded-xl bg-[#0A192F] border border-[#C5A880]/50 text-[#C5A880] flex items-center justify-center font-bold">
-                  DS
-                </div>
-              </div>
-              <p className="text-xs text-[#E9E2D5]/80 leading-relaxed">
-                Guiding institutional outreach, strategic vision, and cultural program alignment across Madhesh Province.
-              </p>
-              <div className="pt-3 border-t border-[#243B53] text-xs">
-                <a
-                  href="tel:+9779812005468"
-                  className="text-[#C5A880] hover:text-white flex items-center gap-2 font-mono"
-                >
-                  <Phone className="w-3.5 h-3.5" />
-                  <span>+977 981-2005468</span>
-                </a>
-              </div>
+            <div className="p-3 rounded-xl bg-[#FDFBF7] border border-[#E9E2D5] text-[11px] text-[#243B53] max-w-sm">
+              <span className="font-bold text-[#0A192F] block">Organizer Disclosure:</span>
+              <span>All unconfirmed awards are labeled per transparency guidelines. Final prize specifications will be confirmed prior to stage rounds.</span>
             </div>
           </div>
 
-          <p className="text-xs text-[#E9E2D5]/60 text-center">
-            Official organizing team members are published under authorized guidance.
-          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {prizes.map((p, idx) => (
+              <div
+                key={idx}
+                className={`p-6 rounded-2xl border transition-all flex flex-col justify-between space-y-4 ${p.accent} ${
+                  p.highlight ? "shadow-sm ring-1 ring-[#C5A880]" : "shadow-xs"
+                }`}
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#C5A880]">
+                      {p.badge}
+                    </span>
+                    <span className="text-xs font-bold font-mono text-[#0A192F]">
+                      0{idx + 1}
+                    </span>
+                  </div>
+                  <h3 className="font-serif font-bold text-base text-[#0A192F]">
+                    {p.position}
+                  </h3>
+                  <p className="text-sm font-semibold text-[#243B53]">
+                    {p.title}
+                  </p>
+                  {p.value && (
+                    <p className="text-xs text-zinc-500 font-mono">
+                      {p.value}
+                    </p>
+                  )}
+                </div>
+
+                <div className="pt-3 border-t border-[#E9E2D5]">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#FDFBF7] text-[#243B53] border border-[#E9E2D5]">
+                    {p.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* SECTION 5: FAQs PREVIEW */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="text-center space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
-            Common Queries
+      {/* ==================================================================== */}
+      {/* 7-STEP REGISTRATION ROADMAP */}
+      {/* ==================================================================== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+            How to Register
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
-            Frequently Asked Questions
+            The 7-Step Online Registration Journey
           </h2>
+          <p className="text-xs sm:text-sm text-[#243B53]">
+            A seamless, transparent multi-step application with immediate reference ID generation and payment verification.
+          </p>
         </div>
 
-        <div className="space-y-4">
-          {faqs.map((faq, i) => (
-            <div key={i} className="p-5 rounded-2xl bg-white border border-[#E9E2D5] shadow-2xs space-y-2">
-              <h3 className="text-sm font-bold text-[#0A192F] font-serif flex items-start gap-2">
-                <HelpCircle className="w-4 h-4 text-[#C5A880] shrink-0 mt-0.5" />
-                <span>{faq.q}</span>
-              </h3>
-              <p className="text-xs text-[#243B53] pl-6 leading-relaxed">
-                {faq.a}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3">
+          {registrationSteps.map((step) => (
+            <div
+              key={step.num}
+              className="p-4 rounded-2xl bg-white border border-[#E9E2D5] shadow-xs space-y-2 flex flex-col justify-between"
+            >
+              <div className="space-y-1.5">
+                <div className="w-7 h-7 rounded-lg bg-[#0A192F] text-[#C5A880] flex items-center justify-center font-mono font-bold text-xs">
+                  {step.num}
+                </div>
+                <h3 className="text-xs font-bold text-[#0A192F] font-serif">
+                  {step.title}
+                </h3>
+              </div>
+              <p className="text-[11px] text-[#243B53] leading-snug">
+                {step.desc}
               </p>
             </div>
           ))}
         </div>
 
         <div className="text-center pt-2">
-          <Link href="/faq">
-            <Button variant="outline" className="border-[#243B53]/20 text-[#0A192F] hover:bg-[#E9E2D5]/50 text-xs font-semibold h-10 px-5 rounded-xl gap-2">
-              <span>View All Frequently Asked Questions</span>
+          <Link href="/register">
+            <Button className="bg-[#0A192F] hover:bg-[#243B53] text-[#FDFBF7] font-bold text-xs h-11 px-7 rounded-xl shadow-xs gap-2">
+              <span>Begin Step 1: Personal Information</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
             </Button>
           </Link>
         </div>
       </section>
 
-      {/* SECTION 6: BOTTOM CALL TO ACTION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="rounded-3xl bg-[#0A192F] text-[#FDFBF7] p-8 sm:p-14 border border-[#243B53] relative overflow-hidden text-center space-y-6">
-          <MithilaMotif className="w-full h-4 text-[#C5A880]/30 mx-auto" />
-          <div className="max-w-2xl mx-auto space-y-3">
-            <h2 className="text-2xl sm:text-4xl font-extrabold font-serif text-[#FFFFFF]">
-              Ready to Represent Your Heritage & Talent?
+      {/* ==================================================================== */}
+      {/* VIDEO AUDITION & WHATSAPP SUBMISSION (CONFIRMED WORKFLOW) */}
+      {/* ==================================================================== */}
+      <section className="bg-[#0A192F] text-[#FDFBF7] py-16 sm:py-20 border-y border-[#243B53]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="max-w-2xl space-y-2">
+            <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+              Video Audition Process
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#FFFFFF] font-serif">
+              How to Submit Your Introduction Video
             </h2>
-            <p className="text-xs sm:text-sm text-[#E9E2D5]/80 leading-relaxed">
-              Registrations for Mithila Queen are officially open. Submit your application, verify your contact details, and join a celebration of cultural confidence.
+            <p className="text-xs sm:text-sm text-[#E9E2D5]/80">
+              The video audition allows the organizing committee to witness your confidence, articulation, and talent directly.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-            <Link href="/register" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto bg-[#C5A880] hover:bg-[#b8986d] text-[#0A192F] font-bold text-sm h-12 px-8 rounded-xl shadow-md gap-2">
-                <span>Begin Registration</span>
-                <span className="text-xs bg-[#0A192F]/15 px-2 py-0.5 rounded font-mono">NPR 399</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
-            <Link href="/contact" className="w-full sm:w-auto">
-              <Button variant="outline" className="w-full sm:w-auto border-[#C5A880]/60 text-[#FDFBF7] hover:bg-[#243B53]/50 text-sm h-12 px-6 rounded-xl">
-                Contact Organizing Team
-              </Button>
-            </Link>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {videoSteps.map((step) => (
+              <div
+                key={step.step}
+                className="p-6 rounded-2xl bg-[#243B53]/40 border border-[#243B53] space-y-3"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="w-8 h-8 rounded-lg bg-[#C5A880] text-[#0A192F] flex items-center justify-center font-bold text-xs font-mono">
+                    {step.step}
+                  </span>
+                  <Video className="w-4 h-4 text-[#C5A880]" />
+                </div>
+                <h3 className="text-base font-bold text-[#FFFFFF] font-serif">
+                  {step.title}
+                </h3>
+                <p className="text-xs text-[#E9E2D5]/80 leading-relaxed">
+                  {step.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="p-6 rounded-2xl bg-[#071120] border border-[#243B53] flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="space-y-1">
+              <span className="text-xs font-bold text-[#C5A880] uppercase tracking-wider block">
+                Direct WhatsApp Video Audition Submission
+              </span>
+              <p className="text-sm font-semibold text-white">
+                Send your video directly to Managing Director Gaurav Gupta:{" "}
+                <span className="font-mono text-[#C5A880]">+977 9704571941</span>
+              </p>
+            </div>
+            <a
+              href="https://wa.me/9779704571941"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-[#C5A880] hover:bg-[#b8986d] text-[#0A192F] text-xs font-bold h-10 px-5 rounded-xl transition-colors shrink-0"
+            >
+              <span>Message on WhatsApp</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
+      {/* FREQUENTLY ASKED QUESTIONS & CONTACT DESK */}
+      {/* ==================================================================== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          {/* FAQ Column (7 cols) */}
+          <div className="lg:col-span-7 space-y-6">
+            <div className="space-y-1">
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+                Frequently Asked Questions
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
+                Questions on Registration & Process
+              </h2>
+            </div>
+
+            <div className="space-y-4">
+              {faqs.map((faq, i) => (
+                <div
+                  key={i}
+                  className="p-5 rounded-2xl bg-white border border-[#E9E2D5] shadow-xs space-y-2"
+                >
+                  <h3 className="font-bold text-sm text-[#0A192F] font-serif flex items-center gap-2">
+                    <HelpCircle className="w-4 h-4 text-[#C5A880] shrink-0" />
+                    <span>{faq.q}</span>
+                  </h3>
+                  <p className="text-xs text-[#243B53] leading-relaxed pl-6">
+                    {faq.a}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div>
+              <Link href="/faq">
+                <Button variant="outline" className="border-[#243B53]/30 text-[#0A192F] hover:bg-[#E9E2D5]/50 text-xs h-10 px-5 rounded-xl gap-2 font-semibold">
+                  <span>View All 10 Official FAQs</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Contact Desk Column (5 cols) */}
+          <div className="lg:col-span-5">
+            <div className="p-7 sm:p-8 rounded-3xl bg-white border border-[#E9E2D5] shadow-xs space-y-6">
+              <div className="space-y-1.5">
+                <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C5A880]">
+                  Official Organizing Secretariat
+                </span>
+                <h3 className="text-xl font-bold text-[#0A192F] font-serif">
+                  The Origin Foundation
+                </h3>
+                <p className="text-xs text-[#243B53]">
+                  Janakpur Dham, Madhesh Province, Nepal
+                </p>
+              </div>
+
+              <div className="space-y-3 text-xs text-[#243B53]">
+                <div className="p-3.5 rounded-xl bg-[#FDFBF7] border border-[#E9E2D5] space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                    Managing Director
+                  </span>
+                  <p className="font-bold text-[#0A192F] text-sm font-serif">Gaurav Gupta</p>
+                  <a
+                    href="tel:+9779704571941"
+                    className="text-[#C5A880] hover:underline font-mono text-xs flex items-center gap-1.5 pt-0.5"
+                  >
+                    <Phone className="w-3 h-3" />
+                    <span>+977 9704571941</span>
+                  </a>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-[#FDFBF7] border border-[#E9E2D5] space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                    Managing Director
+                  </span>
+                  <p className="font-bold text-[#0A192F] text-sm font-serif">Dipendra Shah Kalwar</p>
+                  <a
+                    href="tel:+9779812005468"
+                    className="text-[#C5A880] hover:underline font-mono text-xs flex items-center gap-1.5 pt-0.5"
+                  >
+                    <Phone className="w-3 h-3" />
+                    <span>+977 981-2005468</span>
+                  </a>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-[#FDFBF7] border border-[#E9E2D5] space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                    Official Email
+                  </span>
+                  <a
+                    href="mailto:originfoundation107@gmail.com"
+                    className="text-[#0A192F] hover:text-[#C5A880] font-mono font-medium text-xs flex items-center gap-1.5"
+                  >
+                    <Mail className="w-3.5 h-3.5 text-[#C5A880]" />
+                    <span>originfoundation107@gmail.com</span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <Link href="/contact" className="w-full block">
+                  <Button className="w-full bg-[#0A192F] hover:bg-[#243B53] text-[#FDFBF7] text-xs font-bold h-10 rounded-xl">
+                    Open Contact & Inquiry Desk
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
     </div>
   );
 }
-

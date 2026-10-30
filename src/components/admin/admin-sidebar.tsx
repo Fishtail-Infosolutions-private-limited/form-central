@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { logoutAdminAction } from "@/server/actions/auth-actions";
 import { cn } from "@/lib/utils";
+import { OriginFoundationLogo, MithilaQueenLogo } from "@/components/brand/brand-logos";
 
 interface AdminSidebarProps {
   admin: {
@@ -89,8 +90,8 @@ export function AdminSidebar({
           )}
         >
           <Link href="/admin/dashboard" className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-xl bg-[#243B53] border border-[#C5A880]/60 flex items-center justify-center text-[#C5A880] shadow-xs shrink-0">
-              <Crown className="w-5 h-5 stroke-[1.8]" />
+            <div className="w-9 h-9 shrink-0">
+              <OriginFoundationLogo variant="mark" theme="light" />
             </div>
             {!isCollapsed && (
               <div className="min-w-0">
@@ -98,7 +99,7 @@ export function AdminSidebar({
                   The Origin Foundation
                 </span>
                 <span className="text-[10px] text-[#C5A880] tracking-wider uppercase font-bold block truncate">
-                  Origin Foundation Admin
+                  Janakpur Dham &bull; Admin
                 </span>
               </div>
             )}

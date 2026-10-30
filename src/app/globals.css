@@ -8,6 +8,8 @@
   --color-origin-gold-light: #E0C9A6;
   --color-origin-beige: #E9E2D5;
   --color-origin-white: #FFFFFF;
+  --font-serif: var(--font-playfair), 'Playfair Display', Georgia, serif;
+  --font-sans: var(--font-poppins), 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 :root {

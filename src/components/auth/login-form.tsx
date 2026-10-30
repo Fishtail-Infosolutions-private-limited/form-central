@@ -21,6 +21,7 @@ import {
   Crown,
 } from "lucide-react";
 import { toast } from "sonner";
+import { OriginFoundationLogo } from "@/components/brand/brand-logos";
 
 type AuthMode = "LOGIN" | "FORGOT_EMAIL" | "VERIFY_OTP" | "RESET_PASSWORD" | "SUCCESS";
 
@@ -153,15 +154,13 @@ export function LoginForm() {
       <div className="w-full max-w-md">
         {/* Brand Header */}
         <div className="text-center mb-6">
-          <Link href="/" className="inline-flex items-center justify-center gap-2 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-[#0A192F] text-[#C5A880] border border-[#C5A880]/50 flex items-center justify-center shadow-xs">
-              <Crown className="w-5 h-5 stroke-[1.8]" />
-            </div>
-            <span className="text-2xl font-black text-[#0A192F] font-serif tracking-tight">The Origin Foundation</span>
+          <Link href="/" className="inline-block hover:opacity-90 transition-opacity mb-2">
+            <OriginFoundationLogo variant="stacked" theme="dark" />
           </Link>
-          <p className="text-xs text-[#C5A880] font-bold uppercase tracking-wider">
-            Origin Foundation Admin Portal • Mithila Queen
-          </p>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E9E2D5]/60 border border-[#C5A880]/40 text-[#0A192F] text-[10.5px] font-bold uppercase tracking-wider mt-2">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#C5A880]" />
+            <span>Executive Admin Portal &bull; Mithila Queen</span>
+          </div>
         </div>
 
         {/* Main Card */}
