@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 import { prisma } from "@/lib/db/prisma";
 import { uploadVideoToDrive, getAuthenticatedDriveClient } from "@/lib/google-drive/client";
+import { deletePhysicalFile } from "@/lib/storage/cleanup";
 
 const ALLOWED_VIDEO_TYPES = [
   "video/mp4",
@@ -17,6 +18,7 @@ export async function POST(request: Request) {
     const file = formData.get("file") as File | null;
     const fieldKey = (formData.get("fieldKey") as string) || "video";
     const uploadSessionToken = (formData.get("sessionToken") as string) || nanoid(24);
+    const previousFileId = (formData.get("previousFileId") as string) || null;
 
     if (!file) {
       return NextResponse.json({ error: "No video file provided" }, { status: 400 });
@@ -58,9 +60,30 @@ export async function POST(request: Request) {
       );
     }
 
+    // Clean up previously replaced video if provided or pending in this session
+    if (previousFileId) {
+      const oldFile = await prisma.uploadedFile.findUnique({ where: { id: previousFileId } });
+      if (oldFile) {
+        await deletePhysicalFile(oldFile);
+        await prisma.uploadedFile.delete({ where: { id: previousFileId } }).catch(() => {});
+      }
+    } else if (uploadSessionToken && fieldKey) {
+      const pendingFiles = await prisma.uploadedFile.findMany({
+        where: {
+          uploadSessionToken,
+          fieldKey,
+          status: "PENDING",
+        },
+      });
+      for (const pf of pendingFiles) {
+        await deletePhysicalFile(pf);
+        await prisma.uploadedFile.delete({ where: { id: pf.id } }).catch(() => {});
+      }
+    }
+
     // Upload to Google Drive API v3
     const buffer = Buffer.from(await file.arrayBuffer());
-    const sanitizedName = `video_submission_${nanoid(10)}_${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+    const sanitizedName = `video_${nanoid(8)}_${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
 
     const driveFile = await uploadVideoToDrive(
       buffer,
@@ -99,9 +122,10 @@ export async function POST(request: Request) {
       fileSize: file.size,
     });
   } catch (err: unknown) {
-    console.error("Video upload to Google Drive error:", err);
-    const message = err instanceof Error ? err.message : "Internal error during video upload";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("Video upload to Drive failed:", err);
+    return NextResponse.json(
+      { error: "Internal server error during Google Drive video upload" },
+      { status: 500 }
+    );
   }
 }
-

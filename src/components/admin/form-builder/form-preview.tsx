@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Check, CheckCircle2, ArrowRight, ArrowLeft, Eye, ShieldCheck, Upload } from "lucide-react";
+import { Check, CheckCircle2, ArrowRight, ArrowLeft, Eye, ShieldCheck, Upload, RotateCcw } from "lucide-react";
+import { toast } from "sonner";
+import { RichTextView } from "@/components/ui/rich-text-view";
 
 interface FormPreviewProps {
   formName: string;
@@ -22,6 +24,7 @@ export function FormPreview({
   onClose,
 }: FormPreviewProps) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [answers, setAnswers] = useState<Record<string, any>>({
     fullName: "Alex Rivera",
     email: "alex.participant@example.com",
@@ -83,7 +86,9 @@ export function FormPreview({
         <div className="p-6 border-b border-zinc-100 bg-zinc-50/50">
           <h2 className="text-2xl font-black text-zinc-900">{formName}</h2>
           {formDescription && (
-            <p className="text-xs text-zinc-500 mt-1 max-w-xl">{formDescription}</p>
+            <div className="mt-1 max-w-xl">
+              <RichTextView content={formDescription} className="text-xs text-zinc-500" />
+            </div>
           )}
 
           {/* Stepper Dots */}
@@ -105,148 +110,201 @@ export function FormPreview({
           </div>
         </div>
 
-        {/* Step Content */}
-        <div className="p-6 overflow-y-auto flex-1 space-y-5">
-          {currentStepIndex === 0 && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>
-                <strong>Simulated State:</strong> Email is verified via OTP. You can navigate forward through all custom steps.
-              </span>
+        {/* Step Content OR Simulation Success Screen */}
+        {isSubmitted ? (
+          <div className="p-10 flex-1 flex flex-col items-center justify-center text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shadow-xs">
+              <CheckCircle2 className="w-9 h-9" />
             </div>
-          )}
+            <div>
+              <h3 className="text-xl font-black text-zinc-900">Simulation Complete!</h3>
+              <p className="text-xs text-zinc-500 max-w-sm mx-auto mt-1 leading-relaxed">
+                All participant details, custom questions, and upload parameters were successfully validated in the test sandbox.
+              </p>
+            </div>
 
-          {currentStep.fields.filter(isFieldVisible).map((field) => (
-            <div key={field.id} className="space-y-1.5">
-              {field.type === "heading" ? (
-                <div className="pt-2">
-                  <h3 className="font-extrabold text-base text-slate-900">{field.label}</h3>
-                  {field.description && (
-                    <p className="text-xs text-slate-500">{field.description}</p>
-                  )}
-                </div>
-              ) : field.type === "divider" ? (
-                <hr className="my-4 border-slate-200" />
-              ) : (
-                <>
-                  <Label required={field.required}>{field.label}</Label>
-                  {field.description && (
-                    <p className="text-[11px] text-slate-400">{field.description}</p>
-                  )}
+            <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-50 max-w-xs w-full text-left text-xs space-y-1.5 font-mono">
+              <div className="flex justify-between">
+                <span className="text-zinc-500">Ref Code:</span>
+                <span className="font-bold text-emerald-700">FC-2026-SIMULATED</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500">Participant:</span>
+                <span className="text-zinc-800">{answers.fullName}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500">Email:</span>
+                <span className="text-zinc-800 truncate max-w-[150px]">{answers.email}</span>
+              </div>
+            </div>
 
-                  {field.type === "textarea" ? (
-                    <Textarea
-                      placeholder={field.placeholder}
-                      value={answers[field.fieldKey] || ""}
-                      onChange={(e) => handleAnswerChange(field.fieldKey, e.target.value)}
-                      className="text-xs"
-                      rows={3}
-                    />
-                  ) : field.type === "select" ? (
-                    <select
-                      value={answers[field.fieldKey] || ""}
-                      onChange={(e) => handleAnswerChange(field.fieldKey, e.target.value)}
-                      className="w-full h-10 rounded-lg border border-slate-200 px-3 text-xs bg-white text-slate-900"
-                    >
-                      <option value="">{field.placeholder || "Select an option..."}</option>
-                      {(field.options || []).map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
-                  ) : field.type === "radio" ? (
-                    <div className="space-y-2 pt-1">
-                      {(field.options || []).map((opt) => (
-                        <label
-                          key={opt.value}
-                          className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer"
-                        >
-                          <input
-                            type="radio"
-                            name={field.fieldKey}
-                            value={opt.value}
-                            checked={answers[field.fieldKey] === opt.value}
-                            onChange={() => handleAnswerChange(field.fieldKey, opt.value)}
-                            className="text-emerald-600 focus:ring-emerald-500"
-                          />
-                          <span>{opt.label}</span>
-                        </label>
-                      ))}
-                    </div>
-                  ) : field.type === "checkbox" ? (
-                    <label className="flex items-start gap-2.5 text-xs text-slate-700 cursor-pointer pt-1">
-                      <input
-                        type="checkbox"
-                        checked={Boolean(answers[field.fieldKey])}
-                        onChange={(e) => handleAnswerChange(field.fieldKey, e.target.checked)}
-                        className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 mt-0.5"
+            <div className="flex items-center gap-3 pt-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  setIsSubmitted(false);
+                  setCurrentStepIndex(0);
+                }}
+                className="text-xs h-9 gap-1.5 border-zinc-300"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Test Again</span>
+              </Button>
+              <Button
+                size="sm"
+                onClick={onClose}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs h-9 px-4 font-bold"
+              >
+                Exit Preview
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="p-6 overflow-y-auto flex-1 space-y-5">
+            {currentStepIndex === 0 && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>
+                  <strong>Simulated State:</strong> Email is verified via OTP. You can navigate forward through all custom steps.
+                </span>
+              </div>
+            )}
+
+            {currentStep.fields.filter(isFieldVisible).map((field) => (
+              <div key={field.id} className="space-y-1.5">
+                {field.type === "heading" ? (
+                  <div className="pt-2">
+                    <h3 className="font-extrabold text-base text-zinc-900">{field.label}</h3>
+                    {field.description && (
+                      <p className="text-xs text-zinc-500">{field.description}</p>
+                    )}
+                  </div>
+                ) : field.type === "divider" ? (
+                  <hr className="my-4 border-zinc-200" />
+                ) : (
+                  <>
+                    <Label required={field.required}>{field.label}</Label>
+                    {field.description && (
+                      <p className="text-[11px] text-zinc-400">{field.description}</p>
+                    )}
+
+                    {field.type === "textarea" ? (
+                      <Textarea
+                        placeholder={field.placeholder}
+                        value={answers[field.fieldKey] || ""}
+                        onChange={(e) => handleAnswerChange(field.fieldKey, e.target.value)}
+                        className="text-xs"
+                        rows={3}
                       />
-                      <span>{field.placeholder || field.label}</span>
-                    </label>
-                  ) : ["image", "video", "file"].includes(field.type) ? (
-                    <div className="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center hover:border-emerald-300 transition-colors bg-slate-50/50">
-                      <Upload className="w-5 h-5 text-slate-400 mx-auto mb-1" />
-                      <span className="text-xs font-semibold text-slate-700 block">
-                        Upload {field.type.toUpperCase()}
-                      </span>
-                      <span className="text-[10px] text-slate-400">
-                        {field.type === "video"
-                          ? "Stored securely in Google Drive"
-                          : "Stored locally on server"}
-                      </span>
-                    </div>
-                  ) : (
-                    <Input
-                      type={field.type === "number" ? "number" : "text"}
-                      placeholder={field.placeholder}
-                      value={answers[field.fieldKey] || ""}
-                      onChange={(e) => handleAnswerChange(field.fieldKey, e.target.value)}
-                      className="text-xs h-9"
-                    />
-                  )}
-                </>
-              )}
-            </div>
-          ))}
-        </div>
+                    ) : field.type === "select" ? (
+                      <select
+                        value={answers[field.fieldKey] || ""}
+                        onChange={(e) => handleAnswerChange(field.fieldKey, e.target.value)}
+                        className="w-full h-10 rounded-lg border border-zinc-200 px-3 text-xs bg-white text-zinc-900"
+                      >
+                        <option value="">{field.placeholder || "Select an option..."}</option>
+                        {(field.options || []).map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
+                    ) : field.type === "radio" ? (
+                      <div className="space-y-2 pt-1">
+                        {(field.options || []).map((opt) => (
+                          <label
+                            key={opt.value}
+                            className="flex items-center gap-2 text-xs text-zinc-700 cursor-pointer"
+                          >
+                            <input
+                              type="radio"
+                              name={field.fieldKey}
+                              value={opt.value}
+                              checked={answers[field.fieldKey] === opt.value}
+                              onChange={() => handleAnswerChange(field.fieldKey, opt.value)}
+                              className="text-emerald-600 focus:ring-emerald-500"
+                            />
+                            <span>{opt.label}</span>
+                          </label>
+                        ))}
+                      </div>
+                    ) : field.type === "checkbox" ? (
+                      <label className="flex items-start gap-2.5 text-xs text-zinc-700 cursor-pointer pt-1">
+                        <input
+                          type="checkbox"
+                          checked={Boolean(answers[field.fieldKey])}
+                          onChange={(e) => handleAnswerChange(field.fieldKey, e.target.checked)}
+                          className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 mt-0.5"
+                        />
+                        <span>{field.placeholder || field.label}</span>
+                      </label>
+                    ) : ["image", "video", "file"].includes(field.type) ? (
+                      <div className="border-2 border-dashed border-zinc-200 rounded-xl p-4 text-center hover:border-emerald-300 transition-colors bg-zinc-50/50">
+                        <Upload className="w-5 h-5 text-zinc-400 mx-auto mb-1" />
+                        <span className="text-xs font-semibold text-zinc-700 block">
+                          Upload {field.type.toUpperCase()}
+                        </span>
+                        <span className="text-[10px] text-zinc-400">
+                          {field.type === "video"
+                            ? "Stored securely in Google Drive"
+                            : "Stored locally on server"}
+                        </span>
+                      </div>
+                    ) : (
+                      <Input
+                        type={field.type === "number" ? "number" : "text"}
+                        placeholder={field.placeholder}
+                        value={answers[field.fieldKey] || ""}
+                        onChange={(e) => handleAnswerChange(field.fieldKey, e.target.value)}
+                        className="text-xs h-9"
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Footer Navigation */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
-          <Button
-            size="sm"
-            variant="outline"
-            disabled={currentStepIndex === 0}
-            onClick={() => setCurrentStepIndex((i) => i - 1)}
-            className="text-xs gap-1"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Previous Step</span>
-          </Button>
+        {!isSubmitted && (
+          <div className="p-4 border-t border-zinc-100 bg-zinc-50 flex items-center justify-between">
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={currentStepIndex === 0}
+              onClick={() => setCurrentStepIndex((i) => i - 1)}
+              className="text-xs gap-1 border-zinc-300"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Previous Step</span>
+            </Button>
 
-          {currentStepIndex < steps.length - 1 ? (
-            <Button
-              size="sm"
-              onClick={() => setCurrentStepIndex((i) => i + 1)}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1 font-semibold"
-            >
-              <span>Next Step</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Button>
-          ) : (
-            <Button
-              size="sm"
-              onClick={() => {
-                alert("Simulated registration submit! All fields validated.");
-                onClose();
-              }}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1 font-bold"
-            >
-              <Check className="w-3.5 h-3.5" />
-              <span>Complete Registration</span>
-            </Button>
-          )}
-        </div>
+            {currentStepIndex < steps.length - 1 ? (
+              <Button
+                size="sm"
+                onClick={() => setCurrentStepIndex((i) => i + 1)}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1 font-semibold"
+              >
+                <span>Next Step</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                onClick={() => {
+                  setIsSubmitted(true);
+                  toast.success("Simulation Complete: All form fields validated!");
+                }}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1 font-bold shadow-xs"
+              >
+                <Check className="w-3.5 h-3.5" />
+                <span>Complete Registration</span>
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

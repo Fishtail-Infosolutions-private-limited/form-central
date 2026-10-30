@@ -58,24 +58,32 @@ export async function submitRegistrationAction({
     };
   }
 
-  // 3. Extract and Validate Mandatory System Fields
+  // 3. Extract and Validate System Fields
   const fullName = String(answers.fullName || "").trim();
-  const email = String(answers.email || verification.email).trim().toLowerCase();
+  const email = String(answers.email || verification?.email || "").trim().toLowerCase();
   const phone = String(answers.phone || "").trim();
-
-  if (!fullName || fullName.length < 2) {
-    return { success: false, error: "Full legal name is required (minimum 2 characters)." };
-  }
-  if (!email || !email.includes("@")) {
-    return { success: false, error: "Valid email address is required." };
-  }
-  if (!phone || phone.length < 7) {
-    return { success: false, error: "Valid phone number is required." };
-  }
 
   // 4. Validate All Fields against Form Schema
   const schema = publishedVersion.schema as unknown as FormSchemaDefinition;
   const allFields = schema.steps.flatMap((s) => s.fields);
+
+  const nameField = allFields.find((f) => f.fieldKey === "fullName");
+  const emailField = allFields.find((f) => f.fieldKey === "email");
+  const phoneField = allFields.find((f) => f.fieldKey === "phone");
+
+  const isNameReq = nameField ? nameField.required : true;
+  const isEmailReq = emailField ? emailField.required : true;
+  const isPhoneReq = phoneField ? phoneField.required : true;
+
+  if (isNameReq && (!fullName || fullName.length < 2)) {
+    return { success: false, error: "Full legal name is required (minimum 2 characters)." };
+  }
+  if (isEmailReq && (!email || !email.includes("@"))) {
+    return { success: false, error: "Valid email address is required." };
+  }
+  if (isPhoneReq && (!phone || phone.length < 5)) {
+    return { success: false, error: "Valid phone number is required." };
+  }
 
   for (const field of allFields) {
     // Check conditional visibility
@@ -121,31 +129,50 @@ export async function submitRegistrationAction({
       },
     });
 
-    // Create Answers for each answered field
-    const answerEntries = allFields
-      .filter((f) => answers[f.fieldKey] !== undefined && answers[f.fieldKey] !== null)
-      .map((f) => ({
-        submissionId: sub.id,
-        fieldKey: f.fieldKey,
-        fieldLabel: f.label,
-        fieldType: f.type,
-        value: answers[f.fieldKey],
-      }));
-
-    if (answerEntries.length > 0) {
-      await tx.submissionAnswer.createMany({
-        data: answerEntries,
-      });
-    }
-
-    // Attach Uploaded Files
+    // Attach Uploaded Files and map original names for file answers
+    const uploadedFilesMap = new Map<string, string>();
     if (fileIds.length > 0) {
+      const files = await tx.uploadedFile.findMany({
+        where: { id: { in: fileIds } },
+        select: { id: true, fieldKey: true, originalName: true, storagePath: true, driveFileId: true },
+      });
+      for (const fl of files) {
+        uploadedFilesMap.set(fl.fieldKey, fl.originalName);
+        if (fl.storagePath) uploadedFilesMap.set(fl.storagePath, fl.originalName);
+        if (fl.driveFileId) uploadedFilesMap.set(fl.driveFileId, fl.originalName);
+      }
       await tx.uploadedFile.updateMany({
         where: { id: { in: fileIds } },
         data: {
           submissionId: sub.id,
           status: "ATTACHED",
         },
+      });
+    }
+
+    // Create Answers for each answered field (storing original file names instead of server paths)
+    const answerEntries = allFields
+      .filter((f) => answers[f.fieldKey] !== undefined && answers[f.fieldKey] !== null)
+      .map((f) => {
+        let val = answers[f.fieldKey];
+        if (["image", "video", "file"].includes(f.type)) {
+          const origName = uploadedFilesMap.get(f.fieldKey) || uploadedFilesMap.get(String(val));
+          if (origName) {
+            val = origName;
+          }
+        }
+        return {
+          submissionId: sub.id,
+          fieldKey: f.fieldKey,
+          fieldLabel: f.label,
+          fieldType: f.type,
+          value: val,
+        };
+      });
+
+    if (answerEntries.length > 0) {
+      await tx.submissionAnswer.createMany({
+        data: answerEntries,
       });
     }
 

@@ -151,9 +151,8 @@ export function FieldConfigPanel({
               <input
                 type="checkbox"
                 checked={field.required}
-                disabled={field.isSystem}
                 onChange={(e) => onChange({ ...field, required: e.target.checked })}
-                className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500"
+                className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer"
               />
             </label>
           </div>

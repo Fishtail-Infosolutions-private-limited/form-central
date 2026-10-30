@@ -5,6 +5,63 @@ import { requireAdmin } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 import { SubmissionStatus } from "@prisma/client";
 import { sendParticipantEmailNotice } from "@/lib/email/client";
+import { deleteMultiplePhysicalFiles } from "@/lib/storage/cleanup";
+
+export async function markSubmissionAsReadAction(submissionId: string) {
+  await requireAdmin();
+
+  const submission = await prisma.registrationSubmission.update({
+    where: { id: submissionId },
+    data: { status: SubmissionStatus.APPROVED },
+  });
+
+  revalidatePath("/admin/responses");
+  revalidatePath("/admin/dashboard");
+  return { success: true, submission };
+}
+
+export async function deleteSubmissionAction(submissionId: string) {
+  const admin = await requireAdmin();
+
+  const submission = await prisma.registrationSubmission.findUnique({
+    where: { id: submissionId },
+    include: {
+      uploadedFiles: true,
+    },
+  });
+
+  if (!submission) {
+    return { success: false, error: "Submission not found" };
+  }
+
+  // 1. Delete physical files from disk & Google Drive
+  await deleteMultiplePhysicalFiles(submission.uploadedFiles);
+
+  // 2. Cascade delete database records
+  await prisma.$transaction(async (tx) => {
+    await tx.submissionAnswer.deleteMany({ where: { submissionId } });
+    await tx.uploadedFile.deleteMany({ where: { submissionId } });
+    await tx.registrationSubmission.delete({ where: { id: submissionId } });
+
+    await tx.auditLog.create({
+      data: {
+        actorId: admin.id,
+        actorEmail: admin.email,
+        action: "SUBMISSION_DELETED",
+        entityType: "SUBMISSION",
+        entityId: submissionId,
+        metadata: {
+          fullName: submission.fullName,
+          referenceNumber: submission.referenceNumber,
+        },
+      },
+    });
+  });
+
+  revalidatePath("/admin/responses");
+  revalidatePath("/admin/dashboard");
+  return { success: true };
+}
 
 export async function toggleSubmissionReadStatusAction(submissionId: string) {
   const admin = await requireAdmin();

@@ -47,7 +47,7 @@ async function main() {
               fieldKey: "fullName",
               type: "text",
               label: "Full Name",
-              placeholder: "e.g. Bibek Sharma",
+              placeholder: "e.g. Bibek Poudel",
               description: "Enter your legal name as on your official ID",
               required: true,
               isSystem: true,

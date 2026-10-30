@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { RichTextView } from "@/components/ui/rich-text-view";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {
   Trophy,
@@ -32,6 +33,10 @@ import {
   FileCheck,
   FileUp,
   RefreshCw,
+  Calendar,
+  Clock,
+  Printer,
+  ExternalLink,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -50,7 +55,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [uploadedFileIds, setUploadedFileIds] = useState<string[]>([]);
-  const [filePreviews, setFilePreviews] = useState<Record<string, { name: string; url?: string; driveId?: string }>>({});
+  const [filePreviews, setFilePreviews] = useState<Record<string, { id?: string; name: string; url?: string; driveId?: string }>>({});
 
   // OTP State
   const [otpSent, setOtpSent] = useState(false);
@@ -170,6 +175,12 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
     formData.append("fieldKey", fieldKey);
     formData.append("sessionToken", verificationToken || "public_reg");
 
+    // Pass previous file ID if replacing existing file so it can be cleaned up
+    const prevPreview = filePreviews[fieldKey];
+    if (prevPreview?.id) {
+      formData.append("previousFileId", prevPreview.id);
+    }
+
     try {
       const endpoint =
         type === "video"
@@ -194,12 +205,13 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
       setFilePreviews((prev) => ({
         ...prev,
         [fieldKey]: {
-          name: data.filename,
+          id: data.fileId,
+          name: data.filename || file.name,
           url: data.url,
           driveId: data.driveFileId,
         },
       }));
-      handleInputChange(fieldKey, data.url || data.driveFileId || data.filename);
+      handleInputChange(fieldKey, data.filename || file.name);
       // Clear any previous error on this field
       setFieldErrors((prev) => {
         const next = { ...prev };
@@ -224,16 +236,29 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
     const errors: Record<string, string> = {};
 
     if (currentStepIndex === 0) {
-      if (!answers.fullName || !String(answers.fullName).trim()) {
+      const nameField = steps[0]?.fields.find((f) => f.fieldKey === "fullName");
+      const emailField = steps[0]?.fields.find((f) => f.fieldKey === "email");
+      const phoneField = steps[0]?.fields.find((f) => f.fieldKey === "phone");
+
+      const isNameReq = nameField ? nameField.required : true;
+      const isEmailReq = emailField ? emailField.required : true;
+      const isPhoneReq = phoneField ? phoneField.required : true;
+
+      if (isNameReq && (!answers.fullName || !String(answers.fullName).trim())) {
         errors.fullName = "Full legal name is required.";
       }
-      if (!answers.email || !String(answers.email).trim()) {
-        errors.email = "Email address is required.";
-      } else if (!isEmailVerified) {
-        errors.email = "Please verify your email address with the 6-digit code first.";
-        setOtpError("Email verification is required before continuing.");
+      if (isEmailReq) {
+        if (!answers.email || !String(answers.email).trim()) {
+          errors.email = "Email address is required.";
+        } else if (!isEmailVerified) {
+          errors.email = "Please verify your email address with the 6-digit code first.";
+          setOtpError("Email verification is required before continuing.");
+        }
+      } else if (answers.email && String(answers.email).trim() && !isEmailVerified) {
+        errors.email = "Please verify your email address with the code or clear this field.";
       }
-      if (!answers.phone || !String(answers.phone).trim()) {
+
+      if (isPhoneReq && (!answers.phone || !String(answers.phone).trim())) {
         errors.phone = "Phone number is required.";
       }
     } else if (currentStep) {
@@ -305,64 +330,84 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
     return (
       <div className="max-w-2xl mx-auto py-12 px-4">
         <Card className="border-emerald-200 bg-white shadow-xl text-center p-8 overflow-hidden relative">
-          <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner">
-            <Check className="w-10 h-10 stroke-[3]" />
+          <div className="w-16 h-16 bg-emerald-50 border border-emerald-200 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <CheckCircle2 className="w-9 h-9 stroke-[2.5]" />
           </div>
 
-          <Badge variant="published" className="text-xs uppercase font-bold tracking-wider mb-2">
-            Registration Confirmed
-          </Badge>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold tracking-wide uppercase mb-3">
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
+            <span>Registration Confirmed</span>
+          </div>
 
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-2">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-black tracking-tight mb-2">
             You Are Officially Registered!
           </h2>
-          <p className="text-sm text-slate-600 max-w-md mx-auto mb-6">
-            Congratulations <strong>{answers.fullName}</strong>. Your entry for <strong>{form.name}</strong> has been logged in the event system.
+          <p className="text-xs sm:text-sm text-zinc-600 max-w-md mx-auto mb-6">
+            Congratulations <strong className="text-black">{answers.fullName}</strong>. Your entry for{" "}
+            <strong className="text-black">{form.name}</strong> has been successfully recorded in the event system.
           </p>
 
-          <div className="bg-slate-50 border-2 border-dashed border-emerald-300 rounded-2xl p-6 max-w-md mx-auto mb-6">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">
-              Your Registration Reference Number
+          <div className="bg-zinc-50 border-2 border-dashed border-emerald-300 rounded-2xl p-6 max-w-md mx-auto mb-6">
+            <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider block mb-1.5">
+              Official Reference Number
             </span>
-            <div className="flex items-center justify-center gap-3">
+            <div className="flex items-center justify-center gap-2.5">
               <span className="font-mono text-2xl font-black text-emerald-800 tracking-wider">
                 {completedRef}
               </span>
               <button
                 type="button"
                 onClick={copyRefToClipboard}
-                className="p-1.5 rounded-lg text-emerald-700 hover:bg-emerald-100 transition-colors"
+                className="p-2 rounded-lg text-emerald-700 hover:bg-emerald-100 bg-emerald-50 border border-emerald-200 transition-colors"
                 title="Copy reference"
               >
-                {copiedRef ? <Check className="w-5 h-5 text-emerald-600" /> : <Copy className="w-5 h-5" />}
+                {copiedRef ? <Check className="w-4 h-4 text-emerald-700" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2">
-              Save or screenshot this reference number for event check-in and entry verification.
+            <p className="text-[11px] text-zinc-400 mt-2">
+              Save or screenshot this official reference number for event check-in and entry verification.
             </p>
           </div>
 
-          <div className="p-4 bg-slate-50 rounded-xl text-left text-xs text-slate-600 max-w-md mx-auto space-y-1.5 border border-slate-200">
-            <div className="flex justify-between">
-              <span className="text-slate-400">Participant:</span>
-              <span className="font-semibold text-slate-900">{answers.fullName}</span>
+          {/* Details summary */}
+          <div className="p-4 bg-zinc-50 rounded-xl text-left text-xs text-zinc-600 max-w-md mx-auto space-y-2 border border-zinc-200 mb-6">
+            <div className="flex justify-between items-center py-1 border-b border-zinc-100">
+              <span className="text-zinc-500">Event:</span>
+              <span className="font-bold text-black">{form.name}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-slate-400">Verified Email:</span>
-              <span className="font-mono text-slate-900">{answers.email}</span>
+            <div className="flex justify-between items-center py-1 border-b border-zinc-100">
+              <span className="text-zinc-500">Participant:</span>
+              <span className="font-bold text-black">{answers.fullName}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-slate-400">Phone:</span>
-              <span className="font-mono text-slate-900">{answers.phone}</span>
+            <div className="flex justify-between items-center py-1 border-b border-zinc-100">
+              <span className="text-zinc-500">Verified Email:</span>
+              <span className="font-mono text-black font-semibold">{answers.email}</span>
             </div>
-            {(answers.category || answers.raceCategory) && (
-              <div className="flex justify-between">
-                <span className="text-slate-400">Category:</span>
-                <span className="font-semibold text-emerald-700 uppercase">
-                  {answers.category || answers.raceCategory}
-                </span>
-              </div>
-            )}
+            <div className="flex justify-between items-center py-1">
+              <span className="text-zinc-500">Phone:</span>
+              <span className="font-mono text-black font-semibold">{answers.phone}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => window.print()}
+              className="text-xs font-semibold h-10 px-5 gap-1.5 border-zinc-300 w-full sm:w-auto"
+            >
+              <Printer className="w-4 h-4" />
+              <span>Print Confirmation</span>
+            </Button>
+            <a href="/" className="w-full sm:w-auto">
+              <Button
+                type="button"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold h-10 px-6 gap-1.5 w-full"
+              >
+                <span>Return to Home</span>
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </a>
           </div>
         </Card>
       </div>
@@ -381,14 +426,16 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-black tracking-tight">{form.name}</h1>
         {form.description && (
-          <p className="text-sm text-zinc-600 mt-2 max-w-2xl leading-relaxed">
-            {form.description}
-          </p>
+          <div className="mt-2 max-w-2xl">
+            <RichTextView content={form.description} className="text-zinc-600 text-sm" />
+          </div>
         )}
         {form.instructions && (
-          <div className="mt-4 p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 text-xs text-zinc-700 flex items-start gap-2.5">
+          <div className="mt-4 p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 flex items-start gap-2.5">
             <AlertCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-            <span className="leading-relaxed">{form.instructions}</span>
+            <div className="flex-1 min-w-0">
+              <RichTextView content={form.instructions} className="text-zinc-700 text-xs" />
+            </div>
           </div>
         )}
       </div>
@@ -465,21 +512,20 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
             </div>
           )}
 
-          {/* STEP 1: Mandatory Personal Details & Email OTP Verification */}
+          {/* STEP 1: Personal Details & Email OTP Verification */}
           {currentStepIndex === 0 && (
             <div className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5 sm:col-span-2">
-                  <Label htmlFor="fullName" required>
+                  <Label htmlFor="fullName" required={steps[0]?.fields.find((f) => f.fieldKey === "fullName")?.required !== false}>
                     Full Legal Name
                   </Label>
                   <Input
                     id="fullName"
                     value={answers.fullName || ""}
                     onChange={(e) => handleInputChange("fullName", e.target.value)}
-                    placeholder="e.g. Bibek Sharma"
+                    placeholder="e.g. Bibek Poudel"
                     disabled={isEmailVerified}
-                    required
                   />
                   <p className="text-[11px] text-slate-400">
                     As displayed on your citizenship, passport, or official ID.
@@ -487,7 +533,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="email" required>
+                  <Label htmlFor="email" required={steps[0]?.fields.find((f) => f.fieldKey === "email")?.required !== false}>
                     Email Address (For Verification)
                   </Label>
                   <Input
@@ -497,12 +543,11 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                     onChange={(e) => handleInputChange("email", e.target.value)}
                     placeholder="participant@example.com"
                     disabled={isEmailVerified}
-                    required
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="phone" required>
+                  <Label htmlFor="phone" required={steps[0]?.fields.find((f) => f.fieldKey === "phone")?.required !== false}>
                     Mobile Phone Number
                   </Label>
                   <Input
@@ -512,7 +557,6 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                     onChange={(e) => handleInputChange("phone", e.target.value)}
                     placeholder="+977 9800000000"
                     disabled={isEmailVerified}
-                    required
                   />
                 </div>
               </div>
@@ -686,6 +730,38 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                           />
                           <span className="font-medium">{field.placeholder || field.label}</span>
                         </label>
+                      ) : field.type === "checkbox-group" ? (
+                        <div className="space-y-2 pt-1">
+                          {(field.options || []).map((opt) => {
+                            const curVals: string[] = Array.isArray(answers[field.fieldKey])
+                              ? answers[field.fieldKey]
+                              : [];
+                            const isChecked = curVals.includes(opt.value);
+                            return (
+                              <label
+                                key={opt.value}
+                                className="flex items-center gap-2.5 text-sm text-zinc-700 cursor-pointer p-2.5 rounded-lg border border-zinc-200 hover:bg-zinc-50 transition-colors"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={isChecked}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      handleInputChange(field.fieldKey, [...curVals, opt.value]);
+                                    } else {
+                                      handleInputChange(
+                                        field.fieldKey,
+                                        curVals.filter((v) => v !== opt.value)
+                                      );
+                                    }
+                                  }}
+                                  className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500"
+                                />
+                                <span className="font-medium text-xs text-zinc-900">{opt.label}</span>
+                              </label>
+                            );
+                          })}
+                        </div>
                       ) : ["image", "video", "file"].includes(field.type) ? (
                         <div className="space-y-2">
                           {filePreviews[field.fieldKey] ? (
@@ -711,10 +787,10 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                                   type="file"
                                   accept={
                                     field.type === "video"
-                                      ? "video/mp4,video/webm,video/*"
+                                      ? "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/*"
                                       : field.type === "image"
-                                      ? "image/jpeg,image/png,image/webp,image/*"
-                                      : ".pdf,.doc,.docx,application/pdf"
+                                      ? "image/jpeg,image/png,image/webp,image/gif,image/avif,image/svg+xml,image/bmp,image/tiff,image/*"
+                                      : ".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,application/pdf"
                                   }
                                   className="hidden"
                                   onChange={(e) => {
@@ -752,10 +828,10 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                                           type="file"
                                           accept={
                                             field.type === "video"
-                                              ? "video/mp4,video/webm,video/*"
+                                              ? "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/*"
                                               : field.type === "image"
-                                              ? "image/jpeg,image/png,image/webp,image/*"
-                                              : ".pdf,.doc,.docx,application/pdf"
+                                              ? "image/jpeg,image/png,image/webp,image/gif,image/avif,image/svg+xml,image/bmp,image/tiff,image/*"
+                                              : ".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,application/pdf"
                                           }
                                           className="hidden"
                                           onChange={(e) => {
@@ -769,7 +845,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                                           ? "MP4 or WebM up to 100MB (Saved in Google Drive)"
                                           : field.type === "file"
                                           ? "PDF, DOC, or DOCX up to 25MB"
-                                          : "JPEG, PNG, or WebP up to 10MB"}
+                                          : "Images up to 10MB (JPEG, PNG, WebP, GIF, SVG, etc.)"}
                                       </span>
                                     </>
                                   )}
@@ -778,13 +854,35 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                             </div>
                           )}
                         </div>
+                      ) : field.type === "date" ? (
+                        <div className="relative">
+                          <Input
+                            type="date"
+                            placeholder={field.placeholder || "YYYY-MM-DD"}
+                            value={answers[field.fieldKey] || ""}
+                            onChange={(e) => handleInputChange(field.fieldKey, e.target.value)}
+                            className="text-sm bg-white pr-9"
+                          />
+                          <Calendar className="w-4 h-4 text-zinc-400 absolute right-3 top-3 pointer-events-none" />
+                        </div>
+                      ) : field.type === "time" ? (
+                        <div className="relative">
+                          <Input
+                            type="time"
+                            placeholder={field.placeholder || "--:--"}
+                            value={answers[field.fieldKey] || ""}
+                            onChange={(e) => handleInputChange(field.fieldKey, e.target.value)}
+                            className="text-sm bg-white pr-9"
+                          />
+                          <Clock className="w-4 h-4 text-zinc-400 absolute right-3 top-3 pointer-events-none" />
+                        </div>
                       ) : (
                         <Input
                           type={field.type === "number" ? "number" : "text"}
                           placeholder={field.placeholder}
                           value={answers[field.fieldKey] || ""}
                           onChange={(e) => handleInputChange(field.fieldKey, e.target.value)}
-                          className="text-sm"
+                          className="text-sm bg-white"
                         />
                       )}
                       {fieldErrors[field.fieldKey] && (
@@ -808,64 +906,97 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                 </div>
               </div>
 
-              <div className="divide-y divide-slate-100 rounded-xl border border-slate-200 overflow-hidden text-xs">
-                <div className="p-3 bg-slate-50 font-bold text-slate-800">
-                  1. Participant & Contact Information
-                </div>
-                <div className="p-3 grid grid-cols-2 gap-2">
-                  <span className="text-slate-500">Legal Name:</span>
-                  <span className="font-semibold text-slate-900">{answers.fullName}</span>
-                  <span className="text-slate-500">Email (Verified):</span>
-                  <span className="font-mono text-slate-900">{answers.email}</span>
-                  <span className="text-slate-500">Phone:</span>
-                  <span className="font-mono text-slate-900">{answers.phone}</span>
+              <div className="space-y-4">
+                {/* Step 1 Review Card */}
+                <div className="rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                  <div className="px-4 py-2.5 bg-zinc-50 border-b border-zinc-200 font-bold text-xs text-black flex items-center justify-between">
+                    <span>1. Participant & Contact Information</span>
+                    <span className="text-[10px] text-emerald-800 font-semibold bg-emerald-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                      <span>Email Verified</span>
+                    </span>
+                  </div>
+                  <div className="p-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                    <div>
+                      <span className="text-zinc-500 font-medium block text-[11px]">Legal Name:</span>
+                      <div className="font-bold text-black bg-zinc-50 px-2.5 py-1.5 rounded-lg border border-zinc-100 mt-1">
+                        {answers.fullName || "—"}
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-zinc-500 font-medium block text-[11px]">Email (Verified):</span>
+                      <div className="font-mono text-zinc-900 bg-zinc-50 px-2.5 py-1.5 rounded-lg border border-zinc-100 mt-1">
+                        {answers.email || "—"}
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-zinc-500 font-medium block text-[11px]">Phone:</span>
+                      <div className="font-mono text-zinc-900 bg-zinc-50 px-2.5 py-1.5 rounded-lg border border-zinc-100 mt-1">
+                        {answers.phone || "—"}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
+                {/* Steps 2..N Review Cards */}
                 {steps.slice(1).map((st, idx) => (
-                  <React.Fragment key={st.id}>
-                    <div className="p-3 bg-zinc-50 font-bold text-black">
-                      {idx + 2}. {st.title}
+                  <div key={st.id} className="rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                    <div className="px-4 py-2.5 bg-zinc-50 border-b border-zinc-200 font-bold text-xs text-black flex items-center justify-between">
+                      <span>{idx + 2}. {st.title}</span>
+                      <span className="text-[10px] text-zinc-400 font-normal">Step {idx + 2} of {steps.length}</span>
                     </div>
-                    <div className="p-3 grid grid-cols-2 gap-2">
+                    <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                       {st.fields
                         .filter((f) => !["heading", "divider"].includes(f.type))
                         .map((f) => {
                           const isFileField = ["image", "video", "file"].includes(f.type);
                           const preview = filePreviews[f.fieldKey];
 
+                          let displayVal = "—";
+                          const rawVal = answers[f.fieldKey];
+                          if (rawVal !== undefined && rawVal !== null && rawVal !== "") {
+                            if (f.type === "select" || f.type === "radio") {
+                              const matchedOpt = f.options?.find((o) => o.value === rawVal);
+                              displayVal = matchedOpt ? matchedOpt.label : String(rawVal);
+                            } else if (f.type === "checkbox-group" && Array.isArray(rawVal)) {
+                              displayVal = rawVal
+                                .map((v) => f.options?.find((o) => o.value === v)?.label || v)
+                                .join(", ") || "—";
+                            } else if (f.type === "checkbox") {
+                              displayVal = rawVal ? "Yes / Confirmed" : "No";
+                            } else {
+                              displayVal = String(rawVal);
+                            }
+                          }
+
                           return (
-                            <React.Fragment key={f.id}>
-                              <span className="text-zinc-500 font-medium">{f.label}:</span>
-                              <div className="min-w-0">
-                                {isFileField ? (
-                                  preview?.name ? (
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
+                            <div key={f.id} className="space-y-1">
+                              <span className="text-zinc-500 font-medium block text-[11px]">{f.label}:</span>
+                              {isFileField ? (
+                                preview?.name || (rawVal && !String(rawVal).startsWith("/")) ? (
+                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold max-w-full">
+                                    {f.type === "video" ? (
+                                      <Video className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                    ) : f.type === "file" ? (
                                       <FileCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                                      <span className="truncate max-w-[200px]">{preview.name}</span>
-                                    </span>
-                                  ) : answers[f.fieldKey] ? (
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
-                                      <FileCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                                      <span>Attached File</span>
-                                    </span>
-                                  ) : (
-                                    <span className="text-zinc-400">—</span>
-                                  )
+                                    ) : (
+                                      <ImageIcon className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                    )}
+                                    <span className="truncate">{preview?.name || String(rawVal)}</span>
+                                  </div>
                                 ) : (
-                                  <span className="font-semibold text-black break-words">
-                                    {answers[f.fieldKey] !== undefined &&
-                                    answers[f.fieldKey] !== null &&
-                                    String(answers[f.fieldKey]).trim() !== ""
-                                      ? String(answers[f.fieldKey])
-                                      : "—"}
-                                  </span>
-                                )}
-                              </div>
-                            </React.Fragment>
+                                  <span className="text-zinc-400 block px-2.5 py-1.5">—</span>
+                                )
+                              ) : (
+                                <div className="font-semibold text-black break-words bg-zinc-50 px-2.5 py-1.5 rounded-lg border border-zinc-100">
+                                  {displayVal}
+                                </div>
+                              )}
+                            </div>
                           );
                         })}
                     </div>
-                  </React.Fragment>
+                  </div>
                 ))}
               </div>
             </div>

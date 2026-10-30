@@ -3,6 +3,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { nanoid } from "nanoid";
 import { prisma } from "@/lib/db/prisma";
+import { deletePhysicalFile } from "@/lib/storage/cleanup";
 
 const ALLOWED_MIME_TYPES = [
   "application/pdf",
@@ -19,6 +20,7 @@ export async function POST(request: Request) {
     const file = formData.get("file") as File | null;
     const fieldKey = (formData.get("fieldKey") as string) || "document";
     const uploadSessionToken = (formData.get("sessionToken") as string) || nanoid(24);
+    const previousFileId = (formData.get("previousFileId") as string) || null;
 
     if (!file) {
       return NextResponse.json({ error: "No document file provided" }, { status: 400 });
@@ -43,6 +45,27 @@ export async function POST(request: Request) {
         { error: "Document file size exceeds the 25MB limit." },
         { status: 400 }
       );
+    }
+
+    // Clean up previously replaced file if provided or pending in this session
+    if (previousFileId) {
+      const oldFile = await prisma.uploadedFile.findUnique({ where: { id: previousFileId } });
+      if (oldFile) {
+        await deletePhysicalFile(oldFile);
+        await prisma.uploadedFile.delete({ where: { id: previousFileId } }).catch(() => {});
+      }
+    } else if (uploadSessionToken && fieldKey) {
+      const pendingFiles = await prisma.uploadedFile.findMany({
+        where: {
+          uploadSessionToken,
+          fieldKey,
+          status: "PENDING",
+        },
+      });
+      for (const pf of pendingFiles) {
+        await deletePhysicalFile(pf);
+        await prisma.uploadedFile.delete({ where: { id: pf.id } }).catch(() => {});
+      }
     }
 
     // Prepare local storage directory: public/user-uploads/documents/YYYY/MM/
@@ -77,7 +100,7 @@ export async function POST(request: Request) {
         mimeType: file.type || "application/pdf",
         fileSize: file.size,
         uploadSessionToken,
-        status: "COMPLETED",
+        status: "PENDING",
       },
     });
 

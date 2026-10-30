@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createFormAction } from "@/server/actions/form-actions";
 
@@ -122,12 +123,11 @@ export default function CreateFormPage() {
               <Label htmlFor="description" className="text-xs font-bold text-zinc-800">
                 Event Description
               </Label>
-              <Textarea
+              <RichTextEditor
                 id="description"
                 name="description"
-                rows={3}
-                placeholder="Brief summary of the competition, challenge tracks, venue or online platform details..."
-                className="text-xs border-zinc-300"
+                placeholder="Detailed summary of the competition, tracks, prizes, venue, or online platform..."
+                minHeight="110px"
               />
             </div>
 
@@ -136,12 +136,11 @@ export default function CreateFormPage() {
               <Label htmlFor="instructions" className="text-xs font-bold text-zinc-800">
                 Participant Instructions (Optional)
               </Label>
-              <Textarea
+              <RichTextEditor
                 id="instructions"
                 name="instructions"
-                rows={2}
-                placeholder="Guidelines or requirements displayed to registrants before submitting..."
-                className="text-xs border-zinc-300"
+                placeholder="Important guidelines, document checklists, or rules displayed to registrants..."
+                minHeight="90px"
               />
             </div>
 

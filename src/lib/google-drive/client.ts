@@ -253,3 +253,16 @@ export async function getDriveFileDetails(fileId: string) {
   }
 }
 
+export async function deleteDriveFile(fileId: string): Promise<boolean> {
+  const auth = await getAuthenticatedDriveClient();
+  if (!auth) return false;
+
+  try {
+    await auth.drive.files.delete({ fileId });
+    return true;
+  } catch (err) {
+    console.warn(`Could not delete Drive file ${fileId}:`, err);
+    return false;
+  }
+}
+

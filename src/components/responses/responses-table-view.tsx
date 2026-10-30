@@ -32,6 +32,7 @@ import { Label } from "@/components/ui/label";
 import { formatDateTime } from "@/lib/utils";
 import {
   toggleSubmissionReadStatusAction,
+  markSubmissionAsReadAction,
   sendRegistrationEmailNoticeAction,
 } from "@/server/actions/response-actions";
 import { SubmissionStatus } from "@prisma/client";
@@ -151,6 +152,20 @@ export function ResponsesTableView({
       toast.success(res.isRead ? "Marked as Read" : "Marked as Unread");
     } else {
       toast.error(res.error || "Failed to update status");
+    }
+  };
+
+  const handleSelectSubmission = (sub: SubmissionItem) => {
+    setSelectedSubmission(sub);
+    // Auto mark as read when inspected if currently unread
+    if (sub.status !== SubmissionStatus.APPROVED) {
+      setSubmissionList((prev) =>
+        prev.map((s) => (s.id === sub.id ? { ...s, status: SubmissionStatus.APPROVED } : s))
+      );
+      setSelectedSubmission((prev) =>
+        prev && prev.id === sub.id ? { ...prev, status: SubmissionStatus.APPROVED } : prev
+      );
+      markSubmissionAsReadAction(sub.id).catch(console.error);
     }
   };
 
@@ -313,7 +328,7 @@ export function ResponsesTableView({
                   return (
                     <tr
                       key={sub.id}
-                      onClick={() => setSelectedSubmission(sub)}
+                      onClick={() => handleSelectSubmission(sub)}
                       className="hover:bg-zinc-50/80 cursor-pointer transition-colors"
                     >
                       <td className="px-5 py-4">
@@ -349,29 +364,21 @@ export function ResponsesTableView({
                         <div>{sub.phone}</div>
                       </td>
 
-                      <td className="px-5 py-4 text-center" onClick={(e) => e.stopPropagation()}>
-                        <button
-                          type="button"
-                          onClick={() => handleToggleReadStatus(sub)}
-                          disabled={isToggling}
-                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all border ${
+                      <td className="px-5 py-4 text-center">
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${
                             isRead
-                              ? "bg-zinc-100 text-zinc-600 border-zinc-200 hover:bg-zinc-200"
-                              : "bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100"
+                              ? "bg-zinc-100 text-zinc-600 border-zinc-200"
+                              : "bg-emerald-50 text-emerald-800 border-emerald-200 font-bold"
                           }`}
-                          title={isRead ? "Click to mark as Unread" : "Click to mark as Read"}
                         >
-                          {isToggling ? (
-                            <Loader2 className="w-3 h-3 animate-spin text-emerald-600" />
-                          ) : (
-                            <span
-                              className={`w-2 h-2 rounded-full ${
-                                isRead ? "bg-zinc-400" : "bg-emerald-600"
-                              }`}
-                            />
-                          )}
+                          <span
+                            className={`w-2 h-2 rounded-full ${
+                              isRead ? "bg-zinc-400" : "bg-emerald-600 animate-pulse"
+                            }`}
+                          />
                           <span>{isRead ? "Read" : "Unread"}</span>
-                        </button>
+                        </span>
                       </td>
 
                       <td className="px-5 py-4 text-xs text-zinc-500 whitespace-nowrap">
@@ -402,7 +409,7 @@ export function ResponsesTableView({
                           <Button
                             size="sm"
                             variant="ghost"
-                            onClick={() => setSelectedSubmission(sub)}
+                            onClick={() => handleSelectSubmission(sub)}
                             className="text-emerald-700 hover:bg-emerald-50 font-semibold text-xs h-8 px-2.5 gap-1"
                           >
                             <Eye className="w-3.5 h-3.5" />
@@ -448,26 +455,24 @@ export function ResponsesTableView({
                     <span className="font-mono text-xs text-emerald-400 font-bold bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">
                       {selectedSubmission.referenceNumber}
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => handleToggleReadStatus(selectedSubmission)}
-                      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-bold uppercase transition-colors border ${
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase border ${
                         selectedSubmission.status === SubmissionStatus.APPROVED
-                          ? "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-zinc-700"
-                          : "bg-emerald-900/60 text-emerald-300 border-emerald-700 hover:bg-emerald-900"
+                          ? "bg-zinc-800 text-zinc-300 border-zinc-700"
+                          : "bg-emerald-900/60 text-emerald-300 border-emerald-700"
                       }`}
                     >
                       <span
                         className={`w-1.5 h-1.5 rounded-full ${
                           selectedSubmission.status === SubmissionStatus.APPROVED
                             ? "bg-zinc-400"
-                            : "bg-emerald-400"
+                            : "bg-emerald-400 animate-pulse"
                         }`}
                       />
                       <span>
                         {selectedSubmission.status === SubmissionStatus.APPROVED ? "Read" : "Unread"}
                       </span>
-                    </button>
+                    </span>
                   </div>
                   <h3 className="text-xl font-extrabold text-white">{selectedSubmission.fullName}</h3>
                   <p className="text-xs text-zinc-400">{selectedSubmission.form.name}</p>
@@ -526,23 +531,72 @@ export function ResponsesTableView({
                     <p className="text-zinc-400 italic">No additional questions answered.</p>
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {selectedSubmission.answers.map((ans) => (
-                        <div
-                          key={ans.id}
-                          className="p-3 rounded-lg border border-zinc-200 bg-white space-y-1"
-                        >
-                          <span className="text-zinc-500 text-[11px] block">{ans.fieldLabel}</span>
-                          <div className="font-semibold text-zinc-900 text-xs">
-                            {typeof ans.value === "boolean"
-                              ? ans.value
-                                ? "Yes / Accepted"
-                                : "No"
-                              : Array.isArray(ans.value)
-                              ? ans.value.join(", ")
-                              : String(ans.value || "—")}
+                      {selectedSubmission.answers.map((ans) => {
+                        const matchingFile = selectedSubmission.uploadedFiles.find(
+                          (f) =>
+                            f.fieldKey === ans.fieldKey ||
+                            f.driveFileId === String(ans.value) ||
+                            f.storagePath === String(ans.value) ||
+                            (typeof ans.value === "string" &&
+                              (ans.value.includes(f.originalName) || f.originalName.includes(ans.value)))
+                        );
+
+                        return (
+                          <div
+                            key={ans.id}
+                            className="p-3 rounded-lg border border-zinc-200 bg-white space-y-1.5"
+                          >
+                            <span className="text-zinc-500 text-[11px] block font-medium">
+                              {ans.fieldLabel}
+                            </span>
+                            {matchingFile ? (
+                              <div className="flex items-center justify-between gap-2 pt-0.5">
+                                <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold truncate max-w-[200px]">
+                                  {matchingFile.storageProvider === "GOOGLE_DRIVE" ||
+                                  matchingFile.mimeType.startsWith("video/") ? (
+                                    <Video className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                  ) : (
+                                    <FileText className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                  )}
+                                  <span className="truncate">{matchingFile.originalName}</span>
+                                </span>
+                                {matchingFile.storageProvider === "GOOGLE_DRIVE" ||
+                                matchingFile.mimeType.startsWith("video/") ? (
+                                  <Button
+                                    size="sm"
+                                    onClick={() => setActiveVideoFile(matchingFile)}
+                                    className="h-7 text-[11px] font-bold bg-emerald-600 hover:bg-emerald-700 text-white px-2 gap-1 shrink-0"
+                                  >
+                                    <Play className="w-3 h-3 fill-current" />
+                                    <span>Play</span>
+                                  </Button>
+                                ) : (
+                                  <a href={matchingFile.storagePath} target="_blank" rel="noreferrer">
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      className="h-7 text-[11px] px-2 gap-1 border-zinc-300 shrink-0"
+                                    >
+                                      <span>View</span>
+                                      <ExternalLink className="w-3 h-3" />
+                                    </Button>
+                                  </a>
+                                )}
+                              </div>
+                            ) : (
+                              <div className="font-semibold text-zinc-900 text-xs break-words">
+                                {typeof ans.value === "boolean"
+                                  ? ans.value
+                                    ? "Yes / Accepted"
+                                    : "No"
+                                  : Array.isArray(ans.value)
+                                  ? ans.value.join(", ")
+                                  : String(ans.value || "—")}
+                              </div>
+                            )}
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -618,19 +672,11 @@ export function ResponsesTableView({
                 </div>
               </div>
 
-              {/* Modal Footer: Email Notice & Status Toggle */}
+              {/* Modal Footer: Email Notice & Status */}
               <div className="p-4 border-t border-zinc-200 bg-zinc-50 flex items-center justify-between gap-3">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleToggleReadStatus(selectedSubmission)}
-                  className="text-xs font-semibold h-8 border-zinc-300"
-                >
-                  <span>
-                    Mark as{" "}
-                    {selectedSubmission.status === SubmissionStatus.APPROVED ? "Unread" : "Read"}
-                  </span>
-                </Button>
+                <span className="text-[11px] text-zinc-400">
+                  Status: Automatically marked as Read
+                </span>
 
                 <div className="flex items-center gap-2">
                   <Button

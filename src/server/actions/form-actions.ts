@@ -8,6 +8,7 @@ import { prisma } from "@/lib/db/prisma";
 import { requireAdmin } from "@/lib/auth/guards";
 import { FormStatus } from "@prisma/client";
 import { FormSchemaDefinition } from "@/types/form";
+import { deleteMultiplePhysicalFiles } from "@/lib/storage/cleanup";
 
 const createFormSchema = z.object({
   name: z.string().min(3, "Form name must be at least 3 characters").trim(),
@@ -458,6 +459,12 @@ export async function deleteFormAction(formId: string) {
       const submissionIds = submissions.map((s) => s.id);
 
       if (submissionIds.length > 0) {
+        // Query physical files to delete from disk and Google Drive
+        const filesToDelete = await tx.uploadedFile.findMany({
+          where: { submissionId: { in: submissionIds } },
+          select: { storageProvider: true, storagePath: true, driveFileId: true },
+        });
+
         // Delete all custom question answers
         await tx.submissionAnswer.deleteMany({
           where: { submissionId: { in: submissionIds } },
@@ -472,6 +479,9 @@ export async function deleteFormAction(formId: string) {
         await tx.registrationSubmission.deleteMany({
           where: { formId },
         });
+
+        // Clean up physical disk files and Google Drive videos
+        await deleteMultiplePhysicalFiles(filesToDelete);
       }
 
       // 2. Delete email verification OTP tokens for this form
