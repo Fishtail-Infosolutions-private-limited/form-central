@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useActionState, useEffect } from "react";
+import React, { useState, useActionState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { loginAdminAction, sendAdminPasswordResetOtpAction, verifyAdminPasswordResetOtpAction, resetAdminPasswordAction } from "@/server/actions/auth-actions";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,21 @@ type AuthMode = "LOGIN" | "FORGOT_EMAIL" | "VERIFY_OTP" | "RESET_PASSWORD" | "SU
 
 export function LoginForm() {
   const [loginState, formAction, isLoginPending] = useActionState(loginAdminAction, undefined);
+
+  // Controlled Login Form State (preserves email on invalid password)
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+
+  // When login fails (wrong password or invalid credentials), clear password ONLY and keep email
+  useEffect(() => {
+    if (loginState?.error || loginState?.fieldErrors) {
+      setLoginPassword("");
+      setTimeout(() => {
+        passwordInputRef.current?.focus();
+      }, 50);
+    }
+  }, [loginState]);
 
   // Forgot Password Flow State
   const [mode, setMode] = useState<AuthMode>("LOGIN");
@@ -190,7 +205,7 @@ export function LoginForm() {
 
             {/* 1. LOGIN MODE */}
             {mode === "LOGIN" && (
-              <form action={formAction} className="space-y-4">
+              <form action={formAction} onReset={(e) => e.preventDefault()} className="space-y-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="email" required className="text-xs font-bold text-zinc-800">
                     Email Address
@@ -201,6 +216,8 @@ export function LoginForm() {
                     type="email"
                     autoComplete="email"
                     placeholder="admin@formcentral.com"
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
                     required
                     error={Boolean(loginState?.fieldErrors?.email)}
                     className="h-10 text-sm border-zinc-300 focus:border-emerald-600 focus:ring-emerald-600 bg-white"
@@ -218,6 +235,9 @@ export function LoginForm() {
                     <button
                       type="button"
                       onClick={() => {
+                        if (loginEmail.trim()) {
+                          setResetEmail(loginEmail.trim());
+                        }
                         setMode("FORGOT_EMAIL");
                         setResetError(null);
                       }}
@@ -227,11 +247,14 @@ export function LoginForm() {
                     </button>
                   </div>
                   <Input
+                    ref={passwordInputRef}
                     id="password"
                     name="password"
                     type="password"
                     autoComplete="current-password"
                     placeholder="••••••••••••"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
                     required
                     error={Boolean(loginState?.fieldErrors?.password)}
                     className="h-10 text-sm border-zinc-300 focus:border-emerald-600 focus:ring-emerald-600 bg-white font-mono"
@@ -461,6 +484,10 @@ export function LoginForm() {
                     setOtpCode("");
                     setNewPassword("");
                     setConfirmPassword("");
+                    setLoginPassword("");
+                    if (resetEmail) {
+                      setLoginEmail(resetEmail);
+                    }
                   }}
                   className="w-full h-10 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold gap-2"
                 >

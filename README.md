@@ -10,7 +10,7 @@ A production-ready event registration and dynamic form builder platform for comp
 - **Exclusive Command Portal:** Strictly one administrator manages the application. No public registration for admins or accounts for users.
 - **Master Credentials (Seeded):**
   - **Email:** `admin@formcentral.com`
-  - **Password:** `fishtailinfosolutions123`
+  - **Password:** Configured via `ADMIN_DEFAULT_PASSWORD` in `.env` (or generated upon initial seed)
 - **Password Management & In-App Change:**
   - Administrators can change their password directly in `/admin/settings` (requires current password verification and enforces bcrypt hashing).
 - **Forgot Password Recovery via Connected Google Account:**
@@ -131,7 +131,7 @@ npm run db:seed
 **Master Admin Credentials:**
 - **URL:** [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
 - **Email:** `admin@formcentral.com`
-- **Password:** `fishtailinfosolutions123`
+- **Password:** Configured via `ADMIN_DEFAULT_PASSWORD` in your `.env` file (or set upon database initialization)
 
 ### 4. Run Development Server
 

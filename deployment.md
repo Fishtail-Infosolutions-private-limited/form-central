@@ -50,7 +50,7 @@ Run these SQL commands inside the `psql` console:
 
 ```sql
 CREATE DATABASE form_central;
-CREATE USER fcadmin WITH ENCRYPTED PASSWORD 'StrongSecretPassword123!';
+CREATE USER fcadmin WITH ENCRYPTED PASSWORD '<YOUR_STRONG_DB_PASSWORD>';
 GRANT ALL PRIVILEGES ON DATABASE form_central TO fcadmin;
 ALTER DATABASE form_central OWNER TO fcadmin;
 \q
@@ -97,7 +97,7 @@ NEXT_PUBLIC_APP_URL="https://your-domain.com"
 AUTH_SECRET="replace-with-a-very-long-random-secret-key-32chars"
 
 # Contabo PostgreSQL Connection
-DATABASE_URL="postgresql://fcadmin:StrongSecretPassword123!@localhost:5432/form_central?schema=public"
+DATABASE_URL="postgresql://fcadmin:<YOUR_STRONG_DB_PASSWORD>@localhost:5432/form_central?schema=public"
 
 # Google Cloud OAuth (for Google Drive Video Storage)
 GOOGLE_CLIENT_ID="your-google-oauth-client-id.apps.googleusercontent.com"
@@ -107,9 +107,9 @@ GOOGLE_REDIRECT_URI="https://your-domain.com/api/google-drive/callback"
 # Gmail SMTP (Email OTP Verification & Participant Notices)
 SMTP_HOST="smtp.gmail.com"
 SMTP_PORT=587
-SMTP_USER="neosparknepal@gmail.com"
+SMTP_USER="your-email@gmail.com"
 SMTP_PASSWORD="your-google-app-password"
-EMAIL_FROM="neosparknepal@gmail.com"
+EMAIL_FROM="your-email@gmail.com"
 EMAIL_FROM_NAME="Form Central"
 ```
 
@@ -125,7 +125,7 @@ Sync Prisma schema to PostgreSQL and seed initial super admin account:
 # Push database tables to PostgreSQL
 npx prisma db push
 
-# Seed default Super Admin account (admin@formcentral.com / fishtailinfosolutions123)
+# Seed default Super Admin account (admin@formcentral.com)
 npm run db:seed
 
 # Create production build
@@ -235,7 +235,7 @@ Open **Google Cloud Console** > **APIs & Services** > **Credentials**:
 2. Click **Sign In** in the top-right navbar to access the command center at `/admin/login`.
 3. Sign in with:
    - **Email:** `admin@formcentral.com`
-   - **Password:** `fishtailinfosolutions123`
+   - **Password:** `<YOUR_ADMIN_PASSWORD>` (configured via `ADMIN_DEFAULT_PASSWORD` or database seed)
 4. Go to **Settings** > **Google Drive Cloud Storage** > click **Connect Google Drive** to authenticate and select your destination video upload folder.
 
 ---

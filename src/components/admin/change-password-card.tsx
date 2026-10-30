@@ -67,10 +67,7 @@ export function ChangePasswordCard() {
           Change Admin Password
         </CardTitle>
         <CardDescription className="text-xs text-zinc-500">
-          Update your administrator credentials. Default master password is{" "}
-          <code className="text-emerald-800 bg-emerald-50 px-1 py-0.5 rounded font-mono text-[11px]">
-            fishtailinfosolutions123
-          </code>
+          Update your administrator credentials. Choose a strong, unique password to secure your admin account.
         </CardDescription>
       </CardHeader>
 

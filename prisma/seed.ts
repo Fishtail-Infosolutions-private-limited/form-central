@@ -8,8 +8,8 @@ async function main() {
   console.log("🌱 Starting database seeding...");
 
   // 1. Create or update Default Super Admin
-  const adminEmail = "admin@formcentral.com";
-  const defaultPassword = "fishtailinfosolutions123";
+  const adminEmail = process.env.ADMIN_DEFAULT_EMAIL || "admin@formcentral.com";
+  const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD || "fishtailinfosolutions123";
   const passwordHash = await bcrypt.hash(defaultPassword, 12);
 
   const admin = await prisma.adminUser.upsert({
@@ -26,7 +26,7 @@ async function main() {
     },
   });
 
-  console.log(`✅ Admin user seeded: ${admin.email} (Password: ${defaultPassword})`);
+  console.log(`✅ Admin user seeded: ${admin.email}`);
 
   // 2. Create Sample Running Competition Form: "Pokhara City Run 2026"
   const sampleSlug = "pokhara-city-run-2026";

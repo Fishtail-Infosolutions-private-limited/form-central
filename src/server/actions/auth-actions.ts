@@ -19,6 +19,7 @@ export type LoginState = {
     email?: string[];
     password?: string[];
   };
+  timestamp?: number;
 };
 
 export async function loginAdminAction(
@@ -32,6 +33,7 @@ export async function loginAdminAction(
   if (!result.success) {
     return {
       fieldErrors: result.error.flatten().fieldErrors,
+      timestamp: Date.now(),
     };
   }
 
@@ -43,6 +45,7 @@ export async function loginAdminAction(
     if (!admin) {
       return {
         error: "Invalid email or password. Please try again.",
+        timestamp: Date.now(),
       };
     }
 
@@ -50,6 +53,7 @@ export async function loginAdminAction(
     if (!isMatch) {
       return {
         error: "Invalid email or password. Please try again.",
+        timestamp: Date.now(),
       };
     }
 
@@ -76,6 +80,7 @@ export async function loginAdminAction(
     console.error("Login error:", err);
     return {
       error: "An unexpected error occurred during login. Please try again.",
+      timestamp: Date.now(),
     };
   }
 
