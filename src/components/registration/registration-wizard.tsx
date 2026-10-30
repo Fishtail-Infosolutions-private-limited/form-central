@@ -55,7 +55,9 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [uploadedFileIds, setUploadedFileIds] = useState<string[]>([]);
-  const [filePreviews, setFilePreviews] = useState<Record<string, { id?: string; name: string; url?: string; driveId?: string }>>({});
+  const [filePreviews, setFilePreviews] = useState<
+    Record<string, { id?: string; name: string; size?: string; url?: string; driveId?: string }>
+  >({});
 
   // OTP State
   const [otpSent, setOtpSent] = useState(false);
@@ -167,6 +169,20 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
 
   // File, Document & Video Upload Handlers
   const handleFileUpload = async (fieldKey: string, type: "image" | "video" | "file", file: File) => {
+    // Client-side file size pre-check for instant clear feedback
+    const fileSizeMb = (file.size / (1024 * 1024)).toFixed(1);
+    const maxLimitMb = type === "video" ? 100 : type === "file" ? 25 : 10;
+    const maxLimitBytes = maxLimitMb * 1024 * 1024;
+
+    if (file.size > maxLimitBytes) {
+      const err = `File "${file.name}" is ${fileSizeMb} MB, which exceeds the maximum allowed ${maxLimitMb} MB limit for ${
+        type === "video" ? "videos" : type === "file" ? "documents" : "images"
+      }. Please select a smaller file.`;
+      setUploadError(err);
+      toast.error(err);
+      return;
+    }
+
     setUploadingFieldKey(fieldKey);
     setUploadError(null);
 
@@ -207,6 +223,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
         [fieldKey]: {
           id: data.fileId,
           name: data.filename || file.name,
+          size: `${fileSizeMb} MB`,
           url: data.url,
           driveId: data.driveFileId,
         },
@@ -218,7 +235,9 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
         delete next[fieldKey];
         return next;
       });
-      toast.success(`${type === "video" ? "Video" : type === "file" ? "Document" : "Photo"} uploaded successfully!`);
+      toast.success(
+        `${type === "video" ? "Video" : type === "file" ? "Document" : "Photo"} (${fileSizeMb} MB) uploaded successfully!`
+      );
     } catch {
       setUploadError("Network error during file upload. Please retry.");
       toast.error("Network error during file upload. Please retry.");
@@ -768,15 +787,31 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                             <div className="bg-zinc-50 p-4 rounded-xl border border-emerald-200 flex items-center justify-between gap-3">
                               <div className="flex items-center gap-3 min-w-0">
                                 <div className="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
-                                  <FileCheck className="w-5 h-5 text-emerald-600" />
+                                  {field.type === "video" ? (
+                                    <Video className="w-5 h-5 text-emerald-600" />
+                                  ) : field.type === "file" ? (
+                                    <FileCheck className="w-5 h-5 text-emerald-600" />
+                                  ) : (
+                                    <ImageIcon className="w-5 h-5 text-emerald-600" />
+                                  )}
                                 </div>
                                 <div className="min-w-0">
                                   <p className="font-semibold text-xs text-black truncate max-w-[200px] sm:max-w-xs md:max-w-md">
                                     {filePreviews[field.fieldKey].name}
                                   </p>
-                                  <span className="text-[10px] text-emerald-700 font-bold">
-                                    Uploaded Successfully
-                                  </span>
+                                  <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                                    <span className="text-[10px] text-emerald-700 font-bold">
+                                      Uploaded Successfully
+                                    </span>
+                                    {filePreviews[field.fieldKey].size && (
+                                      <span className="text-[10px] text-zinc-500 font-medium">
+                                        &bull; {filePreviews[field.fieldKey].size}
+                                      </span>
+                                    )}
+                                    <span className="text-[10px] font-semibold text-zinc-400">
+                                      (Max: {field.type === "video" ? "100 MB" : field.type === "file" ? "25 MB" : "10 MB"})
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
 
@@ -802,7 +837,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                             </div>
                           ) : (
                             <div className="border-2 border-dashed border-zinc-200 rounded-xl p-5 text-center hover:border-emerald-500 transition-colors bg-zinc-50/50">
-                              <div className="space-y-2">
+                              <div className="space-y-2.5">
                                 {field.type === "video" ? (
                                   <Video className="w-8 h-8 text-emerald-600 mx-auto" />
                                 ) : field.type === "file" ? (
@@ -840,13 +875,19 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                                           }}
                                         />
                                       </label>
-                                      <span className="block text-[11px] text-zinc-400 mt-1">
-                                        {field.type === "video"
-                                          ? "MP4 or WebM up to 100MB (Saved in Google Drive)"
-                                          : field.type === "file"
-                                          ? "PDF, DOC, or DOCX up to 25MB"
-                                          : "Images up to 10MB (JPEG, PNG, WebP, GIF, SVG, etc.)"}
-                                      </span>
+
+                                      <div className="flex flex-wrap items-center justify-center gap-1.5 mt-2">
+                                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                          Max file size: {field.type === "video" ? "100 MB" : field.type === "file" ? "25 MB" : "10 MB"}
+                                        </span>
+                                        <span className="text-[10px] text-zinc-400">
+                                          {field.type === "video"
+                                            ? "Google Drive Stream (MP4, WebM, MOV)"
+                                            : field.type === "file"
+                                            ? "Accepted: PDF, DOC, DOCX"
+                                            : "Accepted: JPG, PNG, WebP, GIF, SVG"}
+                                        </span>
+                                      </div>
                                     </>
                                   )}
                                 </div>
@@ -920,19 +961,19 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                     <div>
                       <span className="text-zinc-500 font-medium block text-[11px]">Legal Name:</span>
                       <div className="font-bold text-black bg-zinc-50 px-2.5 py-1.5 rounded-lg border border-zinc-100 mt-1">
-                        {answers.fullName || "—"}
+                        {answers.fullName || "-"}
                       </div>
                     </div>
                     <div>
                       <span className="text-zinc-500 font-medium block text-[11px]">Email (Verified):</span>
                       <div className="font-mono text-zinc-900 bg-zinc-50 px-2.5 py-1.5 rounded-lg border border-zinc-100 mt-1">
-                        {answers.email || "—"}
+                        {answers.email || "-"}
                       </div>
                     </div>
                     <div>
                       <span className="text-zinc-500 font-medium block text-[11px]">Phone:</span>
                       <div className="font-mono text-zinc-900 bg-zinc-50 px-2.5 py-1.5 rounded-lg border border-zinc-100 mt-1">
-                        {answers.phone || "—"}
+                        {answers.phone || "-"}
                       </div>
                     </div>
                   </div>
@@ -952,7 +993,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                           const isFileField = ["image", "video", "file"].includes(f.type);
                           const preview = filePreviews[f.fieldKey];
 
-                          let displayVal = "—";
+                          let displayVal = "-";
                           const rawVal = answers[f.fieldKey];
                           if (rawVal !== undefined && rawVal !== null && rawVal !== "") {
                             if (f.type === "select" || f.type === "radio") {
@@ -961,7 +1002,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                             } else if (f.type === "checkbox-group" && Array.isArray(rawVal)) {
                               displayVal = rawVal
                                 .map((v) => f.options?.find((o) => o.value === v)?.label || v)
-                                .join(", ") || "—";
+                                .join(", ") || "-";
                             } else if (f.type === "checkbox") {
                               displayVal = rawVal ? "Yes / Confirmed" : "No";
                             } else {
@@ -983,9 +1024,14 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                                       <ImageIcon className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                                     )}
                                     <span className="truncate">{preview?.name || String(rawVal)}</span>
+                                    {preview?.size && (
+                                      <span className="text-[10px] text-emerald-700 font-normal shrink-0">
+                                        ({preview.size})
+                                      </span>
+                                    )}
                                   </div>
                                 ) : (
-                                  <span className="text-zinc-400 block px-2.5 py-1.5">—</span>
+                                  <span className="text-zinc-400 block px-2.5 py-1.5">-</span>
                                 )
                               ) : (
                                 <div className="font-semibold text-black break-words bg-zinc-50 px-2.5 py-1.5 rounded-lg border border-zinc-100">

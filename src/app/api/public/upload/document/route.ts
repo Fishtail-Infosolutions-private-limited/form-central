@@ -41,8 +41,9 @@ export async function POST(request: Request) {
     }
 
     if (file.size > MAX_SIZE_BYTES) {
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
       return NextResponse.json(
-        { error: "Document file size exceeds the 25MB limit." },
+        { error: `Document "${file.name}" is ${sizeMb} MB, which exceeds the maximum allowed 25 MB limit.` },
         { status: 400 }
       );
     }

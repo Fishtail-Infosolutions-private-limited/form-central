@@ -188,7 +188,7 @@ export async function selectDestinationFolder(folderId: string, folderName: stri
 }
 
 export async function disconnectDrive() {
-  return prisma.googleDriveIntegration.update({
+  const primary = await prisma.googleDriveIntegration.update({
     where: { id: "primary" },
     data: {
       isConnected: false,
@@ -199,6 +199,19 @@ export async function disconnectDrive() {
       folderName: null,
     },
   });
+
+  // Also clear active tokens from all cached account entries so linking again requires authenticating cleanly via Google OAuth
+  await prisma.googleDriveIntegration.updateMany({
+    where: { id: { not: "primary" } },
+    data: {
+      isConnected: false,
+      accessToken: null,
+      refreshToken: null,
+      tokenExpiry: null,
+    },
+  });
+
+  return primary;
 }
 
 export async function uploadVideoToDrive(

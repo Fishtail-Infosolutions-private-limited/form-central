@@ -105,7 +105,7 @@ export async function sendParticipantEmailNotice({
   const mailOptions = {
     from: `"${fromName}" <${fromEmail}>`,
     to,
-    subject: `${subject} — ${formName}`,
+    subject: `${subject} - ${formName}`,
     text: `Hello ${recipientName},\n\n${messageText}\n\nBest regards,\n${formName} Organizing Team`,
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 580px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e4e4e7; border-radius: 12px; overflow: hidden;">

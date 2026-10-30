@@ -44,8 +44,9 @@ export async function POST(request: Request) {
     }
 
     if (file.size > MAX_SIZE_BYTES) {
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
       return NextResponse.json(
-        { error: "Image file size exceeds the 10MB limit." },
+        { error: `Image "${file.name}" is ${sizeMb} MB, which exceeds the maximum allowed 10 MB limit.` },
         { status: 400 }
       );
     }

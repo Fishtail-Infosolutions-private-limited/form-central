@@ -34,3 +34,4 @@ export async function deletePhysicalFile(file: FileToDelete): Promise<boolean> {
 export async function deleteMultiplePhysicalFiles(files: FileToDelete[]): Promise<void> {
   await Promise.allSettled(files.map((f) => deletePhysicalFile(f)));
 }
+

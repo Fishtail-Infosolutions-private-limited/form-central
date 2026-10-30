@@ -12,7 +12,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "Form Central — Event & Registration Platform",
+    default: "Form Central - Event & Registration Platform",
     template: "%s | Form Central",
   },
   description:

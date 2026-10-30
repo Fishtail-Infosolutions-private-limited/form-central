@@ -32,8 +32,9 @@ export async function POST(request: Request) {
     }
 
     if (file.size > MAX_VIDEO_BYTES) {
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
       return NextResponse.json(
-        { error: "Video exceeds maximum 100MB file size limit." },
+        { error: `Video "${file.name}" is ${sizeMb} MB, which exceeds the maximum allowed 100 MB limit.` },
         { status: 400 }
       );
     }

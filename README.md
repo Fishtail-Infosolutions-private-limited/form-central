@@ -1,4 +1,4 @@
-# Form Central — Event & Registration Platform
+# Form Central - Event & Registration Platform
 
 A high-performance event registration and dynamic form builder platform for competitions, hackathons, sports events, and participant logistics. Built with Next.js 16 (App Router), React 19, PostgreSQL, Prisma ORM, Tailwind CSS, and Google Drive API v3.
 
@@ -93,6 +93,7 @@ npm run db:seed
 ```
 
 **Default Seed Admin Credentials:**
+
 - **Email:** `admin@formcentral.com`
 - **Password:** `fishtailinfosolutions123`
 

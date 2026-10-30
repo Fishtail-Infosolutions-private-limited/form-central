@@ -123,7 +123,7 @@ export async function generateResponsesWorkbook({
 
     for (const [key] of customFieldsMap.entries()) {
       const val = answerMap.get(key);
-      rowData[`custom_${key}`] = val !== undefined ? sanitizeCellValue(val) : "—";
+      rowData[`custom_${key}`] = val !== undefined ? sanitizeCellValue(val) : "-";
     }
 
     // Uploaded files summary

@@ -107,7 +107,7 @@ export function UploadSettingsCard() {
           </div>
           <div className="flex items-center justify-between text-[11px] text-zinc-500">
             <span>Accepted formats:</span>
-            <span className="font-mono text-zinc-800 font-semibold">JPG, PNG, WebP</span>
+            <span className="font-mono text-zinc-800 font-semibold">JPG, PNG, WebP, GIF, SVG, BMP</span>
           </div>
           <div className="flex items-center gap-2 pt-1">
             {["5", "10", "15", "25"].map((size) => (

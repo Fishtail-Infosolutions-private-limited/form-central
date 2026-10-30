@@ -591,7 +591,7 @@ export function ResponsesTableView({
                                     : "No"
                                   : Array.isArray(ans.value)
                                   ? ans.value.join(", ")
-                                  : String(ans.value || "—")}
+                                  : String(ans.value || "-")}
                               </div>
                             )}
                           </div>

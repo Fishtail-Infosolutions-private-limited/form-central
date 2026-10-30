@@ -1,4 +1,4 @@
-# Form Central — Contabo VPS Deployment Guide
+# Form Central - Contabo VPS Deployment Guide
 
 Simple, step-by-step production deployment instructions for **Contabo VPS** (Ubuntu 22.04 / 24.04 LTS).
 
@@ -13,11 +13,13 @@ ssh root@YOUR_CONTABO_SERVER_IP
 ```
 
 Update system packages:
+
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
 
 Install **Node.js 20 LTS**, **PostgreSQL**, **Nginx**, and **Git**:
+
 ```bash
 # Install Node.js 20
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
@@ -28,6 +30,7 @@ sudo npm install -g pm2
 ```
 
 Verify installations:
+
 ```bash
 node -v   # Should show v20.x
 npm -v    # Should show 10.x
@@ -44,6 +47,7 @@ sudo -u postgres psql
 ```
 
 Run these SQL commands inside the `psql` console:
+
 ```sql
 CREATE DATABASE form_central;
 CREATE USER fcadmin WITH ENCRYPTED PASSWORD 'StrongSecretPassword123!';
@@ -65,6 +69,7 @@ cd form-central
 ```
 
 Install dependencies:
+
 ```bash
 npm install
 ```
@@ -74,6 +79,7 @@ npm install
 ## 4. Configure Environment Variables (`.env`)
 
 Create your production environment file:
+
 ```bash
 nano .env
 ```
@@ -144,6 +150,7 @@ pm2 startup
 ```
 
 Check status:
+
 ```bash
 pm2 status
 pm2 logs form-central --lines 30
@@ -187,6 +194,7 @@ server {
 ```
 
 Enable site and restart Nginx:
+
 ```bash
 sudo ln -s /etc/nginx/sites-available/form-central /etc/nginx/sites-enabled/
 sudo nginx -t
@@ -211,6 +219,7 @@ Select the option to automatically redirect HTTP traffic to HTTPS.
 ## 9. Update Google Cloud OAuth Redirect URI
 
 Open **Google Cloud Console** > **APIs & Services** > **Credentials**:
+
 1. Edit your OAuth 2.0 Web Client ID
 2. Under **Authorized redirect URIs**, add your production URL:
    ```
@@ -249,4 +258,3 @@ sudo systemctl status postgresql
 # Check Nginx status
 sudo systemctl status nginx
 ```
-
