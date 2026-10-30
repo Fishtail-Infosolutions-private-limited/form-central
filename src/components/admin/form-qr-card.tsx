@@ -316,3 +316,4 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
     </Card>
   );
 }
+

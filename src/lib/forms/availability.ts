@@ -151,3 +151,4 @@ export async function checkFormAvailability(
     formattedDeadline: form.registrationDeadline ? formatNepalDateTime(form.registrationDeadline) : null,
   };
 }
+

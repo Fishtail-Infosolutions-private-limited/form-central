@@ -250,7 +250,7 @@ export function FormCanvas({
               type="button"
               onClick={() => onDeleteStep(activeStepIndex)}
               className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200 h-8 text-xs px-3 font-semibold gap-1.5 transition-colors"
-              title="Delete this step"
+              title="Delete this step (undo available for 10s)"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>Delete Step</span>
