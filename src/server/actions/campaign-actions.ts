@@ -19,12 +19,111 @@ import { parseNepalTimeToUtc } from "@/lib/utils/timezone";
 import { revalidatePath } from "next/cache";
 
 /**
- * Estimates the recipient count for a selected form and criteria.
+ * Helper to ensure or resolve the dedicated Mithila Queen form record.
  */
-export async function estimateRecipientsAction(formId: string, criteria: RecipientCriteria) {
+async function getOrResolveFormId(formId?: string): Promise<string> {
+  if (formId && formId.trim() !== "") {
+    const existing = await prisma.registrationForm.findUnique({ where: { id: formId } });
+    if (existing) return existing.id;
+  }
+
+  let form = await prisma.registrationForm.findFirst({
+    where: { slug: "mithila-queen" },
+  });
+
+  if (!form) {
+    form = await prisma.registrationForm.findFirst({
+      orderBy: { createdAt: "asc" },
+    });
+  }
+
+  if (!form) {
+    const adminUser = await prisma.adminUser.findFirst();
+    if (!adminUser) throw new Error("No admin user found to initialize form");
+    form = await prisma.registrationForm.create({
+      data: {
+        name: "Mithila Queen",
+        slug: "mithila-queen",
+        description: "Celebrating Mithila's Culture, Confidence & Talent",
+        createdById: adminUser.id,
+      },
+    });
+  }
+
+  return form.id;
+}
+
+/**
+ * Returns live participant counts across all 7 targeted Mithila Queen groups.
+ */
+export async function getParticipantGroupCountsAction() {
   await requireAdmin();
   try {
-    const recipients = await resolveEligibleRecipients(formId, criteria);
+    const [
+      totalCount,
+      approvedCount,
+      pendingCount,
+      rejectedCount,
+      actionReqCount,
+      paymentVerifiedCount,
+      paymentPendingCount,
+    ] = await Promise.all([
+      prisma.mithilaQueenRegistration.count(),
+      prisma.mithilaQueenRegistration.count({ where: { applicationStatus: "APPROVED" } }),
+      prisma.mithilaQueenRegistration.count({
+        where: { applicationStatus: { in: ["SUBMITTED", "UNDER_REVIEW"] } },
+      }),
+      prisma.mithilaQueenRegistration.count({ where: { applicationStatus: "REJECTED" } }),
+      prisma.mithilaQueenRegistration.count({ where: { applicationStatus: "ACTION_REQUIRED" } }),
+      prisma.mithilaQueenRegistration.count({ where: { paymentStatus: "VERIFIED" } }),
+      prisma.mithilaQueenRegistration.count({
+        where: { paymentStatus: { in: ["PENDING", "UNDER_REVIEW", "CLARIFICATION_REQUIRED"] } },
+      }),
+    ]);
+
+    // Check if any legacy registration submissions exist
+    const formId = await getOrResolveFormId();
+    const legacyCount = await prisma.registrationSubmission.count({
+      where: { formId },
+    });
+
+    return {
+      success: true,
+      counts: {
+        ALL: totalCount + legacyCount,
+        APPROVED: approvedCount,
+        PENDING: pendingCount,
+        REJECTED: rejectedCount,
+        ACTION_REQUIRED: actionReqCount,
+        PAYMENT_VERIFIED: paymentVerifiedCount,
+        PAYMENT_PENDING: paymentPendingCount,
+      },
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || "Failed to count participant groups",
+      counts: {
+        ALL: 0,
+        APPROVED: 0,
+        PENDING: 0,
+        REJECTED: 0,
+        ACTION_REQUIRED: 0,
+        PAYMENT_VERIFIED: 0,
+        PAYMENT_PENDING: 0,
+      },
+    };
+  }
+}
+
+/**
+ * Estimates the recipient count for Mithila Queen participants and criteria.
+ */
+export async function estimateRecipientsAction(formId: string | undefined, criteria: RecipientCriteria) {
+  await requireAdmin();
+  try {
+    const resolvedFormId = await getOrResolveFormId(formId);
+    const recipients = await resolveEligibleRecipients(resolvedFormId, criteria);
     return {
       success: true,
       count: recipients.length,
@@ -49,7 +148,7 @@ export async function sendTestEmailAction({
   content,
   testEmail,
 }: {
-  formId: string;
+  formId?: string;
   subject: string;
   content: string;
   testEmail: string;
@@ -61,22 +160,26 @@ export async function sendTestEmailAction({
   }
 
   try {
+    const resolvedFormId = await getOrResolveFormId(formId);
     const form = await prisma.registrationForm.findUnique({
-      where: { id: formId },
+      where: { id: resolvedFormId },
     });
 
     const sampleContext = getSamplePreviewContext({
-      event_name: form?.name || "Pokhara City Run 2026",
-      event_description: form?.description || "Official Running Event",
+      event_name: form?.name || "Mithila Queen 2026",
+      event_description: form?.description || "Celebrating Mithila's Culture, Confidence & Talent",
       participant_name: admin.name || "Test Administrator",
       participant_email: testEmail,
+      organizer_name: "The Origin Foundation",
+      event_venue: "Janakpur Dham, Nepal",
+      event_location: "Janakpur Dham, Dhanusha, Madhesh Province, Nepal",
     });
 
     const renderedSubject = `[TEST] ${renderEmailTemplate(subject, sampleContext, { isHtml: false })}`;
     const renderedBody = renderEmailTemplate(content, sampleContext, { isHtml: true });
 
     const finalHtml = wrapInFormSuiteEmailLayout({
-      eventTitle: form?.name || "FormSuite Test",
+      eventTitle: "The Origin Foundation — Mithila Queen",
       badgeText: "Internal Test Preview",
       bodyHtml: `
         <div style="background-color: #fef3c7; border: 1px solid #f59e0b; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px;">
@@ -90,8 +193,8 @@ export async function sendTestEmailAction({
     });
 
     const transporter = getEmailTransporter();
-    const fromName = process.env.EMAIL_FROM_NAME || "FormSuite";
-    const fromEmail = process.env.EMAIL_FROM || "neosparknepal@gmail.com";
+    const fromName = process.env.EMAIL_FROM_NAME || "The Origin Foundation";
+    const fromEmail = process.env.EMAIL_FROM || "originfoundation107@gmail.com";
 
     await transporter.sendMail({
       from: `"${fromName}" <${fromEmail}>`,
@@ -110,7 +213,7 @@ export async function sendTestEmailAction({
 }
 
 /**
- * Creates and enqueues a new bulk email campaign.
+ * Creates and enqueues a new bulk email communication.
  */
 export async function createCampaignAction({
   name,
@@ -123,8 +226,8 @@ export async function createCampaignAction({
   scheduledDate,
   scheduledTime,
 }: {
-  name: string;
-  formId: string;
+  name?: string;
+  formId?: string;
   templateId?: string;
   subject: string;
   content: string;
@@ -135,8 +238,12 @@ export async function createCampaignAction({
 }) {
   const admin = await requireAdmin();
 
-  if (!name.trim()) return { success: false, error: "Campaign name is required." };
-  if (!formId) return { success: false, error: "Please select an event / form." };
+  const resolvedFormId = await getOrResolveFormId(formId);
+  const effectiveName =
+    name && name.trim().length > 0
+      ? name.trim()
+      : `${subject.trim().slice(0, 45)} (${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })})`;
+
   if (!subject.trim()) return { success: false, error: "Email subject is required." };
   if (!content.trim()) return { success: false, error: "Email content is required." };
 
@@ -154,7 +261,7 @@ export async function createCampaignAction({
   let scheduledAt: Date | null = null;
   if (sendOption === "scheduled") {
     if (!scheduledDate) {
-      return { success: false, error: "Scheduled date is required for scheduled campaigns." };
+      return { success: false, error: "Scheduled date is required for scheduled communications." };
     }
     const timeVal = scheduledTime || "08:00";
     scheduledAt = parseNepalTimeToUtc(scheduledDate, timeVal);
@@ -165,8 +272,8 @@ export async function createCampaignAction({
 
   try {
     const campaign = await createAndEnqueueCampaign({
-      name: name.trim(),
-      formId,
+      name: effectiveName,
+      formId: resolvedFormId,
       templateId,
       subject: subject.trim(),
       content: content.trim(),
@@ -185,8 +292,42 @@ export async function createCampaignAction({
   } catch (err: any) {
     return {
       success: false,
-      error: err.message || "Failed to create campaign.",
+      error: err.message || "Failed to create communication.",
     };
+  }
+}
+
+/**
+ * Fetches campaign details for duplication.
+ */
+export async function getDuplicateCommunicationAction(campaignId: string) {
+  await requireAdmin();
+  try {
+    const campaign = await prisma.emailCampaign.findUnique({
+      where: { id: campaignId },
+      include: {
+        template: {
+          select: { id: true, name: true },
+        },
+      },
+    });
+
+    if (!campaign) {
+      return { success: false, error: "Message not found" };
+    }
+
+    return {
+      success: true,
+      campaign: {
+        name: `Copy of ${campaign.name}`,
+        subject: campaign.subject,
+        content: campaign.content,
+        templateId: campaign.templateId,
+        criteria: campaign.recipientCriteria as RecipientCriteria,
+      },
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Failed to duplicate message." };
   }
 }
 

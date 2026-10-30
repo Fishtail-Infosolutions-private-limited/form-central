@@ -21,16 +21,19 @@ export default async function AdminCampaignsPage() {
     },
   });
 
-  // Calculate high-level metrics
-  const totalCampaigns = campaigns.length;
+  // Calculate high-level database metrics
   let totalSent = 0;
+  let totalScheduled = 0;
   let totalQueued = 0;
   let totalFailed = 0;
 
   for (const c of campaigns) {
     totalSent += c.sentCount;
     totalFailed += c.failedCount;
-    if (["QUEUED", "PROCESSING", "SCHEDULED"].includes(c.status)) {
+    if (c.status === "SCHEDULED") {
+      totalScheduled += Math.max(0, c.totalRecipients - (c.sentCount + c.failedCount + c.skippedCount));
+    }
+    if (["QUEUED", "PROCESSING"].includes(c.status)) {
       totalQueued += Math.max(0, c.totalRecipients - (c.sentCount + c.failedCount + c.skippedCount));
     }
   }
@@ -55,12 +58,11 @@ export default async function AdminCampaignsPage() {
     <CampaignListView
       campaigns={serializedCampaigns}
       stats={{
-        totalCampaigns,
         totalSent,
+        totalScheduled,
         totalQueued,
         totalFailed,
       }}
     />
   );
 }
-

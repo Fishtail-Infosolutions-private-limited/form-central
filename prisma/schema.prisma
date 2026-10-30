@@ -337,10 +337,11 @@ model EmailCampaignRecipient {
   id                String                  @id @default(uuid())
   campaignId        String
   campaign          EmailCampaign           @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  registrationId    String
-  registration      RegistrationSubmission  @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  registrationId    String?
+  registration      RegistrationSubmission? @relation(fields: [registrationId], references: [id], onDelete: Cascade)
   email             String
   fullName          String
+  metadata          Json?                   // { referenceNumber?: string, source?: string, paymentStatus?: string, applicationStatus?: string }
   status            RecipientDeliveryStatus @default(QUEUED)
   attemptCount      Int                     @default(0)
   maxAttempts       Int                     @default(3)
@@ -356,10 +357,11 @@ model EmailCampaignRecipient {
 
   logs              EmailDeliveryLog[]
 
-  @@unique([campaignId, registrationId])
+  @@unique([campaignId, email])
   @@index([campaignId, status])
   @@index([registrationId])
   @@index([status, nextRetryAt])
+  @@index([email])
   @@index([lockedAt])
   @@map("email_campaign_recipients")
 }

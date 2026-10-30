@@ -1,8 +1,24 @@
 import { prisma } from "@/lib/db/prisma";
 import { CampaignStatus, RecipientDeliveryStatus } from "@prisma/client";
 
+export type ParticipantGroupFilter =
+  | "ALL"
+  | "APPROVED"
+  | "PENDING"
+  | "REJECTED"
+  | "ACTION_REQUIRED"
+  | "PAYMENT_VERIFIED"
+  | "PAYMENT_PENDING";
+
 export interface RecipientCriteria {
-  type: "ALL" | "APPROVED" | "PENDING" | "REJECTED" | "CATEGORY" | "MANUAL" | "EXCLUDE_CAMPAIGN";
+  // Targeting mode
+  targetType?: "GROUP" | "MANUAL" | "COMBINED";
+  // Option A: Mithila Queen participant group filter
+  groupFilter?: ParticipantGroupFilter | null;
+  // Option B: Specific manual emails
+  manualEmails?: string[];
+  // Legacy criteria support
+  type?: "ALL" | "APPROVED" | "PENDING" | "REJECTED" | "CATEGORY" | "MANUAL" | "EXCLUDE_CAMPAIGN" | "COMMUNICATIONS";
   categoryValue?: string;
   categoryFieldKey?: string;
   manualIds?: string[];
@@ -11,48 +27,29 @@ export interface RecipientCriteria {
 }
 
 export interface EligibleRecipient {
-  registrationId: string;
+  registrationId?: string | null;
   email: string;
   fullName: string;
   referenceNumber: string;
   status: string;
   category?: string;
+  metadata?: Record<string, any>;
 }
 
 /**
- * Resolves eligible recipients for a campaign based on form and criteria.
- * Guarantees that only verified, submitted registrations are included,
- * and excludes unsubscribed participants where applicable.
+ * Resolves eligible recipients for a communication campaign based on
+ * Mithila Queen participants and optional manual email addresses.
+ * Guarantees deduplication, excludes unsubscribed participants where applicable,
+ * and maintains strict recipient privacy.
  */
 export async function resolveEligibleRecipients(
   formId: string,
   criteria: RecipientCriteria
 ): Promise<EligibleRecipient[]> {
-  // 1. Base query for submitted registrations in this form
-  const whereClause: any = {
-    formId,
-  };
+  const eligible: EligibleRecipient[] = [];
+  const seenEmails = new Set<string>();
 
-  if (criteria.type === "APPROVED") {
-    whereClause.status = "APPROVED";
-  } else if (criteria.type === "PENDING") {
-    whereClause.status = "PENDING";
-  } else if (criteria.type === "REJECTED") {
-    whereClause.status = "REJECTED";
-  } else if (criteria.type === "MANUAL" && criteria.manualIds && criteria.manualIds.length > 0) {
-    whereClause.id = { in: criteria.manualIds };
-  }
-
-  // Fetch submissions with answers (needed for category matching)
-  const submissions = await prisma.registrationSubmission.findMany({
-    where: whereClause,
-    include: {
-      answers: true,
-    },
-    orderBy: { submittedAt: "desc" },
-  });
-
-  // 2. Fetch unsubscribed emails for this form (or globally)
+  // 1. Fetch unsubscribed emails for this form (or globally)
   const unsubscribes = await prisma.emailUnsubscribe.findMany({
     where: {
       OR: [{ formId }, { formId: null }],
@@ -61,73 +58,158 @@ export async function resolveEligibleRecipients(
   });
   const unsubscribedEmails = new Set(unsubscribes.map((u) => u.email.toLowerCase().trim()));
 
-  // 3. If excluding recipients of another campaign
-  let excludedRegistrationIds = new Set<string>();
-  if (criteria.type === "EXCLUDE_CAMPAIGN" && criteria.excludeCampaignId) {
-    const existingRecipients = await prisma.emailCampaignRecipient.findMany({
-      where: {
-        campaignId: criteria.excludeCampaignId,
-        status: { in: [RecipientDeliveryStatus.SENT, RecipientDeliveryStatus.DELIVERED] },
-      },
-      select: { registrationId: true },
+  // 2. Determine target filter
+  const effectiveGroup = criteria.groupFilter || (criteria.type as ParticipantGroupFilter) || "ALL";
+  const shouldIncludeGroup = criteria.targetType !== "MANUAL";
+  const shouldIncludeManual = criteria.targetType === "MANUAL" || criteria.targetType === "COMBINED" || (criteria.manualEmails && criteria.manualEmails.length > 0);
+
+  // 3. Query Mithila Queen Registrations if group targeting is active
+  if (shouldIncludeGroup) {
+    const mqWhere: any = {};
+
+    if (effectiveGroup === "APPROVED") {
+      mqWhere.applicationStatus = "APPROVED";
+    } else if (effectiveGroup === "PENDING") {
+      mqWhere.applicationStatus = { in: ["SUBMITTED", "UNDER_REVIEW"] };
+    } else if (effectiveGroup === "REJECTED") {
+      mqWhere.applicationStatus = "REJECTED";
+    } else if (effectiveGroup === "ACTION_REQUIRED") {
+      mqWhere.applicationStatus = "ACTION_REQUIRED";
+    } else if (effectiveGroup === "PAYMENT_VERIFIED") {
+      mqWhere.paymentStatus = "VERIFIED";
+    } else if (effectiveGroup === "PAYMENT_PENDING") {
+      mqWhere.paymentStatus = { in: ["PENDING", "UNDER_REVIEW", "CLARIFICATION_REQUIRED"] };
+    }
+
+    const mqRegistrations = await prisma.mithilaQueenRegistration.findMany({
+      where: mqWhere,
+      orderBy: { submittedAt: "desc" },
     });
-    excludedRegistrationIds = new Set(existingRecipients.map((r) => r.registrationId));
-  }
 
-  // 4. Filter and build recipient list
-  const eligible: EligibleRecipient[] = [];
-  const seenEmails = new Set<string>();
+    for (const app of mqRegistrations) {
+      if (!app.email) continue;
+      const normalizedEmail = app.email.toLowerCase().trim();
 
-  for (const sub of submissions) {
-    const normalizedEmail = sub.email.toLowerCase().trim();
+      // Check unsubscribe status
+      if (criteria.excludeUnsubscribed !== false && unsubscribedEmails.has(normalizedEmail)) {
+        continue;
+      }
 
-    // Check unsubscribe status
-    if (criteria.excludeUnsubscribed !== false && unsubscribedEmails.has(normalizedEmail)) {
-      continue;
-    }
-
-    // Check campaign exclusion
-    if (excludedRegistrationIds.has(sub.id)) {
-      continue;
-    }
-
-    // Find category from answers
-    let participantCategory = "General";
-    for (const ans of sub.answers) {
-      if (
-        ans.fieldKey.toLowerCase().includes("category") ||
-        ans.fieldLabel.toLowerCase().includes("category") ||
-        ans.fieldKey.toLowerCase().includes("race")
-      ) {
-        if (typeof ans.value === "string") {
-          participantCategory = ans.value;
-        } else if (ans.value && typeof ans.value === "object" && "label" in ans.value) {
-          participantCategory = String((ans.value as any).label);
-        }
-        break;
+      if (!seenEmails.has(normalizedEmail)) {
+        seenEmails.add(normalizedEmail);
+        eligible.push({
+          registrationId: null,
+          email: app.email.trim(),
+          fullName: app.fullName || "Mithila Queen Participant",
+          referenceNumber: app.registrationId,
+          status: app.applicationStatus,
+          category: "Mithila Queen Contestant",
+          metadata: {
+            source: "MITHILA_QUEEN",
+            referenceNumber: app.registrationId,
+            paymentStatus: app.paymentStatus,
+            applicationStatus: app.applicationStatus,
+            isMinor: app.isMinor,
+            district: app.district,
+            province: app.province,
+          },
+        });
       }
     }
 
-    // Category filter
-    if (criteria.type === "CATEGORY" && criteria.categoryValue) {
-      const match = sub.answers.some((ans) => {
-        const valStr = typeof ans.value === "string" ? ans.value : JSON.stringify(ans.value || "");
-        return valStr.toLowerCase().includes(criteria.categoryValue!.toLowerCase());
-      });
-      if (!match) continue;
-    }
+    // Also query generic RegistrationSubmission if any exist for this form
+    const subWhere: any = { formId };
+    if (effectiveGroup === "APPROVED") subWhere.status = "APPROVED";
+    else if (effectiveGroup === "PENDING") subWhere.status = "PENDING";
+    else if (effectiveGroup === "REJECTED") subWhere.status = "REJECTED";
 
-    // Deduplicate by registration / email for this campaign run
-    if (!seenEmails.has(normalizedEmail)) {
+    const submissions = await prisma.registrationSubmission.findMany({
+      where: subWhere,
+      include: { answers: true },
+      orderBy: { submittedAt: "desc" },
+    });
+
+    for (const sub of submissions) {
+      const normalizedEmail = sub.email.toLowerCase().trim();
+      if (criteria.excludeUnsubscribed !== false && unsubscribedEmails.has(normalizedEmail)) {
+        continue;
+      }
+
+      if (!seenEmails.has(normalizedEmail)) {
+        seenEmails.add(normalizedEmail);
+        eligible.push({
+          registrationId: sub.id,
+          email: sub.email.trim(),
+          fullName: sub.fullName,
+          referenceNumber: sub.referenceNumber,
+          status: sub.status,
+          category: "Mithila Queen Contestant",
+          metadata: {
+            source: "FORM_SUBMISSION",
+            referenceNumber: sub.referenceNumber,
+          },
+        });
+      }
+    }
+  }
+
+  // 4. Query Manual Email Addresses if provided
+  if (shouldIncludeManual && criteria.manualEmails && criteria.manualEmails.length > 0) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    for (const rawEmail of criteria.manualEmails) {
+      const cleanEmail = rawEmail.trim();
+      if (!cleanEmail || !emailRegex.test(cleanEmail)) continue;
+
+      const normalizedEmail = cleanEmail.toLowerCase();
+
+      // Check unsubscribe status
+      if (criteria.excludeUnsubscribed !== false && unsubscribedEmails.has(normalizedEmail)) {
+        continue;
+      }
+
+      // Prevent duplicate if already added by group targeting
+      if (seenEmails.has(normalizedEmail)) {
+        continue;
+      }
+
       seenEmails.add(normalizedEmail);
-      eligible.push({
-        registrationId: sub.id,
-        email: sub.email,
-        fullName: sub.fullName,
-        referenceNumber: sub.referenceNumber,
-        status: sub.status,
-        category: participantCategory,
+
+      // Check if this manual email matches an existing participant in MithilaQueenRegistration
+      const existingParticipant = await prisma.mithilaQueenRegistration.findFirst({
+        where: { email: { equals: cleanEmail, mode: "insensitive" } },
       });
+
+      if (existingParticipant) {
+        eligible.push({
+          registrationId: null,
+          email: cleanEmail,
+          fullName: existingParticipant.fullName || "Mithila Queen Participant",
+          referenceNumber: existingParticipant.registrationId,
+          status: existingParticipant.applicationStatus,
+          category: "Mithila Queen Contestant",
+          metadata: {
+            source: "MANUAL_MATCHED",
+            referenceNumber: existingParticipant.registrationId,
+            paymentStatus: existingParticipant.paymentStatus,
+            applicationStatus: existingParticipant.applicationStatus,
+          },
+        });
+      } else {
+        // Pure manual email recipient (press, VIP, judge, partner)
+        eligible.push({
+          registrationId: null,
+          email: cleanEmail,
+          fullName: cleanEmail.split("@")[0],
+          referenceNumber: "N/A",
+          status: "MANUAL",
+          category: "Invited Recipient",
+          metadata: {
+            source: "MANUAL_RECIPIENT",
+            referenceNumber: "N/A",
+          },
+        });
+      }
     }
   }
 
@@ -187,9 +269,10 @@ export async function createAndEnqueueCampaign({
       await tx.emailCampaignRecipient.createMany({
         data: eligibleRecipients.map((rec) => ({
           campaignId: campaign.id,
-          registrationId: rec.registrationId,
+          registrationId: rec.registrationId || null,
           email: rec.email,
           fullName: rec.fullName,
+          metadata: (rec.metadata as any) || null,
           status: RecipientDeliveryStatus.QUEUED,
           attemptCount: 0,
           maxAttempts: 3,
@@ -202,9 +285,9 @@ export async function createAndEnqueueCampaign({
     await tx.emailDeliveryLog.create({
       data: {
         campaignId: campaign.id,
-        email: "system@formsuite.local",
+        email: "communications@theoriginfoundation.org",
         event: "CAMPAIGN_ENQUEUED",
-        details: `Campaign "${name}" enqueued with ${eligibleRecipients.length} recipients. Status: ${initialStatus}`,
+        details: `Message "${name}" enqueued with ${eligibleRecipients.length} recipients. Status: ${initialStatus}`,
         metadata: {
           recipientCount: eligibleRecipients.length,
           scheduledAt: scheduledAt?.toISOString() || null,

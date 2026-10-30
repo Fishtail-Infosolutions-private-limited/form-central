@@ -8,98 +8,121 @@ export interface EmailVariableDefinition {
   label: string;
   description: string;
   sampleValue: string;
+  group: "participant" | "competition" | "organization" | "links";
 }
 
 export const AVAILABLE_EMAIL_VARIABLES: EmailVariableDefinition[] = [
+  // Participant Variables
   {
     key: "participant_name",
     label: "Participant Name",
-    description: "Full legal name of the registered participant",
-    sampleValue: "Bibek Poudel",
+    description: "Full legal name of the registered candidate",
+    sampleValue: "Pooja Mishra",
+    group: "participant",
   },
   {
     key: "participant_email",
     label: "Participant Email",
     description: "Verified registered email address",
-    sampleValue: "bibekpoudel@fishtailinfosolutions.com",
+    sampleValue: "pooja.mishra@example.com",
+    group: "participant",
   },
   {
     key: "registration_id",
     label: "Registration ID",
-    description: "Unique event registration reference number",
-    sampleValue: "FC-2026-X8Y7Z",
+    description: "Unique Mithila Queen reference number",
+    sampleValue: "MQ-2026-8942",
+    group: "participant",
   },
   {
+    key: "participant_category",
+    label: "Participant Category",
+    description: "Candidate competition category",
+    sampleValue: "Mithila Queen Crown Contestant",
+    group: "participant",
+  },
+
+  // Competition Variables
+  {
     key: "event_name",
-    label: "Event Name",
-    description: "Name of the competition or event form",
-    sampleValue: "Pokhara City Run 2026",
+    label: "Competition Name",
+    description: "Official flagship competition title",
+    sampleValue: "Mithila Queen 2026",
+    group: "competition",
   },
   {
     key: "event_date",
     label: "Event Date",
     description: "Official event date (e.g. November 15, 2026)",
     sampleValue: "November 15, 2026",
+    group: "competition",
   },
   {
     key: "event_time",
     label: "Event Time",
-    description: "Event or reporting time in Nepal Standard Time",
-    sampleValue: "06:30 AM NPT",
+    description: "Reporting time in Nepal Standard Time (UTC+05:45)",
+    sampleValue: "08:00 AM NPT",
+    group: "competition",
   },
   {
     key: "event_venue",
     label: "Event Venue",
-    description: "Event venue or reporting location",
-    sampleValue: "Pokhara Rangashala Ground, Kaski",
+    description: "Official venue and stage hall",
+    sampleValue: "Janakpur Dham Cultural Center, Nepal",
+    group: "competition",
   },
   {
     key: "event_location",
     label: "Event Location",
-    description: "City or region of the event",
-    sampleValue: "Pokhara, Nepal",
+    description: "City and district location",
+    sampleValue: "Janakpur Dham, Dhanusha, Nepal",
+    group: "competition",
   },
   {
     key: "event_description",
-    label: "Event Description",
-    description: "Short description of the event",
-    sampleValue: "The premier running event of Gandaki Province.",
+    label: "Competition Description",
+    description: "Celebrating Mithila's Culture, Confidence & Talent",
+    sampleValue: "Celebrating Mithila's Culture, Confidence & Talent.",
+    group: "competition",
   },
-  {
-    key: "participant_category",
-    label: "Participant Category",
-    description: "Selected race distance or competition category",
-    sampleValue: "21K Half Marathon Championship",
-  },
+
+  // Organization Variables
   {
     key: "organizer_name",
     label: "Organizer Name",
-    description: "Event organizing committee or application name",
-    sampleValue: "Pokhara Athletics Association & FormSuite",
+    description: "Host foundation and organizing secretariat",
+    sampleValue: "The Origin Foundation",
+    group: "organization",
   },
+
+  // Links & Other Variables
   {
     key: "registration_url",
     label: "Registration URL",
-    description: "Public link to the registration form page",
-    sampleValue: "http://localhost:3000/register/pokhara-city-run-2026",
+    description: "Public link to the Mithila Queen registration portal",
+    sampleValue: "https://theoriginfoundation.org/register/mithila-queen",
+    group: "links",
   },
   {
     key: "event_url",
-    label: "Event URL",
-    description: "Official event portal URL",
-    sampleValue: "http://localhost:3000/register/pokhara-city-run-2026",
+    label: "Competition URL",
+    description: "Official competition portal website URL",
+    sampleValue: "https://theoriginfoundation.org/mithila-queen",
+    group: "links",
   },
   {
     key: "current_date",
     label: "Current Date",
-    description: "Date of sending (e.g. October 30, 2026)",
+    description: "Date of sending in Nepal Time",
     sampleValue: "October 30, 2026",
+    group: "links",
   },
   {
     key: "unsubscribe_url",
     label: "Unsubscribe URL",
     description: "Secure one-click link to manage email preferences",
-    sampleValue: "http://localhost:3000/unsubscribe?token=sample-preview-token",
+    sampleValue: "https://theoriginfoundation.org/unsubscribe?token=sample-preview-token",
+    group: "links",
   },
 ];
 

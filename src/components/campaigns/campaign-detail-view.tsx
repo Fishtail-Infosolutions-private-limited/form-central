@@ -19,6 +19,8 @@ import {
   ExternalLink,
   ShieldCheck,
   FileText,
+  Copy,
+  Crown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -181,13 +183,13 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
         <div>
           <Link
             href="/admin/campaigns"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-900 transition-colors mb-2"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-[#A64B36] transition-colors mb-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to Campaigns</span>
+            <span>Back to Communications</span>
           </Link>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight font-serif">
               {campaign.name}
             </h1>
             <Badge
@@ -206,20 +208,30 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
               {campaign.status}
             </Badge>
           </div>
-          <p className="text-xs text-zinc-500 mt-1">
-            Associated Form:{" "}
-            <Link
-              href={`/admin/forms/${campaign.form.id}`}
-              className="text-[#A64B36] font-bold hover:underline"
-            >
-              {campaign.form.name}
-            </Link>{" "}
-            &bull; Subject: <span className="font-medium text-zinc-700">{campaign.subject}</span>
-          </p>
+          <div className="text-xs text-zinc-500 mt-1 flex items-center gap-1.5">
+            <span className="font-bold text-[#A64B36]">The Origin Foundation</span>
+            <span>&bull;</span>
+            <span className="font-bold text-[#B69A65] flex items-center gap-1">
+              <Crown className="w-3 h-3" />
+              <span>Mithila Queen</span>
+            </span>
+            <span>&bull;</span>
+            <span>Subject: <strong className="text-zinc-800">{campaign.subject}</strong></span>
+          </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
+          <Link href={`/admin/campaigns/new?duplicate=${campaign.id}`}>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-8 text-xs font-bold text-zinc-700 border-zinc-200 hover:bg-zinc-100 gap-1.5"
+            >
+              <Copy className="w-3.5 h-3.5 text-zinc-500" />
+              <span>Duplicate</span>
+            </Button>
+          </Link>
           {campaign.status === "PROCESSING" && (
             <Button
               size="sm"

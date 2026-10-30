@@ -178,7 +178,7 @@ export async function processNextCampaignBatch(
 
   // 4. Process each recipient sequentially or with light throttling
   const transporter = getEmailTransporter();
-  const fromName = process.env.EMAIL_FROM_NAME || "FormSuite";
+  const fromName = process.env.EMAIL_FROM_NAME || "The Origin Foundation";
   const fromEmail = process.env.EMAIL_FROM || "neosparknepal@gmail.com";
   const appUrl = process.env.APP_URL || "http://localhost:3000";
 
@@ -187,6 +187,7 @@ export async function processNextCampaignBatch(
 
   for (const recipient of candidateRecipients) {
     const reg = recipient.registration;
+    const meta = (recipient.metadata as Record<string, any>) || {};
     const attemptNum = recipient.attemptCount + 1;
 
     // Check if recipient unsubscribed after campaign was created
@@ -214,8 +215,8 @@ export async function processNextCampaignBatch(
       continue;
     }
 
-    // Extract participant category from answers
-    let participantCategory = "General";
+    // Extract participant category from answers or metadata
+    let participantCategory = "Mithila Queen Contestant";
     if (reg?.answers) {
       for (const ans of reg.answers) {
         if (
@@ -231,7 +232,12 @@ export async function processNextCampaignBatch(
           break;
         }
       }
+    } else if (meta.category) {
+      participantCategory = meta.category;
     }
+
+    const refNumber = reg?.referenceNumber || meta.referenceNumber || "N/A";
+    const participantName = recipient.fullName || "Participant";
 
     // Prepare contextual variables
     const eventDateStr = activeCampaign.form.eventDate
@@ -240,25 +246,25 @@ export async function processNextCampaignBatch(
 
     const eventTimeStr = activeCampaign.form.eventDate
       ? formatNepalTime(activeCampaign.form.eventDate, "hh:mm a 'NPT'")
-      : "06:30 AM NPT";
+      : "08:00 AM NPT";
 
     const unsubscribeToken = Buffer.from(`${recipient.email}:${activeCampaign.formId}`).toString("base64url");
     const unsubscribeUrl = `${appUrl}/unsubscribe?token=${unsubscribeToken}`;
 
     const context: EmailRenderContext = {
-      participant_name: recipient.fullName || "Participant",
+      participant_name: participantName,
       participant_email: recipient.email,
-      registration_id: reg?.referenceNumber || "FC-REGISTERED",
-      event_name: activeCampaign.form.name,
+      registration_id: refNumber,
+      event_name: activeCampaign.form.name || "Mithila Queen 2026",
       event_date: eventDateStr,
       event_time: eventTimeStr,
-      event_venue: activeCampaign.form.eventVenue || "To Be Announced",
-      event_location: activeCampaign.form.eventVenue || "Nepal",
-      event_description: activeCampaign.form.description || activeCampaign.form.name,
+      event_venue: activeCampaign.form.eventVenue || "Janakpur Dham Cultural Center, Nepal",
+      event_location: "Janakpur Dham, Nepal",
+      event_description: activeCampaign.form.description || "Celebrating Mithila's Culture, Confidence & Talent",
       participant_category: participantCategory,
-      organizer_name: `${activeCampaign.form.name} Organizing Committee`,
-      registration_url: `${appUrl}/register/${activeCampaign.form.slug}`,
-      event_url: `${appUrl}/register/${activeCampaign.form.slug}`,
+      organizer_name: "The Origin Foundation",
+      registration_url: `${appUrl}/register/${activeCampaign.form.slug || "mithila-queen"}`,
+      event_url: `${appUrl}/mithila-queen`,
       current_date: formatNepalTime(new Date(), "MMMM dd, yyyy"),
       unsubscribe_url: unsubscribeUrl,
     };
@@ -268,8 +274,8 @@ export async function processNextCampaignBatch(
     const renderedBody = renderEmailTemplate(activeCampaign.content, context, { isHtml: true });
 
     const finalHtml = wrapInFormSuiteEmailLayout({
-      eventTitle: activeCampaign.form.name,
-      badgeText: "Participant Notification",
+      eventTitle: activeCampaign.form.name || "Mithila Queen 2026",
+      badgeText: "Official Participant Notice",
       bodyHtml: renderedBody,
       unsubscribeUrl,
       showUnsubscribe: true,

@@ -41,7 +41,7 @@ export function AdminSidebar({
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { name: "Manage Competition", href: "/admin/forms", icon: Crown },
     { name: "Mithila Queen Applications", href: "/admin/responses", icon: FileText },
-    { name: "Email Campaigns", href: "/admin/campaigns", icon: Mail },
+    { name: "Communications", href: "/admin/campaigns", icon: Mail },
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
 
