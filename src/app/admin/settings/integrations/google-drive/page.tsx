@@ -31,12 +31,12 @@ export default async function GoogleDriveIntegrationPage({
       </div>
 
       <div>
-        <h1 className="text-3xl font-extrabold text-zinc-900 tracking-tight flex items-center gap-2.5">
-          <HardDrive className="w-8 h-8 text-emerald-600" />
-          <span>Google Drive Integration</span>
+        <h1 className="text-2xl font-serif font-bold text-[#292821] tracking-tight flex items-center gap-2.5">
+          <HardDrive className="w-7 h-7 text-[#B69A65]" />
+          <span>Google Drive Storage Integration</span>
         </h1>
-        <p className="text-sm text-zinc-500 mt-1">
-          Connect your Google account and configure the destination folder for participant video submissions.
+        <p className="text-xs text-[#292821]/70 mt-1">
+          Connect the official organization Google account and configure the destination folder for participant audition videos.
         </p>
       </div>
 

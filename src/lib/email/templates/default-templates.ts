@@ -29,8 +29,8 @@ Regards,
 {{organizer_name}}`,
     bodyHtml: `<p>Hello <strong>{{participant_name}}</strong>,</p>
 <p>We are pleased to announce that <strong>{{event_name}}</strong> will take place on <strong>{{event_date}}</strong>.</p>
-<div style="background-color: #f8fafc; border-left: 4px solid #10b981; padding: 16px; margin: 20px 0; border-radius: 0 8px 8px 0;">
-  <p style="margin: 0 0 8px 0; font-weight: 700; color: #065f46; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Official Event Details</p>
+<div style="background-color: #FAF5EE; border-left: 4px solid #B69A65; padding: 16px; margin: 20px 0; border-radius: 0 8px 8px 0;">
+  <p style="margin: 0 0 8px 0; font-weight: 700; color: #B69A65; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Official Event Details</p>
   <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
     <tr><td style="padding: 4px 0; color: #64748b; width: 30%;">Event:</td><td style="font-weight: 600; color: #0f172a;">{{event_name}}</td></tr>
     <tr><td style="padding: 4px 0; color: #64748b;">Date:</td><td style="font-weight: 600; color: #0f172a;">{{event_date}}</td></tr>
@@ -62,7 +62,7 @@ Regards,
     bodyHtml: `<p>Hello <strong>{{participant_name}}</strong>,</p>
 <p>This is a friendly reminder that <strong>{{event_name}}</strong> is approaching soon!</p>
 <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin: 20px 0;">
-  <h4 style="margin: 0 0 12px 0; color: #059669; font-size: 13px; text-transform: uppercase;">Event Schedule & Location</h4>
+  <h4 style="margin: 0 0 12px 0; color: #B69A65; font-size: 13px; text-transform: uppercase;">Event Schedule & Location</h4>
   <p style="margin: 4px 0;"><strong>Date:</strong> {{event_date}}</p>
   <p style="margin: 4px 0;"><strong>Time:</strong> {{event_time}}</p>
   <p style="margin: 4px 0;"><strong>Venue:</strong> {{event_venue}}</p>
@@ -94,10 +94,10 @@ We look forward to seeing you!
 Regards,
 {{organizer_name}}`,
     bodyHtml: `<p>Hello <strong>{{participant_name}}</strong>,</p>
-<p style="font-size: 16px; color: #059669; font-weight: 700;">Tomorrow is the big day!</p>
+<p style="font-size: 16px; color: #B69A65; font-weight: 700;">Tomorrow is the big day!</p>
 <p><strong>{{event_name}}</strong> takes place tomorrow. Please review your check-in instructions below:</p>
-<div style="background-color: #0f172a; color: #ffffff; border-radius: 10px; padding: 20px; margin: 20px 0;">
-  <div style="font-size: 12px; color: #34d399; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Your Entry Pass</div>
+<div style="background-color: #292821; color: #ffffff; border-radius: 10px; padding: 20px; margin: 20px 0;">
+  <div style="font-size: 12px; color: #B69A65; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Your Entry Pass</div>
   <div style="font-size: 18px; font-weight: 800; font-family: monospace;">Registration ID: {{registration_id}}</div>
   <div style="margin-top: 12px; font-size: 13px; color: #cbd5e1; border-top: 1px solid #334155; padding-top: 10px;">
     Reporting Time: <strong>{{event_time}}</strong> &bull; Venue: <strong>{{event_venue}}</strong>
@@ -138,13 +138,13 @@ Thank you!
     bodyHtml: `<p>Hello <strong>{{participant_name}}</strong>,</p>
 <p>Thank you for registering for <strong>{{event_name}}</strong>. Your registration has been successfully received and recorded.</p>
 <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin: 20px 0;">
-  <h4 style="margin: 0 0 12px 0; color: #059669; font-size: 13px; text-transform: uppercase;">Registration Summary</h4>
+  <h4 style="margin: 0 0 12px 0; color: #B69A65; font-size: 13px; text-transform: uppercase;">Registration Summary</h4>
   <p style="margin: 4px 0;"><strong>Registration ID:</strong> <span style="font-family: monospace; font-weight: 700;">{{registration_id}}</span></p>
   <p style="margin: 4px 0;"><strong>Event:</strong> {{event_name}}</p>
   <p style="margin: 4px 0;"><strong>Participant:</strong> {{participant_name}}</p>
   <p style="margin: 4px 0;"><strong>Email:</strong> {{participant_email}}</p>
   <p style="margin: 4px 0;"><strong>Category:</strong> {{participant_category}}</p>
-  <p style="margin: 4px 0;"><strong>Status:</strong> <span style="color: #059669; font-weight: 700;">Confirmed</span></p>
+  <p style="margin: 4px 0;"><strong>Status:</strong> <span style="color: #B69A65; font-weight: 700;">Confirmed</span></p>
 </div>
 <p>Please keep your Registration ID handy for bib collection and official event inquiries.</p>
 <p>Best regards,<br/><strong>{{organizer_name}}</strong></p>`,
@@ -169,9 +169,9 @@ We look forward to seeing you at the event.
 Regards,
 {{organizer_name}}`,
     bodyHtml: `<p>Hello <strong>{{participant_name}}</strong>,</p>
-<div style="background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 16px; margin: 20px 0; border-radius: 0 8px 8px 0;">
-  <h3 style="color: #065f46; margin: 0 0 4px 0; font-size: 16px;">Registration Officially Approved!</h3>
-  <p style="color: #047857; margin: 0; font-size: 13px;">Your entry credentials for {{event_name}} have been verified and approved.</p>
+<div style="background-color: #FAF5EE; border-left: 4px solid #B69A65; padding: 16px; margin: 20px 0; border-radius: 0 8px 8px 0;">
+  <h3 style="color: #292821; margin: 0 0 4px 0; font-size: 16px;">Registration Officially Approved!</h3>
+  <p style="color: #3C332A; margin: 0; font-size: 13px;">Your entry credentials for {{event_name}} have been verified and approved.</p>
 </div>
 <p>Here are your confirmed entry details:</p>
 <ul style="color: #334155; font-size: 14px; line-height: 1.8;">

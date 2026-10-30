@@ -31,6 +31,10 @@ import {
   RotateCcw,
   Undo2,
   X,
+  Crown,
+  Plus,
+  Layers,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -67,6 +71,7 @@ export function BuilderWorkspace({
   const [isSaving, setIsSaving] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -141,6 +146,7 @@ export function BuilderWorkspace({
     });
 
     setSelectedFieldId(id);
+    setIsPaletteOpen(false);
     setHasUnsavedChanges(true);
   };
 
@@ -157,34 +163,36 @@ export function BuilderWorkspace({
   };
 
   // Move field order
-  const handleMoveField = (stepIndex: number, fieldIndex: number, direction: "up" | "down") => {
+  const handleMoveField = (
+    stepIndex: number,
+    fieldIndex: number,
+    direction: "up" | "down"
+  ) => {
     setSchema((prev) => {
       const updatedSteps = [...prev.steps];
-      const step = { ...updatedSteps[stepIndex] };
-      const fields = [...step.fields];
+      const fields = [...updatedSteps[stepIndex].fields];
       const targetIndex = direction === "up" ? fieldIndex - 1 : fieldIndex + 1;
 
       if (targetIndex < 0 || targetIndex >= fields.length) return prev;
 
-      const temp = fields[fieldIndex];
-      fields[fieldIndex] = fields[targetIndex];
-      fields[targetIndex] = temp;
+      const [moved] = fields.splice(fieldIndex, 1);
+      fields.splice(targetIndex, 0, moved);
 
-      // Re-assign order indices
-      step.fields = fields.map((f, i) => ({ ...f, order: i }));
-      updatedSteps[stepIndex] = step;
+      fields.forEach((f, idx) => (f.order = idx));
+      updatedSteps[stepIndex] = { ...updatedSteps[stepIndex], fields };
       return { ...prev, steps: updatedSteps };
     });
     setHasUnsavedChanges(true);
   };
 
-  // Reorder fields directly (e.g. via drag-and-drop)
   const handleReorderFields = (stepIndex: number, newFields: FormFieldDefinition[]) => {
     setSchema((prev) => {
       const updatedSteps = [...prev.steps];
-      const step = { ...updatedSteps[stepIndex] };
-      step.fields = newFields.map((f, i) => ({ ...f, order: i }));
-      updatedSteps[stepIndex] = step;
+      newFields.forEach((f, idx) => (f.order = idx));
+      updatedSteps[stepIndex] = {
+        ...updatedSteps[stepIndex],
+        fields: newFields,
+      };
       return { ...prev, steps: updatedSteps };
     });
     setHasUnsavedChanges(true);
@@ -192,286 +200,266 @@ export function BuilderWorkspace({
 
   // Duplicate field
   const handleDuplicateField = (stepIndex: number, fieldIndex: number) => {
+    const field = schema.steps[stepIndex].fields[fieldIndex];
+    if (field.isSystem) {
+      toast.error("Mandatory protected system questions cannot be duplicated.");
+      return;
+    }
+
+    const clonedId = `field-${nanoid(8)}`;
+    const clonedFieldKey = `${field.fieldKey}_copy_${nanoid(3)}`;
+
+    const cloned: FormFieldDefinition = {
+      ...JSON.parse(JSON.stringify(field)),
+      id: clonedId,
+      fieldKey: clonedFieldKey,
+      label: `${field.label} (Copy)`,
+      order: fieldIndex + 1,
+      isSystem: false,
+    };
+
     setSchema((prev) => {
       const updatedSteps = [...prev.steps];
-      const step = { ...updatedSteps[stepIndex] };
-      const target = step.fields[fieldIndex];
-      const copy: FormFieldDefinition = {
-        ...target,
-        id: `field-${nanoid(8)}`,
-        fieldKey: `${target.fieldKey}_copy_${nanoid(3)}`,
-        label: `${target.label} (Copy)`,
-        isSystem: false,
-        order: fieldIndex + 1,
-      };
-
-      const fields = [...step.fields];
-      fields.splice(fieldIndex + 1, 0, copy);
-      step.fields = fields.map((f, i) => ({ ...f, order: i }));
-      updatedSteps[stepIndex] = step;
+      const fields = [...updatedSteps[stepIndex].fields];
+      fields.splice(fieldIndex + 1, 0, cloned);
+      fields.forEach((f, idx) => (f.order = idx));
+      updatedSteps[stepIndex] = { ...updatedSteps[stepIndex], fields };
       return { ...prev, steps: updatedSteps };
     });
+
+    setSelectedFieldId(clonedId);
     setHasUnsavedChanges(true);
   };
 
   // Delete field
   const handleDeleteField = (stepIndex: number, fieldIndex: number) => {
+    const field = schema.steps[stepIndex].fields[fieldIndex];
+    if (field.isSystem) {
+      toast.error("Protected system questions cannot be deleted.");
+      return;
+    }
+
     setSchema((prev) => {
       const updatedSteps = [...prev.steps];
-      const step = { ...updatedSteps[stepIndex] };
-      const deletedField = step.fields[fieldIndex];
-      if (deletedField.isSystem) return prev;
-
-      step.fields = step.fields.filter((_, i) => i !== fieldIndex).map((f, i) => ({ ...f, order: i }));
-      updatedSteps[stepIndex] = step;
+      const fields = updatedSteps[stepIndex].fields.filter((_, idx) => idx !== fieldIndex);
+      fields.forEach((f, idx) => (f.order = idx));
+      updatedSteps[stepIndex] = { ...updatedSteps[stepIndex], fields };
       return { ...prev, steps: updatedSteps };
     });
-    if (selectedFieldId === currentStep.fields[fieldIndex]?.id) {
+
+    if (selectedFieldId === field.id) {
       setSelectedFieldId(null);
     }
     setHasUnsavedChanges(true);
   };
 
-  // Add Step
+  // Add step
   const handleAddStep = () => {
     const newStepNum = schema.steps.length + 1;
     const newStep: FormStepDefinition = {
-      id: `step-${nanoid(6)}`,
-      title: `Step ${newStepNum}: Details`,
+      id: `step-${nanoid(8)}`,
+      title: `Step ${newStepNum}: Additional Details`,
       order: schema.steps.length,
       fields: [],
     };
+
     setSchema((prev) => ({
       ...prev,
       steps: [...prev.steps, newStep],
     }));
+
     setActiveStepIndex(schema.steps.length);
-    setSelectedFieldId(null);
     setHasUnsavedChanges(true);
   };
 
-  // Restore deleted step
-  const handleUndoStep = useCallback((snapshotToUse?: DeletedStepSnapshot) => {
-    const snapshot = snapshotToUse || deletedStepSnapshot;
-    if (!snapshot) return;
-
-    if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
-    if (undoIntervalRef.current) clearInterval(undoIntervalRef.current);
-    setDeletedStepSnapshot(null);
-    toast.dismiss("undo-step-toast");
-
-    setSchema((prev) => {
-      const steps = [...prev.steps];
-      const insertAt = Math.min(Math.max(0, snapshot.originalIndex), steps.length);
-      steps.splice(insertAt, 0, snapshot.step);
-      return {
-        ...prev,
-        steps: steps.map((s, i) => ({ ...s, order: i })),
-      };
-    });
-
-    setActiveStepIndex(snapshot.originalIndex);
-    setSelectedFieldId(null);
-    setHasUnsavedChanges(true);
-    toast.success(`Restored "${snapshot.step.title}" successfully!`);
-  }, [deletedStepSnapshot]);
-
-  // Dismiss undo banner early
-  const handleDismissUndo = useCallback(() => {
-    if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
-    if (undoIntervalRef.current) clearInterval(undoIntervalRef.current);
-    setDeletedStepSnapshot(null);
-    toast.dismiss("undo-step-toast");
+  const clearUndoTimers = useCallback(() => {
+    if (undoTimerRef.current) {
+      clearTimeout(undoTimerRef.current);
+      undoTimerRef.current = null;
+    }
+    if (undoIntervalRef.current) {
+      clearInterval(undoIntervalRef.current);
+      undoIntervalRef.current = null;
+    }
   }, []);
 
-  // Cleanup undo timers on unmount
+  const handleDismissUndo = useCallback(() => {
+    clearUndoTimers();
+    setDeletedStepSnapshot(null);
+  }, [clearUndoTimers]);
+
   useEffect(() => {
     return () => {
-      if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
-      if (undoIntervalRef.current) clearInterval(undoIntervalRef.current);
+      clearUndoTimers();
     };
-  }, []);
+  }, [clearUndoTimers]);
 
-  // Keyboard shortcut Ctrl+Z / Cmd+Z to undo step deletion
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z" && !e.shiftKey) {
-        const activeEl = document.activeElement;
-        const isInput =
-          activeEl &&
-          (activeEl.tagName === "INPUT" ||
-            activeEl.tagName === "TEXTAREA" ||
-            (activeEl as HTMLElement).isContentEditable);
-        if (isInput) return;
-
-        if (deletedStepSnapshot) {
-          e.preventDefault();
-          handleUndoStep();
-        }
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [deletedStepSnapshot, handleUndoStep]);
-
-  // Delete Step (cannot delete step 0, provides 10-second undo window)
+  // Delete step with 10s undo
   const handleDeleteStep = (stepIndex: number) => {
-    if (stepIndex === 0) return;
-    const stepToDelete = schema.steps[stepIndex];
-    if (!stepToDelete) return;
+    if (stepIndex === 0) {
+      toast.error("Step 1 (Email Verification & Contact) is protected and cannot be deleted.");
+      return;
+    }
 
-    // Clear any existing undo timers
-    if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
-    if (undoIntervalRef.current) clearInterval(undoIntervalRef.current);
+    if (schema.steps.length <= 1) {
+      toast.error("The registration form must retain at least one step.");
+      return;
+    }
+
+    const stepToDelete = schema.steps[stepIndex];
+    clearUndoTimers();
 
     const now = Date.now();
-    const expiresAt = now + 10000;
-    const snapshot: DeletedStepSnapshot = {
+    const durationMs = 10000;
+    const expiresAt = now + durationMs;
+
+    setDeletedStepSnapshot({
       step: JSON.parse(JSON.stringify(stepToDelete)),
       originalIndex: stepIndex,
       deletedAt: now,
       expiresAt,
-    };
-
-    setDeletedStepSnapshot(snapshot);
+    });
     setUndoSecondsLeft(10);
     setUndoProgressPercent(100);
 
-    // Remove step from schema
-    setSchema((prev) => {
-      const steps = prev.steps.filter((_, i) => i !== stepIndex).map((s, i) => ({ ...s, order: i }));
-      return { ...prev, steps };
-    });
-    setActiveStepIndex(Math.max(0, stepIndex - 1));
-    setSelectedFieldId(null);
-    setHasUnsavedChanges(true);
-
-    // High frequency interval (100ms) for smooth progress bar and countdown
     undoIntervalRef.current = setInterval(() => {
-      const remainingMs = Math.max(0, expiresAt - Date.now());
-      const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
-      const percent = Math.max(0, Math.min(100, (remainingMs / 10000) * 100));
-
-      setUndoSecondsLeft(remainingSec);
-      setUndoProgressPercent(percent);
-
+      const remainingMs = expiresAt - Date.now();
       if (remainingMs <= 0) {
-        if (undoIntervalRef.current) clearInterval(undoIntervalRef.current);
-        setDeletedStepSnapshot(null);
+        handleDismissUndo();
+      } else {
+        const seconds = Math.ceil(remainingMs / 1000);
+        const percent = Math.max(0, (remainingMs / durationMs) * 100);
+        setUndoSecondsLeft(seconds);
+        setUndoProgressPercent(percent);
       }
     }, 100);
 
     undoTimerRef.current = setTimeout(() => {
-      setDeletedStepSnapshot(null);
-      if (undoIntervalRef.current) clearInterval(undoIntervalRef.current);
-    }, 10000);
+      handleDismissUndo();
+    }, durationMs);
+
+    setSchema((prev) => {
+      const updatedSteps = prev.steps.filter((_, idx) => idx !== stepIndex);
+      updatedSteps.forEach((st, idx) => (st.order = idx));
+      return { ...prev, steps: updatedSteps };
+    });
+
+    if (activeStepIndex >= stepIndex) {
+      setActiveStepIndex(Math.max(0, activeStepIndex - 1));
+    }
+    setSelectedFieldId(null);
+    setHasUnsavedChanges(true);
   };
 
-  // Update Step Title & Description
+  const handleUndoStep = () => {
+    if (!deletedStepSnapshot) return;
+
+    const restoredStep = deletedStepSnapshot.step;
+    const targetIndex = Math.min(deletedStepSnapshot.originalIndex, schema.steps.length);
+
+    setSchema((prev) => {
+      const updatedSteps = [...prev.steps];
+      updatedSteps.splice(targetIndex, 0, restoredStep);
+      updatedSteps.forEach((st, idx) => (st.order = idx));
+      return { ...prev, steps: updatedSteps };
+    });
+
+    setActiveStepIndex(targetIndex);
+    setHasUnsavedChanges(true);
+    handleDismissUndo();
+    toast.success(`Restored "${restoredStep.title}" successfully.`);
+  };
+
+  // Update step meta
   const handleUpdateStepMeta = (stepIndex: number, title: string, description?: string) => {
     setSchema((prev) => {
-      const steps = [...prev.steps];
-      steps[stepIndex] = { ...steps[stepIndex], title, description };
-      return { ...prev, steps };
+      const updatedSteps = [...prev.steps];
+      updatedSteps[stepIndex] = {
+        ...updatedSteps[stepIndex],
+        title,
+        description,
+      };
+      return { ...prev, steps: updatedSteps };
     });
     setHasUnsavedChanges(true);
   };
 
-  // Save Draft
+  // Save draft
   const handleSaveDraft = async () => {
     setIsSaving(true);
     setMessage(null);
-    const res = await saveFormSchemaAction(form.id, schema);
-    setIsSaving(false);
-    if (res.success) {
-      setHasUnsavedChanges(false);
-      toast.success("Draft saved successfully.");
-      setMessage({ type: "success", text: "Draft schema saved to database." });
-    } else {
-      toast.error(res.error || "Failed to save draft");
-      setMessage({ type: "error", text: res.error || "Failed to save draft" });
+    try {
+      const res = await saveFormSchemaAction(form.id, schema);
+      if (res.success) {
+        setHasUnsavedChanges(false);
+        setMessage({ type: "success", text: "Draft form schema saved successfully." });
+        toast.success("Draft saved.");
+      } else {
+        setMessage({ type: "error", text: res.error || "Failed to save draft." });
+        toast.error(res.error || "Failed to save draft.");
+      }
+    } catch (err: any) {
+      setMessage({ type: "error", text: err.message || "An error occurred." });
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  // Publish Form (Generates immutable version snapshot in PostgreSQL)
+  // Publish form
   const handlePublish = async () => {
     setIsPublishing(true);
     setMessage(null);
-    const res = await publishFormAction(form.id, schema);
-    setIsPublishing(false);
-    if (res.success) {
-      setHasUnsavedChanges(false);
-      toast.success("Form version published successfully!");
-      setMessage({
-        type: "success",
-        text: "Form published successfully! Registrants can now access this live version.",
-      });
-      router.refresh();
-    } else {
-      toast.error(res.error || "Failed to publish form");
-      setMessage({ type: "error", text: res.error || "Failed to publish form" });
+    try {
+      const res = await publishFormAction(form.id, schema);
+      if (res.success) {
+        setHasUnsavedChanges(false);
+        setMessage({
+          type: "success",
+          text: "Registration form activated & published! New version saved without affecting historical records.",
+        });
+        toast.success("Mithila Queen form published!");
+        router.refresh();
+      } else {
+        setMessage({ type: "error", text: res.error || "Failed to publish." });
+        toast.error(res.error || "Failed to publish.");
+      }
+    } catch (err: any) {
+      setMessage({ type: "error", text: err.message || "An error occurred." });
+    } finally {
+      setIsPublishing(false);
     }
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-5rem)] space-y-3">
-      {/* Top Bar */}
-      <div className="bg-white border border-slate-200 rounded-xl px-5 py-3 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3 shrink-0">
-        <div className="flex items-center gap-3 min-w-0">
-          <Link
-            href="/admin/forms"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100"
-            title="Back to all forms"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-
-          <div className="min-w-0">
+    <div className="flex flex-col gap-4 min-h-[600px]">
+      {/* Workspace Sub-Header */}
+      <div className="bg-[#FFFFFF] p-4 rounded-lg border border-[#E8DFD0] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-md bg-[#FAF5EE] border border-[#B69A65]/40 text-[#B69A65] flex items-center justify-center shrink-0">
+            <Crown className="w-5 h-5 text-[#B69A65]" />
+          </div>
+          <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-lg font-black text-zinc-900 truncate">{form.name}</h1>
-              <span
-                className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
-                  form.status === "PUBLISHED"
-                    ? "bg-emerald-50 text-emerald-800 border-emerald-200"
-                    : "bg-zinc-100 text-zinc-600 border-zinc-200"
-                }`}
-              >
-                {form.status === "PUBLISHED" ? "Active" : "Inactive"}
-              </span>
+              <h2 className="text-sm font-serif font-bold text-[#292821]">
+                {form.name} &bull; Form Customizer
+              </h2>
               {publishedVersionNumber && (
-                <span className="text-[10px] font-mono text-zinc-400">
-                  v{publishedVersionNumber}
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#FAF5EE] border border-[#E8DFD0] text-[#292821] font-semibold">
+                  v{publishedVersionNumber} Live
                 </span>
               )}
             </div>
-
-            <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono mt-0.5">
-              <span>/register/{form.slug}</span>
-              <button
-                type="button"
-                onClick={copyUrl}
-                className="text-zinc-400 hover:text-emerald-700 p-0.5"
-                title="Copy public link"
-              >
-                {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-              </button>
-              <Link
-                href={`/register/${form.slug}`}
-                target="_blank"
-                className="text-zinc-400 hover:text-emerald-700 p-0.5"
-                title="Open live public form"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-              </Link>
-            </div>
+            <p className="text-[11px] text-zinc-500">
+              Customize questions, choices, and rules across the 7-step candidate dossier.
+            </p>
           </div>
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
           {hasUnsavedChanges && (
-            <span className="text-[11px] font-semibold text-emerald-900 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+            <span className="text-[10px] font-semibold text-[#A64B36] bg-[#FAF5EE] border border-[#A64B36]/30 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#A64B36] animate-pulse" />
               <span>Unsaved changes</span>
             </span>
           )}
@@ -480,11 +468,22 @@ export function BuilderWorkspace({
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => setIsPreviewOpen(true)}
-            className="text-xs h-9 font-semibold gap-1.5 border-zinc-300"
+            onClick={() => setIsPaletteOpen(!isPaletteOpen)}
+            className="text-xs h-8 font-semibold gap-1.5 border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE]"
           >
-            <Eye className="w-4 h-4 text-zinc-600" />
-            <span>Interactive Preview</span>
+            <Plus className="w-3.5 h-3.5 text-[#A64B36]" />
+            <span>{isPaletteOpen ? "Close Palette" : "Add Question"}</span>
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setIsPreviewOpen(true)}
+            className="text-xs h-8 font-semibold gap-1.5 border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE]"
+          >
+            <Eye className="w-3.5 h-3.5 text-[#B69A65]" />
+            <span>Full Form Preview</span>
           </Button>
 
           <Button
@@ -493,14 +492,14 @@ export function BuilderWorkspace({
             size="sm"
             disabled={isSaving}
             onClick={handleSaveDraft}
-            className="text-xs h-9 font-semibold gap-1.5 text-zinc-800 border-zinc-300 hover:bg-zinc-50"
+            className="text-xs h-8 font-semibold gap-1.5 border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE]"
           >
             {isSaving ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              <Loader2 className="w-3 h-3 animate-spin text-[#B69A65]" />
             ) : (
-              <Save className="w-3.5 h-3.5" />
+              <Save className="w-3.5 h-3.5 text-[#B69A65]" />
             )}
-            <span>Save Form</span>
+            <span>Save Draft</span>
           </Button>
 
           <Button
@@ -508,30 +507,53 @@ export function BuilderWorkspace({
             size="sm"
             disabled={isPublishing}
             onClick={handlePublish}
-            className="text-xs h-9 font-bold gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs"
+            className="text-xs h-8 font-bold gap-1.5 bg-[#A64B36] hover:bg-[#8F3E2C] text-white shadow-xs"
           >
             {isPublishing ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              <Loader2 className="w-3 h-3 animate-spin" />
             ) : (
               <CheckCircle2 className="w-3.5 h-3.5" />
             )}
-            <span>Activate & Publish</span>
+            <span>Publish Changes</span>
           </Button>
         </div>
       </div>
 
-      {/* Status Alert Banner if any */}
+      {/* Field Palette Popout Tray */}
+      {isPaletteOpen && (
+        <div className="bg-[#FFFFFF] p-4 rounded-lg border border-[#B69A65]/40 shadow-sm animate-in fade-in slide-in-from-top-2">
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E8DFD0]">
+            <div>
+              <h3 className="font-serif font-bold text-xs uppercase tracking-wider text-[#292821]">
+                Add Question to Step {activeStepIndex + 1}: {currentStep.title}
+              </h3>
+              <p className="text-[11px] text-zinc-500">
+                Click any input type below to insert it into the active step.
+              </p>
+            </div>
+            <button
+              onClick={() => setIsPaletteOpen(false)}
+              className="p-1 rounded text-zinc-400 hover:text-[#292821]"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <FieldPalette onAddField={handleAddField} />
+        </div>
+      )}
+
+      {/* Status Alert Banner */}
       {message && (
         <div
-          className={`px-4 py-2.5 rounded-xl border flex items-center justify-between text-xs shrink-0 ${
+          className={`px-4 py-2.5 rounded-lg border flex items-center justify-between text-xs shrink-0 ${
             message.type === "success"
-              ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+              ? "bg-[#FAF5EE] border-[#B69A65]/40 text-[#292821]"
               : "bg-red-50 border-red-200 text-red-800"
           }`}
         >
           <div className="flex items-center gap-2 font-medium">
             {message.type === "success" ? (
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-[#B69A65] shrink-0" />
             ) : (
               <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
             )}
@@ -546,15 +568,10 @@ export function BuilderWorkspace({
         </div>
       )}
 
-      {/* 3-Column Studio Workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 min-h-0">
-        {/* Left: Field Palette (3 cols) */}
-        <div className="lg:col-span-3 h-full min-h-[300px]">
-          <FieldPalette onAddField={handleAddField} />
-        </div>
-
-        {/* Center: Form Canvas (6 cols) */}
-        <div className="lg:col-span-6 h-full min-h-[400px]">
+      {/* Two-Panel Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 flex-1 min-h-[500px] items-start">
+        {/* Left Panel: Form Steps & Questions in Selected Step (5 cols) */}
+        <div className="lg:col-span-5 h-[620px]">
           <FormCanvas
             steps={schema.steps}
             activeStepIndex={activeStepIndex}
@@ -571,14 +588,66 @@ export function BuilderWorkspace({
           />
         </div>
 
-        {/* Right: Selected Field Properties (3 cols) */}
-        <div className="lg:col-span-3 h-full min-h-[300px]">
-          <FieldConfigPanel
-            field={selectedField}
-            allSteps={schema.steps}
-            onChange={handleUpdateField}
-            onClose={() => setSelectedFieldId(null)}
-          />
+        {/* Right Panel: In-Place Field Configuration & Step Preview (7 cols) */}
+        <div className="lg:col-span-7 h-[620px] flex flex-col gap-4">
+          {selectedField ? (
+            <FieldConfigPanel
+              field={selectedField}
+              allSteps={schema.steps}
+              onChange={handleUpdateField}
+              onClose={() => setSelectedFieldId(null)}
+            />
+          ) : (
+            <div className="bg-[#FFFFFF] rounded-lg border border-[#E8DFD0] p-6 h-full flex flex-col justify-between overflow-y-auto">
+              <div className="space-y-4">
+                <div className="border-b border-[#E8DFD0] pb-3">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65]">
+                    Live Step Preview &bull; Step {activeStepIndex + 1}
+                  </span>
+                  <h3 className="font-serif font-bold text-lg text-[#292821]">
+                    {currentStep.title}
+                  </h3>
+                  {currentStep.description && (
+                    <p className="text-xs text-zinc-500 mt-1">
+                      {currentStep.description}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-3 pt-2">
+                  {currentStep.fields.map((f, idx) => (
+                    <div
+                      key={f.id}
+                      onClick={() => setSelectedFieldId(f.id)}
+                      className="p-3.5 rounded-md border border-[#E8DFD0] bg-[#FAF5EE]/40 hover:border-[#B69A65] transition-colors cursor-pointer group"
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-xs font-bold text-[#292821] flex items-center gap-1.5">
+                          <span>{f.label}</span>
+                          {f.required && <span className="text-[#A64B36]">*</span>}
+                        </label>
+                        <span className="text-[10px] text-zinc-400 group-hover:text-[#A64B36] font-mono">
+                          Click to edit
+                        </span>
+                      </div>
+                      {f.description && (
+                        <p className="text-[11px] text-zinc-500 mb-2">{f.description}</p>
+                      )}
+                      <div className="h-8 rounded bg-white border border-[#E8DFD0] px-3 flex items-center text-xs text-zinc-400">
+                        {f.placeholder || `[${f.type} input placeholder]`}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-[#E8DFD0] text-center">
+                <p className="text-xs text-zinc-500">
+                  Click any question on the left panel to configure its label, validation, choices, or instructions.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -597,24 +666,24 @@ export function BuilderWorkspace({
         <div
           role="alert"
           aria-live="assertive"
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 w-[92vw] max-w-lg bg-zinc-950 text-white rounded-2xl shadow-2xl border border-zinc-800 overflow-hidden"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 w-[92vw] max-w-lg bg-[#292821] text-[#F5F0E6] rounded-lg shadow-2xl border border-[#B69A65]/40 overflow-hidden"
         >
           <div className="p-3 sm:p-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0 text-emerald-400">
+              <div className="w-8 h-8 rounded bg-[#1E1D18] border border-[#B69A65]/30 flex items-center justify-center shrink-0 text-[#B69A65]">
                 <RotateCcw className="w-4 h-4" />
               </div>
               <div className="min-w-0">
                 <div className="text-xs font-bold text-white truncate">
                   Deleted &ldquo;{deletedStepSnapshot.step.title}&rdquo;
                 </div>
-                <div className="text-[11px] text-zinc-400 flex items-center gap-1.5">
+                <div className="text-[11px] text-[#E8DFD0]/70 flex items-center gap-1.5">
                   <span>
                     {deletedStepSnapshot.step.fields.length}{" "}
-                    {deletedStepSnapshot.step.fields.length === 1 ? "field" : "fields"}
+                    {deletedStepSnapshot.step.fields.length === 1 ? "question" : "questions"}
                   </span>
-                  <span>•</span>
-                  <span className="text-emerald-400 font-medium">
+                  <span>&bull;</span>
+                  <span className="text-[#B69A65] font-medium font-mono">
                     Undo expires in {undoSecondsLeft}s
                   </span>
                 </div>
@@ -626,11 +695,11 @@ export function BuilderWorkspace({
                 type="button"
                 size="sm"
                 onClick={() => handleUndoStep()}
-                className="h-8 px-3 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white gap-1.5 shadow-xs"
+                className="h-8 px-3 text-xs font-bold bg-[#A64B36] hover:bg-[#8F3E2C] text-white gap-1.5 shadow-xs"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Undo</span>
-                <span className="bg-emerald-700/80 px-1.5 py-0.5 rounded text-[10px] tabular-nums font-mono">
+                <span className="bg-[#783323] px-1.5 py-0.5 rounded text-[10px] tabular-nums font-mono">
                   {undoSecondsLeft}s
                 </span>
               </Button>
@@ -638,7 +707,7 @@ export function BuilderWorkspace({
               <button
                 type="button"
                 onClick={handleDismissUndo}
-                className="p-1.5 text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition-colors"
+                className="p-1.5 text-zinc-400 hover:text-white rounded hover:bg-[#3C332A] transition-colors"
                 title="Dismiss undo"
                 aria-label="Dismiss"
               >
@@ -648,9 +717,9 @@ export function BuilderWorkspace({
           </div>
 
           {/* 10-second Animated Countdown Progress Bar */}
-          <div className="w-full bg-zinc-900 h-1 overflow-hidden">
+          <div className="w-full bg-[#1E1D18] h-1 overflow-hidden">
             <div
-              className="bg-emerald-500 h-full transition-all duration-100 ease-linear"
+              className="bg-[#B69A65] h-full transition-all duration-100 ease-linear"
               style={{
                 width: `${undoProgressPercent}%`,
               }}
@@ -661,4 +730,3 @@ export function BuilderWorkspace({
     </div>
   );
 }
-

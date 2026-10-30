@@ -39,10 +39,10 @@ export function AdminSidebar({
 
   const navigation = [
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { name: "Mithila Queen Applications", href: "/admin/responses", icon: Crown },
-    { name: "Forms & Competitions", href: "/admin/forms", icon: FileText },
+    { name: "Manage Competition", href: "/admin/forms", icon: Crown },
+    { name: "Mithila Queen Applications", href: "/admin/responses", icon: FileText },
     { name: "Email Campaigns", href: "/admin/campaigns", icon: Mail },
-    { name: "Website & Competition Settings", href: "/admin/settings", icon: Settings },
+    { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
 
   return (

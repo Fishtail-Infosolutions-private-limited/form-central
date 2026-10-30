@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import QRCode from "qrcode";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { QrCode, Download, Copy, Check, ExternalLink, Loader2, Share2 } from "lucide-react";
+import { QrCode, Download, Copy, Check, ExternalLink, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface FormQrCardProps {
@@ -30,7 +30,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
       width: 400,
       margin: 2,
       color: {
-        dark: "#000000",
+        dark: "#292821",
         light: "#FFFFFF",
       },
       errorCorrectionLevel: "H",
@@ -65,7 +65,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
         width: 800,
         margin: 2,
         color: {
-          dark: "#000000",
+          dark: "#292821",
           light: "#FFFFFF",
         },
         errorCorrectionLevel: "H",
@@ -96,14 +96,14 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Top Header Banner
-      ctx.fillStyle = "#000000";
+      ctx.fillStyle = "#292821";
       ctx.fillRect(0, 0, canvas.width, 100);
 
       // App / Event System Label
-      ctx.fillStyle = "#10B981"; // Emerald Green
+      ctx.fillStyle = "#B69A65";
       ctx.font = "bold 26px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText("FORMSUITE OFFICIAL EVENT REGISTRATION", 500, 60);
+      ctx.fillText("THE ORIGIN FOUNDATION • OFFICIAL COMPETITION REGISTRATION", 500, 60);
 
       // Draw High-Res QR Code centered
       const qrSize = 720;
@@ -112,12 +112,12 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
       ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
 
       // Border outline around QR code
-      ctx.strokeStyle = "#E4E4E7";
+      ctx.strokeStyle = "#E8DFD0";
       ctx.lineWidth = 3;
       ctx.strokeRect(qrX, qrY, qrSize, qrSize);
 
       // Event / Form Name below QR (with multi-line wrap support)
-      ctx.fillStyle = "#000000";
+      ctx.fillStyle = "#292821";
       ctx.font = "bold 42px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
       ctx.textAlign = "center";
 
@@ -141,19 +141,19 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
 
       // Instructions Subtitle
       yPos += 48;
-      ctx.fillStyle = "#52525B";
+      ctx.fillStyle = "#3C332A";
       ctx.font = "500 24px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-      ctx.fillText("Point your phone camera to register online", 500, yPos);
+      ctx.fillText("Point your phone camera to register online • Janakpur Dham, Nepal", 500, yPos);
 
       // Footer Box with Public URL
       yPos += 46;
-      ctx.fillStyle = "#F4F4F5";
+      ctx.fillStyle = "#FAF5EE";
       ctx.fillRect(80, yPos, 840, 64);
-      ctx.strokeStyle = "#E4E4E7";
+      ctx.strokeStyle = "#E8DFD0";
       ctx.lineWidth = 2;
       ctx.strokeRect(80, yPos, 840, 64);
 
-      ctx.fillStyle = "#059669";
+      ctx.fillStyle = "#A64B36";
       ctx.font = "bold 22px monospace";
       ctx.fillText(registrationUrl, 500, yPos + 40);
 
@@ -188,24 +188,24 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
   };
 
   return (
-    <Card className="border-zinc-200 shadow-xs bg-white overflow-hidden">
-      <CardHeader className="pb-3 border-b border-zinc-100 bg-zinc-50/60">
+    <Card className="border-[#E8DFD0] shadow-xs bg-[#FFFFFF] overflow-hidden">
+      <CardHeader className="pb-3 border-b border-[#E8DFD0] bg-[#FAF5EE]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-md bg-[#292821] text-[#B69A65] flex items-center justify-center">
               <QrCode className="w-4 h-4" />
             </div>
             <div>
-              <CardTitle className="text-sm font-bold text-zinc-900">
+              <CardTitle className="text-sm font-serif font-bold text-[#292821]">
                 Public Registration URL & QR Code
               </CardTitle>
-              <CardDescription className="text-[11px] text-zinc-500">
-                Scan or share this link on event banners, posters, and social channels.
+              <CardDescription className="text-[11px] text-[#292821]/70">
+                Scan or share this link on event banners, posters, and official social media.
               </CardDescription>
             </div>
           </div>
 
-          <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+          <span className="text-[10px] font-bold text-[#B69A65] bg-[#FFFFFF] border border-[#B69A65]/40 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
             Ready to Print
           </span>
         </div>
@@ -214,11 +214,11 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
       <CardContent className="pt-4 space-y-4">
         {/* URL Box & Action Buttons */}
         <div className="space-y-1.5">
-          <label className="text-xs font-bold text-zinc-700 block">
-            Public Registration URL
+          <label className="text-xs font-bold text-[#292821] block">
+            Official Public Registration URL
           </label>
           <div className="flex flex-col sm:flex-row items-stretch gap-2">
-            <div className="flex-1 flex items-center bg-zinc-50 border border-zinc-300 rounded-lg px-3 py-2 text-xs font-mono text-zinc-800 truncate">
+            <div className="flex-1 flex items-center bg-[#FAF5EE] border border-[#E8DFD0] rounded-md px-3 py-2 text-xs font-mono text-[#292821] truncate">
               {registrationUrl || `/register/${slug}`}
             </div>
 
@@ -228,16 +228,16 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
                 variant="outline"
                 size="sm"
                 onClick={handleCopyUrl}
-                className="h-9 text-xs border-zinc-300 font-semibold gap-1.5 hover:bg-zinc-100"
+                className="h-9 text-xs border-[#E8DFD0] text-[#292821] font-semibold gap-1.5 hover:bg-[#FAF5EE]"
               >
                 {isCopied ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-                    <span className="text-emerald-700">Copied</span>
+                    <Check className="w-3.5 h-3.5 text-[#B69A65] stroke-[3]" />
+                    <span className="text-[#292821]">Copied</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5 text-zinc-600" />
+                    <Copy className="w-3.5 h-3.5 text-[#A64B36]" />
                     <span>Copy URL</span>
                   </>
                 )}
@@ -252,10 +252,10 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="h-9 text-xs border-zinc-300 font-semibold gap-1 hover:bg-zinc-100"
+                  className="h-9 text-xs border-[#E8DFD0] text-[#292821] font-semibold gap-1 hover:bg-[#FAF5EE]"
                   title="Open live link"
                 >
-                  <ExternalLink className="w-3.5 h-3.5 text-zinc-600" />
+                  <ExternalLink className="w-3.5 h-3.5 text-[#A64B36]" />
                   <span>Open</span>
                 </Button>
               </a>
@@ -264,9 +264,9 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
         </div>
 
         {/* QR Code Preview & Download Card */}
-        <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-50/70 flex flex-col sm:flex-row items-center gap-5">
+        <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] flex flex-col sm:flex-row items-center gap-5">
           {/* QR Canvas Display */}
-          <div className="w-40 h-40 bg-white p-2.5 rounded-xl border border-zinc-200 shadow-2xs flex items-center justify-center shrink-0">
+          <div className="w-40 h-40 bg-white p-2.5 rounded-md border border-[#E8DFD0] shadow-2xs flex items-center justify-center shrink-0">
             {qrDataUrl ? (
               <img
                 src={qrDataUrl}
@@ -275,7 +275,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
               />
             ) : (
               <div className="flex flex-col items-center justify-center text-zinc-400 gap-1">
-                <Loader2 className="w-5 h-5 animate-spin text-emerald-600" />
+                <Loader2 className="w-5 h-5 animate-spin text-[#B69A65]" />
                 <span className="text-[10px]">Generating...</span>
               </div>
             )}
@@ -283,11 +283,11 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
 
           {/* QR Download Actions & Specs */}
           <div className="flex-1 space-y-2 text-center sm:text-left min-w-0">
-            <h4 className="text-sm font-bold text-zinc-900 truncate">
+            <h4 className="text-sm font-serif font-bold text-[#292821] truncate">
               {formName}
             </h4>
-            <p className="text-xs text-zinc-500 leading-relaxed">
-              Downloads as a high-resolution <strong>300 DPI JPEG</strong> with pure white background and the official event name printed underneath. Suitable for banners, standees, flyers, and certificates.
+            <p className="text-xs text-[#292821]/70 leading-relaxed">
+              Downloads as a high-resolution <strong>300 DPI JPEG</strong> with pure white background and official competition branding. Perfect for stage banners, standees, flyers, and press badges.
             </p>
 
             <div className="pt-2">
@@ -295,16 +295,16 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
                 type="button"
                 disabled={!qrDataUrl || isDownloading}
                 onClick={handleDownloadJpg}
-                className="w-full sm:w-auto h-9 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold gap-2 px-4 shadow-2xs"
+                className="w-full sm:w-auto h-9 text-xs bg-[#292821] hover:bg-[#3C332A] text-[#F5F0E6] font-bold gap-2 px-4 shadow-2xs border border-[#B69A65]/40"
               >
                 {isDownloading ? (
                   <>
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" />
                     <span>Rendering High-Res JPG...</span>
                   </>
                 ) : (
                   <>
-                    <Download className="w-3.5 h-3.5" />
+                    <Download className="w-3.5 h-3.5 text-[#B69A65]" />
                     <span>Download QR Code (JPG)</span>
                   </>
                 )}
@@ -316,4 +316,3 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
     </Card>
   );
 }
-

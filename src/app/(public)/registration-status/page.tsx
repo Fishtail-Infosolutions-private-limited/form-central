@@ -438,8 +438,8 @@ function RegistrationStatusContent() {
               </span>
               <div className="flex items-center gap-2">
                 {record.paymentStatus === "VERIFIED" ? (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#292821] text-[#F5F0E6] border border-[#B69A65]/40">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#B69A65]" />
                     Verified
                   </span>
                 ) : record.paymentStatus === "UNDER_REVIEW" ? (
@@ -474,8 +474,8 @@ function RegistrationStatusContent() {
               </span>
               <div className="flex items-center gap-2">
                 {record.applicationStatus === "APPROVED" ? (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#292821] text-[#F5F0E6] border border-[#B69A65]/40">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#B69A65]" />
                     Approved & Confirmed
                   </span>
                 ) : record.applicationStatus === "REJECTED" ? (

@@ -14,7 +14,7 @@ export default function RefundPolicyPage() {
         <span className="text-xs font-bold uppercase tracking-wider text-[#B69A65]">
           Financial Transparency
         </span>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#172B24] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#292821] tracking-tight">
           Refund & Cancellation Policy
         </h1>
         <p className="text-xs text-[#292821]">
@@ -24,7 +24,7 @@ export default function RefundPolicyPage() {
 
       <div className="p-8 sm:p-12 rounded-lg bg-white border border-[#E8DFD0] shadow-xs space-y-8 text-xs sm:text-sm text-[#292821] leading-relaxed">
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#172B24]">
+          <h2 className="text-lg font-bold font-serif text-[#292821]">
             1. Registration Fee Overview
           </h2>
           <p>
@@ -33,7 +33,7 @@ export default function RefundPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#172B24]">
+          <h2 className="text-lg font-bold font-serif text-[#292821]">
             2. General Non-Refundable Nature
           </h2>
           <p>
@@ -42,7 +42,7 @@ export default function RefundPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#172B24]">
+          <h2 className="text-lg font-bold font-serif text-[#292821]">
             3. Duplicate & Erroneous Payments
           </h2>
           <p>
@@ -50,13 +50,13 @@ export default function RefundPolicyPage() {
           </p>
           <ul className="list-disc pl-5 space-y-1.5">
             <li>The applicant must notify the organizers within <strong>7 calendar days</strong> of the transaction.</li>
-            <li>Submit full bank statements, transaction IDs, and sender account details to <a href="mailto:originfoundation107@gmail.com" className="text-[#172B24] font-semibold underline">originfoundation107@gmail.com</a>.</li>
+            <li>Submit full bank statements, transaction IDs, and sender account details to <a href="mailto:originfoundation107@gmail.com" className="text-[#292821] font-semibold underline">originfoundation107@gmail.com</a>.</li>
             <li>Upon independent financial reconciliation by our finance team, verified duplicate excess amounts will be returned to the originating source account.</li>
           </ul>
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#172B24]">
+          <h2 className="text-lg font-bold font-serif text-[#292821]">
             4. Event Postponement or Schedule Adjustments
           </h2>
           <p>
@@ -65,7 +65,7 @@ export default function RefundPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#172B24]">
+          <h2 className="text-lg font-bold font-serif text-[#292821]">
             5. Contact for Payment Reconciliation
           </h2>
           <p>
@@ -73,7 +73,7 @@ export default function RefundPolicyPage() {
           </p>
           <div className="p-4 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] space-y-1 text-xs">
             <p><strong>The Origin Foundation — Payment Support</strong></p>
-            <p>Email: <a href="mailto:originfoundation107@gmail.com" className="text-[#172B24] font-semibold underline">originfoundation107@gmail.com</a></p>
+            <p>Email: <a href="mailto:originfoundation107@gmail.com" className="text-[#292821] font-semibold underline">originfoundation107@gmail.com</a></p>
             <p>Gaurav Gupta: +977 9704571941 | Dipendra Shah Kalwar: +977 981-2005468</p>
             <p>Janakpur Dham, Madhesh Province, Nepal</p>
           </div>

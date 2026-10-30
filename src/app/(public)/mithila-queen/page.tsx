@@ -128,7 +128,7 @@ export default function MithilaQueenPage() {
       {/* ==================================================================== */}
       {/* HERO BANNER */}
       {/* ==================================================================== */}
-      <section className="bg-[#172B24] text-[#FAF5EE] py-16 sm:py-24 border-b border-[#292821] relative overflow-hidden">
+      <section className="bg-[#292821] text-[#FAF5EE] py-16 sm:py-24 border-b border-[#292821] relative overflow-hidden">
         {/* Ambient background mandala */}
         <div className="absolute -right-20 top-1/2 -translate-y-1/2 opacity-15 pointer-events-none hidden lg:block">
           <MithilaHeritageMandala className="w-[480px] h-[480px]" accent="#B69A65" />
@@ -153,9 +153,9 @@ export default function MithilaQueenPage() {
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3.5">
             <Link href="/register">
-              <Button className="w-full sm:w-auto bg-[#B69A65] hover:bg-[#b8986d] text-[#172B24] font-bold text-sm h-12 px-7 rounded-md shadow-md gap-2 group">
+              <Button className="w-full sm:w-auto bg-[#B69A65] hover:bg-[#b8986d] text-[#292821] font-bold text-sm h-12 px-7 rounded-md shadow-md gap-2 group">
                 <span>Register Online</span>
-                <span className="text-xs bg-[#172B24]/15 px-2 py-0.5 rounded font-mono font-bold">
+                <span className="text-xs bg-[#292821]/15 px-2 py-0.5 rounded font-mono font-bold">
                   NPR 399
                 </span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -197,7 +197,7 @@ export default function MithilaQueenPage() {
             <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
               Evaluation Philosophy
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#172B24] font-serif">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#292821] font-serif">
               A Cultural Platform — Not Merely a Physical Beauty Contest
             </h2>
             <p className="text-sm text-[#292821] leading-relaxed">
@@ -211,7 +211,7 @@ export default function MithilaQueenPage() {
                 <span className="text-[10px] uppercase font-bold tracking-wider text-[#B69A65] block">
                   Criteria 0{i + 1}
                 </span>
-                <h3 className="font-bold text-[#172B24] text-base font-serif">{p.title}</h3>
+                <h3 className="font-bold text-[#292821] text-base font-serif">{p.title}</h3>
                 <p className="text-xs text-[#292821] leading-relaxed">{p.desc}</p>
               </div>
             ))}
@@ -227,7 +227,7 @@ export default function MithilaQueenPage() {
           <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
             Eligibility & Inclusivity
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#172B24] font-serif">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#292821] font-serif">
             Who Can Participate?
           </h2>
           <p className="text-xs sm:text-sm text-[#292821]">
@@ -243,12 +243,12 @@ export default function MithilaQueenPage() {
                   <span className="text-xs font-bold uppercase tracking-wider text-[#B69A65] block">
                     Rule 0{idx + 1}
                   </span>
-                  <h3 className="text-base font-bold text-[#172B24] font-serif mt-0.5">
+                  <h3 className="text-base font-bold text-[#292821] font-serif mt-0.5">
                     {item.rule}
                   </h3>
                 </div>
                 <div className="md:w-1/3">
-                  <span className="font-bold text-sm text-[#172B24] block">{item.criteria}</span>
+                  <span className="font-bold text-sm text-[#292821] block">{item.criteria}</span>
                 </div>
                 <div className="md:w-1/3 text-xs text-zinc-500">
                   <span>{item.note}</span>
@@ -269,7 +269,7 @@ export default function MithilaQueenPage() {
               <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
                 Recognition
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#172B24] font-serif">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#292821] font-serif">
                 Prize Structure
               </h2>
               <p className="text-xs sm:text-sm text-[#292821]">
@@ -277,7 +277,7 @@ export default function MithilaQueenPage() {
               </p>
             </div>
             <div className="p-3 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] text-xs text-[#292821]">
-              <span className="font-bold text-[#172B24]">Organizer Note: </span>
+              <span className="font-bold text-[#292821]">Organizer Note: </span>
               <span>All unconfirmed awards are labeled per transparency guidelines.</span>
             </div>
           </div>
@@ -292,7 +292,7 @@ export default function MithilaQueenPage() {
                   <span className="text-[10px] uppercase font-bold tracking-wider text-[#B69A65]">
                     {p.badge}
                   </span>
-                  <h3 className="font-serif font-bold text-base text-[#172B24]">{p.place}</h3>
+                  <h3 className="font-serif font-bold text-base text-[#292821]">{p.place}</h3>
                   <p className="text-sm font-semibold text-[#292821]">{p.title}</p>
                   {p.value && <p className="text-xs text-zinc-500 font-mono">{p.value}</p>}
                 </div>
@@ -315,7 +315,7 @@ export default function MithilaQueenPage() {
           <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
             Audition Guidelines
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#172B24] font-serif">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#292821] font-serif">
             Video Submission Process
           </h2>
           <p className="text-xs sm:text-sm text-[#292821]">
@@ -330,18 +330,18 @@ export default function MithilaQueenPage() {
               className="p-6 rounded-md bg-white border border-[#E8DFD0] shadow-xs space-y-3"
             >
               <div className="flex items-center justify-between">
-                <span className="w-8 h-8 rounded-lg bg-[#172B24] text-[#B69A65] flex items-center justify-center font-bold text-xs font-mono">
+                <span className="w-8 h-8 rounded-lg bg-[#292821] text-[#B69A65] flex items-center justify-center font-bold text-xs font-mono">
                   {step.step}
                 </span>
                 <Video className="w-4 h-4 text-[#B69A65]" />
               </div>
-              <h3 className="text-base font-bold text-[#172B24] font-serif">{step.title}</h3>
+              <h3 className="text-base font-bold text-[#292821] font-serif">{step.title}</h3>
               <p className="text-xs text-[#292821] leading-relaxed">{step.desc}</p>
             </div>
           ))}
         </div>
 
-        <div className="p-6 rounded-md bg-[#172B24] text-[#FAF5EE] border border-[#292821] flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="p-6 rounded-md bg-[#292821] text-[#FAF5EE] border border-[#292821] flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1">
             <span className="text-xs font-bold text-[#B69A65] uppercase tracking-wider block">
               Direct WhatsApp Submission Line
@@ -355,7 +355,7 @@ export default function MithilaQueenPage() {
             href="https://wa.me/9779704571941"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[#B69A65] hover:bg-[#b8986d] text-[#172B24] text-xs font-bold h-10 px-5 rounded-md transition-colors shrink-0"
+            className="inline-flex items-center gap-2 bg-[#B69A65] hover:bg-[#b8986d] text-[#292821] text-xs font-bold h-10 px-5 rounded-md transition-colors shrink-0"
           >
             <MessageCircle className="w-4 h-4" />
             <span>Open WhatsApp Chat</span>
@@ -367,7 +367,7 @@ export default function MithilaQueenPage() {
       {/* FINAL CALL TO ACTION */}
       {/* ==================================================================== */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#172B24] font-serif">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#292821] font-serif">
           Begin Your Registration for Mithila Queen
         </h2>
         <p className="text-xs sm:text-sm text-[#292821] max-w-xl mx-auto">
@@ -375,13 +375,13 @@ export default function MithilaQueenPage() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link href="/register">
-            <Button className="bg-[#B69A65] hover:bg-[#b8986d] text-[#172B24] font-bold text-xs h-11 px-7 rounded-md shadow-xs gap-2">
+            <Button className="bg-[#B69A65] hover:bg-[#b8986d] text-[#292821] font-bold text-xs h-11 px-7 rounded-md shadow-xs gap-2">
               <span>Start Registration (NPR 399)</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </Link>
           <Link href="/registration-status">
-            <Button variant="outline" className="border-[#292821]/20 text-[#172B24] text-xs h-11 px-6 rounded-md font-medium">
+            <Button variant="outline" className="border-[#292821]/20 text-[#292821] text-xs h-11 px-6 rounded-md font-medium">
               Check Application Status
             </Button>
           </Link>

@@ -25,8 +25,8 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
   const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontOblique = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
 
-  // Brand Palette RGB Colors (0 - 1) — Forest Green, Antique Gold, Terracotta & Warm Ivory
-  const colorNavy = rgb(23 / 255, 43 / 255, 36 / 255);       // #172B24 (Forest Green)
+  // Brand Palette RGB Colors (0 - 1) — Charcoal, Antique Gold, Terracotta & Warm Ivory
+  const colorNavy = rgb(41 / 255, 40 / 255, 33 / 255);       // #292821 (Charcoal)
   const colorGold = rgb(182 / 255, 154 / 255, 101 / 255);   // #B69A65 (Antique Gold)
   const colorIvory = rgb(245 / 255, 240 / 255, 230 / 255);  // #F5F0E6 (Warm Ivory)
   const colorTerracotta = rgb(166 / 255, 75 / 255, 54 / 255); // #A64B36 (Terracotta)
@@ -211,7 +211,7 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
       width: 120,
       margin: 1,
       color: {
-        dark: "#172B24FF",
+        dark: "#292821FF",
         light: "#FFFFFFFF",
       },
     });

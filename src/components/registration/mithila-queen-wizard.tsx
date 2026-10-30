@@ -640,7 +640,7 @@ export function MithilaQueenWizard() {
             variant="outline"
             className="border-[#B69A65] text-[#292821] hover:bg-[#E8DFD0]/50 gap-1.5 text-xs font-semibold"
           >
-            {copiedRef ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+            {copiedRef ? <Check className="w-3.5 h-3.5 text-[#B69A65]" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copiedRef ? "Copied" : "Copy ID"}</span>
           </Button>
         </div>
@@ -848,14 +848,14 @@ export function MithilaQueenWizard() {
                     placeholder="anjali@example.com"
                     required
                     disabled={isEmailVerified}
-                    className={`h-10 text-xs border-[#E8DFD0] ${isEmailVerified ? "bg-emerald-50/50 pr-8" : ""}`}
+                    className={`h-10 text-xs border-[#E8DFD0] ${isEmailVerified ? "bg-[#FAF5EE] pr-8" : ""}`}
                   />
                   {isEmailVerified && (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 absolute right-2.5 top-3" />
+                    <CheckCircle2 className="w-4 h-4 text-[#B69A65] absolute right-2.5 top-3" />
                   )}
                 </div>
                 {isEmailVerified && (
-                  <p className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
+                  <p className="text-[11px] text-[#B69A65] font-semibold flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>Email verified via 6-digit OTP</span>
                   </p>
@@ -1066,8 +1066,8 @@ export function MithilaQueenWizard() {
                   )}
                 </div>
               ) : (
-                <div className="flex items-center gap-2 text-xs text-emerald-800 font-semibold bg-emerald-50 p-3 rounded-md border border-emerald-200">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div className="flex items-center gap-2 text-xs text-[#292821] font-semibold bg-[#FAF5EE] p-3 rounded-md border border-[#B69A65]">
+                  <CheckCircle2 className="w-4 h-4 text-[#B69A65] shrink-0" />
                   <span>Your email address ({email}) is verified! You may advance to the next steps.</span>
                 </div>
               )}

@@ -8,27 +8,29 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "border-transparent bg-emerald-100 text-emerald-900 border border-emerald-200",
+          "border border-[#E8DFD0] bg-[#FAF5EE] text-[#292821]",
         secondary:
-          "border-transparent bg-zinc-100 text-zinc-800",
+          "border border-[#E8DFD0] bg-[#E8DFD0]/60 text-[#292821]",
         destructive:
-          "border-transparent bg-zinc-900 text-white font-medium",
+          "border-transparent bg-[#A64B36] text-white font-medium",
         outline:
-          "border border-zinc-200 text-zinc-800 bg-white",
+          "border border-[#E8DFD0] text-[#292821] bg-white",
         warning:
-          "border-transparent bg-emerald-50 text-emerald-800 border border-emerald-200",
+          "border border-[#B69A65]/40 bg-[#FAF5EE] text-[#B69A65]",
         accent:
-          "border-transparent bg-emerald-100 text-emerald-900 border border-emerald-200",
+          "border border-[#B69A65]/40 bg-[#FAF5EE] text-[#A64B36]",
         published:
-          "border-transparent bg-emerald-600 text-white font-semibold",
+          "border-transparent bg-[#292821] text-[#F5F0E6] font-semibold",
         draft:
-          "border-transparent bg-zinc-200 text-zinc-800 font-medium",
+          "border border-[#E8DFD0] bg-[#FAF5EE] text-[#3C332A] font-medium",
         closed:
-          "border-transparent bg-black text-white font-medium",
+          "border-transparent bg-[#3C332A] text-white font-medium",
         black:
-          "border-transparent bg-black text-white font-medium",
+          "border-transparent bg-[#292821] text-white font-medium",
         forest:
-          "border-transparent bg-emerald-900 text-emerald-100 font-medium",
+          "border-transparent bg-[#292821] text-[#F5F0E6] font-medium",
+        terracotta:
+          "border-transparent bg-[#A64B36] text-white font-medium",
       },
     },
     defaultVariants: {

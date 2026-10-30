@@ -14,11 +14,11 @@ export default function RegisterPage() {
     <div className="py-10 sm:py-16 space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Editorial Header */}
       <div className="max-w-2xl mx-auto text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFFFFF] border border-[#E8DFD0] text-[#172B24] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFFFFF] border border-[#E8DFD0] text-[#292821] text-xs font-semibold">
           <MithilaHeritageMandala className="w-3.5 h-3.5 text-[#B69A65]" />
           <span>The Origin Foundation &bull; Janakpur Dham</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#172B24] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#292821] tracking-tight">
           Mithila Queen Registration
         </h1>
         <p className="text-xs sm:text-sm text-[#292821]/75 leading-relaxed max-w-xl mx-auto">

@@ -10,14 +10,14 @@ export function MithilaMotif({ className = "w-full h-4 text-[#B69A65]/40" }: { c
         preserveAspectRatio="none"
       >
         <path d="M0,8 L15,0 L30,8 L15,16 Z M30,8 L45,0 L60,8 L45,16 Z M60,8 L75,0 L90,8 L75,16 Z M90,8 L105,0 L120,8 L105,16 Z M120,8 L135,0 L150,8 L135,16 Z M150,8 L165,0 L180,8 L165,16 Z M180,8 L195,0 L210,8 L195,16 Z M210,8 L225,0 L240,8 L225,16 Z" />
-        <circle cx="15" cy="8" r="2" fill="#172B24" />
-        <circle cx="45" cy="8" r="2" fill="#172B24" />
-        <circle cx="75" cy="8" r="2" fill="#172B24" />
-        <circle cx="105" cy="8" r="2" fill="#172B24" />
-        <circle cx="135" cy="8" r="2" fill="#172B24" />
-        <circle cx="165" cy="8" r="2" fill="#172B24" />
-        <circle cx="195" cy="8" r="2" fill="#172B24" />
-        <circle cx="225" cy="8" r="2" fill="#172B24" />
+        <circle cx="15" cy="8" r="2" fill="#292821" />
+        <circle cx="45" cy="8" r="2" fill="#292821" />
+        <circle cx="75" cy="8" r="2" fill="#292821" />
+        <circle cx="105" cy="8" r="2" fill="#292821" />
+        <circle cx="135" cy="8" r="2" fill="#292821" />
+        <circle cx="165" cy="8" r="2" fill="#292821" />
+        <circle cx="195" cy="8" r="2" fill="#292821" />
+        <circle cx="225" cy="8" r="2" fill="#292821" />
       </svg>
     </div>
   );

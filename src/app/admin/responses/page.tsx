@@ -136,7 +136,7 @@ export default async function AdminAllResponsesPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header with Forest Green and Antique Gold cultural branding */}
+      {/* Header with Charcoal and Antique Gold cultural branding */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DFD0] pb-6 bg-[#FFFFFF] p-6 rounded-lg border">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
@@ -145,7 +145,7 @@ export default async function AdminAllResponsesPage() {
               The Origin Foundation &bull; Adjudication Desk
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#172B24] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#292821] tracking-tight">
             Applications & Payment Reviews
           </h1>
           <p className="text-xs sm:text-sm text-[#292821]/70 max-w-2xl">
@@ -155,7 +155,7 @@ export default async function AdminAllResponsesPage() {
 
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">
-            <div className="text-xs font-semibold text-[#172B24]">
+            <div className="text-xs font-semibold text-[#292821]">
               {allApplications.length} Total Submissions
             </div>
             <div className="text-[11px] text-[#A64B36] font-medium">

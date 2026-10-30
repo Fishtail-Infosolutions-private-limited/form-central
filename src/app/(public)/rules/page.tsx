@@ -16,7 +16,7 @@ export default function RulesPage() {
         <span className="text-xs font-bold uppercase tracking-wider text-[#B69A65]">
           The Origin Foundation Official Standards
         </span>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#172B24] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#292821] tracking-tight">
           Competition Rules & Eligibility
         </h1>
         <p className="text-xs text-[#292821]">
@@ -26,7 +26,7 @@ export default function RulesPage() {
 
       <div className="p-8 sm:p-12 rounded-lg bg-white border border-[#E8DFD0] shadow-xs space-y-8 text-xs sm:text-sm text-[#292821] leading-relaxed">
         <section className="space-y-4">
-          <h2 className="text-lg font-bold font-serif text-[#172B24] border-b border-[#E8DFD0] pb-2">
+          <h2 className="text-lg font-bold font-serif text-[#292821] border-b border-[#E8DFD0] pb-2">
             1. Core Eligibility Rules
           </h2>
           <div className="space-y-3">
@@ -61,7 +61,7 @@ export default function RulesPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-lg font-bold font-serif text-[#172B24] border-b border-[#E8DFD0] pb-2">
+          <h2 className="text-lg font-bold font-serif text-[#292821] border-b border-[#E8DFD0] pb-2">
             2. Video Audition Requirements
           </h2>
           <p>
@@ -76,7 +76,7 @@ export default function RulesPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-lg font-bold font-serif text-[#172B24] border-b border-[#E8DFD0] pb-2">
+          <h2 className="text-lg font-bold font-serif text-[#292821] border-b border-[#E8DFD0] pb-2">
             3. Registration Fee & Payment
           </h2>
           <p>
@@ -85,7 +85,7 @@ export default function RulesPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-lg font-bold font-serif text-[#172B24] border-b border-[#E8DFD0] pb-2">
+          <h2 className="text-lg font-bold font-serif text-[#292821] border-b border-[#E8DFD0] pb-2">
             4. Event Schedule & Venue
           </h2>
           <p>
@@ -95,7 +95,7 @@ export default function RulesPage() {
 
         <div className="pt-4 flex justify-center">
           <Link href="/register">
-            <Button className="bg-[#B69A65] hover:bg-[#b8986d] text-[#172B24] font-bold text-xs h-11 px-7 rounded-md shadow-xs gap-2">
+            <Button className="bg-[#B69A65] hover:bg-[#b8986d] text-[#292821] font-bold text-xs h-11 px-7 rounded-md shadow-xs gap-2">
               <span>Accept Rules & Register (NPR 399)</span>
               <ArrowRight className="w-4 h-4" />
             </Button>

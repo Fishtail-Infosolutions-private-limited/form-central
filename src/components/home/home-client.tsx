@@ -101,12 +101,12 @@ export function HomeClient({ admin }: HomeClientProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 flex flex-col selection:bg-emerald-600 selection:text-white">
+    <div className="min-h-screen bg-white text-zinc-900 flex flex-col selection:bg-#292821 selection:text-white">
       {/* Navigation Bar */}
       <header className="border-b border-zinc-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 transition-all">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+            <div className="w-9 h-9 rounded-xl bg-#292821 text-white flex items-center justify-center shadow-xs">
               <Trophy className="w-5 h-5" />
             </div>
             <div className="flex flex-col">
@@ -123,35 +123,35 @@ export function HomeClient({ admin }: HomeClientProps) {
             <a
               href="#how-it-works"
               onClick={(e) => scrollToSection(e, "how-it-works")}
-              className="hover:text-emerald-700 transition-colors cursor-pointer"
+              className="hover:text-#292821 transition-colors cursor-pointer"
             >
               How It Works
             </a>
             <a
               href="#capabilities"
               onClick={(e) => scrollToSection(e, "capabilities")}
-              className="hover:text-emerald-700 transition-colors cursor-pointer"
+              className="hover:text-#292821 transition-colors cursor-pointer"
             >
               Capabilities
             </a>
             <a
               href="#comparison"
               onClick={(e) => scrollToSection(e, "comparison")}
-              className="hover:text-emerald-700 transition-colors cursor-pointer"
+              className="hover:text-#292821 transition-colors cursor-pointer"
             >
               Comparison
             </a>
             <a
               href="#architecture"
               onClick={(e) => scrollToSection(e, "architecture")}
-              className="hover:text-emerald-700 transition-colors cursor-pointer"
+              className="hover:text-#292821 transition-colors cursor-pointer"
             >
               Architecture
             </a>
             <a
               href="#faq"
               onClick={(e) => scrollToSection(e, "faq")}
-              className="hover:text-emerald-700 transition-colors cursor-pointer"
+              className="hover:text-#292821 transition-colors cursor-pointer"
             >
               FAQ
             </a>
@@ -160,14 +160,14 @@ export function HomeClient({ admin }: HomeClientProps) {
           <div className="flex items-center gap-3">
             {admin ? (
               <Link href="/admin/dashboard">
-                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs h-9 gap-1.5 px-4 shadow-xs">
+                <Button className="bg-#292821 hover:bg-#292821 text-white font-bold text-xs h-9 gap-1.5 px-4 shadow-xs">
                   <span>Dashboard</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Button>
               </Link>
             ) : (
               <Link href="/admin/login">
-                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs h-9 gap-1.5 px-4 shadow-xs">
+                <Button className="bg-#292821 hover:bg-#292821 text-white font-bold text-xs h-9 gap-1.5 px-4 shadow-xs">
                   <span>Login</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Button>
@@ -182,8 +182,8 @@ export function HomeClient({ admin }: HomeClientProps) {
         {/* Hero Section */}
         <section className="py-16 md:py-24 border-b border-zinc-200 bg-zinc-50/70">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold tracking-wide uppercase mb-6">
-              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-#FAF5EE text-#292821 text-xs font-bold tracking-wide uppercase mb-6">
+              <span className="w-2 h-2 rounded-full bg-#292821 animate-pulse" />
               <span>Event & Competition Infrastructure</span>
             </div>
 
@@ -198,7 +198,7 @@ export function HomeClient({ admin }: HomeClientProps) {
 
             <div className="gsap-hero-actions mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link href={admin ? "/admin/dashboard" : "/admin/login"}>
-                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs h-10 px-8 gap-2 shadow-xs w-full sm:w-auto">
+                <Button className="bg-#292821 hover:bg-#292821 text-white font-bold text-xs h-10 px-8 gap-2 shadow-xs w-full sm:w-auto">
                   <span>{admin ? "Open Command Center" : "Admin Login"}</span>
                   <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -272,9 +272,9 @@ export function HomeClient({ admin }: HomeClientProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4 }}
-              className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3.5 relative hover:border-emerald-500 transition-colors"
+              className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3.5 relative hover:border-#B69A65 transition-colors"
             >
-              <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-#292821 text-white font-black text-sm flex items-center justify-center shadow-xs">
                 1
               </div>
               <h3 className="font-bold text-base text-black">
@@ -292,9 +292,9 @@ export function HomeClient({ admin }: HomeClientProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.1 }}
-              className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3.5 relative hover:border-emerald-500 transition-colors"
+              className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3.5 relative hover:border-#B69A65 transition-colors"
             >
-              <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-#292821 text-white font-black text-sm flex items-center justify-center shadow-xs">
                 2
               </div>
               <h3 className="font-bold text-base text-black">
@@ -312,9 +312,9 @@ export function HomeClient({ admin }: HomeClientProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.2 }}
-              className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3.5 relative hover:border-emerald-500 transition-colors"
+              className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3.5 relative hover:border-#B69A65 transition-colors"
             >
-              <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-#292821 text-white font-black text-sm flex items-center justify-center shadow-xs">
                 3
               </div>
               <h3 className="font-bold text-base text-black">
@@ -342,7 +342,7 @@ export function HomeClient({ admin }: HomeClientProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-#FAF5EE text-#292821 flex items-center justify-center">
                   <MailCheck className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-sm text-black">Email OTP Verification</h3>
@@ -353,7 +353,7 @@ export function HomeClient({ admin }: HomeClientProps) {
               </div>
 
               <div className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-#FAF5EE text-#292821 flex items-center justify-center">
                   <Layers className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-sm text-black">Dynamic Multi-Step Forms</h3>
@@ -364,7 +364,7 @@ export function HomeClient({ admin }: HomeClientProps) {
               </div>
 
               <div className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-#FAF5EE text-#292821 flex items-center justify-center">
                   <HardDrive className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-sm text-black">Google Drive Cloud Storage</h3>
@@ -375,7 +375,7 @@ export function HomeClient({ admin }: HomeClientProps) {
               </div>
 
               <div className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-#FAF5EE text-#292821 flex items-center justify-center">
                   <Play className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-sm text-black">In-Site Video Playback</h3>
@@ -386,7 +386,7 @@ export function HomeClient({ admin }: HomeClientProps) {
               </div>
 
               <div className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-#FAF5EE text-#292821 flex items-center justify-center">
                   <RefreshCw className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-sm text-black">Automated Physical Cleanup</h3>
@@ -397,7 +397,7 @@ export function HomeClient({ admin }: HomeClientProps) {
               </div>
 
               <div className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-xs space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-#FAF5EE text-#292821 flex items-center justify-center">
                   <Download className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-sm text-black">Excel (.xlsx) Data Export</h3>
@@ -429,7 +429,7 @@ export function HomeClient({ admin }: HomeClientProps) {
                     <th className="py-4 px-5 font-bold text-zinc-600 uppercase tracking-wider">
                       Feature & Capability
                     </th>
-                    <th className="py-4 px-5 font-extrabold text-emerald-800 bg-emerald-50/70 border-x border-emerald-200">
+                    <th className="py-4 px-5 font-extrabold text-#292821 bg-#FAF5EE/70 border-x border-#E8DFD0">
                       Form Central
                     </th>
                     <th className="py-4 px-5 font-semibold text-zinc-600">Google Forms</th>
@@ -441,7 +441,7 @@ export function HomeClient({ admin }: HomeClientProps) {
                     <td className="py-3.5 px-5 font-semibold text-black">
                       Video Storage & Streaming
                     </td>
-                    <td className="py-3.5 px-5 font-bold text-emerald-800 bg-emerald-50/40 border-x border-emerald-200">
+                    <td className="py-3.5 px-5 font-bold text-#292821 bg-#FAF5EE/40 border-x border-#E8DFD0">
                       Direct Private Google Drive API
                     </td>
                     <td className="py-3.5 px-5 text-zinc-500">Shared Google Account Quota</td>
@@ -452,7 +452,7 @@ export function HomeClient({ admin }: HomeClientProps) {
                     <td className="py-3.5 px-5 font-semibold text-black">
                       Participant Authentication
                     </td>
-                    <td className="py-3.5 px-5 font-bold text-emerald-800 bg-emerald-50/40 border-x border-emerald-200">
+                    <td className="py-3.5 px-5 font-bold text-#292821 bg-#FAF5EE/40 border-x border-#E8DFD0">
                       Instant 6-Digit Email OTP
                     </td>
                     <td className="py-3.5 px-5 text-zinc-500">Mandatory Google Sign-in</td>
@@ -463,7 +463,7 @@ export function HomeClient({ admin }: HomeClientProps) {
                     <td className="py-3.5 px-5 font-semibold text-black">
                       In-Site Video Playback
                     </td>
-                    <td className="py-3.5 px-5 font-bold text-emerald-800 bg-emerald-50/40 border-x border-emerald-200">
+                    <td className="py-3.5 px-5 font-bold text-#292821 bg-#FAF5EE/40 border-x border-#E8DFD0">
                       Native Embedded Modal
                     </td>
                     <td className="py-3.5 px-5 text-zinc-500">Opens Separate Google Drive Tab</td>
@@ -474,7 +474,7 @@ export function HomeClient({ admin }: HomeClientProps) {
                     <td className="py-3.5 px-5 font-semibold text-black">
                       Submission Read Tracking
                     </td>
-                    <td className="py-3.5 px-5 font-bold text-emerald-800 bg-emerald-50/40 border-x border-emerald-200">
+                    <td className="py-3.5 px-5 font-bold text-#292821 bg-#FAF5EE/40 border-x border-#E8DFD0">
                       Automatic on Inspection
                     </td>
                     <td className="py-3.5 px-5 text-zinc-500">Manual Spreadsheet Editing</td>
@@ -485,7 +485,7 @@ export function HomeClient({ admin }: HomeClientProps) {
                     <td className="py-3.5 px-5 font-semibold text-black">
                       Direct Email Notice Delivery
                     </td>
-                    <td className="py-3.5 px-5 font-bold text-emerald-800 bg-emerald-50/40 border-x border-emerald-200">
+                    <td className="py-3.5 px-5 font-bold text-#292821 bg-#FAF5EE/40 border-x border-#E8DFD0">
                       Built-in SMTP Notice Dispatch
                     </td>
                     <td className="py-3.5 px-5 text-zinc-500">Requires Google Apps Script</td>
@@ -496,7 +496,7 @@ export function HomeClient({ admin }: HomeClientProps) {
                     <td className="py-3.5 px-5 font-semibold text-black">
                       File Replacement Cleanup
                     </td>
-                    <td className="py-3.5 px-5 font-bold text-emerald-800 bg-emerald-50/40 border-x border-emerald-200">
+                    <td className="py-3.5 px-5 font-bold text-#292821 bg-#FAF5EE/40 border-x border-#E8DFD0">
                       Automatic Physical Purge
                     </td>
                     <td className="py-3.5 px-5 text-zinc-500">Accumulates Waste in Trash</td>
@@ -523,7 +523,7 @@ export function HomeClient({ admin }: HomeClientProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="p-6 rounded-2xl border border-zinc-200 bg-white space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-zinc-100 text-zinc-800 flex items-center justify-center">
-                  <Server className="w-5 h-5 text-emerald-600" />
+                  <Server className="w-5 h-5 text-#292821" />
                 </div>
                 <h3 className="font-bold text-sm text-black">Isolated PostgreSQL Storage</h3>
                 <p className="text-xs text-zinc-600 leading-relaxed">
@@ -534,7 +534,7 @@ export function HomeClient({ admin }: HomeClientProps) {
 
               <div className="p-6 rounded-2xl border border-zinc-200 bg-white space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-zinc-100 text-zinc-800 flex items-center justify-center">
-                  <Lock className="w-5 h-5 text-emerald-600" />
+                  <Lock className="w-5 h-5 text-#292821" />
                 </div>
                 <h3 className="font-bold text-sm text-black">Secure Google OAuth2 Engine</h3>
                 <p className="text-xs text-zinc-600 leading-relaxed">
@@ -545,7 +545,7 @@ export function HomeClient({ admin }: HomeClientProps) {
 
               <div className="p-6 rounded-2xl border border-zinc-200 bg-white space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-zinc-100 text-zinc-800 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-emerald-600" />
+                  <Zap className="w-5 h-5 text-#292821" />
                 </div>
                 <h3 className="font-bold text-sm text-black">Lightweight Server Footprint</h3>
                 <p className="text-xs text-zinc-600 leading-relaxed">
@@ -579,12 +579,12 @@ export function HomeClient({ admin }: HomeClientProps) {
                   <button
                     type="button"
                     onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                    className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-zinc-900 hover:text-emerald-700 transition-colors"
+                    className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-zinc-900 hover:text-#292821 transition-colors"
                   >
                     <span>{faq.q}</span>
                     <ChevronDown
                       className={`w-4 h-4 text-zinc-400 shrink-0 transition-transform ${
-                        isOpen ? "rotate-180 text-emerald-600" : ""
+                        isOpen ? "rotate-180 text-#292821" : ""
                       }`}
                     />
                   </button>
@@ -623,7 +623,7 @@ export function HomeClient({ admin }: HomeClientProps) {
             </div>
 
             <Link href={admin ? "/admin/dashboard" : "/admin/login"} className="shrink-0">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs h-11 px-8 gap-2 shadow-sm">
+              <Button className="bg-#292821 hover:bg-#292821 text-white font-extrabold text-xs h-11 px-8 gap-2 shadow-sm">
                 <span>{admin ? "Enter Command Center" : "Login"}</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>
@@ -636,7 +636,7 @@ export function HomeClient({ admin }: HomeClientProps) {
       <footer className="border-t border-zinc-200 bg-white py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center">
+            <div className="w-6 h-6 rounded-lg bg-#292821 text-white flex items-center justify-center">
               <Trophy className="w-3.5 h-3.5" />
             </div>
             <span className="font-extrabold text-black">Form Central</span>
@@ -655,4 +655,5 @@ export function HomeClient({ admin }: HomeClientProps) {
     </div>
   );
 }
+
 

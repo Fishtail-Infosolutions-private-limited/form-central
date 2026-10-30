@@ -161,7 +161,7 @@ export function CampaignListView({ campaigns: initialCampaigns, stats }: Campaig
         );
       case "COMPLETED":
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#FAF5EE] text-[#A64B36] border border-[#E8DFD0]">
             <CheckCircle2 className="w-3 h-3" />
             <span>Completed</span>
           </span>
@@ -195,7 +195,7 @@ export function CampaignListView({ campaigns: initialCampaigns, stats }: Campaig
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
+            <span className="text-xs font-bold text-[#A64B36] uppercase tracking-wider">
               Communications
             </span>
           </div>
@@ -209,7 +209,7 @@ export function CampaignListView({ campaigns: initialCampaigns, stats }: Campaig
 
         <div className="flex items-center gap-2.5">
           <Link href="/admin/campaigns/new">
-            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs h-9 px-4 rounded-xl gap-2 shadow-xs">
+            <Button className="bg-[#292821] hover:bg-[#3C332A] text-white font-bold text-xs h-9 px-4 rounded-xl gap-2 shadow-xs">
               <Plus className="w-4 h-4" />
               <span>Create Campaign</span>
             </Button>
@@ -232,9 +232,9 @@ export function CampaignListView({ campaigns: initialCampaigns, stats }: Campaig
         <div className="bg-white rounded-xl border border-zinc-200 p-4 shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-zinc-500">Total Sent Emails</span>
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <CheckCircle2 className="w-4 h-4 text-[#B69A65]" />
           </div>
-          <div className="text-2xl font-black text-emerald-600 mt-2 font-mono">
+          <div className="text-2xl font-black text-[#B69A65] mt-2 font-mono">
             {stats.totalSent.toLocaleString()}
           </div>
         </div>
@@ -287,7 +287,7 @@ export function CampaignListView({ campaigns: initialCampaigns, stats }: Campaig
             placeholder="Search campaigns or forms..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-lg pl-9 pr-3 py-1.5 focus:outline-emerald-600"
+            className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-lg pl-9 pr-3 py-1.5 focus:outline-[#B69A65]"
           />
         </div>
       </div>
@@ -334,7 +334,7 @@ export function CampaignListView({ campaigns: initialCampaigns, stats }: Campaig
                       <td className="py-3.5 px-4">
                         <Link
                           href={`/admin/campaigns/${camp.id}`}
-                          className="font-bold text-zinc-900 hover:text-emerald-700 block transition-colors"
+                          className="font-bold text-zinc-900 hover:text-[#A64B36] block transition-colors"
                         >
                           {camp.name}
                         </Link>
@@ -363,10 +363,10 @@ export function CampaignListView({ campaigns: initialCampaigns, stats }: Campaig
                             <div
                               className={`h-full transition-all duration-300 rounded-full ${
                                 camp.status === "COMPLETED"
-                                  ? "bg-emerald-500"
+                                  ? "bg-[#B69A65]"
                                   : camp.status === "FAILED"
                                   ? "bg-rose-500"
-                                  : "bg-emerald-600"
+                                  : "bg-[#292821]"
                               }`}
                               style={{ width: `${percent}%` }}
                             />
@@ -417,7 +417,7 @@ export function CampaignListView({ campaigns: initialCampaigns, stats }: Campaig
                               variant="outline"
                               disabled={isActionLoading}
                               onClick={() => handleResume(camp.id)}
-                              className="h-7 text-[11px] px-2 font-semibold text-emerald-700 border-emerald-200 hover:bg-emerald-50"
+                              className="h-7 text-[11px] px-2 font-semibold text-[#A64B36] border-[#E8DFD0] hover:bg-[#FAF5EE]"
                               title="Resume sending"
                             >
                               <Play className="w-3 h-3 mr-1" />

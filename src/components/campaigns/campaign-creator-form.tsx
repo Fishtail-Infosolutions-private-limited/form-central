@@ -310,7 +310,7 @@ export function CampaignCreatorForm({
                 <select
                   value={selectedFormId}
                   onChange={(e) => setSelectedFormId(e.target.value)}
-                  className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-emerald-600 font-medium"
+                  className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-[#B69A65] font-medium"
                 >
                   {forms.map((f) => (
                     <option key={f.id} value={f.id}>
@@ -346,7 +346,7 @@ export function CampaignCreatorForm({
               <select
                 value={selectedTemplateId}
                 onChange={(e) => handleSelectTemplate(e.target.value)}
-                className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-emerald-600 font-medium"
+                className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-[#B69A65] font-medium"
               >
                 <option value="">-- Custom Email (Start from scratch) --</option>
                 {templates.map((tpl) => (
@@ -367,7 +367,7 @@ export function CampaignCreatorForm({
                 2. Email Subject & Message Content
               </CardTitle>
               <CardDescription className="text-xs text-zinc-500">
-                Compose your message. Dynamic tokens like <code className="bg-zinc-100 px-1 py-0.5 rounded text-[11px] text-emerald-700">{"{{participant_name}}"}</code> will be substituted automatically.
+                Compose your message. Dynamic tokens like <code className="bg-zinc-100 px-1 py-0.5 rounded text-[11px] text-[#A64B36]">{"{{participant_name}}"}</code> will be substituted automatically.
               </CardDescription>
             </div>
           </CardHeader>
@@ -375,7 +375,7 @@ export function CampaignCreatorForm({
             {/* Dynamic Variable Chips */}
             <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-3 space-y-2">
               <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-700">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                <Sparkles className="w-3.5 h-3.5 text-[#B69A65]" />
                 <span>Available Dynamic Variables (Click to Insert):</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -384,7 +384,7 @@ export function CampaignCreatorForm({
                     key={v.key}
                     type="button"
                     onClick={() => handleInsertVariable(v.key)}
-                    className="inline-flex items-center gap-1 text-[11px] bg-white border border-zinc-200 hover:border-emerald-500 hover:text-emerald-700 hover:bg-emerald-50 px-2 py-1 rounded-md font-mono transition-colors shadow-2xs"
+                    className="inline-flex items-center gap-1 text-[11px] bg-white border border-zinc-200 hover:border-[#B69A65] hover:text-[#292821] hover:bg-[#FAF5EE] px-2 py-1 rounded-md font-mono transition-colors shadow-2xs"
                     title={v.description}
                   >
                     <span>{`{{${v.key}}}`}</span>
@@ -417,7 +417,7 @@ export function CampaignCreatorForm({
                 <button
                   type="button"
                   onClick={() => setIsPreviewOpen(true)}
-                  className="text-[11px] text-emerald-700 hover:underline font-bold"
+                  className="text-[11px] text-[#A64B36] hover:underline font-bold"
                 >
                   View live render &rarr;
                 </button>
@@ -427,7 +427,7 @@ export function CampaignCreatorForm({
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Write your email body here. HTML formatting (e.g. <p>, <strong>, <ul>) is supported."
-                className="w-full text-xs font-mono bg-white border border-zinc-200 rounded-lg p-3 text-zinc-900 focus:outline-emerald-600 leading-relaxed"
+                className="w-full text-xs font-mono bg-white border border-zinc-200 rounded-lg p-3 text-zinc-900 focus:outline-[#B69A65] leading-relaxed"
                 required
               />
             </div>
@@ -453,7 +453,7 @@ export function CampaignCreatorForm({
                 <select
                   value={recipientType}
                   onChange={(e) => setRecipientType(e.target.value as any)}
-                  className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-emerald-600 font-medium"
+                  className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-[#B69A65] font-medium"
                 >
                   <option value="ALL">All Registered Participants</option>
                   <option value="APPROVED">Approved Participants Only</option>
@@ -471,7 +471,7 @@ export function CampaignCreatorForm({
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-emerald-600 font-medium"
+                    className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-[#B69A65] font-medium"
                   >
                     <option value="">-- Choose Category --</option>
                     {selectedForm?.categories.map((cat) => (
@@ -489,7 +489,7 @@ export function CampaignCreatorForm({
                   <select
                     value={excludeCampaignId}
                     onChange={(e) => setExcludeCampaignId(e.target.value)}
-                    className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-emerald-600 font-medium"
+                    className="w-full text-xs bg-white border border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:outline-[#B69A65] font-medium"
                   >
                     <option value="">-- Choose Campaign to Exclude --</option>
                     {previousCampaigns.map((c) => (
@@ -503,18 +503,18 @@ export function CampaignCreatorForm({
             </div>
 
             {/* Recipient Count Indicator */}
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="bg-[#FAF5EE] border border-[#E8DFD0] rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-[#292821] text-white flex items-center justify-center font-bold shrink-0">
                   <Users className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="text-xs font-bold text-zinc-900">
                     Estimated Recipients:
                   </div>
-                  <div className="text-lg font-black text-emerald-800 font-mono">
+                  <div className="text-lg font-black text-[#292821] font-mono">
                     {isEstimating ? (
-                      <span className="flex items-center gap-1.5 text-xs text-emerald-700">
+                      <span className="flex items-center gap-1.5 text-xs text-[#A64B36]">
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
                         <span>Estimating audience...</span>
                       </span>
@@ -526,7 +526,7 @@ export function CampaignCreatorForm({
               </div>
 
               {sampleRecipients.length > 0 && (
-                <div className="text-[11px] text-emerald-900/80 max-w-xs truncate">
+                <div className="text-[11px] text-[#292821]/80 max-w-xs truncate">
                   Sample: {sampleRecipients.slice(0, 2).join(", ")}
                 </div>
               )}
@@ -549,7 +549,7 @@ export function CampaignCreatorForm({
               <label
                 className={`p-3.5 rounded-xl border flex items-center gap-3 cursor-pointer transition-all ${
                   sendOption === "immediate"
-                    ? "border-emerald-600 bg-emerald-50/40 text-black shadow-2xs"
+                    ? "border-[#B69A65] bg-[#FAF5EE] text-black shadow-2xs"
                     : "border-zinc-200 hover:bg-zinc-50 text-zinc-600"
                 }`}
               >
@@ -558,7 +558,7 @@ export function CampaignCreatorForm({
                   name="sendOption"
                   checked={sendOption === "immediate"}
                   onChange={() => setSendOption("immediate")}
-                  className="accent-emerald-600"
+                  className="accent-[#A64B36]"
                 />
                 <div>
                   <span className="text-xs font-bold block text-zinc-900">Send Immediately</span>
@@ -569,7 +569,7 @@ export function CampaignCreatorForm({
               <label
                 className={`p-3.5 rounded-xl border flex items-center gap-3 cursor-pointer transition-all ${
                   sendOption === "scheduled"
-                    ? "border-emerald-600 bg-emerald-50/40 text-black shadow-2xs"
+                    ? "border-[#B69A65] bg-[#FAF5EE] text-black shadow-2xs"
                     : "border-zinc-200 hover:bg-zinc-50 text-zinc-600"
                 }`}
               >
@@ -578,7 +578,7 @@ export function CampaignCreatorForm({
                   name="sendOption"
                   checked={sendOption === "scheduled"}
                   onChange={() => setSendOption("scheduled")}
-                  className="accent-emerald-600"
+                  className="accent-[#A64B36]"
                 />
                 <div>
                   <span className="text-xs font-bold block text-zinc-900">Schedule for Later</span>
@@ -650,7 +650,7 @@ export function CampaignCreatorForm({
               {isSendingTest ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : (
-                <Send className="w-3.5 h-3.5 mr-1 text-emerald-400" />
+                <Send className="w-3.5 h-3.5 mr-1 text-[#B69A65]" />
               )}
               <span>Send Test</span>
             </Button>
@@ -666,7 +666,7 @@ export function CampaignCreatorForm({
             <Button
               type="submit"
               disabled={isSubmitting || isEstimating}
-              className="h-9 px-6 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white gap-2 shadow-sm rounded-xl"
+              className="h-9 px-6 text-xs font-bold bg-[#A64B36] hover:bg-[#8F3E2C] text-white gap-2 shadow-sm rounded-xl"
             >
               {isSubmitting ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -692,7 +692,7 @@ export function CampaignCreatorForm({
             {/* Modal Header */}
             <div className="p-4 border-b border-zinc-200 flex items-center justify-between bg-zinc-50">
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-emerald-600" />
+                <Mail className="w-4 h-4 text-[#B69A65]" />
                 <span className="text-xs font-bold text-zinc-900">Email Client Preview</span>
               </div>
 

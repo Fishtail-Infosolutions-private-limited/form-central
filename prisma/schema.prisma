@@ -601,6 +601,7 @@ model SiteSetting {
   announcementsJson            Json?                 // Editable event updates
   faqsJson                     Json?                 // Editable FAQs
   rulesJson                    Json?                 // Editable rules
+  uploadLimitsJson             Json?                 // Configurable upload limits (maxVideoMb, maxImageMb, maxDocMb)
   updatedAt                    DateTime              @updatedAt
 
   @@map("site_settings")

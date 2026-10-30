@@ -41,11 +41,11 @@ export default function AboutPage() {
       {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8DFD0]/70 border border-[#B69A65]/40 text-[#172B24] text-xs font-semibold tracking-wider uppercase">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8DFD0]/70 border border-[#B69A65]/40 text-[#292821] text-xs font-semibold tracking-wider uppercase">
             <span>Janakpur Dham &bull; Madhesh Province &bull; Nepal</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black font-serif text-[#172B24] tracking-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black font-serif text-[#292821] tracking-tight">
             The Origin Foundation
           </h1>
 
@@ -70,7 +70,7 @@ export default function AboutPage() {
               <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#B69A65]">
                 Institutional Origins
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold font-serif text-[#172B24]">
+              <h2 className="text-2xl sm:text-3xl font-extrabold font-serif text-[#292821]">
                 Our Background & Founding Story
               </h2>
               <p className="text-sm text-[#292821] leading-relaxed">
@@ -83,12 +83,12 @@ export default function AboutPage() {
 
             <div className="pt-4 border-t border-[#E8DFD0] text-xs text-[#292821] flex items-center justify-between">
               <span>Primary Operating Center:</span>
-              <strong className="text-[#172B24]">Janakpur Dham, Nepal</strong>
+              <strong className="text-[#292821]">Janakpur Dham, Nepal</strong>
             </div>
           </div>
 
           {/* Mission & Vision Card */}
-          <div className="lg:col-span-5 p-8 sm:p-12 rounded-lg bg-[#172B24] text-[#FAF5EE] border border-[#292821] shadow-md space-y-6 flex flex-col justify-between relative overflow-hidden">
+          <div className="lg:col-span-5 p-8 sm:p-12 rounded-lg bg-[#292821] text-[#FAF5EE] border border-[#292821] shadow-md space-y-6 flex flex-col justify-between relative overflow-hidden">
             <div className="space-y-5 relative z-10">
               <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#B69A65]">
                 Our Purpose
@@ -133,7 +133,7 @@ export default function AboutPage() {
             <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#B69A65]">
               Institutional Standards
             </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#172B24] font-serif">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#292821] font-serif">
               Our Core Principles
             </h2>
             <p className="text-xs sm:text-sm text-[#292821]">
@@ -150,7 +150,7 @@ export default function AboutPage() {
                 <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#B69A65]">
                   Principle 0{idx + 1}
                 </span>
-                <h3 className="text-lg font-bold font-serif text-[#172B24]">
+                <h3 className="text-lg font-bold font-serif text-[#292821]">
                   {item.title}
                 </h3>
                 <p className="text-xs text-[#292821] leading-relaxed">
@@ -170,7 +170,7 @@ export default function AboutPage() {
           <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#B69A65]">
             Executive Governance
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#172B24] font-serif">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#292821] font-serif">
             Managing Directors
           </h2>
           <p className="text-xs sm:text-sm text-[#292821]">
@@ -185,7 +185,7 @@ export default function AboutPage() {
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65] block">
                 Executive Leadership
               </span>
-              <h3 className="text-2xl font-bold text-[#172B24] font-serif">
+              <h3 className="text-2xl font-bold text-[#292821] font-serif">
                 Gaurav Gupta
               </h3>
               <p className="text-xs font-semibold text-[#292821]">
@@ -202,7 +202,7 @@ export default function AboutPage() {
                 <span>Direct Contact:</span>
                 <a
                   href="tel:+9779704571941"
-                  className="font-mono font-bold text-[#172B24] hover:text-[#B69A65] transition-colors"
+                  className="font-mono font-bold text-[#292821] hover:text-[#B69A65] transition-colors"
                 >
                   +977 9704571941
                 </a>
@@ -213,7 +213,7 @@ export default function AboutPage() {
                   href="https://wa.me/9779704571941"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono font-bold text-emerald-700 hover:underline"
+                  className="font-mono font-bold text-[#A64B36] hover:underline"
                 >
                   Verified
                 </a>
@@ -227,7 +227,7 @@ export default function AboutPage() {
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65] block">
                 Executive Leadership
               </span>
-              <h3 className="text-2xl font-bold text-[#172B24] font-serif">
+              <h3 className="text-2xl font-bold text-[#292821] font-serif">
                 Dipendra Shah Kalwar
               </h3>
               <p className="text-xs font-semibold text-[#292821]">
@@ -244,14 +244,14 @@ export default function AboutPage() {
                 <span>Direct Contact:</span>
                 <a
                   href="tel:+9779812005468"
-                  className="font-mono font-bold text-[#172B24] hover:text-[#B69A65] transition-colors"
+                  className="font-mono font-bold text-[#292821] hover:text-[#B69A65] transition-colors"
                 >
                   +977 981-2005468
                 </a>
               </div>
               <div className="flex items-center justify-between text-[#292821]">
                 <span>Location:</span>
-                <span className="font-semibold text-[#172B24]">Janakpur Dham, Nepal</span>
+                <span className="font-semibold text-[#292821]">Janakpur Dham, Nepal</span>
               </div>
             </div>
           </div>
@@ -268,7 +268,7 @@ export default function AboutPage() {
       {/* CALL TO ACTION */}
       {/* ==================================================================== */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#172B24] font-serif">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#292821] font-serif">
           Ready to Express Your Cultural Identity?
         </h2>
         <p className="text-xs sm:text-sm text-[#292821] max-w-xl mx-auto">
@@ -276,13 +276,13 @@ export default function AboutPage() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link href="/register">
-            <Button className="bg-[#B69A65] hover:bg-[#b8986d] text-[#172B24] font-bold text-xs h-11 px-6 rounded-md shadow-xs gap-2">
+            <Button className="bg-[#B69A65] hover:bg-[#b8986d] text-[#292821] font-bold text-xs h-11 px-6 rounded-md shadow-xs gap-2">
               <span>Register for Mithila Queen (NPR 399)</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </Link>
           <Link href="/contact">
-            <Button variant="outline" className="border-[#292821]/20 text-[#172B24] text-xs h-11 px-6 rounded-md font-medium">
+            <Button variant="outline" className="border-[#292821]/20 text-[#292821] text-xs h-11 px-6 rounded-md font-medium">
               Contact Organizing Secretariat
             </Button>
           </Link>

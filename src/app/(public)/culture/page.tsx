@@ -51,11 +51,11 @@ export default function CulturePage() {
       {/* ==================================================================== */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8DFD0]/70 border border-[#B69A65]/40 text-[#172B24] text-xs font-semibold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8DFD0]/70 border border-[#B69A65]/40 text-[#292821] text-xs font-semibold uppercase tracking-wider">
             <span>Janakpur Dham &bull; The Cultural Capital of Mithila</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black font-serif text-[#172B24] tracking-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black font-serif text-[#292821] tracking-tight">
             Culture & Heritage
           </h1>
 
@@ -79,7 +79,7 @@ export default function CulturePage() {
               <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
                 Civilizational Grounding
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#172B24] font-serif">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#292821] font-serif">
                 Mithila Art as an Act of Storytelling & Dignity
               </h2>
               <p className="text-sm text-[#292821] leading-relaxed">
@@ -105,7 +105,7 @@ export default function CulturePage() {
           <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#B69A65]">
             Six Pillars of Heritage
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#172B24] font-serif">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#292821] font-serif">
             Living Traditions Celebrated in Mithila Queen
           </h2>
           <p className="text-xs sm:text-sm text-[#292821]">
@@ -123,7 +123,7 @@ export default function CulturePage() {
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65]">
                   Heritage Aspect 0{i + 1}
                 </span>
-                <h3 className="text-lg font-bold font-serif text-[#172B24]">
+                <h3 className="text-lg font-bold font-serif text-[#292821]">
                   {item.title}
                 </h3>
                 <p className="text-xs font-semibold text-[#292821]/80">
@@ -133,7 +133,7 @@ export default function CulturePage() {
                   {item.desc}
                 </p>
               </div>
-              <div className="pt-3 border-t border-[#E8DFD0] text-[11px] text-[#172B24] font-medium">
+              <div className="pt-3 border-t border-[#E8DFD0] text-[11px] text-[#292821] font-medium">
                 Mithila Queen Core Expression
               </div>
             </div>
@@ -144,7 +144,7 @@ export default function CulturePage() {
       {/* ==================================================================== */}
       {/* CALL TO ACTION */}
       {/* ==================================================================== */}
-      <section className="bg-[#172B24] text-[#FAF5EE] py-16 sm:py-20 border-y border-[#292821]">
+      <section className="bg-[#292821] text-[#FAF5EE] py-16 sm:py-20 border-y border-[#292821]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <h2 className="text-2xl sm:text-4xl font-extrabold font-serif text-[#FFFFFF]">
             Heritage in Every Step
@@ -154,7 +154,7 @@ export default function CulturePage() {
           </p>
           <div className="pt-2">
             <Link href="/register">
-              <Button className="bg-[#B69A65] hover:bg-[#b8986d] text-[#172B24] font-bold text-xs h-11 px-7 rounded-md shadow-xs gap-2">
+              <Button className="bg-[#B69A65] hover:bg-[#b8986d] text-[#292821] font-bold text-xs h-11 px-7 rounded-md shadow-xs gap-2">
                 <span>Represent Your Heritage &bull; Register (NPR 399)</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>

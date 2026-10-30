@@ -37,30 +37,30 @@ export function DeleteFormCard({
   };
 
   return (
-    <Card className="border-zinc-300 bg-white shadow-xs overflow-hidden mt-8">
-      <CardHeader className="bg-zinc-50/70 border-b border-zinc-200 pb-4">
-        <div className="flex items-center gap-2 text-zinc-900 font-bold text-xs uppercase tracking-wider">
-          <Trash2 className="w-4 h-4 text-emerald-700" />
+    <Card className="border-[#E8DFD0] bg-white shadow-xs overflow-hidden mt-8">
+      <CardHeader className="bg-[#FAF5EE]/70 border-b border-[#E8DFD0] pb-4">
+        <div className="flex items-center gap-2 text-[#A64B36] font-bold text-xs uppercase tracking-wider">
+          <Trash2 className="w-4 h-4 text-[#A64B36]" />
           <span>Danger Zone</span>
         </div>
-        <CardTitle className="text-lg font-bold text-black">
+        <CardTitle className="text-lg font-bold text-[#292821]">
           Delete This Registration Form
         </CardTitle>
-        <CardDescription className="text-xs text-zinc-500">
+        <CardDescription className="text-xs text-[#292821]/60">
           Permanently delete &quot;{formName}&quot; and all of its associated version snapshots, participant responses, and uploaded file records.
         </CardDescription>
       </CardHeader>
 
       <CardContent className="p-6 space-y-4">
         {error && (
-          <div className="p-3 bg-zinc-100 border border-zinc-300 rounded-xl text-xs text-zinc-900 flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-emerald-700 shrink-0" />
+          <div className="p-3 bg-[#FAF5EE] border border-rose-200 rounded-xl text-xs text-[#A64B36] flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-[#A64B36] shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         {submissionCount > 0 && (
-          <div className="p-3 bg-zinc-100 border border-zinc-200 rounded-xl text-xs text-zinc-700">
+          <div className="p-3 bg-[#FAF5EE] border border-[#E8DFD0] rounded-xl text-xs text-[#292821]">
             <strong>Warning:</strong> This form currently contains{" "}
             <strong>{submissionCount} participant submission(s)</strong>. Deleting will permanently remove them from the system.
           </div>
@@ -72,15 +72,15 @@ export function DeleteFormCard({
               type="button"
               variant="outline"
               onClick={() => setIsConfirming(true)}
-              className="text-zinc-700 hover:text-black hover:bg-zinc-100 border-zinc-300 text-xs font-bold gap-2"
+              className="text-[#A64B36] hover:text-[#A64B36] hover:bg-rose-50 border-[#E8DFD0] text-xs font-bold gap-2"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>Delete Form</span>
             </Button>
           </div>
         ) : (
-          <div className="p-4 bg-zinc-50 border border-zinc-300 rounded-xl space-y-3">
-            <p className="text-xs font-bold text-black">
+          <div className="p-4 bg-[#FAF5EE] border border-rose-200 rounded-xl space-y-3">
+            <p className="text-xs font-bold text-[#292821]">
               Confirm Deletion: Are you absolutely sure? This action cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-2.5">
@@ -99,16 +99,16 @@ export function DeleteFormCard({
                 size="sm"
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className="bg-black hover:bg-zinc-800 text-white font-bold text-xs gap-1.5 px-4 shadow-sm"
+                className="bg-[#A64B36] hover:bg-[#8E3B29] text-white font-bold text-xs gap-1.5 px-4 shadow-sm"
               >
                 {isDeleting ? (
                   <>
-                    <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-400" />
+                    <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
                     <span>Deleting Form...</span>
                   </>
                 ) : (
                   <>
-                    <Trash2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <Trash2 className="w-3.5 h-3.5 text-white" />
                     <span>Yes, Permanently Delete</span>
                   </>
                 )}

@@ -193,7 +193,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
             <Badge
               className={`text-xs px-2.5 py-0.5 font-bold uppercase tracking-wide ${
                 campaign.status === "COMPLETED"
-                  ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                  ? "bg-[#FAF5EE] text-[#292821] border-[#E8DFD0]"
                   : campaign.status === "PROCESSING"
                   ? "bg-blue-50 text-blue-800 border-blue-200 animate-pulse"
                   : campaign.status === "QUEUED"
@@ -210,7 +210,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
             Associated Form:{" "}
             <Link
               href={`/admin/forms/${campaign.form.id}`}
-              className="text-emerald-700 font-bold hover:underline"
+              className="text-[#A64B36] font-bold hover:underline"
             >
               {campaign.form.name}
             </Link>{" "}
@@ -239,7 +239,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
               variant="outline"
               disabled={actionLoading}
               onClick={handleResume}
-              className="h-8 text-xs font-bold text-emerald-700 border-emerald-200 hover:bg-emerald-50"
+              className="h-8 text-xs font-bold text-[#A64B36] border-[#E8DFD0] hover:bg-[#FAF5EE]"
             >
               <Play className="w-3.5 h-3.5 mr-1.5" />
               <span>Resume Sending</span>
@@ -279,12 +279,12 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
         <div>
           <div className="flex items-center justify-between text-xs font-bold mb-2">
             <span className="text-zinc-700">Delivery Completion Progress</span>
-            <span className="text-emerald-700 font-mono text-sm">{progressPercent}%</span>
+            <span className="text-[#A64B36] font-mono text-sm">{progressPercent}%</span>
           </div>
           <div className="w-full bg-zinc-100 h-3 rounded-full overflow-hidden">
             <div
               className={`h-full transition-all duration-500 rounded-full ${
-                campaign.status === "COMPLETED" ? "bg-emerald-500" : "bg-emerald-600"
+                campaign.status === "COMPLETED" ? "bg-[#B69A65]" : "bg-[#292821]"
               }`}
               style={{ width: `${progressPercent}%` }}
             />
@@ -300,9 +300,9 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
             </span>
           </div>
 
-          <div className="p-3 rounded-xl bg-emerald-50/60 border border-emerald-100">
-            <span className="text-[11px] font-medium text-emerald-800 block">Successfully Sent</span>
-            <span className="text-xl font-black text-emerald-700 font-mono">
+          <div className="p-3 rounded-xl bg-[#FAF5EE] border border-[#E8DFD0]">
+            <span className="text-[11px] font-medium text-[#292821] block">Successfully Sent</span>
+            <span className="text-xl font-black text-[#A64B36] font-mono">
               {campaign.sentCount.toLocaleString()}
             </span>
           </div>
@@ -331,7 +331,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
             onClick={() => setActiveTab("recipients")}
             className={`pb-3 text-xs font-bold border-b-2 transition-colors ${
               activeTab === "recipients"
-                ? "border-emerald-600 text-black"
+                ? "border-[#B69A65] text-black"
                 : "border-transparent text-zinc-400 hover:text-zinc-700"
             }`}
           >
@@ -342,7 +342,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
             onClick={() => setActiveTab("logs")}
             className={`pb-3 text-xs font-bold border-b-2 transition-colors ${
               activeTab === "logs"
-                ? "border-emerald-600 text-black"
+                ? "border-[#B69A65] text-black"
                 : "border-transparent text-zinc-400 hover:text-zinc-700"
             }`}
           >
@@ -378,7 +378,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
                 placeholder="Search participant name or email..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-lg pl-9 pr-3 py-1.5 focus:outline-emerald-600"
+                className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-lg pl-9 pr-3 py-1.5 focus:outline-[#B69A65]"
               />
             </div>
           </div>
@@ -411,7 +411,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
                         <span
                           className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${
                             rec.status === "SENT" || rec.status === "DELIVERED"
-                              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                              ? "bg-[#FAF5EE] text-[#A64B36] border border-[#E8DFD0]"
                               : rec.status === "FAILED" || rec.status === "BOUNCED"
                               ? "bg-rose-50 text-rose-700 border border-rose-200"
                               : rec.status === "SKIPPED"

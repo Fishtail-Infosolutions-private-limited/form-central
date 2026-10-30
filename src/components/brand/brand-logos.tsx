@@ -14,7 +14,7 @@ export function OriginFoundationLogo({
   className = "",
 }: {
   variant?: "full" | "mark" | "stacked" | "inline";
-  theme?: "light" | "dark"; // "light" = for dark forest green background; "dark" = for light ivory background
+  theme?: "light" | "dark"; // "light" = for dark charcoal background; "dark" = for light ivory background
   className?: string;
 }) {
   const isLight = theme === "light";
@@ -22,7 +22,7 @@ export function OriginFoundationLogo({
   const secondaryTextColor = isLight ? "#B69A65" : "#A64B36";
   const subtextColor = isLight ? "#E8DFD0" : "#59574D";
   const goldColor = "#B69A65";
-  const forestColor = "#292821";
+  const charcoalColor = "#292821";
 
   // The Emblem Mark: Sacred Lotus + Rising Sun of Janakpur + Geometric 'O' of Origin
   const EmblemMark = (
@@ -36,8 +36,8 @@ export function OriginFoundationLogo({
       <circle cx="50" cy="50" r="47" stroke={goldColor} strokeWidth="1.2" opacity="0.9" />
       <circle cx="50" cy="50" r="43" stroke={goldColor} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.6" />
 
-      {/* Forest Green Medallion Background */}
-      <circle cx="50" cy="50" r="41" fill={forestColor} />
+      {/* Charcoal Medallion Background */}
+      <circle cx="50" cy="50" r="41" fill={charcoalColor} />
 
       {/* Sun Ray Accents (Surya of Janakpur) */}
       <g stroke={goldColor} strokeWidth="1" strokeLinecap="round" opacity="0.95">
@@ -197,8 +197,8 @@ export function MithilaQueenLogo({
         opacity="0.5"
       />
 
-      {/* Forest Green Fill */}
-      <rect x="12" y="12" width="76" height="76" rx="10" fill={forestColor} />
+      {/* Charcoal Fill */}
+      <rect x="12" y="12" width="76" height="76" rx="10" fill="#292821" />
 
       {/* Regal Mithila Crown */}
       <path
@@ -206,7 +206,7 @@ export function MithilaQueenLogo({
         fill={goldColor}
       />
       {/* Crown Base Band with Terracotta Insets */}
-      <rect x="25" y="58" width="50" height="7" rx="1" fill="#0F1D18" stroke={goldColor} strokeWidth="1" />
+      <rect x="25" y="58" width="50" height="7" rx="1" fill="#292821" stroke={goldColor} strokeWidth="1" />
       <circle cx="34" cy="61.5" r="1.6" fill="#F5F0E6" />
       <circle cx="50" cy="61.5" r="2" fill={terracottaColor} />
       <circle cx="66" cy="61.5" r="1.6" fill="#F5F0E6" />

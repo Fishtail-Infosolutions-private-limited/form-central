@@ -68,11 +68,11 @@ export default function FaqPage() {
     <div className="py-12 sm:py-20 space-y-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* HEADER */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8DFD0]/60 border border-[#B69A65]/40 text-[#172B24] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8DFD0]/60 border border-[#B69A65]/40 text-[#292821] text-xs font-semibold">
           <Crown className="w-3.5 h-3.5 text-[#B69A65]" />
           <span>Official Information Desk</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#172B24] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#292821] tracking-tight">
           Frequently Asked Questions
         </h1>
         <p className="text-sm text-[#292821] max-w-xl mx-auto leading-relaxed">
@@ -92,7 +92,7 @@ export default function FaqPage() {
                 {faq.category}
               </span>
             </div>
-            <h2 className="text-base font-bold text-[#172B24] font-serif flex items-start gap-2.5">
+            <h2 className="text-base font-bold text-[#292821] font-serif flex items-start gap-2.5">
               <HelpCircle className="w-5 h-5 text-[#B69A65] shrink-0 mt-0.5" />
               <span>{faq.q}</span>
             </h2>
@@ -104,7 +104,7 @@ export default function FaqPage() {
       </div>
 
       {/* STILL HAVE QUESTIONS */}
-      <div className="p-8 rounded-lg bg-[#172B24] text-[#FAF5EE] border border-[#292821] text-center space-y-4">
+      <div className="p-8 rounded-lg bg-[#292821] text-[#FAF5EE] border border-[#292821] text-center space-y-4">
         <h3 className="text-xl font-bold font-serif text-white">Still have questions?</h3>
         <p className="text-xs text-[#E8DFD0]/80 max-w-md mx-auto">
           Our team in Janakpur Dham is here to assist with any registration or payment inquiries.

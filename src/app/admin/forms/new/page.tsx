@@ -32,7 +32,7 @@ export default async function CreateFormPage() {
 
       <div className="p-5 rounded-lg bg-white border border-[#E8DFD0] shadow-xs text-left text-xs space-y-2">
         <div className="flex items-center gap-2 text-zinc-900 font-bold">
-          <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <ShieldCheck className="w-4 h-4 text-[#B69A65]" />
           <span>Active Flagship Form: Mithila Queen 2026</span>
         </div>
         <p className="text-zinc-600 leading-relaxed">

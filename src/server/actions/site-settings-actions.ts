@@ -198,3 +198,64 @@ export async function updateSiteSettingsAction(data: {
     return { success: false, error: error.message || "Failed to update settings" };
   }
 }
+
+export async function getUploadLimitsAction() {
+  try {
+    const setting = await prisma.siteSetting.findUnique({
+      where: { id: "primary" },
+    });
+    const limits = (setting as any)?.uploadLimitsJson || {
+      maxVideoMb: 100,
+      maxImageMb: 10,
+      maxDocMb: 25,
+    };
+    return { success: true, limits };
+  } catch {
+    return {
+      success: false,
+      limits: { maxVideoMb: 100, maxImageMb: 10, maxDocMb: 25 },
+    };
+  }
+}
+
+export async function updateUploadLimitsAction(data: {
+  maxVideoMb: number;
+  maxImageMb: number;
+  maxDocMb: number;
+}) {
+  const admin = await requireAdmin();
+
+  // Validate server-side safe limits
+  const maxVideoMb = Math.min(Math.max(Number(data.maxVideoMb) || 100, 10), 500);
+  const maxImageMb = Math.min(Math.max(Number(data.maxImageMb) || 10, 2), 25);
+  const maxDocMb = Math.min(Math.max(Number(data.maxDocMb) || 25, 5), 50);
+
+  try {
+    await (prisma.siteSetting as any).update({
+      where: { id: "primary" },
+      data: {
+        uploadLimitsJson: {
+          maxVideoMb,
+          maxImageMb,
+          maxDocMb,
+        },
+      },
+    });
+
+    await prisma.auditLog.create({
+      data: {
+        actorId: admin.id,
+        actorEmail: admin.email,
+        action: "UPDATE_UPLOAD_LIMITS",
+        entityType: "SYSTEM",
+        entityId: "primary",
+        metadata: { maxVideoMb, maxImageMb, maxDocMb },
+      },
+    });
+
+    revalidatePath("/admin/settings");
+    return { success: true, limits: { maxVideoMb, maxImageMb, maxDocMb } };
+  } catch (error: any) {
+    return { success: false, error: error.message || "Failed to update upload limits" };
+  }
+}

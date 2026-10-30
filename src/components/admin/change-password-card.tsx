@@ -43,7 +43,7 @@ export function ChangePasswordCard() {
     setIsUpdating(false);
 
     if (res.success) {
-      toast.success("Password successfully updated!");
+      toast.success("Admin password successfully updated!");
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
@@ -53,21 +53,21 @@ export function ChangePasswordCard() {
   };
 
   return (
-    <Card className="border-zinc-200 shadow-xs">
+    <Card className="border-[#E8DFD0] shadow-xs bg-[#FFFFFF]">
       <CardHeader>
         <div className="flex items-center justify-between mb-1">
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-            <KeyRound className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-md bg-[#FAF5EE] text-[#B69A65] flex items-center justify-center border border-[#B69A65]/30">
+            <KeyRound className="w-4 h-4 text-[#A64B36]" />
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#B69A65] bg-[#FAF5EE] px-2 py-0.5 rounded border border-[#B69A65]/30">
             Account Security
           </span>
         </div>
-        <CardTitle className="text-lg font-bold text-zinc-900">
+        <CardTitle className="text-base font-serif font-bold text-[#292821]">
           Change Admin Password
         </CardTitle>
-        <CardDescription className="text-xs text-zinc-500">
-          Update your administrator credentials. Choose a strong, unique password to secure your admin account.
+        <CardDescription className="text-xs text-[#292821]/70">
+          Update your administrator access credentials. Choose a strong, unique password to secure your admin account.
         </CardDescription>
       </CardHeader>
 
@@ -75,7 +75,7 @@ export function ChangePasswordCard() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Current Password */}
           <div className="space-y-1.5">
-            <Label htmlFor="currentPassword" required className="text-xs font-bold text-zinc-800">
+            <Label htmlFor="currentPassword" required className="text-xs font-bold text-[#292821]">
               Current Password
             </Label>
             <div className="relative">
@@ -85,12 +85,12 @@ export function ChangePasswordCard() {
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="Enter current password"
-                className="h-10 text-xs border-zinc-300 pr-9 bg-white"
+                className="h-9 text-xs border-[#E8DFD0] pr-9 bg-[#FAF5EE]"
               />
               <button
                 type="button"
                 onClick={() => setShowCurrent(!showCurrent)}
-                className="absolute right-3 top-3 text-zinc-400 hover:text-zinc-600"
+                className="absolute right-3 top-2.5 text-zinc-400 hover:text-[#292821]"
               >
                 {showCurrent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -100,7 +100,7 @@ export function ChangePasswordCard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* New Password */}
             <div className="space-y-1.5">
-              <Label htmlFor="newPassword" required className="text-xs font-bold text-zinc-800">
+              <Label htmlFor="newPassword" required className="text-xs font-bold text-[#292821]">
                 New Password (min 8 chars)
               </Label>
               <div className="relative">
@@ -110,12 +110,12 @@ export function ChangePasswordCard() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="At least 8 characters"
-                  className="h-10 text-xs border-zinc-300 pr-9 bg-white"
+                  className="h-9 text-xs border-[#E8DFD0] pr-9 bg-[#FAF5EE]"
                 />
                 <button
                   type="button"
                   onClick={() => setShowNew(!showNew)}
-                  className="absolute right-3 top-3 text-zinc-400 hover:text-zinc-600"
+                  className="absolute right-3 top-2.5 text-zinc-400 hover:text-[#292821]"
                 >
                   {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -124,7 +124,7 @@ export function ChangePasswordCard() {
 
             {/* Confirm New Password */}
             <div className="space-y-1.5">
-              <Label htmlFor="confirmPassword" required className="text-xs font-bold text-zinc-800">
+              <Label htmlFor="confirmPassword" required className="text-xs font-bold text-[#292821]">
                 Confirm New Password
               </Label>
               <Input
@@ -133,7 +133,7 @@ export function ChangePasswordCard() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Re-enter new password"
-                className="h-10 text-xs border-zinc-300 bg-white"
+                className="h-9 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
               />
             </div>
           </div>
@@ -142,16 +142,16 @@ export function ChangePasswordCard() {
             <Button
               type="submit"
               disabled={isUpdating}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold h-10 px-6 gap-2 shadow-xs w-full sm:w-auto"
+              className="bg-[#292821] hover:bg-[#3C332A] text-[#F5F0E6] text-xs font-semibold h-9 px-5 gap-2 shadow-xs w-full sm:w-auto border border-[#B69A65]/40"
             >
               {isUpdating ? (
                 <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" />
                   <span>Updating Password...</span>
                 </>
               ) : (
                 <>
-                  <ShieldCheck className="w-4 h-4" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#B69A65]" />
                   <span>Update Password</span>
                 </>
               )}
@@ -162,4 +162,3 @@ export function ChangePasswordCard() {
     </Card>
   );
 }
-

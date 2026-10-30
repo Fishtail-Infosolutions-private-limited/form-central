@@ -74,20 +74,20 @@ export function FieldPalette({ onAddField }: FieldPaletteProps) {
               key={item.type}
               type="button"
               onClick={() => onAddField(item.type)}
-              className="flex items-center justify-between p-2 rounded-lg border border-zinc-100 hover:border-emerald-300 hover:bg-emerald-50/50 text-left transition-all group w-full"
+              className="flex items-center justify-between p-2 rounded-lg border border-zinc-100 hover:border-[#B69A65] hover:bg-[#FAF5EE] text-left transition-all group w-full"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-6 h-6 rounded-md bg-zinc-100 group-hover:bg-emerald-100 group-hover:text-emerald-700 text-zinc-600 flex items-center justify-center shrink-0">
+                <div className="w-6 h-6 rounded-md bg-zinc-100 group-hover:bg-[#292821] group-hover:text-[#F5F0E6] text-zinc-600 flex items-center justify-center shrink-0">
                   <item.icon className="w-3.5 h-3.5" />
                 </div>
                 <div className="min-w-0">
-                  <div className="text-xs font-semibold text-zinc-900 group-hover:text-emerald-800 truncate">
+                  <div className="text-xs font-semibold text-zinc-900 group-hover:text-[#292821] truncate">
                     {item.label}
                   </div>
                   <div className="text-[10px] text-zinc-400 truncate">{item.description}</div>
                 </div>
               </div>
-              <Plus className="w-3.5 h-3.5 text-zinc-300 group-hover:text-emerald-600 shrink-0 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Plus className="w-3.5 h-3.5 text-zinc-300 group-hover:text-[#A64B36] shrink-0 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
           ))}
         </div>

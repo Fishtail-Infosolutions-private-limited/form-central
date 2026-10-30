@@ -934,7 +934,7 @@ export function UnifiedSettingsCMS({
                 <span
                   className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
                     driveIntegration?.isConnected
-                      ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                      ? "bg-[#FAF5EE] text-[#292821] border-[#B69A65]"
                       : "bg-[#FAF5EE] text-amber-800 border-amber-200"
                   }`}
                 >
@@ -952,7 +952,7 @@ export function UnifiedSettingsCMS({
               {driveIntegration?.isConnected ? (
                 <div className="p-3.5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] text-xs text-[#292821] space-y-1">
                   <div className="font-semibold text-[#292821] flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[#B69A65] shrink-0" />
                     <span className="font-mono text-xs">{driveIntegration.accountEmail}</span>
                   </div>
                   <div className="text-xs text-[#292821]/70 flex items-center justify-between pt-1 border-t border-[#E8DFD0]">
