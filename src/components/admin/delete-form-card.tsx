@@ -1,0 +1,123 @@
+"use client";
+
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Trash2, AlertTriangle, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { deleteFormAction } from "@/server/actions/form-actions";
+
+interface DeleteFormCardProps {
+  formId: string;
+  formName: string;
+  submissionCount: number;
+}
+
+export function DeleteFormCard({
+  formId,
+  formName,
+  submissionCount,
+}: DeleteFormCardProps) {
+  const router = useRouter();
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    setError(null);
+    const res = await deleteFormAction(formId);
+    setIsDeleting(false);
+
+    if (res.success) {
+      router.push("/admin/forms");
+    } else {
+      setError(res.error || "Failed to delete form");
+    }
+  };
+
+  return (
+    <Card className="border-zinc-300 bg-white shadow-xs overflow-hidden mt-8">
+      <CardHeader className="bg-zinc-50/70 border-b border-zinc-200 pb-4">
+        <div className="flex items-center gap-2 text-zinc-900 font-bold text-xs uppercase tracking-wider">
+          <Trash2 className="w-4 h-4 text-emerald-700" />
+          <span>Danger Zone</span>
+        </div>
+        <CardTitle className="text-lg font-bold text-black">
+          Delete This Registration Form
+        </CardTitle>
+        <CardDescription className="text-xs text-zinc-500">
+          Permanently delete &quot;{formName}&quot; and all of its associated version snapshots, participant responses, and uploaded file records.
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent className="p-6 space-y-4">
+        {error && (
+          <div className="p-3 bg-zinc-100 border border-zinc-300 rounded-xl text-xs text-zinc-900 flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-emerald-700 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        {submissionCount > 0 && (
+          <div className="p-3 bg-zinc-100 border border-zinc-200 rounded-xl text-xs text-zinc-700">
+            <strong>Warning:</strong> This form currently contains{" "}
+            <strong>{submissionCount} participant submission(s)</strong>. Deleting will permanently remove them from the system.
+          </div>
+        )}
+
+        {!isConfirming ? (
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsConfirming(true)}
+              className="text-zinc-700 hover:text-black hover:bg-zinc-100 border-zinc-300 text-xs font-bold gap-2"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Delete Form</span>
+            </Button>
+          </div>
+        ) : (
+          <div className="p-4 bg-zinc-50 border border-zinc-300 rounded-xl space-y-3">
+            <p className="text-xs font-bold text-black">
+              Confirm Deletion: Are you absolutely sure? This action cannot be undone.
+            </p>
+            <div className="flex items-center justify-end gap-2.5">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsConfirming(false)}
+                disabled={isDeleting}
+                className="text-xs"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="bg-black hover:bg-zinc-800 text-white font-bold text-xs gap-1.5 px-4 shadow-sm"
+              >
+                {isDeleting ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-400" />
+                    <span>Deleting Form...</span>
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Yes, Permanently Delete</span>
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
