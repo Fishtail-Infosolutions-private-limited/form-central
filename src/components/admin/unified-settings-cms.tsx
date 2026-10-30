@@ -25,6 +25,7 @@ import {
   Lock,
   ArrowRight,
   Info,
+  Upload,
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -80,6 +81,16 @@ export function UnifiedSettingsCMS({
   );
   const [regFee, setRegFee] = useState(initialSettings?.registrationFee?.toString() || "399");
   const [isRegOpen, setIsRegOpen] = useState(initialSettings?.isRegistrationOpen ?? true);
+  const [regOpeningDate, setRegOpeningDate] = useState<string>(
+    initialSettings?.registrationOpeningDate
+      ? new Date(initialSettings.registrationOpeningDate).toISOString().slice(0, 16)
+      : ""
+  );
+  const [regClosingDate, setRegClosingDate] = useState<string>(
+    initialSettings?.registrationClosingDate
+      ? new Date(initialSettings.registrationClosingDate).toISOString().slice(0, 16)
+      : ""
+  );
   const [eventSchedule, setEventSchedule] = useState(initialSettings?.eventSchedule || "To Be Announced");
   const [eventVenue, setEventVenue] = useState(initialSettings?.eventVenue || "To Be Announced");
   const [minAge, setMinAge] = useState("16");
@@ -101,6 +112,9 @@ export function UnifiedSettingsCMS({
 
   // Payment Settings
   const [esewaId, setEsewaId] = useState("9704571941 / The Origin Foundation");
+  const [paymentProviderName, setPaymentProviderName] = useState(
+    initialSettings?.paymentProviderName || "eSewa & Direct Bank Transfer"
+  );
   const [paymentQrUrl, setPaymentQrUrl] = useState(
     initialSettings?.paymentQrCodeUrl || "/assets/brand/origin-foundation-qr.png"
   );
@@ -111,6 +125,11 @@ export function UnifiedSettingsCMS({
     initialSettings?.paymentInstructions ||
       "Please pay exactly NPR 399 via eSewa or Direct Bank Transfer. Take a clear screenshot of the transaction showing the transaction reference/code and attach it in Step 6 of registration."
   );
+  const [paymentReferenceInstructions, setPaymentReferenceInstructions] = useState(
+    initialSettings?.paymentReferenceInstructions ||
+      "Enter your Full Name and Registered Mobile Number in the payment remarks/description."
+  );
+  const [isUploadingQr, setIsUploadingQr] = useState(false);
 
   // Social & Video
   const [whatsappContact, setWhatsappContact] = useState(
@@ -150,6 +169,40 @@ export function UnifiedSettingsCMS({
     ]
   );
 
+  const handleQrUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image file (PNG, JPG, WebP)");
+      return;
+    }
+
+    setIsUploadingQr(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("fieldKey", "payment_qr");
+
+      const res = await fetch("/api/public/upload/image", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setPaymentQrUrl(data.url);
+        toast.success("Official payment QR code uploaded! Click 'Save All Changes' to apply.");
+      } else {
+        toast.error(data.error || "Failed to upload QR code");
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Failed to upload image");
+    } finally {
+      setIsUploadingQr(false);
+    }
+  };
+
   const handleSaveAll = async () => {
     setIsSaving(true);
     try {
@@ -161,10 +214,14 @@ export function UnifiedSettingsCMS({
         officialEmail,
         registrationFee: parseInt(regFee, 10) || 399,
         isRegistrationOpen: isRegOpen,
+        registrationOpeningDate: regOpeningDate ? new Date(regOpeningDate) : null,
+        registrationClosingDate: regClosingDate ? new Date(regClosingDate) : null,
         eventSchedule,
         eventVenue,
         paymentQrCodeUrl: paymentQrUrl,
+        paymentProviderName,
         paymentInstructions,
+        paymentReferenceInstructions,
         whatsappContact,
         officialInstagram,
         officialTiktok,
@@ -220,7 +277,7 @@ export function UnifiedSettingsCMS({
               Administrative Settings &bull; The Origin Foundation
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#172B24] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#292821] tracking-tight">
             Website & Competition Settings
           </h1>
           <p className="text-xs sm:text-sm text-[#292821]/70">
@@ -231,7 +288,7 @@ export function UnifiedSettingsCMS({
         <Button
           onClick={handleSaveAll}
           disabled={isSaving}
-          className="gap-2 bg-[#172B24] hover:bg-[#172B24]/90 text-[#F5F0E6] text-xs h-10 px-5 font-semibold border border-[#B69A65]/40 shadow-none shrink-0"
+          className="gap-2 bg-[#292821] hover:bg-[#292821]/90 text-[#F5F0E6] text-xs h-10 px-5 font-semibold border border-[#B69A65]/40 shadow-none shrink-0"
         >
           {isSaving ? <Loader2 className="w-4 h-4 animate-spin text-[#B69A65]" /> : <Save className="w-4 h-4 text-[#B69A65]" />}
           <span>Save All Changes</span>
@@ -249,7 +306,7 @@ export function UnifiedSettingsCMS({
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-3.5 py-2.5 rounded-md text-xs font-semibold whitespace-nowrap transition-all ${
                 isActive
-                  ? "bg-[#172B24] text-[#F5F0E6] border border-[#B69A65]/40"
+                  ? "bg-[#292821] text-[#F5F0E6] border border-[#B69A65]/40"
                   : "bg-[#FFFFFF] text-[#292821]/80 hover:bg-[#FAF5EE] border border-[#E8DFD0]"
               }`}
             >
@@ -264,7 +321,7 @@ export function UnifiedSettingsCMS({
       {activeTab === "foundation" && (
         <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#172B24]">
+            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
               Institutional Foundation Information
             </CardTitle>
             <CardDescription className="text-xs text-[#292821]/70">
@@ -274,7 +331,7 @@ export function UnifiedSettingsCMS({
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Organization Name</Label>
+                <Label className="text-xs font-bold text-[#292821]">Organization Name</Label>
                 <Input
                   value={orgName}
                   onChange={(e) => setOrgName(e.target.value)}
@@ -283,7 +340,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Motto & Tagline</Label>
+                <Label className="text-xs font-bold text-[#292821]">Motto & Tagline</Label>
                 <Input
                   value={orgTagline}
                   onChange={(e) => setOrgTagline(e.target.value)}
@@ -292,7 +349,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Official Contact Email</Label>
+                <Label className="text-xs font-bold text-[#292821]">Official Contact Email</Label>
                 <Input
                   value={officialEmail}
                   onChange={(e) => setOfficialEmail(e.target.value)}
@@ -301,7 +358,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Registered Headquarters</Label>
+                <Label className="text-xs font-bold text-[#292821]">Registered Headquarters</Label>
                 <Input
                   value={registeredAddress}
                   onChange={(e) => setRegisteredAddress(e.target.value)}
@@ -310,7 +367,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Primary Helpline Number</Label>
+                <Label className="text-xs font-bold text-[#292821]">Primary Helpline Number</Label>
                 <Input
                   value={primaryPhone}
                   onChange={(e) => setPrimaryPhone(e.target.value)}
@@ -319,7 +376,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Secondary Helpline Number</Label>
+                <Label className="text-xs font-bold text-[#292821]">Secondary Helpline Number</Label>
                 <Input
                   value={secondaryPhone}
                   onChange={(e) => setSecondaryPhone(e.target.value)}
@@ -330,7 +387,7 @@ export function UnifiedSettingsCMS({
 
             {/* Equal Leadership Cards */}
             <div className="pt-4 border-t border-[#E8DFD0]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#172B24] mb-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#292821] mb-3">
                 Executive Leadership (Equal Representation)
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -339,7 +396,7 @@ export function UnifiedSettingsCMS({
                     <span className="text-[11px] font-bold text-[#A64B36] uppercase">Managing Director</span>
                     <span className="text-[10px] text-zinc-500 font-mono">Executive Lead</span>
                   </div>
-                  <div className="text-sm font-serif font-bold text-[#172B24]">Gaurav Gupta</div>
+                  <div className="text-sm font-serif font-bold text-[#292821]">Gaurav Gupta</div>
                   <div className="text-xs text-[#292821]/70 font-mono flex items-center gap-1.5">
                     <Phone className="w-3.5 h-3.5 text-[#B69A65]" />
                     <span>+977 9704571941</span>
@@ -351,7 +408,7 @@ export function UnifiedSettingsCMS({
                     <span className="text-[11px] font-bold text-[#A64B36] uppercase">Managing Director</span>
                     <span className="text-[10px] text-zinc-500 font-mono">Executive Lead</span>
                   </div>
-                  <div className="text-sm font-serif font-bold text-[#172B24]">Dipendra Shah Kalwar</div>
+                  <div className="text-sm font-serif font-bold text-[#292821]">Dipendra Shah Kalwar</div>
                   <div className="text-xs text-[#292821]/70 font-mono flex items-center gap-1.5">
                     <Phone className="w-3.5 h-3.5 text-[#B69A65]" />
                     <span>+977 981-2005468</span>
@@ -367,7 +424,7 @@ export function UnifiedSettingsCMS({
       {activeTab === "mithila_queen" && (
         <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#172B24]">
+            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
               Mithila Queen Competition Parameters
             </CardTitle>
             <CardDescription className="text-xs text-[#292821]/70">
@@ -377,7 +434,7 @@ export function UnifiedSettingsCMS({
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Competition Title</Label>
+                <Label className="text-xs font-bold text-[#292821]">Competition Title</Label>
                 <Input
                   value={compName}
                   onChange={(e) => setCompName(e.target.value)}
@@ -386,7 +443,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Registration Fee (NPR)</Label>
+                <Label className="text-xs font-bold text-[#292821]">Registration Fee (NPR)</Label>
                 <Input
                   value={regFee}
                   disabled
@@ -396,11 +453,11 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Registration Status</Label>
+                <Label className="text-xs font-bold text-[#292821]">Registration Status</Label>
                 <select
                   value={isRegOpen ? "OPEN" : "CLOSED"}
                   onChange={(e) => setIsRegOpen(e.target.value === "OPEN")}
-                  className="w-full h-10 px-3 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] text-xs font-semibold text-[#172B24]"
+                  className="w-full h-10 px-3 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] text-xs font-semibold text-[#292821]"
                 >
                   <option value="OPEN">Registration Open</option>
                   <option value="CLOSED">Registration Closed</option>
@@ -408,27 +465,49 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Event Date & Time</Label>
+                <Label className="text-xs font-bold text-[#292821]">Registration Opening Date</Label>
+                <Input
+                  type="datetime-local"
+                  value={regOpeningDate}
+                  onChange={(e) => setRegOpeningDate(e.target.value)}
+                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                />
+                <p className="text-[10px] text-zinc-500">Scheduled time when form opens automatically.</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold text-[#292821]">Registration Deadline / Closing</Label>
+                <Input
+                  type="datetime-local"
+                  value={regClosingDate}
+                  onChange={(e) => setRegClosingDate(e.target.value)}
+                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
+                />
+                <p className="text-[10px] text-zinc-500">Scheduled deadline when submissions close.</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold text-[#292821]">Event Date & Time</Label>
                 <Input
                   value={eventSchedule}
                   disabled
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-semibold text-[#172B24]"
+                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-semibold text-[#292821]"
                 />
                 <p className="text-[10px] text-zinc-500">Strictly &quot;To Be Announced&quot; (no unverified dates).</p>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Competition Venue</Label>
+                <Label className="text-xs font-bold text-[#292821]">Competition Venue</Label>
                 <Input
                   value={eventVenue}
                   disabled
-                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-semibold text-[#172B24]"
+                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-semibold text-[#292821]"
                 />
                 <p className="text-[10px] text-zinc-500">Janakpur Dham &bull; Specific auditorium TBA.</p>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Age Eligibility Window</Label>
+                <Label className="text-xs font-bold text-[#292821]">Age Eligibility Window</Label>
                 <div className="flex items-center gap-2">
                   <Input
                     value={minAge}
@@ -454,7 +533,7 @@ export function UnifiedSettingsCMS({
       {activeTab === "cms" && (
         <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#172B24]">
+            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
               Public Website Editorial Copy
             </CardTitle>
             <CardDescription className="text-xs text-[#292821]/70">
@@ -463,7 +542,7 @@ export function UnifiedSettingsCMS({
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#172B24]">Hero Section Headline</Label>
+              <Label className="text-xs font-bold text-[#292821]">Hero Section Headline</Label>
               <Input
                 value={heroHeadline}
                 onChange={(e) => setHeroHeadline(e.target.value)}
@@ -472,7 +551,7 @@ export function UnifiedSettingsCMS({
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#172B24]">Hero Section Subtitle</Label>
+              <Label className="text-xs font-bold text-[#292821]">Hero Section Subtitle</Label>
               <Textarea
                 rows={2}
                 value={heroSubtitle}
@@ -482,7 +561,7 @@ export function UnifiedSettingsCMS({
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#172B24]">About The Origin Foundation Statement</Label>
+              <Label className="text-xs font-bold text-[#292821]">About The Origin Foundation Statement</Label>
               <Textarea
                 rows={3}
                 value={aboutStatement}
@@ -492,7 +571,7 @@ export function UnifiedSettingsCMS({
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#172B24]">Site Announcements Ticker Banner</Label>
+              <Label className="text-xs font-bold text-[#292821]">Site Announcements Ticker Banner</Label>
               <Input
                 value={announcementBanner}
                 onChange={(e) => setAnnouncementBanner(e.target.value)}
@@ -507,17 +586,89 @@ export function UnifiedSettingsCMS({
       {activeTab === "payment" && (
         <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#172B24]">
+            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
               Payment Gateway & eSewa Settings
             </CardTitle>
             <CardDescription className="text-xs text-[#292821]/70">
-              Configure eSewa recipient identifier, direct bank transfer details, and applicant payment instructions.
+              Configure official payment QR code, recipient details, and instructions provided to participants.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
+            {/* Official QR Code Upload & Preview */}
+            <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] flex flex-col sm:flex-row items-center gap-6">
+              <div className="relative w-40 h-40 bg-white border border-[#E8DFD0] rounded-lg p-2 shadow-sm shrink-0 flex items-center justify-center">
+                {paymentQrUrl ? (
+                  <Image
+                    src={paymentQrUrl}
+                    alt="Official Payment QR"
+                    width={140}
+                    height={140}
+                    className="object-contain w-full h-full"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="text-center p-2 text-zinc-400 text-xs">
+                    No QR uploaded
+                  </div>
+                )}
+              </div>
+              <div className="space-y-3 flex-1 text-center sm:text-left">
+                <div>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#292821]">
+                    Official Payment QR Code
+                  </h4>
+                  <p className="text-xs text-[#292821]/70 mt-1">
+                    This QR image is displayed in Step 6 of the participant registration wizard and on the post-submission payment screen.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleQrUpload}
+                      disabled={isUploadingQr}
+                      className="hidden"
+                    />
+                    <div className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-[#292821] text-[#F5F0E6] text-xs font-semibold hover:bg-[#292821]/90 transition-colors">
+                      {isUploadingQr ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B69A65]" />
+                      ) : (
+                        <Upload className="w-3.5 h-3.5 text-[#B69A65]" />
+                      )}
+                      <span>{isUploadingQr ? "Uploading..." : "Upload New QR Code"}</span>
+                    </div>
+                  </label>
+                  {paymentQrUrl && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPaymentQrUrl("/assets/brand/origin-foundation-qr.png")}
+                      className="h-8 text-xs border-[#E8DFD0] text-[#292821]"
+                    >
+                      Reset to Default
+                    </Button>
+                  )}
+                </div>
+                <p className="text-[11px] text-zinc-500 font-mono truncate max-w-md">
+                  Active URL: {paymentQrUrl}
+                </p>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Official eSewa ID / Merchant Phone</Label>
+                <Label className="text-xs font-bold text-[#292821]">Payment Provider Name</Label>
+                <Input
+                  value={paymentProviderName}
+                  onChange={(e) => setPaymentProviderName(e.target.value)}
+                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold text-[#292821]">Official eSewa ID / Merchant Phone</Label>
                 <Input
                   value={esewaId}
                   onChange={(e) => setEsewaId(e.target.value)}
@@ -526,7 +677,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Account Beneficiary Name</Label>
+                <Label className="text-xs font-bold text-[#292821]">Account Beneficiary Name</Label>
                 <Input
                   value={accountHolder}
                   onChange={(e) => setAccountHolder(e.target.value)}
@@ -535,7 +686,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Direct Bank Name & Branch</Label>
+                <Label className="text-xs font-bold text-[#292821]">Direct Bank Name & Branch</Label>
                 <Input
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
@@ -544,17 +695,26 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Bank Account Number</Label>
+                <Label className="text-xs font-bold text-[#292821]">Bank Account Number</Label>
                 <Input
                   value={accountNumber}
                   onChange={(e) => setAccountNumber(e.target.value)}
                   className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE] font-mono"
                 />
               </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold text-[#292821]">Payment Reference / Remarks Instructions</Label>
+                <Input
+                  value={paymentReferenceInstructions}
+                  onChange={(e) => setPaymentReferenceInstructions(e.target.value)}
+                  className="h-10 text-xs border-[#E8DFD0] bg-[#FAF5EE]"
+                />
+              </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#172B24]">Payment Instructions for Applicants</Label>
+              <Label className="text-xs font-bold text-[#292821]">Payment Instructions for Applicants</Label>
               <Textarea
                 rows={3}
                 value={paymentInstructions}
@@ -570,7 +730,7 @@ export function UnifiedSettingsCMS({
       {activeTab === "social_video" && (
         <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#172B24]">
+            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
               Social Media Channels & Video Submission Rules
             </CardTitle>
             <CardDescription className="text-xs text-[#292821]/70">
@@ -580,7 +740,7 @@ export function UnifiedSettingsCMS({
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Official WhatsApp Audition Helpline</Label>
+                <Label className="text-xs font-bold text-[#292821]">Official WhatsApp Audition Helpline</Label>
                 <Input
                   value={whatsappContact}
                   onChange={(e) => setWhatsappContact(e.target.value)}
@@ -589,7 +749,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Official Facebook Page</Label>
+                <Label className="text-xs font-bold text-[#292821]">Official Facebook Page</Label>
                 <Input
                   value={facebookUrl}
                   onChange={(e) => setFacebookUrl(e.target.value)}
@@ -598,7 +758,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">Instagram Handle</Label>
+                <Label className="text-xs font-bold text-[#292821]">Instagram Handle</Label>
                 <Input
                   value={officialInstagram}
                   onChange={(e) => setOfficialInstagram(e.target.value)}
@@ -607,7 +767,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#172B24]">TikTok Handle</Label>
+                <Label className="text-xs font-bold text-[#292821]">TikTok Handle</Label>
                 <Input
                   value={officialTiktok}
                   onChange={(e) => setOfficialTiktok(e.target.value)}
@@ -617,7 +777,7 @@ export function UnifiedSettingsCMS({
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#172B24]">Video Audition Guidelines & Duration Rules</Label>
+              <Label className="text-xs font-bold text-[#292821]">Video Audition Guidelines & Duration Rules</Label>
               <Textarea
                 rows={3}
                 value={videoGuidelines}
@@ -634,7 +794,7 @@ export function UnifiedSettingsCMS({
         <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-lg font-serif font-bold text-[#172B24]">
+              <CardTitle className="text-lg font-serif font-bold text-[#292821]">
                 Frequently Asked Questions (FAQs)
               </CardTitle>
               <CardDescription className="text-xs text-[#292821]/70">
@@ -646,7 +806,7 @@ export function UnifiedSettingsCMS({
               onClick={addFaq}
               size="sm"
               variant="outline"
-              className="gap-1.5 border-[#E8DFD0] text-[#172B24] hover:bg-[#FAF5EE] text-xs h-8"
+              className="gap-1.5 border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE] text-xs h-8"
             >
               <Plus className="w-3.5 h-3.5 text-[#A64B36]" />
               <span>Add FAQ</span>
@@ -670,7 +830,7 @@ export function UnifiedSettingsCMS({
                   )}
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs font-bold text-[#172B24]">Question</Label>
+                  <Label className="text-xs font-bold text-[#292821]">Question</Label>
                   <Input
                     value={faq.q}
                     onChange={(e) => updateFaq(idx, "q", e.target.value)}
@@ -678,7 +838,7 @@ export function UnifiedSettingsCMS({
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs font-bold text-[#172B24]">Answer</Label>
+                  <Label className="text-xs font-bold text-[#292821]">Answer</Label>
                   <Textarea
                     rows={2}
                     value={faq.a}
@@ -696,7 +856,7 @@ export function UnifiedSettingsCMS({
       {activeTab === "legal" && (
         <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
           <CardHeader>
-            <CardTitle className="text-lg font-serif font-bold text-[#172B24]">
+            <CardTitle className="text-lg font-serif font-bold text-[#292821]">
               Legal Policies & Minor Safeguarding Framework
             </CardTitle>
             <CardDescription className="text-xs text-[#292821]/70">
@@ -706,7 +866,7 @@ export function UnifiedSettingsCMS({
           <CardContent className="space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
-                <div className="text-xs font-bold text-[#172B24] flex items-center justify-between">
+                <div className="text-xs font-bold text-[#292821] flex items-center justify-between">
                   <span>Competition Rules & Eligibility</span>
                   <Link href="/rules" target="_blank" className="text-[#A64B36] hover:underline flex items-center gap-1 text-[11px]">
                     <span>View Live</span>
@@ -719,7 +879,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
-                <div className="text-xs font-bold text-[#172B24] flex items-center justify-between">
+                <div className="text-xs font-bold text-[#292821] flex items-center justify-between">
                   <span>Terms of Service</span>
                   <Link href="/terms" target="_blank" className="text-[#A64B36] hover:underline flex items-center gap-1 text-[11px]">
                     <span>View Live</span>
@@ -732,7 +892,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
-                <div className="text-xs font-bold text-[#172B24] flex items-center justify-between">
+                <div className="text-xs font-bold text-[#292821] flex items-center justify-between">
                   <span>Privacy Policy</span>
                   <Link href="/privacy-policy" target="_blank" className="text-[#A64B36] hover:underline flex items-center gap-1 text-[11px]">
                     <span>View Live</span>
@@ -745,7 +905,7 @@ export function UnifiedSettingsCMS({
               </div>
 
               <div className="p-4 rounded-md border border-[#E8DFD0] bg-[#FAF5EE] space-y-2">
-                <div className="text-xs font-bold text-[#172B24] flex items-center justify-between">
+                <div className="text-xs font-bold text-[#292821] flex items-center justify-between">
                   <span>Refund Policy</span>
                   <Link href="/refund-policy" target="_blank" className="text-[#A64B36] hover:underline flex items-center gap-1 text-[11px]">
                     <span>View Live</span>
@@ -768,7 +928,7 @@ export function UnifiedSettingsCMS({
           <Card className="border-[#E8DFD0] bg-[#FFFFFF] shadow-none">
             <CardHeader>
               <div className="flex items-center justify-between mb-1">
-                <div className="w-9 h-9 rounded-md bg-[#FAF5EE] text-[#172B24] border border-[#B69A65]/40 flex items-center justify-center">
+                <div className="w-9 h-9 rounded-md bg-[#FAF5EE] text-[#292821] border border-[#B69A65]/40 flex items-center justify-center">
                   <HardDrive className="w-4 h-4 text-[#A64B36]" />
                 </div>
                 <span
@@ -781,7 +941,7 @@ export function UnifiedSettingsCMS({
                   {driveIntegration?.isConnected ? "Connected" : "Disconnected"}
                 </span>
               </div>
-              <CardTitle className="text-lg font-serif font-bold text-[#172B24]">
+              <CardTitle className="text-lg font-serif font-bold text-[#292821]">
                 Google Drive Storage Integration
               </CardTitle>
               <CardDescription className="text-xs text-[#292821]/70">
@@ -791,13 +951,13 @@ export function UnifiedSettingsCMS({
             <CardContent className="space-y-3">
               {driveIntegration?.isConnected ? (
                 <div className="p-3.5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] text-xs text-[#292821] space-y-1">
-                  <div className="font-semibold text-[#172B24] flex items-center gap-1.5">
+                  <div className="font-semibold text-[#292821] flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                     <span className="font-mono text-xs">{driveIntegration.accountEmail}</span>
                   </div>
                   <div className="text-xs text-[#292821]/70 flex items-center justify-between pt-1 border-t border-[#E8DFD0]">
                     <span>Destination Folder:</span>
-                    <span className="font-semibold text-[#172B24]">{driveIntegration.folderName || "Root Drive"}</span>
+                    <span className="font-semibold text-[#292821]">{driveIntegration.folderName || "Root Drive"}</span>
                   </div>
                 </div>
               ) : (
@@ -812,7 +972,7 @@ export function UnifiedSettingsCMS({
               <Link href="/admin/settings/integrations/google-drive">
                 <Button
                   variant="outline"
-                  className="w-full justify-between text-xs font-semibold h-10 border-[#E8DFD0] text-[#172B24] hover:bg-[#FAF5EE]"
+                  className="w-full justify-between text-xs font-semibold h-10 border-[#E8DFD0] text-[#292821] hover:bg-[#FAF5EE]"
                 >
                   <span>
                     {driveIntegration?.isConnected ? "Manage Drive & Change Folder" : "Connect Google Drive Account"}

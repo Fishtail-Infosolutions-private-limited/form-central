@@ -17,86 +17,166 @@ import {
   ExternalLink,
   QrCode,
   FileCheck2,
+  Mail,
+  RefreshCw,
+  Edit3,
+  Check,
+  History,
+  AlertTriangle,
+  X,
+  Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import {
-  lookupRegistrationStatusAction,
+  requestStatusLookupOtpAction,
+  verifyStatusLookupOtpAction,
+  participantUpdateDetailsAction,
   downloadApprovedPdfAction,
   submitPaymentDetailsAction,
 } from "@/server/actions/mithila-queen-actions";
-import { formatNepalDateTime } from "@/lib/utils/timezone";
+import { getPublicSiteSettingsAction } from "@/server/actions/site-settings-actions";
 
 function RegistrationStatusContent() {
   const searchParams = useSearchParams();
   const initialRef = searchParams.get("ref") || "";
 
-  const [registrationId, setRegistrationId] = useState(initialRef);
-  const [verificationContact, setVerificationContact] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchError, setSearchError] = useState<string | null>(null);
+  // Lookup state
+  const [emailInput, setEmailInput] = useState("");
+  const [registrationIdInput, setRegistrationIdInput] = useState(initialRef);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
+  const [verificationId, setVerificationId] = useState<string | null>(null);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [sessionToken, setSessionToken] = useState<string | null>(null);
 
-  const [record, setRecord] = useState<{
-    registrationId: string;
-    fullName: string;
-    province: string;
-    district: string;
-    paymentStatus: string;
-    applicationStatus: string;
-    paymentReference: string | null;
-    paymentClarificationNotes: string | null;
-    rejectionReason: string | null;
-    actionRequiredDetails: string | null;
-    submittedAt: Date;
-    isPdfAvailable: boolean;
-  } | null>(null);
-
+  // Loaded record
+  const [record, setRecord] = useState<any | null>(null);
   const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
 
   // Clarification re-submission state
   const [newTxnRef, setNewTxnRef] = useState("");
-  const [isReSubmitting, setIsReSubmitting] = useState(false);
+  const [isReSubmittingPayment, setIsReSubmittingPayment] = useState(false);
 
-  const handleSearch = async (e: React.FormEvent) => {
+  // Edit details modal state
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isSavingEdits, setIsSavingEdits] = useState(false);
+  const [editFormData, setEditFormData] = useState<any>({});
+
+  // Site settings for payment QR
+  const [siteSettings, setSiteSettings] = useState<any>(null);
+
+  useEffect(() => {
+    getPublicSiteSettingsAction().then((res) => {
+      if (res.success && res.setting) setSiteSettings(res.setting);
+    });
+  }, []);
+
+  // Cooldown timer
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const interval = setInterval(() => {
+      setResendCooldown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [resendCooldown]);
+
+  // Request OTP
+  const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!registrationId.trim() || !verificationContact.trim()) {
-      toast.error("Please enter both your Registration ID and registered email or phone.");
+    if (!emailInput.trim() || !emailInput.includes("@")) {
+      toast.error("Please enter a valid registered email address.");
       return;
     }
 
-    setIsSearching(true);
-    setSearchError(null);
-    setRecord(null);
-
-    const res = await lookupRegistrationStatusAction({
-      registrationId: registrationId.trim(),
-      verificationContact: verificationContact.trim(),
+    setIsSendingOtp(true);
+    const res = await requestStatusLookupOtpAction({
+      email: emailInput.trim(),
+      registrationId: registrationIdInput.trim() || undefined,
     });
-    setIsSearching(false);
+    setIsSendingOtp(false);
 
-    if (res.success && res.data) {
-      setRecord(res.data as any);
-      toast.success("Registration record verified!");
+    if (res.success && res.verificationId) {
+      setVerificationId(res.verificationId);
+      setOtpSent(true);
+      setResendCooldown(60);
+      toast.success("A 6-digit access code was sent to your email.");
     } else {
-      setSearchError(res.error || "Record not found or contact verification failed.");
-      toast.error(res.error || "Verification failed.");
+      toast.error(res.error || "Unable to send access code.");
     }
   };
 
+  // Verify OTP & Load Record
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!verificationId || !otpCode || otpCode.trim().length !== 6) {
+      toast.error("Please enter the complete 6-digit access code.");
+      return;
+    }
+
+    setIsVerifyingOtp(true);
+    const res = await verifyStatusLookupOtpAction({
+      verificationId,
+      code: otpCode.trim(),
+      email: emailInput.trim(),
+    });
+    setIsVerifyingOtp(false);
+
+    if (res.success && res.data && res.sessionToken) {
+      setSessionToken(res.sessionToken);
+      setRecord(res.data);
+      setEditFormData({
+        fullName: res.data.fullName || "",
+        dob: res.data.dob || "",
+        phone: res.data.phone || "",
+        alternatePhone: res.data.alternatePhone || "",
+        province: res.data.province || "",
+        district: res.data.district || "",
+        municipality: res.data.municipality || "",
+        cityVillage: res.data.cityVillage || "",
+        currentAddress: res.data.currentAddress || "",
+        guardianName: res.data.guardianName || "",
+        guardianPhone: res.data.guardianPhone || "",
+        guardianRelation: res.data.guardianRelation || "",
+        guardianEmail: res.data.guardianEmail || "",
+        personalIntro: res.data.personalIntro || "",
+        hobbiesInterests: res.data.hobbiesInterests || "",
+        talentsSkills: res.data.talentsSkills || "",
+        languagesSpoken: res.data.languagesSpoken || "",
+        culturalInterests: res.data.culturalInterests || "",
+        motivationReason: res.data.motivationReason || "",
+        mithilaMeaning: res.data.mithilaMeaning || "",
+        qualitiesBrought: res.data.qualitiesBrought || "",
+        educationLevel: res.data.educationLevel || "",
+        institution: res.data.institution || "",
+        instagramHandle: res.data.instagramHandle || "",
+        tiktokHandle: res.data.tiktokHandle || "",
+        facebookUrl: res.data.facebookUrl || "",
+        profilePhotoUrl: res.data.profilePhotoUrl || "",
+      });
+      toast.success("Application dossier accessed securely!");
+    } else {
+      toast.error(res.error || "Invalid verification code.");
+    }
+  };
+
+  // Download PDF
   const handleDownloadPdf = async () => {
-    if (!record) return;
+    if (!record || !emailInput) return;
     setIsDownloadingPdf(true);
 
     const res = await downloadApprovedPdfAction({
       registrationId: record.registrationId,
-      verificationContact: verificationContact.trim(),
+      verificationContact: emailInput.trim(),
     });
     setIsDownloadingPdf(false);
 
     if (res.success && res.pdfBase64) {
-      // Trigger browser download of PDF
       const byteCharacters = atob(res.pdfBase64);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
@@ -117,19 +197,20 @@ function RegistrationStatusContent() {
     }
   };
 
-  const handleClarificationSubmit = async (e: React.FormEvent) => {
+  // Submit payment reference
+  const handlePaymentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!record || !newTxnRef.trim()) return;
 
-    setIsReSubmitting(true);
+    setIsReSubmittingPayment(true);
     const res = await submitPaymentDetailsAction({
       registrationId: record.registrationId,
       transactionReference: newTxnRef.trim(),
     });
-    setIsReSubmitting(false);
+    setIsReSubmittingPayment(false);
 
     if (res.success) {
-      toast.success("Updated payment details submitted! Re-querying status...");
+      toast.success("Payment details submitted! Status updated to Under Review.");
       setRecord({
         ...record,
         paymentStatus: "UNDER_REVIEW",
@@ -142,102 +223,209 @@ function RegistrationStatusContent() {
     }
   };
 
+  // Save participant edits
+  const handleSaveEdits = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!sessionToken || !record) return;
+
+    setIsSavingEdits(true);
+    const res = await participantUpdateDetailsAction({
+      sessionToken,
+      email: emailInput.trim(),
+      registrationId: record.registrationId,
+      updatedFields: editFormData,
+    });
+    setIsSavingEdits(false);
+
+    if (res.success) {
+      toast.success(
+        res.requiresReview
+          ? "Details updated! Because sensitive fields were modified, your application is queued for administrative re-review."
+          : "Application details updated successfully!"
+      );
+      setRecord({
+        ...record,
+        ...editFormData,
+        applicationStatus: res.requiresReview && record.applicationStatus === "APPROVED" ? "UNDER_REVIEW" : record.applicationStatus,
+      });
+      setIsEditModalOpen(false);
+    } else {
+      toast.error(res.error || "Failed to save updates.");
+    }
+  };
+
   return (
     <div className="py-12 sm:py-20 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8DFD0]/60 border border-[#B69A65]/40 text-[#172B24] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8DFD0]/60 border border-[#B69A65]/40 text-[#292821] text-xs font-semibold">
           <Crown className="w-3.5 h-3.5 text-[#B69A65]" />
-          <span>Mithila Queen • Official Status Desk</span>
+          <span>Mithila Queen • Secure Status & Dossier Access</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#172B24] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#292821] tracking-tight">
           Application Status
         </h1>
-        <p className="text-xs sm:text-sm text-[#292821] max-w-lg mx-auto">
-          Track the live review status of your Mithila Queen entry, payment verification, and download your official confirmation document.
+        <p className="text-xs sm:text-sm text-[#3C332A] max-w-lg mx-auto leading-relaxed">
+          Verify your identity via 6-digit email OTP to securely view your application review status, upload payment receipts, edit permitted details, and download your confirmation certificate.
         </p>
       </div>
 
-      {/* Lookup Card */}
-      <div className="p-8 sm:p-10 rounded-lg bg-white border border-[#E8DFD0] shadow-xs space-y-6">
-        <form onSubmit={handleSearch} className="space-y-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="refId" required className="text-xs font-bold text-[#172B24]">
-              Registration ID
-            </Label>
-            <Input
-              id="refId"
-              value={registrationId}
-              onChange={(e) => setRegistrationId(e.target.value.toUpperCase())}
-              placeholder="e.g. MQ-2026-X8Y7Z"
-              required
-              className="h-10 text-sm border-[#E8DFD0] bg-white font-mono uppercase"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <Label htmlFor="contact" required className="text-xs font-bold text-[#172B24]">
-              Registered Email or Phone Number (Verification)
-            </Label>
-            <Input
-              id="contact"
-              value={verificationContact}
-              onChange={(e) => setVerificationContact(e.target.value)}
-              placeholder="Enter your registered email address or mobile number"
-              required
-              className="h-10 text-xs border-[#E8DFD0] bg-white"
-            />
-            <p className="text-[11px] text-zinc-500">
-              For privacy protection, private status information is only displayed if your contact matches the registered applicant file.
-            </p>
-          </div>
-
-          <Button
-            type="submit"
-            disabled={isSearching}
-            className="w-full bg-[#172B24] hover:bg-[#292821] text-[#FAF5EE] text-xs font-bold h-11 rounded-md shadow-xs gap-2"
-          >
-            {isSearching ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Verifying Details...</span>
-              </>
-            ) : (
-              <>
-                <Search className="w-4 h-4 text-[#B69A65]" />
-                <span>Check Application Status</span>
-              </>
-            )}
-          </Button>
-        </form>
-
-        {searchError && (
-          <div className="p-4 rounded-md bg-red-50 border border-red-200 text-xs text-red-800 flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-            <span className="font-medium">{searchError}</span>
-          </div>
-        )}
-      </div>
-
-      {/* RECORD DETAILS DISPLAY */}
-      {record && (
+      {/* STEP A: SECURE OTP LOOKUP CARD */}
+      {!record && (
         <div className="p-8 sm:p-10 rounded-lg bg-white border border-[#E8DFD0] shadow-xs space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E8DFD0] pb-4">
+          {!otpSent ? (
+            <form onSubmit={handleRequestOtp} className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="email" required className="text-xs font-bold text-[#292821]">
+                  Registered Email Address
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  placeholder="e.g. anjali@example.com"
+                  required
+                  className="h-10 text-xs border-[#E8DFD0] bg-white"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="refId" className="text-xs font-bold text-[#292821]">
+                  Registration ID (Optional)
+                </Label>
+                <Input
+                  id="refId"
+                  value={registrationIdInput}
+                  onChange={(e) => setRegistrationIdInput(e.target.value.toUpperCase())}
+                  placeholder="e.g. MQ-2026-X8Y7Z"
+                  className="h-10 text-xs border-[#E8DFD0] bg-white font-mono uppercase"
+                />
+                <p className="text-[11px] text-zinc-500">
+                  Enter your Registration ID if known, or leave blank to find your record by email.
+                </p>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isSendingOtp}
+                className="w-full bg-[#292821] hover:bg-[#3C332A] text-[#FAF5EE] text-xs font-bold h-11 rounded-md shadow-xs gap-2"
+              >
+                {isSendingOtp ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Sending 6-Digit Access Code...</span>
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-4 h-4 text-[#B69A65]" />
+                    <span>Send 6-Digit Access Code</span>
+                  </>
+                )}
+              </Button>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyOtp} className="space-y-4">
+              <div className="p-4 rounded-md bg-[#FAF5EE] border border-[#B69A65]/40 text-xs text-[#3C332A] space-y-1">
+                <p className="font-bold text-[#292821]">Access Code Dispatched</p>
+                <p>
+                  We have sent a 6-digit access code to <strong className="font-mono text-[#292821]">{emailInput}</strong>. Enter it below to unlock your application dossier.
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="otp" required className="text-xs font-bold text-[#292821]">
+                  6-Digit Access Code
+                </Label>
+                <Input
+                  id="otp"
+                  value={otpCode}
+                  onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  placeholder="123456"
+                  maxLength={6}
+                  required
+                  className="h-12 text-center text-xl font-mono font-bold tracking-widest border-[#B69A65] bg-white"
+                />
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <Button
+                  type="submit"
+                  disabled={isVerifyingOtp || otpCode.length !== 6}
+                  className="flex-1 bg-[#B69A65] hover:bg-[#a68c5b] text-[#292821] text-xs font-bold h-11 rounded-md shadow-xs gap-2"
+                >
+                  {isVerifyingOtp ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Verifying Access...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>Unlock Application Record</span>
+                    </>
+                  )}
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={resendCooldown > 0 || isSendingOtp}
+                  onClick={handleRequestOtp}
+                  className="border-[#E8DFD0] text-[#292821] text-xs font-semibold h-11 px-4 gap-1.5"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>{resendCooldown > 0 ? `Resend (${resendCooldown}s)` : "Resend Code"}</span>
+                </Button>
+              </div>
+
+              <div className="text-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOtpSent(false);
+                    setOtpCode("");
+                  }}
+                  className="text-xs text-zinc-500 hover:text-[#292821] underline"
+                >
+                  Use a different email address
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      )}
+
+      {/* STEP B: VERIFIED APPLICATION DOSSIER */}
+      {record && (
+        <div className="p-8 sm:p-10 rounded-lg bg-white border border-[#E8DFD0] shadow-xs space-y-8">
+          {/* Top Banner */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DFD0] pb-5">
             <div>
-              <span className="text-[11px] uppercase font-bold text-zinc-500 tracking-wider">
-                Applicant Record
+              <span className="text-[11px] uppercase font-bold text-zinc-500 tracking-wider block">
+                Verified Participant Dossier
               </span>
-              <h2 className="text-xl font-bold font-serif text-[#172B24]">
+              <h2 className="text-2xl font-bold font-serif text-[#292821]">
                 {record.fullName}
               </h2>
+              <span className="text-xs text-[#3C332A]">{record.province} &bull; {record.district}</span>
             </div>
-            <div className="text-left sm:text-right">
-              <span className="text-[11px] uppercase font-bold text-zinc-500 tracking-wider block">
+            <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-1">
+              <span className="text-[11px] uppercase font-bold text-zinc-500 tracking-wider">
                 Registration ID
               </span>
-              <span className="text-base font-extrabold font-mono text-[#172B24]">
+              <span className="text-lg font-extrabold font-mono text-[#292821]">
                 {record.registrationId}
               </span>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setIsEditModalOpen(true)}
+                className="border-[#B69A65] text-[#292821] hover:bg-[#FAF5EE] text-xs font-semibold h-8 mt-1 gap-1.5"
+              >
+                <Edit3 className="w-3.5 h-3.5 text-[#B69A65]" />
+                <span>Edit Application Details</span>
+              </Button>
             </div>
           </div>
 
@@ -246,7 +434,7 @@ function RegistrationStatusContent() {
             {/* Payment Status Card */}
             <div className="p-5 rounded-md bg-[#FAF5EE] border border-[#E8DFD0] space-y-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
-                Payment Status (NPR 399)
+                Payment Verification (NPR 399)
               </span>
               <div className="flex items-center gap-2">
                 {record.paymentStatus === "VERIFIED" ? (
@@ -271,11 +459,11 @@ function RegistrationStatusContent() {
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-[#292821]">
+              <p className="text-[11px] text-[#3C332A] leading-relaxed">
                 {record.paymentStatus === "VERIFIED" && "Payment confirmed against official bank records."}
                 {record.paymentStatus === "UNDER_REVIEW" && "Submitted receipt is being audited by the finance team."}
                 {record.paymentStatus === "CLARIFICATION_REQUIRED" && "Please provide updated transaction reference."}
-                {record.paymentStatus === "PENDING" && "Payment details not yet submitted."}
+                {record.paymentStatus === "PENDING" && "Fee payment has not yet been submitted."}
               </p>
             </div>
 
@@ -307,7 +495,7 @@ function RegistrationStatusContent() {
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-[#292821]">
+              <p className="text-[11px] text-[#3C332A] leading-relaxed">
                 {record.applicationStatus === "APPROVED" && "Official participation confirmed."}
                 {record.applicationStatus === "SUBMITTED" && "Application submitted and queued for evaluation."}
                 {record.applicationStatus === "UNDER_REVIEW" && "Application is being reviewed by the organizing committee."}
@@ -316,45 +504,68 @@ function RegistrationStatusContent() {
             </div>
           </div>
 
-          {/* CLARIFICATION REQUIRED BOX */}
-          {record.paymentStatus === "CLARIFICATION_REQUIRED" && (
-            <div className="p-5 rounded-md bg-orange-50 border border-orange-200 space-y-3">
-              <h4 className="font-bold text-xs text-orange-950 uppercase tracking-wide flex items-center gap-1.5">
-                <AlertCircle className="w-4 h-4 text-orange-700" />
-                <span>Payment Clarification Requested by Admin</span>
-              </h4>
-              <p className="text-xs text-orange-900 leading-relaxed">
-                {record.paymentClarificationNotes || "Please verify your transaction reference number and re-submit."}
-              </p>
+          {/* PAYMENT SUBMISSION BOX (IF PENDING OR CLARIFICATION REQUIRED) */}
+          {(record.paymentStatus === "PENDING" || record.paymentStatus === "CLARIFICATION_REQUIRED") && (
+            <div className="p-6 rounded-lg bg-[#FAF5EE] border border-[#B69A65]/50 space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-[#292821]">
+                    Submit Fee Payment Verification (NPR 399)
+                  </h4>
+                  <p className="text-xs text-[#3C332A] mt-0.5">
+                    Scan the official QR code to pay NPR 399 and provide your transaction reference.
+                  </p>
+                </div>
+                <QrCode className="w-6 h-6 text-[#B69A65]" />
+              </div>
 
-              <form onSubmit={handleClarificationSubmit} className="space-y-2 pt-2">
-                <Label htmlFor="clarRef" className="text-xs font-bold text-orange-950">
-                  Updated Bank / Wallet Transaction Reference
-                </Label>
-                <div className="flex gap-2">
+              {/* QR Image Display */}
+              <div className="w-48 mx-auto bg-white border border-[#E8DFD0] rounded-md p-3 text-center">
+                <img
+                  src={siteSettings?.paymentQrCodeUrl || "/assets/brand/origin-foundation-qr.png"}
+                  alt="Official Payment QR"
+                  className="w-full h-auto object-contain"
+                />
+                <span className="text-[10px] text-zinc-500 font-mono mt-1 block">
+                  The Origin Foundation &bull; NPR 399
+                </span>
+              </div>
+
+              {record.paymentClarificationNotes && (
+                <div className="p-3 bg-amber-50 rounded border border-amber-200 text-xs text-amber-900">
+                  <strong>Admin Note:</strong> {record.paymentClarificationNotes}
+                </div>
+              )}
+
+              <form onSubmit={handlePaymentSubmit} className="space-y-3 pt-2">
+                <div className="space-y-1">
+                  <Label htmlFor="txn" required className="text-xs font-bold text-[#292821]">
+                    Bank / Digital Wallet Transaction Reference (UTR)
+                  </Label>
                   <Input
-                    id="clarRef"
+                    id="txn"
                     value={newTxnRef}
                     onChange={(e) => setNewTxnRef(e.target.value)}
-                    placeholder="Enter correct transaction ID"
+                    placeholder="e.g. 981200546872 or Fonepay Txn ID"
                     required
-                    className="h-10 text-xs border-orange-300 bg-white font-mono"
+                    className="h-10 text-xs border-[#E8DFD0] bg-white font-mono"
                   />
-                  <Button
-                    type="submit"
-                    disabled={isReSubmitting}
-                    className="bg-orange-700 hover:bg-orange-800 text-white text-xs font-bold h-10 px-4 rounded-md shrink-0"
-                  >
-                    {isReSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Re-submit"}
-                  </Button>
                 </div>
+                <Button
+                  type="submit"
+                  disabled={isReSubmittingPayment}
+                  className="w-full bg-[#B69A65] hover:bg-[#a68c5b] text-[#292821] text-xs font-bold h-10 gap-2"
+                >
+                  {isReSubmittingPayment ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
+                  <span>Submit Payment Reference for Verification</span>
+                </Button>
               </form>
             </div>
           )}
 
-          {/* OFFICIAL PDF DOWNLOAD BUTTON */}
+          {/* OFFICIAL PDF DOWNLOAD (IF VERIFIED & APPROVED) */}
           {record.isPdfAvailable && (
-            <div className="p-6 rounded-md bg-[#172B24] text-[#FAF5EE] border border-[#292821] space-y-4">
+            <div className="p-6 rounded-lg bg-[#292821] text-[#FAF5EE] border border-[#B69A65] space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-white text-base font-serif">
@@ -374,7 +585,7 @@ function RegistrationStatusContent() {
               <Button
                 onClick={handleDownloadPdf}
                 disabled={isDownloadingPdf}
-                className="w-full bg-[#B69A65] hover:bg-[#b8986d] text-[#172B24] font-bold text-xs h-11 rounded-md shadow-xs gap-2"
+                className="w-full bg-[#B69A65] hover:bg-[#a68c5b] text-[#292821] font-bold text-xs h-11 rounded-md shadow-xs gap-2"
               >
                 {isDownloadingPdf ? (
                   <>
@@ -390,6 +601,244 @@ function RegistrationStatusContent() {
               </Button>
             </div>
           )}
+
+          {/* APPLICATION DETAILS BREAKDOWN */}
+          <div className="space-y-4 pt-4 border-t border-[#E8DFD0]">
+            <h3 className="font-bold font-serif text-base text-[#292821]">
+              Submitted Application Details
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="p-3 bg-[#FAF5EE] rounded-md border border-[#E8DFD0]">
+                <span className="text-zinc-500 block text-[10px] uppercase font-bold">Email Address</span>
+                <span className="font-mono text-[#292821] font-bold">{record.email}</span>
+              </div>
+
+              <div className="p-3 bg-[#FAF5EE] rounded-md border border-[#E8DFD0]">
+                <span className="text-zinc-500 block text-[10px] uppercase font-bold">Mobile Phone</span>
+                <span className="font-mono text-[#292821] font-bold">{record.phone}</span>
+              </div>
+
+              <div className="p-3 bg-[#FAF5EE] rounded-md border border-[#E8DFD0]">
+                <span className="text-zinc-500 block text-[10px] uppercase font-bold">Date of Birth</span>
+                <span className="text-[#292821] font-bold">{record.dob} {record.isMinor ? "(Minor < 18)" : ""}</span>
+              </div>
+
+              <div className="p-3 bg-[#FAF5EE] rounded-md border border-[#E8DFD0]">
+                <span className="text-zinc-500 block text-[10px] uppercase font-bold">Location</span>
+                <span className="text-[#292821] font-bold">{record.municipality}, {record.district}</span>
+              </div>
+            </div>
+
+            {record.personalIntro && (
+              <div className="p-4 bg-[#FAF5EE] rounded-md border border-[#E8DFD0] text-xs space-y-1">
+                <span className="text-zinc-500 uppercase font-bold text-[10px]">Personal Introduction</span>
+                <p className="text-[#3C332A] leading-relaxed">{record.personalIntro}</p>
+              </div>
+            )}
+          </div>
+
+          {/* EDIT LOGS HISTORY */}
+          {record.editLogs && record.editLogs.length > 0 && (
+            <div className="space-y-3 pt-4 border-t border-[#E8DFD0]">
+              <div className="flex items-center gap-2">
+                <History className="w-4 h-4 text-[#B69A65]" />
+                <h4 className="font-bold text-xs uppercase tracking-wider text-[#292821]">
+                  Modification History & Audit Trail
+                </h4>
+              </div>
+              <div className="space-y-2">
+                {record.editLogs.map((log: any) => (
+                  <div key={log.id} className="p-3 rounded bg-zinc-50 border border-zinc-200 text-xs flex justify-between items-center">
+                    <div>
+                      <span className="font-bold text-[#292821]">
+                        Updated {Object.keys(log.changedFields || {}).length} fields: {Object.keys(log.changedFields || {}).join(", ")}
+                      </span>
+                      <span className="text-[11px] text-zinc-500 block">
+                        {new Date(log.createdAt).toLocaleDateString()} &bull; Review: {log.reviewStatus}
+                      </span>
+                    </div>
+                    {log.requiresReview && (
+                      <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200">
+                        Under Admin Review
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* EDIT APPLICATION DETAILS MODAL */}
+      {isEditModalOpen && record && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-lg max-w-2xl w-full p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto border border-[#E8DFD0] shadow-xl">
+            <div className="flex items-center justify-between border-b border-[#E8DFD0] pb-4">
+              <div>
+                <h3 className="font-serif font-bold text-xl text-[#292821]">
+                  Edit Application Details
+                </h3>
+                <p className="text-xs text-[#3C332A] mt-0.5">
+                  Update your participant profile, location, or heritage answers.
+                </p>
+              </div>
+              <button
+                onClick={() => setIsEditModalOpen(false)}
+                className="text-zinc-400 hover:text-zinc-700"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-3 rounded bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+              <p className="leading-relaxed">
+                <strong>Audit Notice:</strong> Changes to sensitive information (Legal Name, Date of Birth, Guardian details) are recorded in the audit log and will trigger administrative re-review to ensure competition integrity.
+              </p>
+            </div>
+
+            <form onSubmit={handleSaveEdits} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="edFullName" className="text-xs font-bold text-[#292821]">Full Legal Name</Label>
+                  <Input
+                    id="edFullName"
+                    value={editFormData.fullName || ""}
+                    onChange={(e) => setEditFormData({ ...editFormData, fullName: e.target.value })}
+                    className="h-9 text-xs border-[#E8DFD0]"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="edPhone" className="text-xs font-bold text-[#292821]">Mobile Phone</Label>
+                  <Input
+                    id="edPhone"
+                    value={editFormData.phone || ""}
+                    onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
+                    className="h-9 text-xs border-[#E8DFD0]"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="edDob" className="text-xs font-bold text-[#292821]">Date of Birth</Label>
+                  <Input
+                    id="edDob"
+                    type="date"
+                    value={editFormData.dob || ""}
+                    onChange={(e) => setEditFormData({ ...editFormData, dob: e.target.value })}
+                    className="h-9 text-xs border-[#E8DFD0]"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="edAltPhone" className="text-xs font-bold text-[#292821]">Alternate Phone</Label>
+                  <Input
+                    id="edAltPhone"
+                    value={editFormData.alternatePhone || ""}
+                    onChange={(e) => setEditFormData({ ...editFormData, alternatePhone: e.target.value })}
+                    className="h-9 text-xs border-[#E8DFD0]"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="edMun" className="text-xs font-bold text-[#292821]">Municipality / Rural Mun.</Label>
+                  <Input
+                    id="edMun"
+                    value={editFormData.municipality || ""}
+                    onChange={(e) => setEditFormData({ ...editFormData, municipality: e.target.value })}
+                    className="h-9 text-xs border-[#E8DFD0]"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="edCity" className="text-xs font-bold text-[#292821]">City / Village</Label>
+                  <Input
+                    id="edCity"
+                    value={editFormData.cityVillage || ""}
+                    onChange={(e) => setEditFormData({ ...editFormData, cityVillage: e.target.value })}
+                    className="h-9 text-xs border-[#E8DFD0]"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="edIntro" className="text-xs font-bold text-[#292821]">Personal Introduction</Label>
+                <Textarea
+                  id="edIntro"
+                  value={editFormData.personalIntro || ""}
+                  onChange={(e) => setEditFormData({ ...editFormData, personalIntro: e.target.value })}
+                  rows={2}
+                  className="text-xs border-[#E8DFD0] resize-none"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="edMotivation" className="text-xs font-bold text-[#292821]">Motivation for Mithila Queen</Label>
+                <Textarea
+                  id="edMotivation"
+                  value={editFormData.motivationReason || ""}
+                  onChange={(e) => setEditFormData({ ...editFormData, motivationReason: e.target.value })}
+                  rows={2}
+                  className="text-xs border-[#E8DFD0] resize-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="space-y-1">
+                  <Label htmlFor="edIg" className="text-[11px] font-bold text-[#292821]">Instagram</Label>
+                  <Input
+                    id="edIg"
+                    value={editFormData.instagramHandle || ""}
+                    onChange={(e) => setEditFormData({ ...editFormData, instagramHandle: e.target.value })}
+                    placeholder="username"
+                    className="h-8 text-xs border-[#E8DFD0]"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="edTt" className="text-[11px] font-bold text-[#292821]">TikTok</Label>
+                  <Input
+                    id="edTt"
+                    value={editFormData.tiktokHandle || ""}
+                    onChange={(e) => setEditFormData({ ...editFormData, tiktokHandle: e.target.value })}
+                    placeholder="username"
+                    className="h-8 text-xs border-[#E8DFD0]"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="edFb" className="text-[11px] font-bold text-[#292821]">Facebook Link</Label>
+                  <Input
+                    id="edFb"
+                    value={editFormData.facebookUrl || ""}
+                    onChange={(e) => setEditFormData({ ...editFormData, facebookUrl: e.target.value })}
+                    placeholder="url"
+                    className="h-8 text-xs border-[#E8DFD0]"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-[#E8DFD0]">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="text-xs border-[#E8DFD0]"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isSavingEdits}
+                  className="bg-[#B69A65] hover:bg-[#a68c5b] text-[#292821] text-xs font-bold gap-2"
+                >
+                  {isSavingEdits ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                  <span>Save Updated Information</span>
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
@@ -401,7 +850,7 @@ export default function RegistrationStatusPage() {
     <Suspense
       fallback={
         <div className="py-24 text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#172B24]" />
+          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#292821]" />
           <p className="text-xs text-zinc-500 mt-2 font-mono">Loading application lookup...</p>
         </div>
       }
@@ -410,4 +859,3 @@ export default function RegistrationStatusPage() {
     </Suspense>
   );
 }
-

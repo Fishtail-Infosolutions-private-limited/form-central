@@ -479,6 +479,8 @@ model MithilaQueenRegistration {
   // Verification & Metadata
   emailVerified             Boolean                 @default(true)
   emailVerificationId       String?
+  inProgressStep            Int                     @default(1)
+  isCompleted               Boolean                 @default(false)
   submittedAt               DateTime                @default(now())
   createdAt                 DateTime                @default(now())
   updatedAt                 DateTime                @updatedAt
@@ -486,6 +488,7 @@ model MithilaQueenRegistration {
   statusLogs                RegistrationStatusLog[]
   paymentReviewLogs         PaymentReviewLog[]
   consents                  ParticipantConsent[]
+  editLogs                  RegistrationEditLog[]
 
   @@index([registrationId])
   @@index([email])
@@ -551,31 +554,54 @@ model ParticipantConsent {
   @@map("participant_consents")
 }
 
+model RegistrationEditLog {
+  id                   String                   @id @default(uuid())
+  registrationId       String
+  registration         MithilaQueenRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  changedFields        Json                     // { [fieldName]: { previous: any, updated: any } }
+  changedByEmail       String
+  requiresReview       Boolean                  @default(false)
+  reviewStatus         String                   @default("PENDING") // PENDING, APPROVED, REJECTED
+  reviewedById         String?
+  reviewedAt           DateTime?
+  adminNotes           String?                  @db.Text
+  createdAt            DateTime                 @default(now())
+
+  @@index([registrationId])
+  @@index([reviewStatus])
+  @@map("registration_edit_logs")
+}
+
 model SiteSetting {
-  id                      String                @id @default("primary")
-  organizationName        String                @default("The Origin Foundation")
-  organizationTagline     String                @default("Rooted in Identity. Driven by Purpose.")
-  competitionName         String                @default("Mithila Queen")
-  competitionTagline      String                @default("Celebrating Mithila's Culture, Confidence & Talent.")
-  location                String                @default("Janakpur Dham, Nepal")
-  officialEmail           String                @default("originfoundation107@gmail.com")
-  registrationFee         Int                   @default(399)
-  eventSchedule           String                @default("To Be Announced")
-  eventVenue              String                @default("To Be Announced")
-  isRegistrationOpen      Boolean               @default(true)
-  registrationClosingDate DateTime?
-  paymentQrCodeUrl        String?               // Admin configurable payment QR image
-  paymentInstructions     String?               @db.Text
-  whatsappContact         String                @default("+977 9704571941")
-  officialInstagram       String?               // To be provided by organizers
-  officialTiktok          String?               // To be provided by organizers
-  requiredHashtags        String?               // To be provided by organizers
-  videoGuidelines         String?               @db.Text
-  prizesJson              Json?                 // Editable prizes with "proposed" status
-  announcementsJson       Json?                 // Editable event updates
-  faqsJson                Json?                 // Editable FAQs
-  rulesJson               Json?                 // Editable rules
-  updatedAt               DateTime              @updatedAt
+  id                           String                @id @default("primary")
+  organizationName             String                @default("The Origin Foundation")
+  organizationTagline          String                @default("Rooted in Identity. Driven by Purpose.")
+  competitionName              String                @default("Mithila Queen")
+  competitionTagline           String                @default("Celebrating Mithila's Culture, Confidence & Talent.")
+  location                     String                @default("Janakpur Dham, Nepal")
+  officialEmail                String                @default("originfoundation107@gmail.com")
+  registrationFee              Int                   @default(399)
+  eventSchedule                String                @default("To Be Announced")
+  eventVenue                   String                @default("To Be Announced")
+  eventDate                    DateTime?
+  eventTime                    String?
+  isRegistrationOpen           Boolean               @default(true)
+  registrationOpeningDate      DateTime?
+  registrationClosingDate      DateTime?
+  paymentQrCodeUrl             String?               // Admin configurable payment QR image
+  paymentProviderName          String?               @default("eSewa / Fonepay / Bank Transfer")
+  paymentInstructions          String?               @db.Text
+  paymentReferenceInstructions String?               @db.Text
+  whatsappContact              String                @default("+977 9704571941")
+  officialInstagram            String?               // To be provided by organizers
+  officialTiktok               String?               // To be provided by organizers
+  requiredHashtags             String?               // To be provided by organizers
+  videoGuidelines              String?               @db.Text
+  prizesJson                   Json?                 // Editable prizes with "proposed" status
+  announcementsJson            Json?                 // Editable event updates
+  faqsJson                     Json?                 // Editable FAQs
+  rulesJson                    Json?                 // Editable rules
+  updatedAt                    DateTime              @updatedAt
 
   @@map("site_settings")
 }

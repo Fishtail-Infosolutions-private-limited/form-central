@@ -4,8 +4,8 @@ import React from "react";
 // THE ORIGIN FOUNDATION — OFFICIAL LOGO & SEAL
 // Rooted in Identity. Driven by Purpose.
 // Janakpur Dham, Nepal
-// Palette: Forest Green (#172B24), Warm Ivory (#F5F0E6), Terracotta (#A64B36),
-// Antique Gold (#B69A65), Charcoal (#292821), Sand (#E8DFD0)
+// Palette: Deep Forest/Charcoal (#292821), Warm Ivory (#F5F0E6), Terracotta (#A64B36),
+// Antique Gold (#B69A65), Dark Brown (#3C332A), Soft Beige (#E8DFD0)
 // ============================================================================
 
 export function OriginFoundationLogo({
@@ -18,11 +18,11 @@ export function OriginFoundationLogo({
   className?: string;
 }) {
   const isLight = theme === "light";
-  const primaryTextColor = isLight ? "#F5F0E6" : "#172B24";
+  const primaryTextColor = isLight ? "#F5F0E6" : "#292821";
   const secondaryTextColor = isLight ? "#B69A65" : "#A64B36";
   const subtextColor = isLight ? "#E8DFD0" : "#59574D";
   const goldColor = "#B69A65";
-  const forestColor = "#172B24";
+  const forestColor = "#292821";
 
   // The Emblem Mark: Sacred Lotus + Rising Sun of Janakpur + Geometric 'O' of Origin
   const EmblemMark = (
@@ -160,10 +160,10 @@ export function MithilaQueenLogo({
   className?: string;
 }) {
   const isLight = theme === "light";
-  const primaryTextColor = isLight ? "#F5F0E6" : "#172B24";
+  const primaryTextColor = isLight ? "#F5F0E6" : "#292821";
   const goldColor = "#B69A65";
   const terracottaColor = "#A64B36";
-  const forestColor = "#172B24";
+  const forestColor = "#292821";
   const subtextColor = isLight ? "#E8DFD0" : "#59574D";
 
   // The Royal Mithila Queen Crest: Regal Crown + Traditional Mayur Flourish
@@ -243,7 +243,7 @@ export function MithilaQueenLogo({
   if (variant === "badge") {
     return (
       <div
-        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#B69A65]/40 bg-[#172B24] text-[#F5F0E6] select-none ${className}`}
+        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-[#B69A65]/40 bg-[#292821] text-[#F5F0E6] select-none ${className}`}
       >
         <div className="w-5 h-5 shrink-0">{CrestMark}</div>
         <span className="text-xs font-serif font-bold tracking-wider text-[#F5F0E6] uppercase">

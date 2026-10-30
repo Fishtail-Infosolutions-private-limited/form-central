@@ -4,6 +4,69 @@ import { prisma } from "@/lib/db/prisma";
 import { requireAdmin } from "@/lib/auth/guards";
 import { revalidatePath } from "next/cache";
 
+export async function getPublicSiteSettingsAction() {
+  try {
+    let setting = await prisma.siteSetting.findUnique({
+      where: { id: "primary" },
+    });
+
+    if (!setting) {
+      setting = await prisma.siteSetting.create({
+        data: {
+          id: "primary",
+          organizationName: "The Origin Foundation",
+          organizationTagline: "Rooted in Identity. Driven by Purpose.",
+          competitionName: "Mithila Queen",
+          competitionTagline: "Celebrating Mithila's Culture, Confidence & Talent.",
+          location: "Janakpur Dham, Nepal",
+          officialEmail: "originfoundation107@gmail.com",
+          registrationFee: 399,
+          eventSchedule: "To Be Announced",
+          eventVenue: "To Be Announced",
+          isRegistrationOpen: true,
+          whatsappContact: "+977 9704571941",
+        },
+      });
+    }
+
+    return {
+      success: true,
+      setting: {
+        organizationName: setting.organizationName,
+        organizationTagline: setting.organizationTagline,
+        competitionName: setting.competitionName,
+        competitionTagline: setting.competitionTagline,
+        location: setting.location,
+        officialEmail: setting.officialEmail,
+        registrationFee: setting.registrationFee,
+        eventSchedule: setting.eventSchedule,
+        eventVenue: setting.eventVenue,
+        eventDate: setting.eventDate,
+        eventTime: setting.eventTime,
+        isRegistrationOpen: setting.isRegistrationOpen,
+        registrationOpeningDate: setting.registrationOpeningDate,
+        registrationClosingDate: setting.registrationClosingDate,
+        paymentQrCodeUrl: setting.paymentQrCodeUrl,
+        paymentProviderName: setting.paymentProviderName,
+        paymentInstructions: setting.paymentInstructions,
+        paymentReferenceInstructions: setting.paymentReferenceInstructions,
+        whatsappContact: setting.whatsappContact,
+        officialInstagram: setting.officialInstagram,
+        officialTiktok: setting.officialTiktok,
+        requiredHashtags: setting.requiredHashtags,
+        videoGuidelines: setting.videoGuidelines,
+        prizesJson: setting.prizesJson,
+        announcementsJson: setting.announcementsJson,
+        faqsJson: setting.faqsJson,
+        rulesJson: setting.rulesJson,
+      },
+    };
+  } catch (error: any) {
+    console.error("Error fetching public site settings:", error);
+    return { success: false, error: "Failed to load site settings" };
+  }
+}
+
 export async function getSiteSettingsAction() {
   await requireAdmin();
 
@@ -43,9 +106,15 @@ export async function updateSiteSettingsAction(data: {
   registrationFee?: number;
   eventSchedule?: string;
   eventVenue?: string;
+  eventDate?: Date | string | null;
+  eventTime?: string | null;
   isRegistrationOpen?: boolean;
-  paymentQrCodeUrl?: string;
-  paymentInstructions?: string;
+  registrationOpeningDate?: Date | string | null;
+  registrationClosingDate?: Date | string | null;
+  paymentQrCodeUrl?: string | null;
+  paymentProviderName?: string | null;
+  paymentInstructions?: string | null;
+  paymentReferenceInstructions?: string | null;
   whatsappContact?: string;
   officialInstagram?: string;
   officialTiktok?: string;
@@ -59,10 +128,34 @@ export async function updateSiteSettingsAction(data: {
   const admin = await requireAdmin();
 
   try {
+    // Convert date strings to Date objects if needed
+    const openingDate = data.registrationOpeningDate
+      ? new Date(data.registrationOpeningDate)
+      : data.registrationOpeningDate === null
+      ? null
+      : undefined;
+
+    const closingDate = data.registrationClosingDate
+      ? new Date(data.registrationClosingDate)
+      : data.registrationClosingDate === null
+      ? null
+      : undefined;
+
+    const evDate = data.eventDate
+      ? new Date(data.eventDate)
+      : data.eventDate === null
+      ? null
+      : undefined;
+
+    const cleanData: any = { ...data };
+    if (openingDate !== undefined) cleanData.registrationOpeningDate = openingDate;
+    if (closingDate !== undefined) cleanData.registrationClosingDate = closingDate;
+    if (evDate !== undefined) cleanData.eventDate = evDate;
+
     const updated = await prisma.siteSetting.upsert({
       where: { id: "primary" },
       update: {
-        ...data,
+        ...cleanData,
       },
       create: {
         id: "primary",
@@ -77,7 +170,7 @@ export async function updateSiteSettingsAction(data: {
         eventVenue: "To Be Announced",
         isRegistrationOpen: data.isRegistrationOpen ?? true,
         whatsappContact: data.whatsappContact || "+977 9704571941",
-        ...data,
+        ...cleanData,
       },
     });
 
@@ -97,6 +190,7 @@ export async function updateSiteSettingsAction(data: {
     revalidatePath("/admin/settings");
     revalidatePath("/admin/dashboard");
     revalidatePath("/register");
+    revalidatePath("/registration-status");
 
     return { success: true, setting: updated };
   } catch (error: any) {

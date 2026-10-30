@@ -206,7 +206,7 @@ export async function submitRegistrationAction({
       submissionDate: formattedDateNpt,
       status: "Confirmed",
       viewDetailsUrl,
-    }).catch((emailErr) => {
+    }).catch((emailErr: unknown) => {
       console.error("Non-blocking confirmation email delivery error:", emailErr);
     });
   } catch (emailSetupErr) {
