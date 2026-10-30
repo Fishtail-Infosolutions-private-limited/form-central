@@ -476,3 +476,4 @@ export function CampaignListView({ campaigns: initialCampaigns, stats }: Campaig
     </div>
   );
 }
+

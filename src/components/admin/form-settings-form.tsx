@@ -67,6 +67,26 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
   const [maxParticipants, setMaxParticipants] = useState<string>(
     form.maxParticipants ? String(form.maxParticipants) : "500"
   );
+  const [capacityError, setCapacityError] = useState<string | null>(null);
+
+  const handleMaxParticipantsChange = (val: string) => {
+    setMaxParticipants(val);
+    const parsed = Number(val);
+    if (val !== "" && (isNaN(parsed) || parsed < 100)) {
+      setCapacityError("Minimum participant capacity is 100. Numbers below 100 are not allowed.");
+    } else {
+      setCapacityError(null);
+    }
+  };
+
+  const handleMaxParticipantsBlur = () => {
+    const parsed = Number(maxParticipants);
+    if (maxParticipants === "" || isNaN(parsed) || parsed < 100) {
+      setMaxParticipants("100");
+      setCapacityError(null);
+      toast.info("Minimum participant capacity is 100. Automatically set to 100.");
+    }
+  };
 
   // Deadline State (Nepal Time)
   const [isDeadlineEnabled, setIsDeadlineEnabled] = useState(form.isDeadlineEnabled);
@@ -369,7 +389,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
                   <Label htmlFor="maxParticipants" required className="text-xs font-bold text-zinc-800">
                     Maximum Participants (Min: 100)
                   </Label>
-                  <div className="max-w-xs">
+                  <div className="max-w-xs space-y-1">
                     <Input
                       id="maxParticipants"
                       name="maxParticipants"
@@ -377,11 +397,20 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
                       min={100}
                       step={1}
                       value={maxParticipants}
-                      onChange={(e) => setMaxParticipants(e.target.value)}
+                      onChange={(e) => handleMaxParticipantsChange(e.target.value)}
+                      onBlur={handleMaxParticipantsBlur}
                       placeholder="e.g. 500"
-                      className="h-10 text-sm border-zinc-300 bg-white font-mono"
+                      className={`h-10 text-sm bg-white font-mono ${
+                        capacityError ? "border-rose-500 focus-visible:ring-rose-500" : "border-zinc-300"
+                      }`}
                       required={capacityType === "limited"}
                     />
+                    {capacityError && (
+                      <p className="text-xs text-rose-600 font-bold flex items-center gap-1">
+                        <AlertTriangle className="w-3.5 h-3.5" />
+                        <span>{capacityError}</span>
+                      </p>
+                    )}
                   </div>
                   <p className="text-[11px] text-zinc-500">
                     Minimum allowed capacity is <strong>100</strong>. Setting a limit below the existing submission count will mark the form as full without deleting any existing records.

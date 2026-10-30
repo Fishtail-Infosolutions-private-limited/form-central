@@ -294,3 +294,4 @@ export async function ensureDefaultEmailTemplates(prisma: PrismaClient) {
     }
   }
 }
+

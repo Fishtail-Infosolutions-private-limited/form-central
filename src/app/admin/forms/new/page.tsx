@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import slugify from "slugify";
-import { ArrowLeft, Sparkles, Loader2, ArrowRight, Clock, Users, Calendar } from "lucide-react";
+import { ArrowLeft, Sparkles, Loader2, ArrowRight, Clock, Users, Calendar, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +23,25 @@ export default function CreateFormPage() {
   // Registration Capacity State
   const [capacityType, setCapacityType] = useState<"unlimited" | "limited">("unlimited");
   const [maxParticipants, setMaxParticipants] = useState("500");
+  const [capacityError, setCapacityError] = useState<string | null>(null);
+
+  const handleMaxParticipantsChange = (val: string) => {
+    setMaxParticipants(val);
+    const parsed = Number(val);
+    if (val !== "" && (isNaN(parsed) || parsed < 100)) {
+      setCapacityError("Minimum participant capacity is 100. Numbers below 100 are not allowed.");
+    } else {
+      setCapacityError(null);
+    }
+  };
+
+  const handleMaxParticipantsBlur = () => {
+    const parsed = Number(maxParticipants);
+    if (maxParticipants === "" || isNaN(parsed) || parsed < 100) {
+      setMaxParticipants("100");
+      setCapacityError(null);
+    }
+  };
 
   // Registration Deadline State (Nepal Time)
   const [isDeadlineEnabled, setIsDeadlineEnabled] = useState(false);
@@ -246,7 +265,7 @@ export default function CreateFormPage() {
                   <Label htmlFor="maxParticipants" required className="text-xs font-bold text-zinc-800">
                     Maximum Participants (Min: 100)
                   </Label>
-                  <div className="max-w-xs">
+                  <div className="max-w-xs space-y-1">
                     <Input
                       id="maxParticipants"
                       name="maxParticipants"
@@ -254,11 +273,20 @@ export default function CreateFormPage() {
                       min={100}
                       step={1}
                       value={maxParticipants}
-                      onChange={(e) => setMaxParticipants(e.target.value)}
+                      onChange={(e) => handleMaxParticipantsChange(e.target.value)}
+                      onBlur={handleMaxParticipantsBlur}
                       placeholder="e.g. 500"
-                      className="h-10 text-sm border-zinc-300 bg-white font-mono"
+                      className={`h-10 text-sm bg-white font-mono ${
+                        capacityError ? "border-rose-500 focus-visible:ring-rose-500" : "border-zinc-300"
+                      }`}
                       required={capacityType === "limited"}
                     />
+                    {capacityError && (
+                      <p className="text-xs text-rose-600 font-bold flex items-center gap-1">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        <span>{capacityError}</span>
+                      </p>
+                    )}
                   </div>
                   <p className="text-[11px] text-zinc-500">
                     The minimum allowed value is <strong>100</strong>. When this quota is reached, the public registration page will automatically reject new entries.

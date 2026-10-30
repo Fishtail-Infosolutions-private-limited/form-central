@@ -365,19 +365,6 @@ export function BuilderWorkspace({
       setDeletedStepSnapshot(null);
       if (undoIntervalRef.current) clearInterval(undoIntervalRef.current);
     }, 10000);
-
-    // Sonner toast with instant Undo action button
-    toast(`Step "${stepToDelete.title}" deleted`, {
-      id: "undo-step-toast",
-      duration: 10000,
-      description: "Click Undo within 10 seconds to restore this step.",
-      action: {
-        label: "Undo",
-        onClick: () => {
-          handleUndoStep(snapshot);
-        },
-      },
-    });
   };
 
   // Update Step Title & Description

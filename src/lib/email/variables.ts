@@ -191,3 +191,4 @@ export function validateTemplateVariables(text: string): { valid: boolean; warni
     warnings,
   };
 }
+

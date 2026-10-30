@@ -17,6 +17,7 @@ import {
   XCircle,
   ToggleLeft,
   ToggleRight,
+  Pencil,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -201,13 +202,26 @@ export function FormsTable({ forms }: { forms: FormItem[] }) {
 
                     <td className="px-5 py-4 text-right" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-end gap-1.5">
+                        <Link href={`/admin/forms/${form.id}`}>
+                          <Button
+                            size="sm"
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold gap-1 text-xs h-8 px-2.5 shadow-2xs"
+                            title="Edit Form (Name, Slug, Capacity, Deadline, Settings)"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                            <span>Edit</span>
+                          </Button>
+                        </Link>
+
                         <Link href={`/admin/forms/${form.id}/builder`}>
                           <Button
                             size="sm"
-                            className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium gap-1 text-xs h-8 px-2.5"
+                            variant="outline"
+                            className="text-zinc-700 text-xs h-8 px-2 gap-1 border-zinc-200 hover:bg-zinc-100"
+                            title="Form Canvas Builder"
                           >
-                            <FileEdit className="w-3.5 h-3.5" />
-                            <span>Builder</span>
+                            <FileEdit className="w-3.5 h-3.5 text-zinc-500" />
+                            <span className="hidden sm:inline">Builder</span>
                           </Button>
                         </Link>
 

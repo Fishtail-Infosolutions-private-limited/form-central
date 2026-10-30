@@ -12,6 +12,7 @@ import {
   Eye,
   HardDrive,
   AlertCircle,
+  AlertTriangle,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -85,22 +86,22 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* Google Drive Status Notification (Small clean banner if disconnected) */}
+      {/* Google Drive Status Notification (Warning Alert banner if disconnected) */}
       {!driveIntegration?.isConnected && (
-        <div className="p-3.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+        <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-800 text-emerald-400 flex items-center justify-center shrink-0">
-              <HardDrive className="w-4 h-4" />
+            <div className="w-8 h-8 rounded-lg bg-amber-100 border border-amber-300 text-amber-700 flex items-center justify-center shrink-0">
+              <AlertTriangle className="w-4 h-4 text-amber-600" />
             </div>
             <div>
-              <p className="text-xs font-bold text-white">Google Drive is not connected</p>
-              <p className="text-[11px] text-zinc-400">
+              <p className="text-xs font-bold text-amber-900">Google Drive is not connected</p>
+              <p className="text-[11px] text-amber-700">
                 Connect your Google account in Settings to receive registration video uploads directly into Drive.
               </p>
             </div>
           </div>
           <Link href="/admin/settings/integrations/google-drive">
-            <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-8 px-3 shrink-0">
+            <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs h-8 px-3 shrink-0 shadow-2xs">
               Connect Drive
             </Button>
           </Link>
@@ -328,10 +329,10 @@ export default async function AdminDashboardPage() {
                           <span>Live</span>
                         </Link>
                         <Link
-                          href={`/admin/forms/${form.id}/builder`}
+                          href={`/admin/forms/${form.id}`}
                           className="text-emerald-700 hover:text-emerald-800 font-semibold flex items-center gap-0.5"
                         >
-                          <span>Builder</span>
+                          <span>Edit</span>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
                       </div>

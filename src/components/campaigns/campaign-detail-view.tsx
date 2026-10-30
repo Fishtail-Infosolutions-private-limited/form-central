@@ -480,3 +480,4 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
     </div>
   );
 }
+

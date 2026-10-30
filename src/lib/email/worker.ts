@@ -394,3 +394,4 @@ export function triggerBackgroundWorker(maxBatches = 10) {
     }
   })();
 }
+

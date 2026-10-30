@@ -85,3 +85,4 @@ export default async function CampaignDetailPage({
 
   return <CampaignDetailView campaign={serializedCampaign} />;
 }
+
