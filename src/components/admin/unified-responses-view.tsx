@@ -361,16 +361,16 @@ export function UnifiedResponsesView({
   return (
     <div className="space-y-4">
       {/* FILTER & SEARCH CONTROL BAR */}
-      <div className="p-4 rounded-xl bg-white border border-[#E2E8F0] shadow-xs space-y-3">
+      <div className="p-4 rounded-xl bg-[#FFFDF7] border border-[#EADBCE] shadow-xs space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Search Box */}
           <div className="relative">
-            <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search name, ID, phone, email..."
-              className="pl-9 h-9 text-xs border-[#E2E8F0] bg-[#F1F5F9]/30 font-sans"
+              className="pl-9 h-9 text-xs border-[#EADBCE] bg-[#F7F1E5]/50 text-[#292524] font-sans focus-visible:ring-[#D97706]"
             />
           </div>
 
@@ -379,9 +379,9 @@ export function UnifiedResponsesView({
             <select
               value={formFilter}
               onChange={(e) => setFormFilter(e.target.value)}
-              className="w-full h-9 text-xs border border-[#E2E8F0] rounded-md bg-[#F1F5F9]/30 px-3 text-[#0A192F] focus:outline-none focus:border-[#C5A880]"
+              className="w-full h-9 text-xs border border-[#EADBCE] rounded-md bg-[#F7F1E5]/50 px-3 text-[#292524] focus:outline-none focus:border-[#D97706]"
             >
-              <option value="ALL">All Competitions & Forms</option>
+              <option value="ALL">All Competitions &amp; Forms</option>
               {forms.map((f) => (
                 <option key={f.id} value={f.slug}>
                   {f.name}
@@ -395,7 +395,7 @@ export function UnifiedResponsesView({
             <select
               value={paymentFilter}
               onChange={(e) => setPaymentFilter(e.target.value)}
-              className="w-full h-9 text-xs border border-[#E2E8F0] rounded-md bg-[#F1F5F9]/30 px-3 text-[#0A192F] focus:outline-none focus:border-[#C5A880]"
+              className="w-full h-9 text-xs border border-[#EADBCE] rounded-md bg-[#F7F1E5]/50 px-3 text-[#292524] focus:outline-none focus:border-[#D97706]"
             >
               <option value="ALL">All Payment States</option>
               <option value="UNDER_REVIEW">Payment: Under Review</option>
@@ -411,7 +411,7 @@ export function UnifiedResponsesView({
             <select
               value={applicationFilter}
               onChange={(e) => setApplicationFilter(e.target.value)}
-              className="w-full h-9 text-xs border border-[#E2E8F0] rounded-md bg-[#F1F5F9]/30 px-3 text-[#0A192F] focus:outline-none focus:border-[#C5A880]"
+              className="w-full h-9 text-xs border border-[#EADBCE] rounded-md bg-[#F7F1E5]/50 px-3 text-[#292524] focus:outline-none focus:border-[#D97706]"
             >
               <option value="ALL">All Application States</option>
               <option value="SUBMITTED">Status: Submitted</option>
@@ -424,7 +424,7 @@ export function UnifiedResponsesView({
         </div>
 
         {/* Status Count Summary & Excel Export */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#E2E8F0] text-xs text-[#59574D]">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#EADBCE] text-xs text-stone-600">
           <div className="flex items-center gap-3">
             <span>
               Showing <strong>{filteredApplications.length}</strong> of {applications.length} applications
@@ -437,7 +437,7 @@ export function UnifiedResponsesView({
                   setPaymentFilter("ALL");
                   setApplicationFilter("ALL");
                 }}
-                className="text-[#A64B36] hover:underline flex items-center gap-1 font-semibold text-xs"
+                className="text-[#7F1D2D] hover:underline flex items-center gap-1 font-semibold text-xs"
               >
                 <RotateCcw className="w-3 h-3" />
                 <span>Reset Filters</span>
@@ -449,12 +449,12 @@ export function UnifiedResponsesView({
             size="sm"
             onClick={handleExportExcel}
             disabled={isExportingExcel || filteredApplications.length === 0}
-            className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-8 px-3 rounded gap-1.5 shadow-none"
+            className="bg-[#7F1D2D] hover:bg-[#681724] text-white text-xs h-8 px-3 rounded-lg gap-1.5 shadow-none font-semibold"
           >
             {isExportingExcel ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
             ) : (
-              <Download className="w-3.5 h-3.5" />
+              <Download className="w-3.5 h-3.5 text-[#D97706]" />
             )}
             <span>Export to Excel</span>
           </Button>
@@ -462,18 +462,18 @@ export function UnifiedResponsesView({
       </div>
 
       {/* UNIFIED DATA TABLE */}
-      <div className="rounded-xl border border-[#E2E8F0] bg-white overflow-hidden shadow-xs">
+      <div className="rounded-xl border border-[#EADBCE] bg-[#FFFDF7] overflow-hidden shadow-xs">
         {filteredApplications.length === 0 ? (
           <div className="p-12 text-center space-y-2">
-            <p className="text-sm font-semibold text-[#0A192F]">No matching registrations found</p>
-            <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+            <p className="text-sm font-semibold text-[#7F1D2D]">No matching registrations found</p>
+            <p className="text-xs text-stone-500 max-w-sm mx-auto">
               Try adjusting your search criteria, competition selector, or status filters.
             </p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#F1F5F9] text-[#0A192F] font-semibold border-b border-[#E2E8F0]">
+              <thead className="bg-[#F7F1E5] text-[#7F1D2D] font-bold border-b border-[#EADBCE]">
                 <tr>
                   <th className="py-3 px-4">Registration ID</th>
                   <th className="py-3 px-4">Participant</th>
@@ -485,35 +485,35 @@ export function UnifiedResponsesView({
                   <th className="py-3 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2E8F0]">
+              <tbody className="divide-y divide-[#EADBCE]">
                 {filteredApplications.map((app) => (
-                  <tr key={app.id} className="hover:bg-[#F1F5F9]/40 transition-colors">
+                  <tr key={app.id} className="hover:bg-[#F7F1E5]/40 transition-colors">
                     {/* ID */}
-                    <td className="py-3 px-4 font-mono font-bold text-[#0A192F]">
+                    <td className="py-3 px-4 font-mono font-bold text-[#7F1D2D]">
                       {app.registrationId}
                     </td>
 
                     {/* Participant */}
                     <td className="py-3 px-4">
-                      <div className="font-semibold text-[#0A192F]">
+                      <div className="font-semibold text-stone-900">
                         {app.fullName}
                       </div>
                       {app.isMinor && (
-                        <span className="inline-block text-[10px] text-[#A64B36] font-bold mt-0.5">
+                        <span className="inline-block text-[10px] text-[#D97706] font-bold mt-0.5">
                           Minor (&lt;18)
                         </span>
                       )}
                     </td>
 
                     {/* Competition */}
-                    <td className="py-3 px-4 text-[#59574D] font-medium">
+                    <td className="py-3 px-4 text-stone-600 font-medium">
                       {app.formName}
                     </td>
 
                     {/* Contact */}
-                    <td className="py-3 px-4 text-[#59574D] font-mono">
+                    <td className="py-3 px-4 text-stone-600 font-mono">
                       <div>{app.phone}</div>
-                      <div className="text-[11px] text-zinc-400">{app.email}</div>
+                      <div className="text-[11px] text-stone-400">{app.email}</div>
                     </td>
 
                     {/* Payment Status */}
@@ -521,12 +521,12 @@ export function UnifiedResponsesView({
                       <span
                         className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
                           app.paymentStatus === "VERIFIED"
-                            ? "bg-[#0A192F] text-[#F1F5F9] border border-[#C5A880]/40"
+                            ? "bg-[#7F1D2D] text-white"
                             : app.paymentStatus === "UNDER_REVIEW"
-                            ? "bg-amber-50 text-amber-800 border border-amber-200"
+                            ? "bg-amber-100 text-amber-900 border border-amber-200"
                             : app.paymentStatus === "CLARIFICATION_REQUIRED"
-                            ? "bg-orange-50 text-orange-800 border border-orange-200"
-                            : "bg-zinc-100 text-zinc-600 border border-zinc-200"
+                            ? "bg-orange-100 text-orange-900 border border-orange-200"
+                            : "bg-stone-100 text-stone-600 border border-stone-200"
                         }`}
                       >
                         {app.paymentStatus.replace("_", " ")}
@@ -538,12 +538,12 @@ export function UnifiedResponsesView({
                       <span
                         className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
                           app.applicationStatus === "APPROVED"
-                            ? "bg-[#0A192F] text-[#F1F5F9] border border-[#C5A880]/40"
+                            ? "bg-[#7F1D2D] text-white"
                             : app.applicationStatus === "REJECTED"
-                            ? "bg-rose-50 text-rose-800 border border-rose-200"
+                            ? "bg-rose-100 text-rose-800 border border-rose-200"
                             : app.applicationStatus === "ACTION_REQUIRED"
-                            ? "bg-amber-50 text-amber-800 border border-amber-200"
-                            : "bg-blue-50 text-blue-800 border border-blue-200"
+                            ? "bg-amber-100 text-amber-800 border border-amber-200"
+                            : "bg-blue-100 text-blue-800 border border-blue-200"
                         }`}
                       >
                         {app.applicationStatus.replace("_", " ")}
@@ -551,7 +551,7 @@ export function UnifiedResponsesView({
                     </td>
 
                     {/* Submitted At */}
-                    <td className="py-3 px-4 text-zinc-500 whitespace-nowrap text-[11px]">
+                    <td className="py-3 px-4 text-stone-500 whitespace-nowrap text-[11px]">
                       {formatNepalDateTime(app.submittedAt)}
                     </td>
 
@@ -560,7 +560,7 @@ export function UnifiedResponsesView({
                       <Button
                         size="sm"
                         onClick={() => handleOpenDrawer(app)}
-                        className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-7 px-3 rounded shadow-none font-medium"
+                        className="bg-[#7F1D2D] hover:bg-[#681724] text-white text-xs h-7 px-3 rounded-lg shadow-none font-semibold"
                       >
                         Review
                       </Button>
@@ -574,52 +574,52 @@ export function UnifiedResponsesView({
       </div>
 
       {/* ==================================================================== */}
-      {/* SLIDE-OVER REVIEW DRAWER */}
+      {/* CENTERED REVIEW MODAL POPUP */}
       {/* ==================================================================== */}
       {selectedApp && (
-        <div className="fixed inset-0 z-50 flex justify-end">
-          {/* Backdrop */}
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+          {/* Backdrop click to dismiss */}
           <div
-            className="fixed inset-0 bg-[#0F1D18]/50 transition-opacity"
+            className="fixed inset-0"
             onClick={handleCloseDrawer}
           />
 
-          {/* Drawer Surface */}
-          <div className="relative w-full max-w-2xl bg-white shadow-2xl flex flex-col h-full border-l border-[#E2E8F0] z-50 overflow-hidden">
+          {/* Modal Container */}
+          <div className="relative w-full max-w-3xl max-h-[90vh] bg-[#FFFDF7] rounded-2xl border border-[#EADBCE] shadow-2xl flex flex-col overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
             {/* Header */}
-            <div className="p-5 border-b border-[#E2E8F0] bg-[#F1F5F9] flex items-center justify-between">
+            <div className="p-5 border-b border-[#EADBCE] bg-[#F7F1E5] flex items-start justify-between">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-[#A64B36] block">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-[#D97706] block">
                   {selectedApp.formName} &bull; Participant Dossier
                 </span>
-                <h2 className="text-lg font-bold text-[#0A192F] font-serif">
+                <h2 className="text-xl font-bold text-[#7F1D2D]">
                   {selectedApp.fullName}
                 </h2>
-                <span className="font-mono text-xs font-bold text-[#C5A880]">
-                  ID: {selectedApp.registrationId}
+                <span className="font-mono text-xs font-bold text-stone-600">
+                  Registration ID: {selectedApp.registrationId} &bull; Submitted {formatNepalDateTime(selectedApp.submittedAt)}
                 </span>
               </div>
               <button
                 onClick={handleCloseDrawer}
-                className="p-1.5 rounded hover:bg-[#E2E8F0] text-[#0A192F] transition-colors"
+                className="p-1.5 rounded-lg hover:bg-[#EADBCE]/50 text-stone-600 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Scrollable Body */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 text-xs text-[#0A192F]">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 text-xs text-[#292524]">
               {/* CURRENT STATUS BADGES & A4 PDF DOWNLOAD */}
-              <div className="p-4 rounded-xl bg-[#F1F5F9] border border-[#E2E8F0] flex flex-wrap items-center justify-between gap-3">
+              <div className="p-4 rounded-xl bg-[#F7F1E5] border border-[#EADBCE] flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-zinc-500 block">Payment State</span>
-                    <span className="font-bold text-[#0A192F]">{selectedApp.paymentStatus}</span>
+                    <span className="text-[10px] uppercase font-bold text-stone-500 block">Payment State</span>
+                    <span className="font-bold text-[#7F1D2D]">{selectedApp.paymentStatus.replace("_", " ")}</span>
                   </div>
-                  <div className="h-6 w-px bg-[#E2E8F0]" />
+                  <div className="h-6 w-px bg-[#EADBCE]" />
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-zinc-500 block">Application State</span>
-                    <span className="font-bold text-[#0A192F]">{selectedApp.applicationStatus}</span>
+                    <span className="text-[10px] uppercase font-bold text-stone-500 block">Application State</span>
+                    <span className="font-bold text-[#7F1D2D]">{selectedApp.applicationStatus.replace("_", " ")}</span>
                   </div>
                 </div>
 
@@ -628,12 +628,12 @@ export function UnifiedResponsesView({
                     size="sm"
                     onClick={handleDownloadPdf}
                     disabled={isDownloadingPdf}
-                    className="bg-[#C5A880] hover:bg-[#a68c59] text-[#0A192F] font-bold text-xs h-8 px-3 rounded gap-1.5 shadow-none"
+                    className="bg-[#7F1D2D] hover:bg-[#681724] text-white font-bold text-xs h-8 px-3 rounded-lg gap-1.5 shadow-none"
                   >
                     {isDownloadingPdf ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
                     ) : (
-                      <FileDown className="w-3.5 h-3.5" />
+                      <FileDown className="w-3.5 h-3.5 text-[#D97706]" />
                     )}
                     <span>Download A4 Confirmation PDF</span>
                   </Button>
@@ -642,29 +642,34 @@ export function UnifiedResponsesView({
 
               {/* 1. PERSONAL INFORMATION & ADDRESS */}
               <div className="space-y-3">
-                <h3 className="font-bold font-serif text-sm text-[#0A192F] border-b border-[#E2E8F0] pb-1.5">
-                  1. Identification & Geographic Location
+                <h3 className="font-bold text-sm text-[#7F1D2D] border-b border-[#EADBCE] pb-1.5 flex items-center gap-2">
+                  <User className="w-4 h-4 text-[#D97706]" />
+                  <span>1. Identification &amp; Geographic Location</span>
                 </h3>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE]">
                   <div>
-                    <span className="text-[11px] text-zinc-500 block">Mobile Phone:</span>
-                    <span className="font-mono font-semibold">{selectedApp.phone}</span>
+                    <span className="text-[11px] text-stone-500 block">Mobile Phone:</span>
+                    <span className="font-mono font-semibold text-stone-900">{selectedApp.phone}</span>
                   </div>
                   <div>
-                    <span className="text-[11px] text-zinc-500 block">Email Address:</span>
-                    <span className="font-mono">{selectedApp.email}</span>
+                    <span className="text-[11px] text-stone-500 block">Email Address:</span>
+                    <span className="font-mono text-stone-900">{selectedApp.email}</span>
                   </div>
                   {selectedApp.dob && (
                     <div>
-                      <span className="text-[11px] text-zinc-500 block">Date of Birth:</span>
-                      <span>{new Date(selectedApp.dob).toLocaleDateString()}</span>
+                      <span className="text-[11px] text-stone-500 block">Date of Birth:</span>
+                      <span className="text-stone-900">{new Date(selectedApp.dob).toLocaleDateString()}</span>
                     </div>
                   )}
-                  {selectedApp.province && (
+                  {selectedApp.currentAddress && (
                     <div>
-                      <span className="text-[11px] text-zinc-500 block">Address:</span>
-                      <span>
-                        {selectedApp.cityVillage}, {selectedApp.municipality}, {selectedApp.district}, {selectedApp.province}
+                      <span className="text-[11px] text-stone-500 block">Current Address:</span>
+                      <span className="text-stone-900">
+                        {selectedApp.currentAddress}
+                        {selectedApp.cityVillage ? `, ${selectedApp.cityVillage}` : ""}
+                        {selectedApp.municipality ? `, ${selectedApp.municipality}` : ""}
+                        {selectedApp.district ? `, ${selectedApp.district}` : ""}
+                        {selectedApp.province ? `, ${selectedApp.province}` : ""}
                       </span>
                     </div>
                   )}
@@ -676,9 +681,9 @@ export function UnifiedResponsesView({
                 <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 space-y-2">
                   <div className="flex items-center gap-1.5 font-bold text-amber-900">
                     <ShieldCheck className="w-4 h-4 text-amber-700" />
-                    <span>Minor Participant Safeguarding Verified</span>
+                    <span>Minor Participant Safeguarding Verified (&lt; 18 Years)</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 text-[11px] text-amber-950">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-amber-950">
                     <div>
                       <span>Guardian Name: </span>
                       <strong>{selectedApp.guardianName || "N/A"}</strong>
@@ -693,84 +698,135 @@ export function UnifiedResponsesView({
                     </div>
                     <div>
                       <span>Consent Recorded: </span>
-                      <strong className="text-[#0A192F]">Verified Timestamped</strong>
+                      <strong className="text-amber-900">Verified Timestamped</strong>
                     </div>
                   </div>
                 </div>
               )}
 
               {/* 3. PROFILE & MOTIVATION ANSWERS */}
-              {(selectedApp.motivationReason || selectedApp.personalIntro || selectedApp.talentsSkills) && (
+              {(selectedApp.motivationReason || selectedApp.personalIntro || selectedApp.talentsSkills || selectedApp.languagesSpoken || selectedApp.hobbiesInterests) && (
                 <div className="space-y-3">
-                  <h3 className="font-bold font-serif text-sm text-[#0A192F] border-b border-[#E2E8F0] pb-1.5">
-                    2. Cultural Profile & Articulation
+                  <h3 className="font-bold text-sm text-[#7F1D2D] border-b border-[#EADBCE] pb-1.5 flex items-center gap-2">
+                    <Heart className="w-4 h-4 text-[#D97706]" />
+                    <span>2. Cultural Profile &amp; Articulation</span>
                   </h3>
-                  <div className="space-y-2">
+                  <div className="space-y-2.5">
                     {selectedApp.motivationReason && (
-                      <div>
-                        <span className="text-[11px] text-zinc-500 block">Motivation for Joining:</span>
-                        <p className="bg-[#F1F5F9]/40 p-2.5 rounded border border-[#E2E8F0] leading-relaxed">
+                      <div className="p-3.5 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE]">
+                        <span className="text-[11px] font-bold text-[#7F1D2D] block mb-1">Why Participant Wants to Join Mithila Queen:</span>
+                        <p className="leading-relaxed text-stone-800">
                           {selectedApp.motivationReason}
                         </p>
                       </div>
                     )}
-                    {selectedApp.talentsSkills && (
-                      <div>
-                        <span className="text-[11px] text-zinc-500 block">Talents & Skills:</span>
-                        <p className="bg-[#F1F5F9]/40 p-2.5 rounded border border-[#E2E8F0]">
-                          {selectedApp.talentsSkills}
+                    {selectedApp.personalIntro && (
+                      <div className="p-3.5 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE]">
+                        <span className="text-[11px] font-bold text-[#7F1D2D] block mb-1">Personal Introduction:</span>
+                        <p className="leading-relaxed text-stone-800">
+                          {selectedApp.personalIntro}
                         </p>
                       </div>
                     )}
-                    {selectedApp.languagesSpoken && (
-                      <div>
-                        <span className="text-[11px] text-zinc-500 block">Languages Spoken:</span>
-                        <p className="font-medium">{selectedApp.languagesSpoken}</p>
-                      </div>
-                    )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {selectedApp.talentsSkills && (
+                        <div className="p-3 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE]">
+                          <span className="text-[11px] font-bold text-[#7F1D2D] block mb-0.5">Talents &amp; Skills:</span>
+                          <p className="text-stone-800">{selectedApp.talentsSkills}</p>
+                        </div>
+                      )}
+                      {selectedApp.languagesSpoken && (
+                        <div className="p-3 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE]">
+                          <span className="text-[11px] font-bold text-[#7F1D2D] block mb-0.5">Languages Spoken:</span>
+                          <p className="text-stone-800">{selectedApp.languagesSpoken}</p>
+                        </div>
+                      )}
+                      {selectedApp.hobbiesInterests && (
+                        <div className="p-3 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE]">
+                          <span className="text-[11px] font-bold text-[#7F1D2D] block mb-0.5">Hobbies &amp; Interests:</span>
+                          <p className="text-stone-800">{selectedApp.hobbiesInterests}</p>
+                        </div>
+                      )}
+                      {selectedApp.previousExperience && (
+                        <div className="p-3 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE]">
+                          <span className="text-[11px] font-bold text-[#7F1D2D] block mb-0.5">Previous Experience:</span>
+                          <p className="text-stone-800">{selectedApp.experienceDetails || "Yes"}</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
 
-              {/* 4. DYNAMIC ANSWERS (From Generic Forms) */}
-              {selectedApp.dynamicAnswers && selectedApp.dynamicAnswers.length > 0 && (
+              {/* 4. SOCIAL MEDIA ACCOUNTS */}
+              {(selectedApp.instagramHandle || selectedApp.tiktokHandle || selectedApp.facebookUrl) && (
                 <div className="space-y-3">
-                  <h3 className="font-bold font-serif text-sm text-[#0A192F] border-b border-[#E2E8F0] pb-1.5">
-                    Dynamic Form Responses
+                  <h3 className="font-bold text-sm text-[#7F1D2D] border-b border-[#EADBCE] pb-1.5 flex items-center gap-2">
+                    <ExternalLink className="w-4 h-4 text-[#D97706]" />
+                    <span>3. Social Media Accounts</span>
                   </h3>
-                  <div className="space-y-2">
-                    {selectedApp.dynamicAnswers.map((ans, i) => (
-                      <div key={i} className="p-2.5 rounded bg-[#F1F5F9]/30 border border-[#E2E8F0]">
-                        <span className="text-[11px] font-semibold text-zinc-500 block">{ans.fieldLabel}</span>
-                        <span className="text-xs font-medium text-[#0A192F]">
-                          {typeof ans.value === "object" ? JSON.stringify(ans.value) : String(ans.value)}
-                        </span>
-                      </div>
-                    ))}
+                  <div className="flex flex-wrap gap-2.5">
+                    {selectedApp.instagramHandle && (
+                      <a
+                        href={selectedApp.instagramHandle.startsWith("http") ? selectedApp.instagramHandle : `https://instagram.com/${selectedApp.instagramHandle.replace("@", "")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#F7F1E5] border border-[#EADBCE] text-stone-800 hover:text-[#7F1D2D] hover:border-[#B89150] transition-colors"
+                      >
+                        <span className="font-bold text-[11px]">Instagram:</span>
+                        <span className="font-mono text-[11px]">{selectedApp.instagramHandle}</span>
+                        <ExternalLink className="w-3 h-3 text-[#D97706]" />
+                      </a>
+                    )}
+                    {selectedApp.tiktokHandle && (
+                      <a
+                        href={selectedApp.tiktokHandle.startsWith("http") ? selectedApp.tiktokHandle : `https://tiktok.com/@${selectedApp.tiktokHandle.replace("@", "")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#F7F1E5] border border-[#EADBCE] text-stone-800 hover:text-[#7F1D2D] hover:border-[#B89150] transition-colors"
+                      >
+                        <span className="font-bold text-[11px]">TikTok:</span>
+                        <span className="font-mono text-[11px]">{selectedApp.tiktokHandle}</span>
+                        <ExternalLink className="w-3 h-3 text-[#D97706]" />
+                      </a>
+                    )}
+                    {selectedApp.facebookUrl && (
+                      <a
+                        href={selectedApp.facebookUrl.startsWith("http") ? selectedApp.facebookUrl : `https://${selectedApp.facebookUrl}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#F7F1E5] border border-[#EADBCE] text-stone-800 hover:text-[#7F1D2D] hover:border-[#B89150] transition-colors"
+                      >
+                        <span className="font-bold text-[11px]">Facebook:</span>
+                        <span className="font-mono text-[11px] truncate max-w-[150px]">{selectedApp.facebookUrl}</span>
+                        <ExternalLink className="w-3 h-3 text-[#D97706]" />
+                      </a>
+                    )}
                   </div>
                 </div>
               )}
 
               {/* 5. MEDIA & UPLOADED FILES */}
               <div className="space-y-3">
-                <h3 className="font-bold font-serif text-sm text-[#0A192F] border-b border-[#E2E8F0] pb-1.5">
-                  Uploaded Media & Documents
+                <h3 className="font-bold text-sm text-[#7F1D2D] border-b border-[#EADBCE] pb-1.5 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-[#D97706]" />
+                  <span>4. Uploaded Media &amp; Documents</span>
                 </h3>
                 <div className="flex flex-wrap gap-4">
                   {selectedApp.profilePhotoUrl && (
                     <div>
-                      <span className="text-[11px] text-zinc-500 block mb-1">Profile Photo:</span>
+                      <span className="text-[11px] text-stone-500 block mb-1">Profile Photo:</span>
                       <a
                         href={selectedApp.profilePhotoUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-block relative w-24 h-32 rounded border border-[#E2E8F0] overflow-hidden bg-zinc-100 hover:opacity-90"
+                        className="inline-block relative w-24 h-32 rounded-xl border border-[#EADBCE] overflow-hidden bg-stone-100 hover:opacity-90 shadow-2xs group"
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={selectedApp.profilePhotoUrl}
                           alt="Profile"
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                         />
                       </a>
                     </div>
@@ -778,18 +834,18 @@ export function UnifiedResponsesView({
 
                   {selectedApp.uploadedFiles &&
                     selectedApp.uploadedFiles.map((file) => (
-                      <div key={file.id} className="p-3 rounded border border-[#E2E8F0] bg-[#F1F5F9]/30 text-xs space-y-1">
-                        <span className="font-bold text-[#0A192F] block truncate max-w-[180px]">
+                      <div key={file.id} className="p-3 rounded-xl border border-[#EADBCE] bg-[#F7F1E5]/40 text-xs space-y-1">
+                        <span className="font-bold text-[#7F1D2D] block truncate max-w-[180px]">
                           {file.originalName}
                         </span>
-                        <span className="text-[10px] text-zinc-500 block">
+                        <span className="text-[10px] text-stone-500 block">
                           {(file.fileSize / 1024).toFixed(1)} KB
                         </span>
                         <a
                           href={file.storagePath}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-[#C5A880] font-semibold text-[11px] hover:underline flex items-center gap-1"
+                          className="text-[#D97706] font-semibold text-[11px] hover:underline flex items-center gap-1"
                         >
                           <span>Open File</span>
                           <ExternalLink className="w-3 h-3" />
@@ -800,44 +856,48 @@ export function UnifiedResponsesView({
               </div>
 
               {/* 6. PAYMENT VERIFICATION CENTER (TIER 1) */}
-              <div className="p-4 rounded-xl bg-[#F1F5F9] border border-[#E2E8F0] space-y-3">
+              <div className="p-4 rounded-xl bg-[#F7F1E5] border border-[#EADBCE] space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-sm text-[#0A192F] font-serif flex items-center gap-1.5">
-                    <CreditCard className="w-4 h-4 text-[#A64B36]" />
-                    <span>Payment Verification & Bank Reconcile</span>
+                  <h3 className="font-bold text-sm text-[#7F1D2D] flex items-center gap-1.5">
+                    <CreditCard className="w-4 h-4 text-[#D97706]" />
+                    <span>Payment Verification (NPR {selectedApp.registrationFee})</span>
                   </h3>
-                  <span className="font-bold font-mono text-[#0A192F]">
-                    NPR {selectedApp.registrationFee}
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                    selectedApp.paymentStatus === "VERIFIED"
+                      ? "bg-[#7F1D2D] text-white"
+                      : "bg-[#D97706] text-white"
+                  }`}>
+                    {selectedApp.paymentStatus.replace("_", " ")}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 text-[11px]">
-                  <div>
-                    <span className="text-zinc-500 block">Transaction Reference / UTR:</span>
-                    <span className="font-mono font-bold text-sm text-[#0A192F]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
+                  <div className="p-3 rounded-lg bg-white border border-[#EADBCE]">
+                    <span className="text-stone-500 block mb-0.5">Transaction Reference / UTR:</span>
+                    <span className="font-mono font-bold text-sm text-[#7F1D2D]">
                       {selectedApp.paymentReference || "Not yet submitted"}
                     </span>
                   </div>
-                  <div>
-                    <span className="text-zinc-500 block">Bank Receipt Screenshot:</span>
+                  <div className="p-3 rounded-lg bg-white border border-[#EADBCE]">
+                    <span className="text-stone-500 block mb-0.5">Bank Receipt Screenshot:</span>
                     {selectedApp.paymentScreenshotUrl ? (
                       <a
                         href={selectedApp.paymentScreenshotUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[#C5A880] font-bold hover:underline flex items-center gap-1 mt-0.5"
+                        className="text-[#D97706] font-bold hover:underline flex items-center gap-1 mt-0.5"
                       >
-                        <span>View Screenshot</span>
+                        <span>View Full Screenshot</span>
                         <ExternalLink className="w-3 h-3" />
                       </a>
                     ) : (
-                      <span className="text-zinc-400">None uploaded</span>
+                      <span className="text-stone-400">None uploaded</span>
                     )}
                   </div>
                 </div>
 
                 {selectedApp.paymentClarificationNotes && (
-                  <div className="p-2.5 rounded bg-orange-50 border border-orange-200 text-[11px] text-orange-950">
+                  <div className="p-2.5 rounded-lg bg-orange-50 border border-orange-200 text-[11px] text-orange-950">
                     <span className="font-bold block">Current Clarification Notes:</span>
                     <span>{selectedApp.paymentClarificationNotes}</span>
                   </div>
@@ -845,15 +905,15 @@ export function UnifiedResponsesView({
 
                 {/* Clarification input field */}
                 {showClarificationInput && (
-                  <div className="space-y-2 pt-2 border-t border-[#E2E8F0]">
-                    <Label className="text-xs font-bold text-[#0A192F]">
+                  <div className="space-y-2 pt-2 border-t border-[#EADBCE]">
+                    <Label className="text-xs font-bold text-[#7F1D2D]">
                       Specific Clarification Required from Applicant:
                     </Label>
                     <Textarea
                       value={clarificationNotes}
                       onChange={(e) => setClarificationNotes(e.target.value)}
                       placeholder="e.g. Transaction UTR does not match bank record. Please re-check receipt."
-                      className="text-xs border-[#E2E8F0] bg-white h-16"
+                      className="text-xs border-[#EADBCE] bg-white h-16 focus-visible:ring-[#D97706]"
                     />
                   </div>
                 )}
@@ -864,12 +924,12 @@ export function UnifiedResponsesView({
                     size="sm"
                     disabled={isVerifyingPayment || selectedApp.paymentStatus === "VERIFIED"}
                     onClick={() => handlePaymentAction("VERIFIED")}
-                    className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] border border-[#C5A880]/40 text-xs h-8 px-3 rounded shadow-none"
+                    className="bg-[#7F1D2D] hover:bg-[#681724] text-white text-xs h-8 px-3 rounded-lg shadow-none font-bold"
                   >
                     {isVerifyingPayment ? (
                       <Loader2 className="w-3 h-3 animate-spin mr-1" />
                     ) : (
-                      <CheckCircle2 className="w-3 h-3 mr-1" />
+                      <CheckCircle2 className="w-3 h-3 mr-1 text-[#D97706]" />
                     )}
                     <span>Mark Payment Verified</span>
                   </Button>
@@ -885,44 +945,44 @@ export function UnifiedResponsesView({
                         handlePaymentAction("CLARIFICATION_REQUIRED");
                       }
                     }}
-                    className="border-orange-300 text-orange-900 hover:bg-orange-50 text-xs h-8 px-3 rounded shadow-none"
+                    className="border-orange-300 text-orange-900 bg-white hover:bg-orange-50 text-xs h-8 px-3 rounded-lg shadow-none"
                   >
-                    <AlertCircle className="w-3 h-3 mr-1" />
+                    <AlertCircle className="w-3 h-3 mr-1 text-orange-600" />
                     <span>{showClarificationInput ? "Confirm Request" : "Request Clarification"}</span>
                   </Button>
                 </div>
               </div>
 
               {/* 7. APPLICATION ADJUDICATION (TIER 2) */}
-              <div className="p-4 rounded-xl bg-white border border-[#E2E8F0] space-y-3">
-                <h3 className="font-bold text-sm text-[#0A192F] font-serif flex items-center gap-1.5">
-                  <FileCheck2 className="w-4 h-4 text-[#C5A880]" />
+              <div className="p-4 rounded-xl bg-white border border-[#EADBCE] space-y-3">
+                <h3 className="font-bold text-sm text-[#7F1D2D] flex items-center gap-1.5">
+                  <FileCheck2 className="w-4 h-4 text-[#D97706]" />
                   <span>Application Adjudication</span>
                 </h3>
 
                 {selectedApp.paymentStatus !== "VERIFIED" && (
-                  <p className="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded border border-amber-200">
+                  <p className="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-lg border border-amber-200">
                     Payment must be independently <strong>VERIFIED</strong> before this application can be approved.
                   </p>
                 )}
 
                 {/* Private Admin Notes */}
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-bold text-[#0A192F]">
+                  <Label className="text-xs font-bold text-stone-700">
                     Private Administrator Notes (Internal only):
                   </Label>
                   <Textarea
                     value={adminNotes}
                     onChange={(e) => setAdminNotes(e.target.value)}
                     placeholder="Interview feedback, committee remarks, eligibility confirmation..."
-                    className="text-xs border-[#E2E8F0] bg-[#F1F5F9]/30 h-16"
+                    className="text-xs border-[#EADBCE] bg-[#F7F1E5]/30 h-16 focus-visible:ring-[#D97706]"
                   />
                 </div>
 
                 {/* Reason Input for Reject or Action Required */}
                 {(showRejectInput || showActionInput) && (
-                  <div className="space-y-1.5 pt-2 border-t border-[#E2E8F0]">
-                    <Label className="text-xs font-bold text-[#A64B36]">
+                  <div className="space-y-1.5 pt-2 border-t border-[#EADBCE]">
+                    <Label className="text-xs font-bold text-[#7F1D2D]">
                       {showRejectInput ? "Reason for Rejection:" : "Action Required Details for Applicant:"}
                     </Label>
                     <Textarea
@@ -933,7 +993,7 @@ export function UnifiedResponsesView({
                           ? "Reason explaining why application was rejected..."
                           : "Specific corrections needed from applicant..."
                       }
-                      className="text-xs border-[#E2E8F0] bg-white h-16"
+                      className="text-xs border-[#EADBCE] bg-white h-16 focus-visible:ring-[#D97706]"
                     />
                   </div>
                 )}
@@ -944,14 +1004,14 @@ export function UnifiedResponsesView({
                     size="sm"
                     disabled={isAdjudicating || selectedApp.paymentStatus !== "VERIFIED"}
                     onClick={() => handleApplicationAction("APPROVED")}
-                    className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-8 px-4 rounded shadow-none font-bold"
+                    className="bg-[#7F1D2D] hover:bg-[#681724] text-white text-xs h-8 px-4 rounded-lg shadow-none font-bold"
                   >
                     {isAdjudicating ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />
                     ) : (
-                      <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-[#C5A880]" />
+                      <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-[#D97706]" />
                     )}
-                    <span>Approve & Issue Certificate</span>
+                    <span>Approve &amp; Issue Confirmation</span>
                   </Button>
 
                   <Button
@@ -966,9 +1026,9 @@ export function UnifiedResponsesView({
                         handleApplicationAction("ACTION_REQUIRED");
                       }
                     }}
-                    className="border-amber-300 text-amber-900 hover:bg-amber-50 text-xs h-8 px-3 rounded shadow-none"
+                    className="border-amber-300 text-amber-900 bg-white hover:bg-amber-50 text-xs h-8 px-3 rounded-lg shadow-none"
                   >
-                    <AlertCircle className="w-3 h-3 mr-1" />
+                    <AlertCircle className="w-3 h-3 mr-1 text-amber-600" />
                     <span>{showActionInput ? "Confirm Action Required" : "Request Action"}</span>
                   </Button>
 
@@ -984,9 +1044,9 @@ export function UnifiedResponsesView({
                         handleApplicationAction("REJECTED");
                       }
                     }}
-                    className="border-rose-300 text-rose-900 hover:bg-rose-50 text-xs h-8 px-3 rounded shadow-none"
+                    className="border-rose-300 text-rose-900 bg-white hover:bg-rose-50 text-xs h-8 px-3 rounded-lg shadow-none"
                   >
-                    <XCircle className="w-3 h-3 mr-1" />
+                    <XCircle className="w-3 h-3 mr-1 text-rose-600" />
                     <span>{showRejectInput ? "Confirm Rejection" : "Reject"}</span>
                   </Button>
                 </div>

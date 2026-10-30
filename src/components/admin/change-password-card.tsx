@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { KeyRound, ShieldCheck, Loader2, Eye, EyeOff } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,105 +53,96 @@ export function ChangePasswordCard() {
   };
 
   return (
-    <Card className="border-[#E2E8F0] shadow-xs bg-[#FFFFFF]">
-      <CardHeader>
-        <div className="flex items-center justify-between mb-1">
-          <div className="w-9 h-9 rounded-md bg-[#F8FAFC] text-[#C5A880] flex items-center justify-center border border-[#C5A880]/30">
-            <KeyRound className="w-4 h-4 text-[#A64B36]" />
-          </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] bg-[#F8FAFC] px-2 py-0.5 rounded border border-[#C5A880]/30">
-            Account Security
+    <Card className="border-[#EADBCE] shadow-xs bg-[#FFFDF7]">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-base font-serif font-bold text-[#7F1D2D]">
+            Change Admin Password
+          </CardTitle>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#D97706] bg-[#F7F1E5] px-2 py-0.5 rounded border border-[#B89150]/30">
+            Security
           </span>
         </div>
-        <CardTitle className="text-base font-serif font-bold text-[#0A192F]">
-          Change Admin Password
-        </CardTitle>
-        <CardDescription className="text-xs text-[#0A192F]/70">
-          Update your administrator access credentials. Choose a strong, unique password to secure your admin account.
-        </CardDescription>
       </CardHeader>
 
-      <CardContent className="pt-0">
+      <CardContent className="pt-1">
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Current Password */}
           <div className="space-y-1.5">
-            <Label htmlFor="currentPassword" required className="text-xs font-bold text-[#0A192F]">
-              Current Password
+            <Label className="text-xs font-bold text-[#7F1D2D]">
+              Current Password *
             </Label>
             <div className="relative">
               <Input
-                id="currentPassword"
                 type={showCurrent ? "text" : "password"}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="Enter current password"
-                className="h-9 text-xs border-[#E2E8F0] pr-9 bg-[#F8FAFC]"
+                required
+                className="h-10 text-xs border-[#EADBCE] bg-white pr-9"
               />
               <button
                 type="button"
                 onClick={() => setShowCurrent(!showCurrent)}
-                className="absolute right-3 top-2.5 text-zinc-400 hover:text-[#0A192F]"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
               >
                 {showCurrent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* New Password */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="newPassword" required className="text-xs font-bold text-[#0A192F]">
-                New Password (min 8 chars)
+              <Label className="text-xs font-bold text-[#7F1D2D]">
+                New Password (min 8 chars) *
               </Label>
               <div className="relative">
                 <Input
-                  id="newPassword"
                   type={showNew ? "text" : "password"}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="At least 8 characters"
-                  className="h-9 text-xs border-[#E2E8F0] pr-9 bg-[#F8FAFC]"
+                  placeholder="Min 8 characters"
+                  required
+                  className="h-10 text-xs border-[#EADBCE] bg-white pr-9"
                 />
                 <button
                   type="button"
                   onClick={() => setShowNew(!showNew)}
-                  className="absolute right-3 top-2.5 text-zinc-400 hover:text-[#0A192F]"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
                 >
                   {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            {/* Confirm New Password */}
             <div className="space-y-1.5">
-              <Label htmlFor="confirmPassword" required className="text-xs font-bold text-[#0A192F]">
-                Confirm New Password
+              <Label className="text-xs font-bold text-[#7F1D2D]">
+                Confirm New Password *
               </Label>
               <Input
-                id="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Re-enter new password"
-                className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
+                placeholder="Confirm new password"
+                required
+                className="h-10 text-xs border-[#EADBCE] bg-white"
               />
             </div>
           </div>
 
-          <div className="pt-1">
+          <div className="pt-2">
             <Button
               type="submit"
               disabled={isUpdating}
-              className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs font-semibold h-9 px-5 gap-2 shadow-xs w-full sm:w-auto border border-[#C5A880]/40"
+              className="w-full bg-[#7F1D2D] hover:bg-[#5B131E] text-white font-bold text-xs h-10 rounded-lg shadow-sm gap-2"
             >
               {isUpdating ? (
                 <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
                   <span>Updating Password...</span>
                 </>
               ) : (
                 <>
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#C5A880]" />
+                  <ShieldCheck className="w-4 h-4 text-[#D97706]" />
                   <span>Update Password</span>
                 </>
               )}

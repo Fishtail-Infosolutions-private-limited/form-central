@@ -38,7 +38,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${poppins.variable} ${playfair.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans selection:bg-[#0A192F] selection:text-[#C5A880] bg-[#F8FAFC] text-[#0A192F]">
+      <body className="min-h-full flex flex-col font-sans selection:bg-[#7F1D2D] selection:text-[#FFFDF7] bg-[#FFFDF7] text-[#292524]">
         {children}
         <Toaster richColors position="top-right" closeButton />
       </body>

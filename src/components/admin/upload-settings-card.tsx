@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { UploadCloud, Video, Image as ImageIcon, FileText, CheckCircle2, Save, Loader2, ShieldCheck } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { UploadCloud, Video, Image as ImageIcon, FileText, Save, Loader2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
@@ -36,7 +36,7 @@ export function UploadSettingsCard() {
       });
 
       if (res.success) {
-        toast.success("Upload limits & media storage rules saved successfully!");
+        toast.success("Upload limits saved successfully.");
       } else {
         toast.error(res.error || "Failed to update upload configuration");
       }
@@ -48,51 +48,42 @@ export function UploadSettingsCard() {
   };
 
   return (
-    <Card className="border-[#E2E8F0] shadow-xs bg-[#FFFFFF]">
-      <CardHeader>
-        <div className="flex items-center justify-between mb-1">
-          <div className="w-9 h-9 rounded-md bg-[#F8FAFC] text-[#C5A880] flex items-center justify-center border border-[#C5A880]/30">
-            <UploadCloud className="w-4 h-4 text-[#A64B36]" />
-          </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] bg-[#F8FAFC] px-2 py-0.5 rounded border border-[#C5A880]/30">
-            System Config
+    <Card className="border-[#EADBCE] shadow-xs bg-[#FFFDF7]">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-base font-serif font-bold text-[#7F1D2D]">
+            Upload Limits & Media Policy
+          </CardTitle>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#D97706] bg-[#F7F1E5] px-2 py-0.5 rounded border border-[#B89150]/30">
+            Storage
           </span>
         </div>
-        <CardTitle className="text-base font-serif font-bold text-[#0A192F]">
-          Upload Limits & Media Storage Policy
-        </CardTitle>
-        <CardDescription className="text-xs text-[#0A192F]/70">
-          Configure maximum file sizes and storage destinations for participant audition videos, portrait photographs, and identification proofs.
-        </CardDescription>
       </CardHeader>
 
-      <CardContent className="space-y-4 pt-0">
+      <CardContent className="space-y-4 pt-1">
         {/* Participant Video */}
-        <div className="p-3.5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
+        <div className="p-3.5 rounded-lg border border-[#EADBCE] bg-[#F7F1E5]/40 space-y-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Video className="w-4 h-4 text-[#A64B36]" />
-              <Label className="text-xs font-bold text-[#0A192F]">
-                Max Participant Audition Video Size
+              <Video className="w-4 h-4 text-[#D97706]" />
+              <Label className="text-xs font-bold text-[#7F1D2D]">
+                Audition Video Limit (MP4, MOV, WebM)
               </Label>
             </div>
-            <span className="text-xs font-mono font-bold text-[#0A192F] bg-white px-2 py-0.5 rounded border border-[#E2E8F0]">
+            <span className="text-xs font-mono font-bold text-[#7F1D2D] bg-white px-2 py-0.5 rounded border border-[#EADBCE]">
               {videoLimit} MB
             </span>
           </div>
-          <p className="text-[11px] text-zinc-600 leading-relaxed">
-            Accepted formats: <strong>MP4, MOV, WebM</strong>. Audition videos stream directly to your organization&apos;s connected Google Drive folder to prevent server disk exhaustion.
-          </p>
-          <div className="flex items-center gap-2 pt-1">
+          <div className="flex items-center gap-2">
             {[50, 100, 250, 500].map((size) => (
               <button
                 key={size}
                 type="button"
                 onClick={() => setVideoLimit(size)}
-                className={`text-xs px-2.5 py-1 rounded font-semibold transition-all border ${
+                className={`text-xs px-3 py-1 rounded-md font-semibold transition-all border ${
                   videoLimit === size
-                    ? "bg-[#0A192F] text-[#F1F5F9] border-[#0A192F]"
-                    : "bg-white text-[#0A192F] border-[#E2E8F0] hover:bg-[#F8FAFC]"
+                    ? "bg-[#7F1D2D] text-white border-[#7F1D2D]"
+                    : "bg-white text-stone-700 border-[#EADBCE] hover:bg-[#F7F1E5]"
                 }`}
               >
                 {size} MB
@@ -102,31 +93,28 @@ export function UploadSettingsCard() {
         </div>
 
         {/* Participant Images */}
-        <div className="p-3.5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
+        <div className="p-3.5 rounded-lg border border-[#EADBCE] bg-[#F7F1E5]/40 space-y-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <ImageIcon className="w-4 h-4 text-[#C5A880]" />
-              <Label className="text-xs font-bold text-[#0A192F]">
-                Max Candidate Photograph Size
+              <ImageIcon className="w-4 h-4 text-[#D97706]" />
+              <Label className="text-xs font-bold text-[#7F1D2D]">
+                Photograph Size Limit (JPEG, PNG, WebP)
               </Label>
             </div>
-            <span className="text-xs font-mono font-bold text-[#0A192F] bg-white px-2 py-0.5 rounded border border-[#E2E8F0]">
+            <span className="text-xs font-mono font-bold text-[#7F1D2D] bg-white px-2 py-0.5 rounded border border-[#EADBCE]">
               {imageLimit} MB
             </span>
           </div>
-          <p className="text-[11px] text-zinc-600 leading-relaxed">
-            Accepted formats: <strong>JPEG, PNG, WebP</strong>. Participant portrait photos and payment receipts are stored locally with strict caching and anti-crawling headers.
-          </p>
-          <div className="flex items-center gap-2 pt-1">
+          <div className="flex items-center gap-2">
             {[5, 10, 15, 25].map((size) => (
               <button
                 key={size}
                 type="button"
                 onClick={() => setImageLimit(size)}
-                className={`text-xs px-2.5 py-1 rounded font-semibold transition-all border ${
+                className={`text-xs px-3 py-1 rounded-md font-semibold transition-all border ${
                   imageLimit === size
-                    ? "bg-[#0A192F] text-[#F1F5F9] border-[#0A192F]"
-                    : "bg-white text-[#0A192F] border-[#E2E8F0] hover:bg-[#F8FAFC]"
+                    ? "bg-[#7F1D2D] text-white border-[#7F1D2D]"
+                    : "bg-white text-stone-700 border-[#EADBCE] hover:bg-[#F7F1E5]"
                 }`}
               >
                 {size} MB
@@ -135,32 +123,29 @@ export function UploadSettingsCard() {
           </div>
         </div>
 
-        {/* Identity & Legal Documents */}
-        <div className="p-3.5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
+        {/* Identity & Consent Proof */}
+        <div className="p-3.5 rounded-lg border border-[#EADBCE] bg-[#F7F1E5]/40 space-y-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-[#0A192F]" />
-              <Label className="text-xs font-bold text-[#0A192F]">
-                Max Identity / Consent Proof Size
+              <FileText className="w-4 h-4 text-[#D97706]" />
+              <Label className="text-xs font-bold text-[#7F1D2D]">
+                Document / Minor Consent Limit (PDF, DOC, DOCX)
               </Label>
             </div>
-            <span className="text-xs font-mono font-bold text-[#0A192F] bg-white px-2 py-0.5 rounded border border-[#E2E8F0]">
+            <span className="text-xs font-mono font-bold text-[#7F1D2D] bg-white px-2 py-0.5 rounded border border-[#EADBCE]">
               {docLimit} MB
             </span>
           </div>
-          <p className="text-[11px] text-zinc-600 leading-relaxed">
-            Accepted formats: <strong>PDF, DOC, DOCX</strong>. Identity verification proofs and minor safeguarding documents are stored privately with zero search engine indexing.
-          </p>
-          <div className="flex items-center gap-2 pt-1">
+          <div className="flex items-center gap-2">
             {[10, 25, 50].map((size) => (
               <button
                 key={size}
                 type="button"
                 onClick={() => setDocLimit(size)}
-                className={`text-xs px-2.5 py-1 rounded font-semibold transition-all border ${
+                className={`text-xs px-3 py-1 rounded-md font-semibold transition-all border ${
                   docLimit === size
-                    ? "bg-[#0A192F] text-[#F1F5F9] border-[#0A192F]"
-                    : "bg-white text-[#0A192F] border-[#E2E8F0] hover:bg-[#F8FAFC]"
+                    ? "bg-[#7F1D2D] text-white border-[#7F1D2D]"
+                    : "bg-white text-stone-700 border-[#EADBCE] hover:bg-[#F7F1E5]"
                 }`}
               >
                 {size} MB
@@ -171,20 +156,19 @@ export function UploadSettingsCard() {
 
         <div className="pt-2">
           <Button
-            type="button"
             onClick={handleSave}
             disabled={isSaving || isLoading}
-            className="w-full bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs font-semibold h-9 px-4 gap-2 border border-[#C5A880]/40 shadow-xs"
+            className="w-full bg-[#D97706] hover:bg-[#B45309] text-white font-bold text-xs h-10 rounded-lg shadow-sm gap-2"
           >
             {isSaving ? (
               <>
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />
-                <span>Saving Upload Configuration...</span>
+                <Loader2 className="w-4 h-4 animate-spin text-white" />
+                <span>Saving Limits...</span>
               </>
             ) : (
               <>
-                <Save className="w-3.5 h-3.5 text-[#C5A880]" />
-                <span>Save Upload Configuration</span>
+                <Save className="w-4 h-4" />
+                <span>Save Upload Limits</span>
               </>
             )}
           </Button>

@@ -335,169 +335,274 @@ export function MithilaQueenApplicationsView({
         </div>
       </Card>
 
-      {/* INSPECTION & ADJUDICATION DRAWER / MODAL */}
+      {/* INSPECTION & ADJUDICATION MODAL */}
       {selectedApp && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto border border-[#E2E8F0] shadow-2xl p-6 sm:p-8 space-y-6">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+          <div
+            className="fixed inset-0"
+            onClick={() => setSelectedApp(null)}
+          />
+
+          <div className="relative w-full max-w-3xl max-h-[90vh] bg-[#FFFDF7] rounded-2xl border border-[#EADBCE] shadow-2xl flex flex-col overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
             {/* Header */}
-            <div className="flex items-start justify-between border-b border-zinc-200 pb-4">
+            <div className="p-5 border-b border-[#EADBCE] bg-[#F7F1E5] flex items-start justify-between">
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#C5A880]">
-                  Participant File
+                <span className="text-[10px] uppercase font-bold tracking-wider text-[#D97706] block">
+                  Mithila Queen 2026 &bull; Participant Dossier
                 </span>
-                <h3 className="text-xl font-extrabold text-[#0A192F] font-serif">
+                <h3 className="text-xl font-bold text-[#7F1D2D]">
                   {selectedApp.fullName}
                 </h3>
-                <span className="font-mono text-xs font-bold text-zinc-500">
+                <span className="font-mono text-xs font-bold text-stone-600">
                   {selectedApp.registrationId} &bull; Submitted {formatNepalDateTime(selectedApp.submittedAt)}
                 </span>
               </div>
               <button
                 onClick={() => setSelectedApp(null)}
-                className="p-2 rounded-md text-zinc-400 hover:text-black hover:bg-zinc-100"
+                className="p-1.5 rounded-lg text-stone-500 hover:text-stone-800 hover:bg-[#EADBCE]/50 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Minor Safeguarding Banner if < 18 */}
-            {selectedApp.isMinor && (
-              <div className="p-4 rounded-md bg-amber-50 border border-amber-200 text-xs text-amber-950 space-y-1">
-                <p className="font-bold flex items-center gap-1.5 text-amber-900">
-                  <ShieldCheck className="w-4 h-4 text-amber-700" />
-                  <span>Minor Participant Record (&lt;18 Years)</span>
-                </p>
-                <p className="text-[11px] text-amber-800">
-                  Guardian: <strong>{selectedApp.guardianName}</strong> ({selectedApp.guardianRelation}) &bull; Phone: <strong>{selectedApp.guardianPhone}</strong>
-                </p>
-              </div>
-            )}
-
-            {/* Profile Overview */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="p-4 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] space-y-1.5">
-                <p className="text-zinc-500 font-medium">Contact Details</p>
-                <p><strong>Phone:</strong> {selectedApp.phone}</p>
-                <p><strong>Email:</strong> {selectedApp.email}</p>
-                <p><strong>Location:</strong> {selectedApp.currentAddress}, {selectedApp.cityVillage}, {selectedApp.district}, {selectedApp.province}</p>
-              </div>
-
-              <div className="p-4 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] space-y-1.5">
-                <p className="text-zinc-500 font-medium">Profile & Social Accounts</p>
-                <p><strong>Languages:</strong> {selectedApp.languagesSpoken || "None specified"}</p>
-                <p><strong>Talents:</strong> {selectedApp.talentsSkills || "None specified"}</p>
-                <p className="truncate">
-                  <strong>Socials:</strong> {selectedApp.instagramHandle || selectedApp.tiktokHandle || selectedApp.facebookUrl || "None"}
-                </p>
-              </div>
-            </div>
-
-            {/* Motivation & Heritage Response */}
-            {selectedApp.motivationReason && (
-              <div className="p-4 rounded-md bg-zinc-50 border border-zinc-200 text-xs space-y-1">
-                <p className="font-bold text-[#0A192F]">Why participant wants to join Mithila Queen:</p>
-                <p className="text-zinc-700 leading-relaxed">{selectedApp.motivationReason}</p>
-              </div>
-            )}
-
-            {/* PAYMENT VERIFICATION SECTION */}
-            <div className="p-5 rounded-md bg-[#0A192F] text-white space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="font-bold text-sm font-serif text-[#C5A880] flex items-center gap-2">
-                  <CreditCard className="w-4 h-4" />
-                  <span>NPR {selectedApp.registrationFee || 399} Registration Fee Verification</span>
-                </h4>
-                <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-white/10 text-white">
-                  Status: {selectedApp.paymentStatus}
-                </span>
-              </div>
-
-              <div className="text-xs space-y-1">
-                <p><strong>Transaction Reference:</strong> <span className="font-mono text-amber-300">{selectedApp.paymentReference || "Not yet submitted"}</span></p>
-              </div>
-
-              {/* Action Buttons for Payment */}
-              <div className="pt-2 flex flex-wrap gap-2">
-                <Button
-                  size="sm"
-                  disabled={isProcessing || selectedApp.paymentStatus === "VERIFIED"}
-                  onClick={() => handleVerifyPayment("VERIFY")}
-                  className="bg-[#C5A880] hover:bg-[#B59870] text-white font-bold text-xs h-8 gap-1.5"
-                >
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Verify Payment (Settled)</span>
-                </Button>
-
-                <Button
-                  size="sm"
-                  variant="outline"
-                  disabled={isProcessing}
-                  onClick={() => handleVerifyPayment("REQUEST_CLARIFICATION")}
-                  className="border-amber-400 text-amber-300 hover:bg-amber-400/20 text-xs h-8 gap-1.5"
-                >
-                  <AlertCircle className="w-3.5 h-3.5" />
-                  <span>Request Payment Clarification</span>
-                </Button>
-              </div>
-            </div>
-
-            {/* APPLICATION ADJUDICATION (Only permitted after payment is verified) */}
-            <div className="p-5 rounded-md bg-zinc-50 border border-zinc-200 space-y-4">
-              <h4 className="font-bold text-xs uppercase tracking-wider text-[#0A192F]">
-                Application Review & Decision
-              </h4>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="notes" className="text-xs font-bold text-zinc-700">
-                  Decision Notes / Participant Notice
-                </Label>
-                <Input
-                  id="notes"
-                  value={actionNotes}
-                  onChange={(e) => setActionNotes(e.target.value)}
-                  placeholder="Enter reason for rejection or details for action required..."
-                  className="h-9 text-xs border-zinc-300 bg-white"
-                />
-              </div>
-
-              <div className="flex flex-wrap gap-2 pt-2">
-                <Button
-                  size="sm"
-                  disabled={isProcessing || selectedApp.paymentStatus !== "VERIFIED"}
-                  onClick={() => handleAdjudicate("APPROVE")}
-                  className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs h-9 px-4 rounded-md gap-1.5"
-                  title={selectedApp.paymentStatus !== "VERIFIED" ? "Payment must be verified first" : "Approve Application"}
-                >
-                  <FileCheck2 className="w-3.5 h-3.5" />
-                  <span>Approve & Dispatch PDF</span>
-                </Button>
-
-                <Button
-                  size="sm"
-                  variant="outline"
-                  disabled={isProcessing}
-                  onClick={() => handleAdjudicate("REJECT")}
-                  className="border-rose-300 text-rose-700 hover:bg-rose-50 text-xs h-9 px-4 rounded-md"
-                >
-                  Reject Application
-                </Button>
-
-                <Button
-                  size="sm"
-                  variant="outline"
-                  disabled={isProcessing}
-                  onClick={() => handleAdjudicate("ACTION_REQUIRED")}
-                  className="border-zinc-300 text-zinc-700 hover:bg-zinc-100 text-xs h-9 px-4 rounded-md"
-                >
-                  Request Information
-                </Button>
-              </div>
-
-              {selectedApp.paymentStatus !== "VERIFIED" && (
-                <p className="text-[11px] text-amber-700 font-semibold">
-                  * Note: Applications cannot be approved until payment verification has been confirmed above.
-                </p>
+            {/* Scrollable Body */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 text-xs text-[#292524]">
+              {/* Minor Safeguarding Banner if < 18 */}
+              {selectedApp.isMinor && (
+                <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-950 space-y-1">
+                  <p className="font-bold flex items-center gap-1.5 text-amber-900">
+                    <ShieldCheck className="w-4 h-4 text-amber-700" />
+                    <span>Minor Participant Record (&lt; 18 Years)</span>
+                  </p>
+                  <p className="text-[11px] text-amber-800">
+                    Guardian: <strong>{selectedApp.guardianName}</strong> ({selectedApp.guardianRelation}) &bull; Phone: <strong>{selectedApp.guardianPhone}</strong>
+                  </p>
+                </div>
               )}
+
+              {/* Profile Overview */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-4 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE] space-y-1.5">
+                  <p className="text-stone-500 font-bold text-[11px] uppercase tracking-wider">Contact &amp; Location</p>
+                  <p><strong>Phone:</strong> {selectedApp.phone}</p>
+                  <p><strong>Email:</strong> {selectedApp.email}</p>
+                  <p><strong>Location:</strong> {selectedApp.currentAddress}, {selectedApp.cityVillage}, {selectedApp.district}, {selectedApp.province}</p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE] space-y-1.5">
+                  <p className="text-stone-500 font-bold text-[11px] uppercase tracking-wider">Profile &amp; Cultural Talents</p>
+                  <p><strong>Languages:</strong> {selectedApp.languagesSpoken || "None specified"}</p>
+                  <p><strong>Talents:</strong> {selectedApp.talentsSkills || "None specified"}</p>
+                  <p><strong>Hobbies:</strong> {selectedApp.hobbiesInterests || "None specified"}</p>
+                </div>
+              </div>
+
+              {/* Social Media Links */}
+              {(selectedApp.instagramHandle || selectedApp.tiktokHandle || selectedApp.facebookUrl) && (
+                <div className="p-4 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE] space-y-2">
+                  <span className="text-[11px] font-bold text-[#7F1D2D] uppercase tracking-wider block">
+                    Social Media Profiles
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedApp.instagramHandle && (
+                      <a
+                        href={selectedApp.instagramHandle.startsWith("http") ? selectedApp.instagramHandle : `https://instagram.com/${selectedApp.instagramHandle.replace("@", "")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#EADBCE] text-stone-800 hover:text-[#7F1D2D] transition-colors"
+                      >
+                        <span className="font-bold text-[11px]">Instagram:</span>
+                        <span className="font-mono text-[11px]">{selectedApp.instagramHandle}</span>
+                        <ExternalLink className="w-3 h-3 text-[#D97706]" />
+                      </a>
+                    )}
+                    {selectedApp.tiktokHandle && (
+                      <a
+                        href={selectedApp.tiktokHandle.startsWith("http") ? selectedApp.tiktokHandle : `https://tiktok.com/@${selectedApp.tiktokHandle.replace("@", "")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#EADBCE] text-stone-800 hover:text-[#7F1D2D] transition-colors"
+                      >
+                        <span className="font-bold text-[11px]">TikTok:</span>
+                        <span className="font-mono text-[11px]">{selectedApp.tiktokHandle}</span>
+                        <ExternalLink className="w-3 h-3 text-[#D97706]" />
+                      </a>
+                    )}
+                    {selectedApp.facebookUrl && (
+                      <a
+                        href={selectedApp.facebookUrl.startsWith("http") ? selectedApp.facebookUrl : `https://${selectedApp.facebookUrl}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#EADBCE] text-stone-800 hover:text-[#7F1D2D] transition-colors"
+                      >
+                        <span className="font-bold text-[11px]">Facebook:</span>
+                        <span className="font-mono text-[11px] truncate max-w-[140px]">{selectedApp.facebookUrl}</span>
+                        <ExternalLink className="w-3 h-3 text-[#D97706]" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Motivation & Heritage Response */}
+              {selectedApp.motivationReason && (
+                <div className="p-4 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE] text-xs space-y-1.5">
+                  <p className="font-bold text-[#7F1D2D]">Why participant wants to join Mithila Queen:</p>
+                  <p className="text-stone-800 leading-relaxed">{selectedApp.motivationReason}</p>
+                </div>
+              )}
+
+              {/* Uploaded Photos & Proofs */}
+              <div className="p-4 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE] space-y-3">
+                <p className="text-[11px] font-bold text-[#7F1D2D] uppercase tracking-wider">
+                  Uploaded Media &amp; Proofs
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  {selectedApp.profilePhotoUrl ? (
+                    <div>
+                      <span className="text-[11px] text-stone-500 block mb-1">Profile Photo:</span>
+                      <a
+                        href={selectedApp.profilePhotoUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-block relative w-24 h-32 rounded-xl border border-[#EADBCE] overflow-hidden bg-stone-100 shadow-2xs group"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={selectedApp.profilePhotoUrl}
+                          alt="Profile"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                        />
+                      </a>
+                    </div>
+                  ) : (
+                    <div className="text-stone-400 text-xs">No profile photo uploaded</div>
+                  )}
+
+                  {selectedApp.paymentScreenshotUrl && (
+                    <div>
+                      <span className="text-[11px] text-stone-500 block mb-1">Receipt Screenshot:</span>
+                      <a
+                        href={selectedApp.paymentScreenshotUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-block relative w-24 h-32 rounded-xl border border-[#EADBCE] overflow-hidden bg-stone-100 shadow-2xs group"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={selectedApp.paymentScreenshotUrl}
+                          alt="Receipt"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                        />
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* PAYMENT VERIFICATION SECTION */}
+              <div className="p-5 rounded-xl bg-[#F7F1E5] border border-[#EADBCE] space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-sm text-[#7F1D2D] flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-[#D97706]" />
+                    <span>NPR {selectedApp.registrationFee || 399} Registration Fee Verification</span>
+                  </h4>
+                  <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
+                    selectedApp.paymentStatus === "VERIFIED"
+                      ? "bg-[#7F1D2D] text-white"
+                      : "bg-[#D97706] text-white"
+                  }`}>
+                    Status: {selectedApp.paymentStatus}
+                  </span>
+                </div>
+
+                <div className="p-3 bg-white rounded-lg border border-[#EADBCE] text-xs space-y-1">
+                  <p><strong>Transaction Reference:</strong> <span className="font-mono text-[#7F1D2D] font-bold">{selectedApp.paymentReference || "Not yet submitted"}</span></p>
+                </div>
+
+                {/* Action Buttons for Payment */}
+                <div className="pt-1 flex flex-wrap gap-2">
+                  <Button
+                    size="sm"
+                    disabled={isProcessing || selectedApp.paymentStatus === "VERIFIED"}
+                    onClick={() => handleVerifyPayment("VERIFY")}
+                    className="bg-[#7F1D2D] hover:bg-[#681724] text-white font-bold text-xs h-8 px-4 rounded-lg gap-1.5"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#D97706]" />
+                    <span>Verify Payment (Settled)</span>
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={isProcessing}
+                    onClick={() => handleVerifyPayment("REQUEST_CLARIFICATION")}
+                    className="border-amber-300 text-amber-900 bg-white hover:bg-amber-50 text-xs h-8 px-3 rounded-lg gap-1.5"
+                  >
+                    <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
+                    <span>Request Clarification</span>
+                  </Button>
+                </div>
+              </div>
+
+              {/* APPLICATION ADJUDICATION (Only permitted after payment is verified) */}
+              <div className="p-5 rounded-xl bg-white border border-[#EADBCE] space-y-4">
+                <h4 className="font-bold text-xs uppercase tracking-wider text-[#7F1D2D]">
+                  Application Review &amp; Decision
+                </h4>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="notes" className="text-xs font-bold text-stone-700">
+                    Decision Notes / Participant Notice
+                  </Label>
+                  <Input
+                    id="notes"
+                    value={actionNotes}
+                    onChange={(e) => setActionNotes(e.target.value)}
+                    placeholder="Enter reason for rejection or details for action required..."
+                    className="h-9 text-xs border-[#EADBCE] bg-white focus-visible:ring-[#D97706]"
+                  />
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                  <Button
+                    size="sm"
+                    disabled={isProcessing || selectedApp.paymentStatus !== "VERIFIED"}
+                    onClick={() => handleAdjudicate("APPROVE")}
+                    className="bg-[#7F1D2D] hover:bg-[#681724] text-white font-bold text-xs h-9 px-4 rounded-lg gap-1.5"
+                    title={selectedApp.paymentStatus !== "VERIFIED" ? "Payment must be verified first" : "Approve Application"}
+                  >
+                    <FileCheck2 className="w-3.5 h-3.5 text-[#D97706]" />
+                    <span>Approve &amp; Dispatch Confirmation</span>
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={isProcessing}
+                    onClick={() => handleAdjudicate("ACTION_REQUIRED")}
+                    className="border-amber-300 text-amber-900 bg-white hover:bg-amber-50 text-xs h-9 px-4 rounded-lg"
+                  >
+                    Request Information
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={isProcessing}
+                    onClick={() => handleAdjudicate("REJECT")}
+                    className="border-rose-300 text-rose-800 bg-white hover:bg-rose-50 text-xs h-9 px-4 rounded-lg"
+                  >
+                    Reject Application
+                  </Button>
+                </div>
+
+                {selectedApp.paymentStatus !== "VERIFIED" && (
+                  <p className="text-[11px] text-amber-800 font-semibold bg-amber-50 p-2.5 rounded-lg border border-amber-200">
+                    * Note: Applications cannot be approved until payment verification has been confirmed above.
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>

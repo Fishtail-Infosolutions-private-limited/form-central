@@ -609,3 +609,19 @@ model SiteSetting {
   @@map("site_settings")
 }
 
+model ContactInquiry {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  ipAddress String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([ipAddress, createdAt])
+  @@map("contact_inquiries")
+}
+
+

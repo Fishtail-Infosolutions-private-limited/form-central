@@ -80,34 +80,9 @@ const PARTICIPANT_GROUPS: {
     description: "Contestants whose applications have been verified & approved",
   },
   {
-    id: "PENDING",
-    label: "Pending Applications",
-    description: "Applications submitted and currently under review",
-  },
-  {
-    id: "ACTION_REQUIRED",
-    label: "Action Required",
-    description: "Contestants who need to resubmit documents or clarifications",
-  },
-  {
     id: "REJECTED",
     label: "Rejected Applications",
     description: "Submissions that did not qualify or meet requirements",
-  },
-  {
-    id: "PAYMENT_VERIFIED",
-    label: "Verified Payments",
-    description: "Contestants whose NPR 399 entry fee is verified",
-  },
-  {
-    id: "PAYMENT_PENDING",
-    label: "Pending Payments",
-    description: "Contestants awaiting payment verification or screenshot check",
-  },
-  {
-    id: "NONE",
-    label: "None (Direct Addresses Only)",
-    description: "Do not select a group; send only to manually entered addresses",
   },
 ];
 
@@ -125,6 +100,7 @@ export function ComposeEmailView({
   const [content, setContent] = useState("<p>Dear {{participant_name}},</p><p><br></p><p>Regards,<br><strong>The Origin Foundation</strong></p>");
 
   // Targeting: Group + Manual
+  const [recipientTab, setRecipientTab] = useState<"GROUP" | "DIRECT">("GROUP");
   const [selectedGroup, setSelectedGroup] = useState<ParticipantGroupFilter | "NONE">("ALL");
   const [manualEmails, setManualEmails] = useState<string[]>([]);
   const [groupCounts, setGroupCounts] = useState<Record<string, number>>({
@@ -204,18 +180,22 @@ export function ComposeEmailView({
     async function recalculate() {
       setIsEstimating(true);
 
-      const criteria: RecipientCriteria = {
-        type: selectedGroup === "NONE" ? "MANUAL" : (selectedGroup as any),
-        targetType:
-          selectedGroup === "NONE"
-            ? "MANUAL"
-            : manualEmails.length > 0
-            ? "COMBINED"
-            : "GROUP",
-        groupFilter: selectedGroup === "NONE" ? undefined : selectedGroup,
-        manualEmails: manualEmails,
-        excludeUnsubscribed: true,
-      };
+      const criteria: RecipientCriteria =
+        recipientTab === "GROUP"
+          ? {
+              type: (selectedGroup as any) || "ALL",
+              targetType: "GROUP",
+              groupFilter: selectedGroup === "NONE" ? "ALL" : selectedGroup,
+              manualEmails: [],
+              excludeUnsubscribed: true,
+            }
+          : {
+              type: "MANUAL",
+              targetType: "MANUAL",
+              groupFilter: undefined,
+              manualEmails: manualEmails,
+              excludeUnsubscribed: false,
+            };
 
       try {
         const res = await estimateRecipientsAction(undefined, criteria);
@@ -234,7 +214,7 @@ export function ComposeEmailView({
       isCancelled = true;
       clearTimeout(timer);
     };
-  }, [selectedGroup, manualEmails]);
+  }, [recipientTab, selectedGroup, manualEmails]);
 
   // Template selection handler
   const handleTemplateSelect = (templateId: string) => {
@@ -298,6 +278,10 @@ export function ComposeEmailView({
       toast.error("Please enter email message content.");
       return;
     }
+    if (recipientTab === "DIRECT" && manualEmails.length === 0) {
+      toast.error("Please enter at least one email address in Direct Email.");
+      return;
+    }
     if ((estimatedCount || 0) === 0) {
       toast.error("No recipients found for this selection. Please select a group or add manual addresses.");
       return;
@@ -305,18 +289,22 @@ export function ComposeEmailView({
 
     setIsSubmitting(true);
 
-    const criteria: RecipientCriteria = {
-      type: selectedGroup === "NONE" ? "MANUAL" : (selectedGroup as any),
-      targetType:
-        selectedGroup === "NONE"
-          ? "MANUAL"
-          : manualEmails.length > 0
-          ? "COMBINED"
-          : "GROUP",
-      groupFilter: selectedGroup === "NONE" ? undefined : selectedGroup,
-      manualEmails: manualEmails,
-      excludeUnsubscribed: true,
-    };
+    const criteria: RecipientCriteria =
+      recipientTab === "GROUP"
+        ? {
+            type: (selectedGroup as any) || "ALL",
+            targetType: "GROUP",
+            groupFilter: selectedGroup === "NONE" ? "ALL" : selectedGroup,
+            manualEmails: [],
+            excludeUnsubscribed: true,
+          }
+        : {
+            type: "MANUAL",
+            targetType: "MANUAL",
+            groupFilter: undefined,
+            manualEmails: manualEmails,
+            excludeUnsubscribed: false,
+          };
 
     const res = await createCampaignAction({
       name: internalName.trim() || undefined,
@@ -374,30 +362,30 @@ export function ComposeEmailView({
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-12">
       {/* Top Breadcrumb & Navigation Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EADBCE] pb-5">
         <div className="space-y-1">
-          <div className="flex items-center gap-2 text-xs text-zinc-500">
+          <div className="flex items-center gap-2 text-xs text-stone-500">
             <Link
               href="/admin/campaigns"
-              className="hover:text-[#A64B36] transition-colors flex items-center gap-1 font-semibold"
+              className="hover:text-[#7F1D2D] transition-colors flex items-center gap-1 font-semibold"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Communications</span>
             </Link>
             <span>/</span>
-            <span className="text-zinc-900 font-bold">Compose Email</span>
+            <span className="text-stone-900 font-bold">Compose Email</span>
           </div>
 
           <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] tracking-tight font-serif">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#7F1D2D] tracking-tight">
               Compose Email
             </h1>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#F8FAFC] text-[#C5A880] border border-[#E2E8F0]">
-              <Crown className="w-3 h-3 text-[#C5A880]" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#F7F1E5] text-[#D97706] border border-[#EADBCE]">
+              <Crown className="w-3 h-3 text-[#D97706]" />
               <span>Mithila Queen</span>
             </span>
           </div>
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-stone-500">
             Send announcements, audition schedules, status updates and important notices to participants.
           </p>
         </div>
@@ -409,9 +397,9 @@ export function ComposeEmailView({
             variant="outline"
             size="sm"
             onClick={() => setIsTestModalOpen(true)}
-            className="text-xs font-bold h-9 px-3 border-zinc-300 hover:bg-zinc-100 rounded-xl gap-1.5"
+            className="text-xs font-bold h-9 px-3 border-[#EADBCE] bg-[#FFFDF7] text-stone-700 hover:bg-[#F7F1E5] rounded-xl gap-1.5"
           >
-            <Send className="w-3.5 h-3.5 text-zinc-500" />
+            <Send className="w-3.5 h-3.5 text-stone-500" />
             <span>Send Test</span>
           </Button>
 
@@ -420,18 +408,19 @@ export function ComposeEmailView({
             variant="outline"
             size="sm"
             onClick={() => setIsPreviewModalOpen(true)}
-            className="text-xs font-bold h-9 px-3 border-zinc-300 hover:bg-zinc-100 rounded-xl gap-1.5"
+            className="text-xs font-bold h-9 px-3 border-[#EADBCE] bg-[#FFFDF7] text-stone-700 hover:bg-[#F7F1E5] rounded-xl gap-1.5"
           >
-            <Eye className="w-3.5 h-3.5 text-zinc-500" />
+            <Eye className="w-3.5 h-3.5 text-stone-500" />
             <span>Preview</span>
           </Button>
 
           <Button
             type="button"
             onClick={() => setIsReviewModalOpen(true)}
-            className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs h-9 px-4 rounded-xl gap-1.5 shadow-xs"
+            disabled={(recipientTab === "DIRECT" && manualEmails.length === 0) || (estimatedCount ?? 0) === 0}
+            className="bg-[#7F1D2D] hover:bg-[#681724] text-white font-bold text-xs h-9 px-4 rounded-xl gap-1.5 shadow-xs"
           >
-            <Send className="w-3.5 h-3.5 text-[#C5A880]" />
+            <Send className="w-3.5 h-3.5 text-[#D97706]" />
             <span>Review & Send</span>
           </Button>
         </div>
@@ -440,28 +429,28 @@ export function ComposeEmailView({
       {/* Main Composer Sections */}
       <div className="space-y-6">
         {/* Section 1: Message Details & Templates */}
-        <Card className="border-zinc-200 shadow-2xs">
-          <CardHeader className="pb-3 border-b border-zinc-100">
+        <Card className="border-[#EADBCE] bg-[#FFFDF7] shadow-xs">
+          <CardHeader className="pb-3 border-b border-[#EADBCE]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <CardTitle className="text-base font-bold text-zinc-900 flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#C5A880]" />
+                <CardTitle className="text-base font-bold text-stone-900 flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-[#D97706]" />
                   <span>1. Email Details</span>
                 </CardTitle>
-                <CardDescription className="text-xs text-zinc-500 mt-0.5">
+                <CardDescription className="text-xs text-stone-500 mt-0.5">
                   Set the subject line and optionally start from a predefined Mithila Queen template.
                 </CardDescription>
               </div>
 
               {/* Predefined Template Dropdown */}
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-semibold text-zinc-500 whitespace-nowrap">
+                <span className="text-[11px] font-semibold text-stone-500 whitespace-nowrap">
                   Load Template:
                 </span>
                 <select
                   value={selectedTemplateId}
                   onChange={(e) => handleTemplateSelect(e.target.value)}
-                  className="text-xs bg-zinc-50 border border-zinc-200 rounded-lg px-2.5 py-1.5 font-medium text-zinc-800 focus:outline-[#C5A880]"
+                  className="text-xs bg-[#F7F1E5] border border-[#EADBCE] rounded-lg px-2.5 py-1.5 font-medium text-stone-800 focus:outline-[#D97706]"
                 >
                   <option value="">Blank Message (Custom)</option>
                   {templates.map((tpl) => (
@@ -477,10 +466,10 @@ export function ComposeEmailView({
           <CardContent className="pt-4 space-y-4">
             {/* Subject Line */}
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-zinc-700 flex items-center justify-between">
+              <Label className="text-xs font-bold text-stone-700 flex items-center justify-between">
                 <span>Email Subject <span className="text-rose-600">*</span></span>
-                <span className="text-[11px] font-normal text-zinc-400">
-                  Supports dynamic variables like <code className="bg-zinc-100 px-1 py-0.5 rounded text-[10px]">&#123;&#123;participant_name&#125;&#125;</code>
+                <span className="text-[11px] font-normal text-stone-400">
+                  Supports dynamic variables like <code className="bg-[#F7F1E5] text-[#7F1D2D] px-1 py-0.5 rounded text-[10px]">&#123;&#123;participant_name&#125;&#125;</code>
                 </span>
               </Label>
               <Input
@@ -488,157 +477,185 @@ export function ComposeEmailView({
                 placeholder="e.g. Mithila Queen Audition Schedule & Verification Update"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="text-sm font-semibold text-zinc-900 border-zinc-200 focus-visible:ring-[#C5A880]"
+                className="text-sm font-semibold text-stone-900 border-[#EADBCE] focus-visible:ring-[#D97706]"
               />
             </div>
 
             {/* Internal Campaign Name (Optional) */}
             <div className="space-y-1.5">
-              <Label className="text-xs font-semibold text-zinc-600 flex items-center gap-1.5">
+              <Label className="text-xs font-semibold text-stone-600 flex items-center gap-1.5">
                 <span>Internal Reference Name</span>
-                <span className="text-[11px] font-normal text-zinc-400">(Optional — participants will never see this)</span>
+                <span className="text-[11px] font-normal text-stone-400">(Optional — participants will never see this)</span>
               </Label>
               <Input
                 type="text"
                 placeholder="e.g. Round 1 Audition Call - Madhesh Region"
                 value={internalName}
                 onChange={(e) => setInternalName(e.target.value)}
-                className="text-xs text-zinc-700 border-zinc-200 focus-visible:ring-[#C5A880]"
+                className="text-xs text-stone-700 border-[#EADBCE] focus-visible:ring-[#D97706]"
               />
             </div>
           </CardContent>
         </Card>
 
         {/* Section 2: Gmail-Style Recipient Selection */}
-        <Card className="border-zinc-200 shadow-2xs">
-          <CardHeader className="pb-3 border-b border-zinc-100">
+        <Card className="border-[#EADBCE] bg-[#FFFDF7] shadow-xs">
+          <CardHeader className="pb-3 border-b border-[#EADBCE]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <CardTitle className="text-base font-bold text-zinc-900 flex items-center gap-2">
-                  <Users className="w-4 h-4 text-[#C5A880]" />
+                <CardTitle className="text-base font-bold text-stone-900 flex items-center gap-2">
+                  <Users className="w-4 h-4 text-[#D97706]" />
                   <span>2. Recipient Selection</span>
                 </CardTitle>
-                <CardDescription className="text-xs text-zinc-500 mt-0.5">
-                  Target a participant group, enter individual emails, or combine both. Duplicates are automatically prevented.
+                <CardDescription className="text-xs text-stone-500 mt-0.5">
+                  Target a participant group or enter individual email addresses.
                 </CardDescription>
               </div>
 
               {/* Total Recipient Count Pill */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs font-bold text-[#0A192F]">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#F7F1E5] border border-[#EADBCE] text-xs font-bold text-[#7F1D2D]">
                 {isEstimating ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#D97706]" />
                 ) : (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#C5A880]" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#D97706]" />
                 )}
                 <span>
                   {isEstimating
                     ? "Calculating..."
-                    : `${estimatedCount ?? 0} Unique Recipient${(estimatedCount ?? 0) === 1 ? "" : "s"}`}
+                    : `${estimatedCount ?? 0} Recipient${(estimatedCount ?? 0) === 1 ? "" : "s"}`}
                 </span>
               </div>
             </div>
           </CardHeader>
 
-          <CardContent className="pt-4 space-y-5">
-            {/* Option A: Participant Groups */}
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between">
-                <Label className="text-xs font-bold text-zinc-800">
-                  Option A: Mithila Queen Participant Group
-                </Label>
-                <span className="text-[11px] text-zinc-400">
-                  Live counts from database
+          <CardContent className="pt-4 space-y-4">
+            {/* Recipient Selection Tabs */}
+            <div className="flex items-center gap-2 p-1 bg-[#F7F1E5] rounded-xl border border-[#EADBCE] w-fit">
+              <button
+                type="button"
+                onClick={() => setRecipientTab("GROUP")}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  recipientTab === "GROUP"
+                    ? "bg-[#7F1D2D] text-white shadow-xs"
+                    : "text-[#292524] hover:text-[#7F1D2D] hover:bg-white/50"
+                }`}
+              >
+                <Users className="w-3.5 h-3.5" />
+                <span>Participant Groups</span>
+                <span
+                  className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full ${
+                    recipientTab === "GROUP"
+                      ? "bg-white/20 text-white"
+                      : "bg-[#EADBCE] text-[#7F1D2D]"
+                  }`}
+                >
+                  3
                 </span>
-              </div>
+              </button>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
-                {PARTICIPANT_GROUPS.map((grp) => {
-                  const isSelected = selectedGroup === grp.id;
-                  const count =
-                    grp.id === "NONE"
-                      ? null
-                      : groupCounts[grp.id] ?? 0;
+              <button
+                type="button"
+                onClick={() => setRecipientTab("DIRECT")}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  recipientTab === "DIRECT"
+                    ? "bg-[#7F1D2D] text-white shadow-xs"
+                    : "text-[#292524] hover:text-[#7F1D2D] hover:bg-white/50"
+                }`}
+              >
+                <Mail className="w-3.5 h-3.5" />
+                <span>Direct Email (Single / Custom)</span>
+                {manualEmails.length > 0 && (
+                  <span
+                    className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full ${
+                      recipientTab === "DIRECT"
+                        ? "bg-white/20 text-white"
+                        : "bg-[#D97706] text-white"
+                    }`}
+                  >
+                    {manualEmails.length}
+                  </span>
+                )}
+              </button>
+            </div>
 
-                  return (
-                    <button
-                      key={grp.id}
-                      type="button"
-                      onClick={() => setSelectedGroup(grp.id)}
-                      className={`text-left p-3 rounded-xl border text-xs transition-all relative flex flex-col justify-between ${
-                        isSelected
-                          ? "bg-[#0A192F] text-white border-[#0A192F] shadow-xs"
-                          : "bg-white text-zinc-800 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-1 w-full">
-                        <span className="font-bold text-[12px] truncate">
-                          {grp.label}
-                        </span>
-                        {count !== null && (
-                          <span
-                            className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-                              isSelected
-                                ? "bg-[#C5A880] text-white"
-                                : "bg-zinc-100 text-zinc-700"
-                            }`}
-                          >
-                            {count}
-                          </span>
-                        )}
-                      </div>
-                      <p
-                        className={`text-[10px] mt-1.5 leading-snug line-clamp-2 ${
-                          isSelected ? "text-zinc-300" : "text-zinc-500"
+            {/* TAB 1: Participant Groups */}
+            {recipientTab === "GROUP" && (
+              <div className="space-y-3 pt-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-[#292524]">
+                    Select Contestant Audience
+                  </span>
+                  <span className="text-[11px] text-stone-500">
+                    Live participant counts from database
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {PARTICIPANT_GROUPS.map((grp) => {
+                    const isSelected = selectedGroup === grp.id;
+                    const count =
+                      grp.id === "NONE" ? null : groupCounts[grp.id] ?? 0;
+
+                    return (
+                      <button
+                        key={grp.id}
+                        type="button"
+                        onClick={() => setSelectedGroup(grp.id)}
+                        className={`text-left p-3.5 rounded-xl border text-xs transition-all relative flex flex-col justify-between ${
+                          isSelected
+                            ? "bg-[#7F1D2D] text-white border-[#7F1D2D] shadow-xs"
+                            : "bg-[#FFFDF7] text-[#292524] border-[#EADBCE] hover:border-[#B89150] hover:bg-[#F7F1E5]/60"
                         }`}
                       >
-                        {grp.description}
-                      </p>
-                    </button>
-                  );
-                })}
+                        <div className="flex items-center justify-between gap-1 w-full">
+                          <span className="font-bold text-[13px] truncate">
+                            {grp.label}
+                          </span>
+                          {count !== null && (
+                            <span
+                              className={`font-mono text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                isSelected
+                                  ? "bg-[#D97706] text-white"
+                                  : "bg-[#F7F1E5] text-[#7F1D2D] border border-[#EADBCE]"
+                              }`}
+                            >
+                              {count}
+                            </span>
+                          )}
+                        </div>
+                        <p
+                          className={`text-[11px] mt-2 leading-relaxed ${
+                            isSelected ? "text-white/80" : "text-stone-500"
+                          }`}
+                        >
+                          {grp.description}
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-zinc-200" />
+            {/* TAB 2: Direct Email (Single / Custom) */}
+            {recipientTab === "DIRECT" && (
+              <div className="space-y-2 pt-1">
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs font-semibold text-[#292524]">
+                    Direct Email Addresses
+                  </Label>
+                  <span className="text-[11px] font-normal text-stone-500">
+                    Type or paste addresses (comma, semicolon, or Enter separated)
+                  </span>
+                </div>
+
+                <GmailRecipientInput
+                  value={manualEmails}
+                  onChange={setManualEmails}
+                  placeholder="Type participant email and press Enter..."
+                />
               </div>
-              <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-wider">
-                <span className="bg-white px-3 text-zinc-400">
-                  And / Or Add Direct Email Addresses
-                </span>
-              </div>
-            </div>
-
-            {/* Option B: Gmail-Style Manual Email Input */}
-            <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-zinc-800 flex items-center justify-between">
-                <span>Option B: Direct Email Addresses (Gmail-Style)</span>
-                <span className="text-[11px] font-normal text-zinc-400">
-                  Type or paste addresses (comma, semicolon, or Enter separated)
-                </span>
-              </Label>
-
-              <GmailRecipientInput
-                value={manualEmails}
-                onChange={setManualEmails}
-                placeholder="Type participant email and press Enter..."
-              />
-            </div>
-
-            {/* Recipient Privacy & Deduplication Guarantee */}
-            <div className="bg-[#F8FAFC]/70 rounded-xl border border-[#E2E8F0] p-3 flex items-start gap-2.5 text-xs text-zinc-700">
-              <ShieldCheck className="w-4 h-4 text-[#C5A880] shrink-0 mt-0.5" />
-              <div className="space-y-0.5">
-                <span className="font-bold text-[#0A192F]">
-                  Confidential &amp; Individual Delivery (BCC-Safe)
-                </span>
-                <p className="text-[11px] text-zinc-600 leading-relaxed">
-                  Recipients will be delivered individual emails via our asynchronous background queue. No participant can see any other recipient&apos;s email address. Addresses matching both a participant group and manual entry are automatically deduplicated.
-                </p>
-              </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
@@ -663,13 +680,13 @@ export function ComposeEmailView({
         </Card>
 
         {/* Section 4: Delivery Schedule */}
-        <Card className="border-zinc-200 shadow-2xs">
-          <CardHeader className="pb-3 border-b border-zinc-100">
-            <CardTitle className="text-base font-bold text-zinc-900 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#C5A880]" />
+        <Card className="border-[#EADBCE] bg-[#FFFDF7] shadow-xs">
+          <CardHeader className="pb-3 border-b border-[#EADBCE]">
+            <CardTitle className="text-base font-bold text-stone-900 flex items-center gap-2">
+              <Clock className="w-4 h-4 text-[#D97706]" />
               <span>4. Delivery Schedule</span>
             </CardTitle>
-            <CardDescription className="text-xs text-zinc-500 mt-0.5">
+            <CardDescription className="text-xs text-stone-500 mt-0.5">
               Choose whether to launch immediate delivery or schedule for a specific date and time in Nepal Time.
             </CardDescription>
           </CardHeader>
@@ -682,14 +699,14 @@ export function ComposeEmailView({
                 onClick={() => setSendOption("immediate")}
                 className={`p-4 rounded-xl border text-left transition-all flex items-start gap-3 ${
                   sendOption === "immediate"
-                    ? "bg-[#0A192F] text-white border-[#0A192F] shadow-xs"
-                    : "bg-white text-zinc-800 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
+                    ? "bg-[#7F1D2D] text-white border-[#7F1D2D] shadow-xs"
+                    : "bg-[#FFFDF7] text-stone-800 border-[#EADBCE] hover:border-[#B89150] hover:bg-[#F7F1E5]/60"
                 }`}
               >
-                <Send className={`w-4 h-4 mt-0.5 shrink-0 ${sendOption === "immediate" ? "text-[#C5A880]" : "text-zinc-400"}`} />
+                <Send className={`w-4 h-4 mt-0.5 shrink-0 ${sendOption === "immediate" ? "text-[#D97706]" : "text-stone-400"}`} />
                 <div>
                   <div className="font-bold text-xs">Send Now</div>
-                  <p className={`text-[11px] mt-1 ${sendOption === "immediate" ? "text-zinc-300" : "text-zinc-500"}`}>
+                  <p className={`text-[11px] mt-1 ${sendOption === "immediate" ? "text-white/80" : "text-stone-500"}`}>
                     Queue message immediately and begin delivery through background worker.
                   </p>
                 </div>
@@ -701,14 +718,14 @@ export function ComposeEmailView({
                 onClick={() => setSendOption("scheduled")}
                 className={`p-4 rounded-xl border text-left transition-all flex items-start gap-3 ${
                   sendOption === "scheduled"
-                    ? "bg-[#0A192F] text-white border-[#0A192F] shadow-xs"
-                    : "bg-white text-zinc-800 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
+                    ? "bg-[#7F1D2D] text-white border-[#7F1D2D] shadow-xs"
+                    : "bg-[#FFFDF7] text-stone-800 border-[#EADBCE] hover:border-[#B89150] hover:bg-[#F7F1E5]/60"
                 }`}
               >
-                <Calendar className={`w-4 h-4 mt-0.5 shrink-0 ${sendOption === "scheduled" ? "text-[#C5A880]" : "text-zinc-400"}`} />
+                <Calendar className={`w-4 h-4 mt-0.5 shrink-0 ${sendOption === "scheduled" ? "text-[#D97706]" : "text-stone-400"}`} />
                 <div>
                   <div className="font-bold text-xs">Schedule for Later</div>
-                  <p className={`text-[11px] mt-1 ${sendOption === "scheduled" ? "text-zinc-300" : "text-zinc-500"}`}>
+                  <p className={`text-[11px] mt-1 ${sendOption === "scheduled" ? "text-white/80" : "text-stone-500"}`}>
                     Hold message in queue until your designated date &amp; time (Nepal Time).
                   </p>
                 </div>
@@ -717,40 +734,40 @@ export function ComposeEmailView({
 
             {/* Date & Time Picker when scheduled */}
             {sendOption === "scheduled" && (
-              <div className="bg-[#F8FAFC] rounded-xl border border-[#E2E8F0] p-4 space-y-3">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-[#0A192F]">
-                  <Clock className="w-4 h-4 text-[#C5A880]" />
+              <div className="bg-[#F7F1E5] rounded-xl border border-[#EADBCE] p-4 space-y-3">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#7F1D2D]">
+                  <Clock className="w-4 h-4 text-[#D97706]" />
                   <span>Configure Schedule in Nepal Time (Asia/Kathmandu UTC+05:45)</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <Label className="text-[11px] font-semibold text-zinc-600">
+                    <Label className="text-[11px] font-semibold text-stone-600">
                       Scheduled Date
                     </Label>
                     <Input
                       type="date"
                       value={scheduledDate}
                       onChange={(e) => setScheduledDate(e.target.value)}
-                      className="bg-white text-xs border-zinc-200 focus-visible:ring-[#C5A880]"
+                      className="bg-white text-xs border-[#EADBCE] focus-visible:ring-[#D97706]"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <Label className="text-[11px] font-semibold text-zinc-600">
+                    <Label className="text-[11px] font-semibold text-stone-600">
                       Scheduled Time (Nepal Standard Time)
                     </Label>
                     <Input
                       type="time"
                       value={scheduledTime}
                       onChange={(e) => setScheduledTime(e.target.value)}
-                      className="bg-white text-xs border-zinc-200 focus-visible:ring-[#C5A880]"
+                      className="bg-white text-xs border-[#EADBCE] focus-visible:ring-[#D97706]"
                     />
                   </div>
                 </div>
 
                 {scheduledDate && (
-                  <div className="text-[11px] font-semibold text-[#A64B36] pt-1">
+                  <div className="text-[11px] font-semibold text-[#7F1D2D] pt-1">
                     Summary: Your email will be sent on {scheduledDate} at {scheduledTime} Nepal Time.
                   </div>
                 )}
@@ -760,10 +777,10 @@ export function ComposeEmailView({
         </Card>
 
         {/* Bottom Sticky Action Bar */}
-        <div className="bg-white border border-zinc-200 rounded-xl p-4 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3 sticky bottom-4 z-30">
+        <div className="bg-[#FFFDF7] border border-[#EADBCE] rounded-xl p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3 sticky bottom-4 z-30">
           <div className="flex items-center gap-2 text-xs">
-            <span className="font-bold text-zinc-700">Estimated Audience:</span>
-            <span className="font-black text-[#0A192F] font-mono text-sm">
+            <span className="font-bold text-stone-700">Estimated Audience:</span>
+            <span className="font-black text-[#7F1D2D] font-mono text-sm">
               {estimatedCount ?? 0} recipient{(estimatedCount ?? 0) === 1 ? "" : "s"}
             </span>
             {hasInvalidManualEmails && (
@@ -780,7 +797,7 @@ export function ComposeEmailView({
               variant="outline"
               size="sm"
               onClick={() => setIsTestModalOpen(true)}
-              className="text-xs font-bold h-9 px-3 border-zinc-300 hover:bg-zinc-100 rounded-xl flex-1 sm:flex-none"
+              className="text-xs font-bold h-9 px-3 border-[#EADBCE] bg-[#FFFDF7] text-stone-700 hover:bg-[#F7F1E5] rounded-xl flex-1 sm:flex-none"
             >
               Send Test
             </Button>
@@ -790,7 +807,7 @@ export function ComposeEmailView({
               variant="outline"
               size="sm"
               onClick={() => setIsPreviewModalOpen(true)}
-              className="text-xs font-bold h-9 px-3 border-zinc-300 hover:bg-zinc-100 rounded-xl flex-1 sm:flex-none"
+              className="text-xs font-bold h-9 px-3 border-[#EADBCE] bg-[#FFFDF7] text-stone-700 hover:bg-[#F7F1E5] rounded-xl flex-1 sm:flex-none"
             >
               Preview
             </Button>
@@ -798,10 +815,10 @@ export function ComposeEmailView({
             <Button
               type="button"
               onClick={() => setIsReviewModalOpen(true)}
-              disabled={hasInvalidManualEmails || (estimatedCount ?? 0) === 0}
-              className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs h-9 px-5 rounded-xl gap-2 flex-1 sm:flex-none shadow-xs"
+              disabled={(recipientTab === "DIRECT" && (manualEmails.length === 0 || hasInvalidManualEmails)) || (estimatedCount ?? 0) === 0}
+              className="bg-[#7F1D2D] hover:bg-[#681724] text-white font-bold text-xs h-9 px-5 rounded-xl gap-2 flex-1 sm:flex-none shadow-xs"
             >
-              <Send className="w-3.5 h-3.5 text-[#C5A880]" />
+              <Send className="w-3.5 h-3.5 text-[#D97706]" />
               <span>Review &amp; Send</span>
             </Button>
           </div>
@@ -811,26 +828,26 @@ export function ComposeEmailView({
       {/* MODAL 1: Send Test Email */}
       {isTestModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-zinc-200 p-6 max-w-md w-full shadow-2xl space-y-4">
-            <div className="flex items-center justify-between">
+          <div className="bg-[#FFFDF7] rounded-2xl border border-[#EADBCE] p-6 max-w-md w-full shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-[#EADBCE] pb-3">
               <div className="flex items-center gap-2">
-                <Send className="w-4 h-4 text-[#C5A880]" />
-                <h3 className="text-sm font-bold text-zinc-900">Send Test Email</h3>
+                <Send className="w-4 h-4 text-[#D97706]" />
+                <h3 className="text-sm font-bold text-stone-900">Send Test Email</h3>
               </div>
               <button
                 onClick={() => setIsTestModalOpen(false)}
-                className="text-zinc-400 hover:text-zinc-700"
+                className="text-stone-400 hover:text-stone-700"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <p className="text-xs text-zinc-500 leading-relaxed">
-              We will send a live preview of this email with sample participant data. The email subject will be prefixed with <code className="text-[11px] font-bold bg-zinc-100 px-1 py-0.5 rounded">[TEST]</code>.
+            <p className="text-xs text-stone-500 leading-relaxed">
+              We will send a live preview of this email with sample participant data. The email subject will be prefixed with <code className="text-[11px] font-bold bg-[#F7F1E5] text-[#7F1D2D] px-1 py-0.5 rounded">[TEST]</code>.
             </p>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-zinc-700">
+              <Label className="text-xs font-bold text-stone-700">
                 Destination Email
               </Label>
               <Input
@@ -838,17 +855,17 @@ export function ComposeEmailView({
                 value={testEmailInput}
                 onChange={(e) => setTestEmailInput(e.target.value)}
                 placeholder="your.email@example.com"
-                className="text-xs"
+                className="text-xs border-[#EADBCE] bg-white focus-visible:ring-[#D97706]"
               />
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#EADBCE]">
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 onClick={() => setIsTestModalOpen(false)}
-                className="text-xs h-8 px-3 rounded-lg"
+                className="text-xs h-8 px-3 rounded-lg border-[#EADBCE] hover:bg-[#F7F1E5]"
               >
                 Cancel
               </Button>
@@ -857,9 +874,9 @@ export function ComposeEmailView({
                 size="sm"
                 onClick={handleSendTest}
                 disabled={isSendingTest}
-                className="bg-[#0A192F] hover:bg-[#1E293B] text-white text-xs h-8 px-4 rounded-lg gap-1.5"
+                className="bg-[#7F1D2D] hover:bg-[#681724] text-white text-xs h-8 px-4 rounded-lg gap-1.5"
               >
-                {isSendingTest && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />}
+                {isSendingTest && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#D97706]" />}
                 <span>{isSendingTest ? "Sending..." : "Send Test Email"}</span>
               </Button>
             </div>
@@ -870,27 +887,27 @@ export function ComposeEmailView({
       {/* MODAL 2: Live Preview */}
       {isPreviewModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-zinc-200 max-w-3xl w-full h-[85vh] shadow-2xl flex flex-col overflow-hidden">
+          <div className="bg-[#FFFDF7] rounded-2xl border border-[#EADBCE] max-w-3xl w-full h-[85vh] shadow-2xl flex flex-col overflow-hidden">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-zinc-200 bg-zinc-50">
+            <div className="flex items-center justify-between p-4 border-b border-[#EADBCE] bg-[#F7F1E5]">
               <div className="flex items-center gap-2">
-                <Eye className="w-4 h-4 text-[#C5A880]" />
-                <h3 className="text-sm font-bold text-zinc-900">Email Live Preview</h3>
-                <span className="text-[10px] bg-zinc-200 text-zinc-700 px-2 py-0.5 rounded-full font-semibold">
+                <Eye className="w-4 h-4 text-[#D97706]" />
+                <h3 className="text-sm font-bold text-stone-900">Email Live Preview</h3>
+                <span className="text-[10px] bg-[#EADBCE] text-[#7F1D2D] px-2 py-0.5 rounded-full font-semibold">
                   Sample Contestant Data
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
                 {/* Desktop / Mobile Toggle */}
-                <div className="flex items-center bg-zinc-200/80 p-0.5 rounded-lg">
+                <div className="flex items-center bg-[#EADBCE]/80 p-0.5 rounded-lg">
                   <button
                     type="button"
                     onClick={() => setPreviewDevice("desktop")}
                     className={`p-1.5 rounded-md text-xs font-semibold flex items-center gap-1 transition-all ${
                       previewDevice === "desktop"
-                        ? "bg-white text-black shadow-2xs"
-                        : "text-zinc-600 hover:text-black"
+                        ? "bg-white text-stone-900 shadow-2xs"
+                        : "text-stone-600 hover:text-stone-900"
                     }`}
                   >
                     <Monitor className="w-3.5 h-3.5" />
@@ -901,8 +918,8 @@ export function ComposeEmailView({
                     onClick={() => setPreviewDevice("mobile")}
                     className={`p-1.5 rounded-md text-xs font-semibold flex items-center gap-1 transition-all ${
                       previewDevice === "mobile"
-                        ? "bg-white text-black shadow-2xs"
-                        : "text-zinc-600 hover:text-black"
+                        ? "bg-white text-stone-900 shadow-2xs"
+                        : "text-stone-600 hover:text-stone-900"
                     }`}
                   >
                     <Smartphone className="w-3.5 h-3.5" />
@@ -912,7 +929,7 @@ export function ComposeEmailView({
 
                 <button
                   onClick={() => setIsPreviewModalOpen(false)}
-                  className="text-zinc-400 hover:text-zinc-700 p-1"
+                  className="text-stone-400 hover:text-stone-700 p-1"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -920,15 +937,15 @@ export function ComposeEmailView({
             </div>
 
             {/* Subject Preview Bar */}
-            <div className="px-6 py-2.5 bg-zinc-100 border-b border-zinc-200 text-xs text-zinc-700 flex items-center gap-2">
-              <span className="font-bold text-zinc-500">Subject:</span>
-              <span className="font-semibold text-zinc-900 truncate">{previewSubject}</span>
+            <div className="px-6 py-2.5 bg-[#FFFDF7] border-b border-[#EADBCE] text-xs text-stone-700 flex items-center gap-2">
+              <span className="font-bold text-stone-500">Subject:</span>
+              <span className="font-semibold text-stone-900 truncate">{previewSubject}</span>
             </div>
 
             {/* Simulated Device Frame */}
-            <div className="flex-1 overflow-y-auto p-6 bg-zinc-200/50 flex items-start justify-center">
+            <div className="flex-1 overflow-y-auto p-6 bg-[#F7F1E5]/50 flex items-start justify-center">
               <div
-                className={`bg-white shadow-xl transition-all duration-200 rounded-xl overflow-hidden border border-zinc-200 w-full ${
+                className={`bg-white shadow-xl transition-all duration-200 rounded-xl overflow-hidden border border-[#EADBCE] w-full ${
                   previewDevice === "mobile" ? "max-w-sm" : "max-w-2xl"
                 }`}
               >
@@ -945,17 +962,17 @@ export function ComposeEmailView({
       {/* MODAL 3: Final Review Before Sending */}
       {isReviewModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-zinc-200 p-6 max-w-lg w-full shadow-2xl space-y-5">
-            <div className="flex items-center justify-between border-b border-zinc-100 pb-3">
+          <div className="bg-[#FFFDF7] rounded-2xl border border-[#EADBCE] p-6 max-w-lg w-full shadow-2xl space-y-5">
+            <div className="flex items-center justify-between border-b border-[#EADBCE] pb-3">
               <div className="flex items-center gap-2">
-                <Send className="w-4 h-4 text-[#C5A880]" />
-                <h3 className="text-base font-bold text-zinc-900">
+                <Send className="w-4 h-4 text-[#D97706]" />
+                <h3 className="text-base font-bold text-[#7F1D2D]">
                   Review Your Email Communication
                 </h3>
               </div>
               <button
                 onClick={() => setIsReviewModalOpen(false)}
-                className="text-zinc-400 hover:text-zinc-700"
+                className="text-stone-400 hover:text-stone-700"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -963,42 +980,38 @@ export function ComposeEmailView({
 
             {/* Summary Cards */}
             <div className="space-y-3 text-xs">
-              <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200 space-y-1">
-                <span className="font-bold text-zinc-500 uppercase tracking-wider text-[10px]">
+              <div className="p-3 bg-[#F7F1E5] rounded-xl border border-[#EADBCE] space-y-1">
+                <span className="font-bold text-stone-500 uppercase tracking-wider text-[10px]">
                   Email Subject
                 </span>
-                <p className="font-semibold text-zinc-900 text-sm">
+                <p className="font-semibold text-stone-900 text-sm">
                   {subject || "(No subject provided)"}
                 </p>
               </div>
 
-              <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200 space-y-1.5">
-                <span className="font-bold text-zinc-500 uppercase tracking-wider text-[10px]">
+              <div className="p-3 bg-[#F7F1E5] rounded-xl border border-[#EADBCE] space-y-1.5">
+                <span className="font-bold text-stone-500 uppercase tracking-wider text-[10px]">
                   Recipients Breakdown
                 </span>
-                <div className="flex items-center justify-between text-zinc-700">
-                  <span>Selected Participant Group:</span>
-                  <span className="font-bold">
-                    {PARTICIPANT_GROUPS.find((g) => g.id === selectedGroup)?.label}
+                <div className="flex items-center justify-between text-stone-700">
+                  <span>Selected Audience:</span>
+                  <span className="font-bold text-[#7F1D2D]">
+                    {recipientTab === "GROUP"
+                      ? PARTICIPANT_GROUPS.find((g) => g.id === selectedGroup)?.label || "All Participants"
+                      : `${manualEmails.length} Direct Email Address${manualEmails.length === 1 ? "" : "es"}`}
                   </span>
                 </div>
-                {manualEmails.length > 0 && (
-                  <div className="flex items-center justify-between text-zinc-700">
-                    <span>Direct Addresses:</span>
-                    <span className="font-bold">{manualEmails.length} address{manualEmails.length > 1 ? "es" : ""}</span>
-                  </div>
-                )}
-                <div className="border-t border-zinc-200 pt-1.5 flex items-center justify-between font-bold text-[#0A192F] text-sm">
-                  <span>Total Deduplicated Recipients:</span>
-                  <span className="font-mono">{estimatedCount ?? 0}</span>
+                <div className="border-t border-[#EADBCE] pt-1.5 flex items-center justify-between font-bold text-[#7F1D2D] text-sm">
+                  <span>Total Recipients:</span>
+                  <span className="font-mono text-base">{estimatedCount ?? 0}</span>
                 </div>
               </div>
 
-              <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200 space-y-1">
-                <span className="font-bold text-zinc-500 uppercase tracking-wider text-[10px]">
+              <div className="p-3 bg-[#F7F1E5] rounded-xl border border-[#EADBCE] space-y-1">
+                <span className="font-bold text-stone-500 uppercase tracking-wider text-[10px]">
                   Delivery Time
                 </span>
-                <p className="font-semibold text-zinc-800">
+                <p className="font-semibold text-stone-800">
                   {sendOption === "immediate" ? (
                     "Immediate (queued right now)"
                   ) : (
@@ -1021,23 +1034,23 @@ export function ComposeEmailView({
             </div>
 
             {/* Footer Buttons */}
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-zinc-100">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#EADBCE]">
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 onClick={() => setIsReviewModalOpen(false)}
-                className="text-xs h-9 px-4 rounded-xl"
+                className="text-xs h-9 px-4 rounded-xl border-[#EADBCE] hover:bg-[#F7F1E5]"
               >
                 Back to Edit
               </Button>
               <Button
                 type="button"
                 onClick={handleFinalSubmit}
-                disabled={isSubmitting || (estimatedCount ?? 0) === 0 || hasInvalidManualEmails}
-                className="bg-[#0A192F] hover:bg-[#1E293B] text-white text-xs font-bold h-9 px-5 rounded-xl gap-2 shadow-xs"
+                disabled={isSubmitting || (estimatedCount ?? 0) === 0 || (recipientTab === "DIRECT" && hasInvalidManualEmails)}
+                className="bg-[#7F1D2D] hover:bg-[#681724] text-white text-xs font-bold h-9 px-5 rounded-xl gap-2 shadow-xs"
               >
-                {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />}
+                {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#D97706]" />}
                 <span>
                   {isSubmitting
                     ? "Enqueuing..."
