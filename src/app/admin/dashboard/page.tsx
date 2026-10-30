@@ -3,6 +3,7 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 import {
+  Crown,
   FileText,
   CheckCircle2,
   Users,
@@ -13,74 +14,80 @@ import {
   HardDrive,
   AlertCircle,
   AlertTriangle,
+  CreditCard,
+  FileCheck2,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { formatDateTime } from "@/lib/utils";
+import { formatNepalDateTime } from "@/lib/utils/timezone";
 
 export default async function AdminDashboardPage() {
   const admin = await requireAdmin();
 
-  // Query actual metrics and Google Drive integration status
+  // Query actual metrics for Mithila Queen and forms
   const [
+    totalMithilaQueens,
+    paymentsUnderReview,
+    paymentsVerified,
+    applicationsApproved,
+    recentMithilaQueenRegistrations,
     totalForms,
     publishedForms,
-    totalSubmissions,
-    recentSubmissions,
-    forms,
     driveIntegration,
+    forms,
   ] = await Promise.all([
+    prisma.mithilaQueenRegistration.count(),
+    prisma.mithilaQueenRegistration.count({ where: { paymentStatus: "UNDER_REVIEW" } }),
+    prisma.mithilaQueenRegistration.count({ where: { paymentStatus: "VERIFIED" } }),
+    prisma.mithilaQueenRegistration.count({ where: { applicationStatus: "APPROVED" } }),
+    prisma.mithilaQueenRegistration.findMany({
+      take: 6,
+      orderBy: { submittedAt: "desc" },
+    }),
     prisma.registrationForm.count(),
     prisma.registrationForm.count({ where: { status: "PUBLISHED" } }),
-    prisma.registrationSubmission.count(),
-    prisma.registrationSubmission.findMany({
-      take: 8,
-      orderBy: { submittedAt: "desc" },
-      include: {
-        form: {
-          select: {
-            name: true,
-            slug: true,
-          },
-        },
-      },
+    prisma.googleDriveIntegration.findUnique({
+      where: { id: "primary" },
     }),
     prisma.registrationForm.findMany({
       take: 5,
-      orderBy: { updatedAt: "desc" },
+      orderBy: { createdAt: "desc" },
       include: {
         _count: {
           select: { submissions: true },
         },
       },
     }),
-    prisma.googleDriveIntegration.findUnique({
-      where: { id: "primary" },
-    }),
   ]);
 
   return (
     <div className="space-y-6">
-      {/* Clean Dashboard Header */}
+      {/* Dashboard Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-5">
         <div>
-          <h1 className="text-3xl font-extrabold text-zinc-900 tracking-tight">
-            Dashboard
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#C5A880]">
+            The Origin Foundation • Janakpur Dham
+          </span>
+          <h1 className="text-3xl font-extrabold text-[#0A192F] font-serif tracking-tight">
+            Origin Foundation Command Center
           </h1>
+          <p className="text-xs text-zinc-500 mt-0.5">
+            Signed in as <strong>{admin.name}</strong> ({admin.email})
+          </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <Link href="/admin/forms">
-            <Button variant="outline" className="gap-2 text-xs h-9 border-zinc-300">
-              <FileText className="w-4 h-4 text-zinc-600" />
-              <span>All Forms</span>
+          <Link href="/admin/responses">
+            <Button className="gap-2 bg-[#0A192F] hover:bg-[#243B53] text-[#FDFBF7] text-xs h-9 font-bold shadow-xs">
+              <Crown className="w-4 h-4 text-[#C5A880]" />
+              <span>Review Applications</span>
             </Button>
           </Link>
           <Link href="/admin/forms/new">
-            <Button className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs h-9 font-semibold">
-              <PlusCircle className="w-4 h-4" />
-              <span>Create New Form</span>
+            <Button variant="outline" className="gap-2 border-zinc-300 text-xs h-9 font-semibold">
+              <PlusCircle className="w-4 h-4 text-zinc-600" />
+              <span>New Form</span>
             </Button>
           </Link>
         </div>
@@ -96,7 +103,7 @@ export default async function AdminDashboardPage() {
             <div>
               <p className="text-xs font-bold text-amber-900">Google Drive is not connected</p>
               <p className="text-[11px] text-amber-700">
-                Connect your Google account in Settings to receive registration video uploads directly into Drive.
+                Connect your Google account in Settings to receive registration video uploads and documents directly into Drive.
               </p>
             </div>
           </div>
@@ -108,152 +115,188 @@ export default async function AdminDashboardPage() {
         </div>
       )}
 
-      {/* KPI Overview Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-zinc-200 shadow-xs hover:border-zinc-300 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-              Total Forms
-            </CardTitle>
-            <div className="w-8 h-8 rounded-lg bg-zinc-100 text-zinc-700 flex items-center justify-center">
-              <FileText className="w-4 h-4" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-extrabold text-zinc-900">{totalForms}</div>
-            <p className="text-xs text-zinc-500 mt-1">
-              Active configuration schemas
-            </p>
-          </CardContent>
-        </Card>
+      {/* MITHILA QUEEN PRIMARY METRICS */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[#0A192F] font-serif flex items-center gap-2">
+            <Crown className="w-4 h-4 text-[#C5A880]" />
+            <span>Mithila Queen 2026 • Live Registration Metrics</span>
+          </h2>
+          <span className="text-xs text-zinc-500 font-mono">Fee: NPR 399</span>
+        </div>
 
-        <Card className="border-zinc-200 shadow-xs hover:border-zinc-300 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
-              Active Forms
-            </CardTitle>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-extrabold text-emerald-700">{publishedForms}</div>
-            <p className="text-xs text-zinc-500 mt-1">
-              Accepting public submissions
-            </p>
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card className="border-[#E9E2D5] shadow-xs hover:border-[#C5A880] transition-colors bg-white">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-xs font-semibold uppercase tracking-wider text-[#0A192F]">
+                Total Registrations
+              </CardTitle>
+              <div className="w-8 h-8 rounded-lg bg-[#0A192F] text-[#C5A880] flex items-center justify-center">
+                <Users className="w-4 h-4" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-extrabold text-[#0A192F]">{totalMithilaQueens}</div>
+              <p className="text-xs text-zinc-500 mt-1">
+                Submitted applicant records
+              </p>
+            </CardContent>
+          </Card>
 
-        <Card className="border-zinc-200 shadow-xs hover:border-zinc-300 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-zinc-800">
-              Total Registrations
-            </CardTitle>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-              <Users className="w-4 h-4" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-extrabold text-zinc-900">{totalSubmissions}</div>
-            <p className="text-xs text-zinc-500 mt-1">
-              Verified participant submissions
-            </p>
-          </CardContent>
-        </Card>
+          <Card className="border-[#E9E2D5] shadow-xs hover:border-amber-400 transition-colors bg-white">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-xs font-semibold uppercase tracking-wider text-amber-800">
+                Payments Under Review
+              </CardTitle>
+              <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                <Clock className="w-4 h-4" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-extrabold text-amber-700">{paymentsUnderReview}</div>
+              <p className="text-xs text-zinc-500 mt-1">
+                Awaiting bank receipt verification
+              </p>
+            </CardContent>
+          </Card>
 
-        <Card className="border-zinc-200 shadow-xs hover:border-zinc-300 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-zinc-800">
-              Recent Submissions
-            </CardTitle>
-            <div className="w-8 h-8 rounded-lg bg-zinc-100 text-zinc-800 flex items-center justify-center">
-              <Clock className="w-4 h-4" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-extrabold text-black">
-              {recentSubmissions.length}
-            </div>
-            <p className="text-xs text-zinc-500 mt-1">
-              Entries logged in recent batch
-            </p>
-          </CardContent>
-        </Card>
+          <Card className="border-[#E9E2D5] shadow-xs hover:border-emerald-400 transition-colors bg-white">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
+                Payments Verified
+              </CardTitle>
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-extrabold text-emerald-700">{paymentsVerified}</div>
+              <p className="text-xs text-zinc-500 mt-1">
+                Settled & verified entries
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-[#E9E2D5] shadow-xs hover:border-[#0A192F] transition-colors bg-white">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-xs font-semibold uppercase tracking-wider text-[#0A192F]">
+                Approved Participants
+              </CardTitle>
+              <div className="w-8 h-8 rounded-lg bg-[#0A192F] text-white flex items-center justify-center">
+                <FileCheck2 className="w-4 h-4" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-extrabold text-[#0A192F]">{applicationsApproved}</div>
+              <p className="text-xs text-zinc-500 mt-1">
+                PDF confirmation generated
+              </p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
+      {/* 2-COLUMN MAIN CONTENT GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Submissions Table (2 cols) */}
+        {/* RECENT MITHILA QUEEN APPLICATIONS TABLE (2 cols) */}
         <div className="lg:col-span-2 space-y-3">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-bold text-zinc-900 tracking-tight">
-                Recent Submissions
+              <h2 className="text-base font-bold text-[#0A192F] font-serif tracking-tight">
+                Recent Mithila Queen Applications
               </h2>
+              <p className="text-xs text-zinc-500">
+                Latest participant entries with real-time payment and adjudication states.
+              </p>
             </div>
             <Link
               href="/admin/responses"
-              className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
+              className="text-xs font-bold text-[#0A192F] hover:text-[#C5A880] flex items-center gap-1"
             >
-              <span>View All Responses</span>
+              <span>Open All Applications</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <Card className="overflow-hidden border-zinc-200">
-            {recentSubmissions.length === 0 ? (
+          <Card className="overflow-hidden border-[#E9E2D5] shadow-xs">
+            {recentMithilaQueenRegistrations.length === 0 ? (
               <div className="p-12 text-center">
                 <div className="w-12 h-12 rounded-full bg-zinc-100 text-zinc-400 mx-auto flex items-center justify-center mb-3">
-                  <Users className="w-6 h-6" />
+                  <Crown className="w-6 h-6 text-[#C5A880]" />
                 </div>
-                <h3 className="font-semibold text-zinc-800 text-sm">No registrations yet</h3>
+                <h3 className="font-semibold text-zinc-800 text-sm">No Mithila Queen registrations yet</h3>
                 <p className="text-xs text-zinc-500 max-w-sm mx-auto mt-1">
-                  Once participants submit registrations, their verified records will appear here in real time.
+                  Once participants submit their 7-step application on the website, their records will appear here.
                 </p>
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead className="bg-zinc-50 text-zinc-500 text-xs font-semibold uppercase tracking-wider border-b border-zinc-200">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-[#FDFBF7] text-zinc-600 border-b border-[#E9E2D5] font-semibold">
                     <tr>
-                      <th className="px-4 py-3">Participant</th>
-                      <th className="px-4 py-3">Event / Form</th>
-                      <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3">Submitted At</th>
+                      <th className="py-3 px-4">Registration ID</th>
+                      <th className="py-3 px-4">Participant Name</th>
+                      <th className="py-3 px-4">Contact</th>
+                      <th className="py-3 px-4">Location</th>
+                      <th className="py-3 px-4">Payment Status</th>
+                      <th className="py-3 px-4">Application Status</th>
+                      <th className="py-3 px-4 text-right">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-100">
-                    {recentSubmissions.map((sub) => {
-                      const isRead = sub.status === "APPROVED";
-                      return (
-                        <tr key={sub.id} className="hover:bg-zinc-50/80 transition-colors">
-                          <td className="px-4 py-3.5">
-                            <div className="font-semibold text-zinc-900">{sub.fullName}</div>
-                            <div className="text-xs text-zinc-500 font-mono flex items-center gap-1.5">
-                              <span className="text-emerald-700 font-bold">{sub.referenceNumber}</span>
-                              <span>&bull;</span>
-                              <span>{sub.email}</span>
-                            </div>
-                          </td>
-                          <td className="px-4 py-3.5 text-xs text-zinc-600 font-medium">
-                            {sub.form.name}
-                          </td>
-                          <td className="px-4 py-3.5">
-                            <span
-                              className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
-                                isRead
-                                  ? "bg-zinc-100 text-zinc-600 border border-zinc-200"
-                                  : "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                              }`}
-                            >
-                              {isRead ? "Read" : "Unread"}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3.5 text-xs text-zinc-500 whitespace-nowrap">
-                            {formatDateTime(sub.submittedAt)}
-                          </td>
-                        </tr>
-                      );
-                    })}
+                  <tbody className="divide-y divide-[#E9E2D5]">
+                    {recentMithilaQueenRegistrations.map((reg) => (
+                      <tr key={reg.id} className="hover:bg-zinc-50 transition-colors">
+                        <td className="py-3 px-4 font-mono font-bold text-[#0A192F]">
+                          {reg.registrationId}
+                        </td>
+                        <td className="py-3 px-4 font-semibold text-zinc-900">
+                          {reg.fullName} {reg.isMinor ? <span className="text-[10px] text-amber-700 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">Minor</span> : ""}
+                        </td>
+                        <td className="py-3 px-4 text-zinc-600 font-mono">
+                          {reg.email}
+                        </td>
+                        <td className="py-3 px-4 text-zinc-600">
+                          {reg.district}, {reg.province}
+                        </td>
+                        <td className="py-3 px-4">
+                          <span
+                            className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                              reg.paymentStatus === "VERIFIED"
+                                ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                                : reg.paymentStatus === "UNDER_REVIEW"
+                                ? "bg-amber-50 text-amber-800 border border-amber-200"
+                                : reg.paymentStatus === "CLARIFICATION_REQUIRED"
+                                ? "bg-orange-50 text-orange-800 border border-orange-200"
+                                : "bg-zinc-100 text-zinc-600 border border-zinc-200"
+                            }`}
+                          >
+                            {reg.paymentStatus}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4">
+                          <span
+                            className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                              reg.applicationStatus === "APPROVED"
+                                ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                                : reg.applicationStatus === "REJECTED"
+                                ? "bg-rose-50 text-rose-800 border border-rose-200"
+                                : reg.applicationStatus === "ACTION_REQUIRED"
+                                ? "bg-amber-50 text-amber-800 border border-amber-200"
+                                : "bg-blue-50 text-blue-800 border border-blue-200"
+                            }`}
+                          >
+                            {reg.applicationStatus}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-right">
+                          <Link href="/admin/responses">
+                            <Button size="sm" variant="outline" className="text-xs h-7 px-2.5 border-[#E9E2D5] text-[#0A192F] hover:bg-[#E9E2D5]/50">
+                              Inspect
+                            </Button>
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

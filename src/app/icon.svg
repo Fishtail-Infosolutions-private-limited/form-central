@@ -1,10 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect width="32" height="32" rx="7" fill="#059669"/>
-  <!-- Modern Form Central Geometric Trophy Emblem -->
-  <path d="M10 9h12v3a6 6 0 0 1-12 0V9z" fill="#ffffff" />
-  <path d="M8 10h2v2a3 3 0 0 1-2-2zM24 10h-2v2a3 3 0 0 0 2-2z" fill="#ffffff" />
-  <path d="M15 17h2v5h-2z" fill="#ffffff" />
-  <path d="M11 22h10v2H11z" fill="#ffffff" rx="1" />
-  <circle cx="16" cy="12" r="1.5" fill="#059669" />
+  <rect width="32" height="32" rx="8" fill="#0A192F"/>
+  <!-- Elegant Mithila Lotus / Crown Motif in Muted Gold -->
+  <path d="M16 6 C17 11 21 13 25 14 C21 16 19 20 18.5 24 C17 22 16.5 19 16 17 C15.5 19 15 22 13.5 24 C13 20 11 16 7 14 C11 13 15 11 16 6 Z" fill="#C5A880"/>
+  <circle cx="16" cy="15" r="2" fill="#0A192F"/>
+  <circle cx="16" cy="15" r="1" fill="#FDFBF7"/>
+  <path d="M10 26 H22" stroke="#C5A880" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
-

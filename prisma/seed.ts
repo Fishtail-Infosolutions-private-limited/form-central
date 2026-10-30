@@ -26,7 +26,128 @@ async function main() {
     },
   });
 
-  console.log(`✅ Admin user seeded: ${admin.email}`);
+  // 1. Seed Managing Directors for The Origin Foundation
+  const gauravEmail = process.env.ADMIN_GAURAV_EMAIL || "gaurav.gupta@originfoundation.org";
+  const gauravPassword = process.env.ADMIN_GAURAV_PASSWORD || defaultPassword;
+  const gauravHash = await bcrypt.hash(gauravPassword, 12);
+
+  await prisma.adminUser.upsert({
+    where: { email: gauravEmail },
+    update: {
+      name: "Gaurav Gupta",
+      role: AdminRole.SUPER_ADMIN,
+    },
+    create: {
+      email: gauravEmail,
+      name: "Gaurav Gupta",
+      passwordHash: gauravHash,
+      role: AdminRole.SUPER_ADMIN,
+    },
+  });
+
+  const dipendraEmail = process.env.ADMIN_DIPENDRA_EMAIL || "dipendra.kalwar@originfoundation.org";
+  const dipendraPassword = process.env.ADMIN_DIPENDRA_PASSWORD || defaultPassword;
+  const dipendraHash = await bcrypt.hash(dipendraPassword, 12);
+
+  await prisma.adminUser.upsert({
+    where: { email: dipendraEmail },
+    update: {
+      name: "Dipendra Shah Kalwar",
+      role: AdminRole.SUPER_ADMIN,
+    },
+    create: {
+      email: dipendraEmail,
+      name: "Dipendra Shah Kalwar",
+      passwordHash: dipendraHash,
+      role: AdminRole.SUPER_ADMIN,
+    },
+  });
+
+  console.log(`✅ Managing Directors seeded: ${gauravEmail} and ${dipendraEmail}`);
+
+  // Seed Default Official Site Settings for The Origin Foundation & Mithila Queen
+  await prisma.siteSetting.upsert({
+    where: { id: "primary" },
+    update: {},
+    create: {
+      id: "primary",
+      organizationName: "The Origin Foundation",
+      organizationTagline: "Rooted in Identity. Driven by Purpose.",
+      competitionName: "Mithila Queen",
+      competitionTagline: "Celebrating Mithila's Culture, Confidence & Talent.",
+      location: "Janakpur Dham, Nepal",
+      officialEmail: "originfoundation107@gmail.com",
+      registrationFee: 399,
+      eventSchedule: "To Be Announced",
+      eventVenue: "To Be Announced",
+      isRegistrationOpen: true,
+      whatsappContact: "+977 9704571941",
+      prizesJson: [
+        {
+          position: "First Prize",
+          title: "iPhone 18 Pro Max, Red, 512 GB",
+          status: "Proposed by organizers",
+        },
+        {
+          position: "Second Prize",
+          title: "MAC beauty products (approx. NPR 30,000 value)",
+          status: "Proposed value",
+        },
+        {
+          position: "Third Prize",
+          title: "Smartphone / Premium Electronics",
+          status: "To be confirmed by organizers",
+        },
+        {
+          position: "Fourth & Fifth Prize",
+          title: "To be announced",
+          status: "Pending authorization",
+        },
+      ],
+      faqsJson: [
+        {
+          q: "What is The Origin Foundation?",
+          a: "The Origin Foundation is a platform being developed in Janakpur Dham, Nepal, to support cultural identity, talent, and community participation through initiatives such as Mithila Queen.",
+        },
+        {
+          q: "What is Mithila Queen?",
+          a: "Mithila Queen is a cultural and talent-oriented competition intended to celebrate Mithila's heritage, confidence, creativity, and individual talent.",
+        },
+        {
+          q: "What is the registration fee?",
+          a: "The registration fee is strictly NPR 399 per registration, collected in Nepalese rupees only.",
+        },
+        {
+          q: "How can I pay the registration fee?",
+          a: "Follow the official payment instructions on the website and scan the official QR code. Submit your transaction reference and payment screenshot for administrative verification.",
+        },
+        {
+          q: "Does uploading a payment screenshot guarantee registration approval?",
+          a: "No. The organizing team independently verifies the actual bank transfer before the application advances to the approval review workflow.",
+        },
+        {
+          q: "Are all three social media accounts required?",
+          a: "No. At least one valid Instagram, TikTok, or Facebook profile is required; the other two are optional. We never ask for passwords.",
+        },
+        {
+          q: "When will the event take place?",
+          a: "The event schedule and venue are currently To Be Announced. Confirmed dates will be published through official announcements.",
+        },
+        {
+          q: "When will I receive my PDF confirmation?",
+          a: "Your official PDF registration confirmation is generated and dispatched to your email only after payment is verified and your application is approved by the organizers.",
+        },
+        {
+          q: "What if I make a mistake in my application?",
+          a: "Contact the organizing team at originfoundation107@gmail.com or follow the correction instructions provided through your registration status dashboard.",
+        },
+        {
+          q: "How can I contact the organizers?",
+          a: "Email: originfoundation107@gmail.com | Gaurav Gupta: +977 9704571941 | Dipendra Shah Kalwar: +977 981-2005468.",
+        },
+      ],
+    },
+  });
 
   // 2. Create Sample Running Competition Form: "Pokhara City Run 2026"
   const sampleSlug = "pokhara-city-run-2026";

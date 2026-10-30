@@ -12,11 +12,11 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "Form Central - Event & Registration Platform",
-    template: "%s | Form Central",
+    default: "The Origin Foundation | Mithila Queen",
+    template: "%s | The Origin Foundation",
   },
   description:
-    "Unified registration and dynamic form management system for competitions, hackathons, sports events, workshops, and participant logistics.",
+    "The Origin Foundation — Rooted in Identity. Driven by Purpose. Presenting Mithila Queen: Celebrating Mithila's Culture, Confidence & Talent in Janakpur Dham, Nepal.",
   icons: {
     icon: "/icon.svg",
     shortcut: "/icon.svg",
@@ -31,7 +31,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${poppins.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans selection:bg-emerald-600 selection:text-white">
+      <body className="min-h-full flex flex-col font-sans selection:bg-[#0A192F] selection:text-[#FDFBF7] bg-[#FDFBF7] text-[#0A192F]">
         {children}
         <Toaster richColors position="top-right" closeButton />
       </body>

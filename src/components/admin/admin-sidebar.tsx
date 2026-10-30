@@ -10,7 +10,7 @@ import {
   Inbox,
   Settings,
   LogOut,
-  Trophy,
+  Crown,
   Menu,
   X,
   PanelLeftClose,
@@ -40,22 +40,21 @@ export function AdminSidebar({
 
   const navigation = [
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { name: "Registration Forms", href: "/admin/forms", icon: FileText },
-    { name: "Create Form", href: "/admin/forms/new", icon: PlusCircle },
-    { name: "All Responses", href: "/admin/responses", icon: Inbox },
+    { name: "Mithila Queen Applications", href: "/admin/responses", icon: Crown },
+    { name: "Forms & Competitions", href: "/admin/forms", icon: FileText },
     { name: "Email Campaigns", href: "/admin/campaigns", icon: Mail },
-    { name: "Settings", href: "/admin/settings", icon: Settings },
+    { name: "Website & Competition Settings", href: "/admin/settings", icon: Settings },
   ];
 
   return (
     <>
       {/* Mobile Top Header */}
-      <div className="lg:hidden flex items-center justify-between bg-black text-white px-4 py-3 border-b border-zinc-800 sticky top-0 z-40">
+      <div className="lg:hidden flex items-center justify-between bg-[#0A192F] text-[#FDFBF7] px-4 py-3 border-b border-[#243B53] sticky top-0 z-40">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white">
-            <Trophy className="w-4 h-4" />
+          <div className="w-8 h-8 rounded-lg bg-[#243B53] border border-[#C5A880]/50 flex items-center justify-center text-[#C5A880]">
+            <Crown className="w-4 h-4" />
           </div>
-          <span className="font-bold text-base tracking-tight">Form Central</span>
+          <span className="font-bold text-base tracking-tight font-serif">The Origin Foundation</span>
         </div>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -77,7 +76,7 @@ export function AdminSidebar({
       {/* Sidebar Container */}
       <aside
         className={cn(
-          "fixed top-0 bottom-0 left-0 z-50 bg-black text-white flex flex-col border-r border-zinc-800 transition-all duration-200 ease-in-out lg:translate-x-0",
+          "fixed top-0 bottom-0 left-0 z-50 bg-[#0A192F] text-[#FDFBF7] flex flex-col border-r border-[#243B53] transition-all duration-200 ease-in-out lg:translate-x-0",
           mobileOpen ? "translate-x-0 w-72" : "-translate-x-full lg:translate-x-0",
           isCollapsed ? "lg:w-20" : "lg:w-72"
         )}
@@ -85,18 +84,21 @@ export function AdminSidebar({
         {/* Brand & Collapse Toggle */}
         <div
           className={cn(
-            "py-5 border-b border-zinc-800 flex items-center transition-all",
+            "py-5 border-b border-[#243B53] flex items-center transition-all",
             isCollapsed ? "px-3 justify-center flex-col gap-2" : "px-5 justify-between"
           )}
         >
           <Link href="/admin/dashboard" className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-xs shrink-0">
-              <Trophy className="w-5 h-5" />
+            <div className="w-9 h-9 rounded-xl bg-[#243B53] border border-[#C5A880]/60 flex items-center justify-center text-[#C5A880] shadow-xs shrink-0">
+              <Crown className="w-5 h-5 stroke-[1.8]" />
             </div>
             {!isCollapsed && (
               <div className="min-w-0">
-                <span className="font-extrabold text-base tracking-tight block leading-tight text-white truncate">
-                  Form Central
+                <span className="font-extrabold text-base tracking-tight block leading-tight text-white font-serif truncate">
+                  The Origin Foundation
+                </span>
+                <span className="text-[10px] text-[#C5A880] tracking-wider uppercase font-bold block truncate">
+                  Origin Foundation Admin
                 </span>
               </div>
             )}

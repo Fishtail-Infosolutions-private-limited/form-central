@@ -1,43 +1,73 @@
-# Form Central - Event & Registration Platform
+# The Origin Foundation — Mithila Queen Official Platform
 
-A production-ready event registration and dynamic form builder platform for competitions, hackathons, sports tournaments, marathon events, and participant logistics. Built with **Next.js 16 (App Router)**, **React 19**, **PostgreSQL**, **Prisma ORM**, **Tailwind CSS**, and **Google Drive API v3**.
+The official online presence and competition management platform for **The Origin Foundation** and its flagship initiative, **Mithila Queen**, based in **Janakpur Dham, Nepal**. Built with **Next.js 16 (App Router)**, **React 19**, **PostgreSQL**, **Prisma ORM**, **Tailwind CSS**, and **Google Drive API v3**.
+
+---
+
+## ⚡ Organization & Competition Identity
+
+- **Organization:** The Origin Foundation
+- **Proposed Tagline:** *"Rooted in Identity. Driven by Purpose."*
+- **Flagship Initiative:** Mithila Queen
+- **Competition Tagline:** *"Celebrating Mithila's Culture, Confidence & Talent."*
+- **Location:** Janakpur Dham, Madhesh Province, Nepal
+- **Official Email:** `originfoundation107@gmail.com`
+- **Registration Fee:** NPR 399 per registration
+- **Event Schedule:** To Be Announced (Asia/Kathmandu)
+- **Leadership Team:**
+  - **Gaurav Gupta** — Managing Director — `+977 9704571941`
+  - **Dipendra Shah Kalwar** — Managing Director — `+977 981-2005468`
+
+---
+
+## 🎨 Cultural Design System
+
+- **Deep Navy (`#0A192F`):** Headers, navigation, footer, and primary brand surfaces.
+- **Warm Ivory (`#FDFBF7`):** Website background and soft page surfaces.
+- **Muted Gold (`#C5A880`):** Action highlights, decorative borders, and cultural motifs.
+- **Slate Navy (`#243B53`):** Sub-headers, secondary panels, and borders.
+- **Pure White (`#FFFFFF`):** Form cards, modal surfaces, and detail views.
+- **Soft Beige (`#E9E2D5`):** Dividers, borders, and pattern fills.
 
 ---
 
 ## ⚡ Key Architecture & Features
 
-### 1. Single Administrator Security Model
-- **Exclusive Command Portal:** Strictly one administrator manages the application. No public registration for admins or accounts for users.
-- **Master Credentials (Seeded):**
-  - **Email:** `admin@formcentral.com`
-  - **Password:** Configured via `ADMIN_DEFAULT_PASSWORD` in `.env` (or generated upon initial seed)
-- **Password Management & In-App Change:**
-  - Administrators can change their password directly in `/admin/settings` (requires current password verification and enforces bcrypt hashing).
-- **Forgot Password Recovery via Connected Google Account:**
-  - Forgot password flow on `/admin/login` restricted exclusively to the verified internal connected Google account.
-  - Generates a 6-digit OTP code sent via SMTP with a 10-minute expiry and 5-attempt rate-limit protection.
+### 1. Dedicated Public Portal (12 Pages)
+- **Home (`/`):** Cultural hero section, Discover/Register CTA, prize structure, leadership, announcements, FAQ preview.
+- **About (`/about`):** Organization story, vision, mission, and leadership profiles.
+- **Mithila Queen (`/mithila-queen`):** Competition overview, eligibility, prizes, and video guidelines.
+- **Registration (`/register`):** Dedicated 7-step wizard with minor safeguarding and payment workflow.
+- **Registration Status (`/registration-status`):** Secure applicant status verification and official PDF download.
+- **Culture & Heritage (`/culture`):** Celebrating Mithila art, folk painting, language, literature, and female empowerment.
+- **FAQ (`/faq`):** 10 verified questions and answers.
+- **Contact (`/contact`):** Direct phone lines, email, and inquiry form.
+- **Policies:** Privacy Policy & Minor Safeguarding (`/privacy-policy`), Terms (`/terms`), Competition Rules (`/rules`), and Refund Policy (`/refund-policy`).
 
-### 2. Google Drive Video Storage (OAuth 2.0)
-- **Direct Integration:** Administrator connects an organizational or personal Google account via official Google OAuth 2.0 with offline access.
-- **Interactive Folder Browser:** Browse Drive directories, create new destination folders, and select where participant videos stream directly.
-- **Account History Management:** View previously linked accounts and permanently delete historical account records with instant UI synchronization.
-- **Direct In-Site Video Playback:** Admin dashboard plays participant submission videos directly within the platform using custom embedded HTML5 / Drive players (no external Google Drive redirects).
-- **Graceful Disconnection:** Custom confirmation dialog replaces browser alerts, properly disconnecting credentials while safeguarding historical records.
+### 2. Dedicated 7-Step Registration Workflow
+1. **Personal Information:** Full legal name, date of birth, contact details, geographical address (automatic minor detection for age < 18).
+2. **Participant Profile:** Cultural interests, motivation, talents, spoken languages, and education.
+3. **Additional Details:** Height field omitted pending organizer confirmation.
+4. **Social Media Accounts:** At least one required among Instagram, TikTok, Facebook (passwords never requested).
+5. **Photo & Media Uploads:** Profile photo upload with file type and size validation.
+6. **Rules, Media & Minor Safeguarding Consent:** Formal parental/guardian consent recorded for minors under 18.
+7. **Review & Final Submission:** Summary confirmation screen, generates `MQ-YYYY-XXXXXX` reference ID.
 
-### 3. Public Registrant Journey (Zero Account Creation)
-- **Published Event Slugs:** Participants access clean URLs (e.g., `/register/pokhara-city-run-2026`).
-- **Cryptographic Email OTP Verification:**
-  - Registrant enters legal name, email, and phone in Step 1.
-  - Server sends a 6-digit OTP code to verify real email ownership.
-  - Verified state is managed via secure server-side tokens without requiring user accounts or sessions.
-- **Multi-Step Dynamic Forms:** Clean stepped participant experience with live progress bar and step validation.
-- **Smart Media Uploads with File Replacement:**
-  - Supports image, document (PDF), and video uploads with explicit file size badges.
-  - When a participant clicks **"Change File"**, the previously uploaded file is automatically purged to eliminate orphaned storage.
-  - Displays original user file names (e.g., `passport_photo.png`) instead of internal server hashes.
-- **Reference Code & Confirmation:** On submission, generates a unique tracking reference code (`FC-2026-XXXXXX`) and displays a confirmation screen.
+### 3. Decoupled Payment & Review Architecture
+- **Payment Workflow:** NPR 399 fee with official QR code, transaction reference input, and payment screenshot upload.
+- **Independent States:**
+  - `PaymentStatus`: `PENDING`, `UNDER_REVIEW`, `VERIFIED`, `CLARIFICATION_REQUIRED`, `FAILED`
+  - `ApplicationStatus`: `SUBMITTED`, `UNDER_REVIEW`, `ACTION_REQUIRED`, `APPROVED`, `REJECTED`
+- **Admin Verification Center:** Independent verification of banking records before applications can advance to approval.
 
-### 4. Dynamic Visual Form Studio
+### 4. Automatic Branded PDF Confirmation
+- Generated strictly following: **Application Submitted $\rightarrow$ Payment Verified $\rightarrow$ Application Approved**.
+- High-resolution vector A4 certificate with The Origin Foundation logo, Mithila Queen branding, participant name, registration ID, date, verification QR code, and explicit disclaimer ("Administrative registration confirmation, not a winning certificate").
+- Delivered automatically as an email attachment.
+
+### 5. Managing Directors Command Portal
+- Independent secure logins for **Gaurav Gupta** and **Dipendra Shah Kalwar**.
+- Live application metrics, payment verification, application adjudication, email campaign delivery, and competition settings.
 - **3-Panel Builder Interface:**
   - **Field Palette:** 16 supported field types (Text, Email, Phone, Number, Text Area, Date Picker, Time Picker, Dropdown Select, Radio Buttons, Checkboxes, Single Consent Checkbox, Image Upload, Video Upload, Document Upload, Section Header, Divider).
   - **Canvas:** Drag-and-drop / click-to-add step builder with step duplication, reordering, and deletion.

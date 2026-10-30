@@ -64,16 +64,34 @@ enum RecipientDeliveryStatus {
   CANCELLED
 }
 
+enum PaymentStatus {
+  PENDING
+  UNDER_REVIEW
+  VERIFIED
+  CLARIFICATION_REQUIRED
+  FAILED
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  ACTION_REQUIRED
+  APPROVED
+  REJECTED
+}
+
 model AdminUser {
-  id           String             @id @default(uuid())
-  email        String             @unique
-  name         String
-  passwordHash String
-  role         AdminRole          @default(ADMIN)
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
-  forms        RegistrationForm[]
-  auditLogs    AuditLog[]
+  id             String                  @id @default(uuid())
+  email          String                  @unique
+  name           String
+  passwordHash   String
+  role           AdminRole               @default(ADMIN)
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+  forms          RegistrationForm[]
+  auditLogs      AuditLog[]
+  paymentReviews PaymentReviewLog[]
+  statusChanges  RegistrationStatusLog[]
 
   @@map("admin_users")
 }
@@ -377,5 +395,188 @@ model EmailUnsubscribe {
   @@unique([email, formId])
   @@index([email])
   @@map("email_unsubscribes")
+}
+
+model MithilaQueenRegistration {
+  id                        String                  @id @default(uuid())
+  registrationId            String                  @unique // MQ-YYYY-XXXXXX
+  
+  // Personal Information
+  fullName                  String
+  dob                       DateTime
+  isMinor                   Boolean                 @default(false)
+  email                     String
+  phone                     String
+  alternatePhone            String?
+  province                  String
+  district                  String
+  municipality              String
+  cityVillage               String
+  currentAddress            String                  @db.Text
+
+  // Minor Safeguarding & Guardian Details
+  guardianName              String?
+  guardianPhone             String?
+  guardianRelation          String?
+  guardianEmail             String?
+  guardianConsentRecorded   Boolean                 @default(false)
+  guardianConsentTimestamp  DateTime?
+
+  // Participant Profile & Cultural Background
+  personalIntro             String?                 @db.Text
+  hobbiesInterests          String?                 @db.Text
+  talentsSkills             String?                 @db.Text
+  languagesSpoken           String?                 @db.Text
+  culturalInterests         String?                 @db.Text
+  motivationReason          String?                 @db.Text
+  mithilaMeaning            String?                 @db.Text
+  qualitiesBrought          String?                 @db.Text
+  educationLevel            String?
+  institution               String?
+  previousExperience        Boolean                 @default(false)
+  experienceDetails         String?                 @db.Text
+  
+  // Height (Optional - pending organizer confirmation)
+  heightCm                  Float?
+
+  // Social Media Accounts (at least 1 required)
+  instagramHandle           String?
+  tiktokHandle              String?
+  facebookUrl               String?
+
+  // Media & Document URLs
+  profilePhotoUrl           String?
+  additionalPhotoUrl        String?
+  documentUrl               String?
+
+  // Fee & Payment Tracking (NPR 399)
+  registrationFee           Int                     @default(399)
+  paymentStatus             PaymentStatus           @default(PENDING)
+  paymentReference          String?
+  paymentScreenshotUrl      String?
+  paymentSubmittedAt        DateTime?
+  paymentVerifiedAt         DateTime?
+  paymentVerifiedById       String?
+  paymentClarificationNotes String?                 @db.Text
+
+  // Application Adjudication Tracking
+  applicationStatus         ApplicationStatus       @default(SUBMITTED)
+  reviewedAt                DateTime?
+  reviewedById              String?
+  approvedAt                DateTime?
+  approvedById              String?
+  rejectedAt                DateTime?
+  rejectedById              String?
+  rejectionReason           String?                 @db.Text
+  actionRequiredDetails     String?                 @db.Text
+  privateAdminNotes         String?                 @db.Text
+
+  // Official PDF Confirmation
+  pdfGeneratedAt            DateTime?
+  pdfVerificationCode       String?                 @unique
+  pdfUrl                    String?
+
+  // Verification & Metadata
+  emailVerified             Boolean                 @default(true)
+  emailVerificationId       String?
+  submittedAt               DateTime                @default(now())
+  createdAt                 DateTime                @default(now())
+  updatedAt                 DateTime                @updatedAt
+
+  statusLogs                RegistrationStatusLog[]
+  paymentReviewLogs         PaymentReviewLog[]
+  consents                  ParticipantConsent[]
+
+  @@index([registrationId])
+  @@index([email])
+  @@index([phone])
+  @@index([paymentStatus])
+  @@index([applicationStatus])
+  @@index([isMinor])
+  @@index([submittedAt])
+  @@map("mithila_queen_registrations")
+}
+
+model PaymentReviewLog {
+  id                   String                   @id @default(uuid())
+  registrationId       String
+  registration         MithilaQueenRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  transactionReference String?
+  screenshotUrl        String?
+  status               PaymentStatus
+  reviewerId           String
+  reviewer             AdminUser                @relation(fields: [reviewerId], references: [id], onDelete: Restrict)
+  reviewerEmail        String
+  notes                String?                  @db.Text
+  createdAt            DateTime                 @default(now())
+
+  @@index([registrationId])
+  @@index([reviewerId])
+  @@map("payment_review_logs")
+}
+
+model RegistrationStatusLog {
+  id                   String                   @id @default(uuid())
+  registrationId       String
+  registration         MithilaQueenRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  statusType           String                   // "PAYMENT" or "APPLICATION"
+  previousStatus       String
+  newStatus            String
+  changedById          String
+  changedBy            AdminUser                @relation(fields: [changedById], references: [id], onDelete: Restrict)
+  changedByEmail       String
+  reason               String?                  @db.Text
+  createdAt            DateTime                 @default(now())
+
+  @@index([registrationId])
+  @@index([changedById])
+  @@map("registration_status_logs")
+}
+
+model ParticipantConsent {
+  id                   String                   @id @default(uuid())
+  registrationId       String
+  registration         MithilaQueenRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  consentType          String                   // "COMPETITION_RULES", "PRIVACY_POLICY", "MEDIA_CONSENT", "GUARDIAN_SAFEGUARDING"
+  isAgreed             Boolean                  @default(true)
+  policyVersion        String                   @default("1.0")
+  ipAddress            String?
+  guardianName         String?
+  guardianPhone        String?
+  guardianRelation     String?
+  consentedAt          DateTime                 @default(now())
+
+  @@index([registrationId])
+  @@index([consentType])
+  @@map("participant_consents")
+}
+
+model SiteSetting {
+  id                      String                @id @default("primary")
+  organizationName        String                @default("The Origin Foundation")
+  organizationTagline     String                @default("Rooted in Identity. Driven by Purpose.")
+  competitionName         String                @default("Mithila Queen")
+  competitionTagline      String                @default("Celebrating Mithila's Culture, Confidence & Talent.")
+  location                String                @default("Janakpur Dham, Nepal")
+  officialEmail           String                @default("originfoundation107@gmail.com")
+  registrationFee         Int                   @default(399)
+  eventSchedule           String                @default("To Be Announced")
+  eventVenue              String                @default("To Be Announced")
+  isRegistrationOpen      Boolean               @default(true)
+  registrationClosingDate DateTime?
+  paymentQrCodeUrl        String?               // Admin configurable payment QR image
+  paymentInstructions     String?               @db.Text
+  whatsappContact         String                @default("+977 9704571941")
+  officialInstagram       String?               // To be provided by organizers
+  officialTiktok          String?               // To be provided by organizers
+  requiredHashtags        String?               // To be provided by organizers
+  videoGuidelines         String?               @db.Text
+  prizesJson              Json?                 // Editable prizes with "proposed" status
+  announcementsJson       Json?                 // Editable event updates
+  faqsJson                Json?                 // Editable FAQs
+  rulesJson               Json?                 // Editable rules
+  updatedAt               DateTime              @updatedAt
+
+  @@map("site_settings")
 }
 

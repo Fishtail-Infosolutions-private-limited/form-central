@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { UploadSettingsCard } from "@/components/admin/upload-settings-card";
 import { ChangePasswordCard } from "@/components/admin/change-password-card";
+import { CompetitionSettingsCard } from "@/components/admin/competition-settings-card";
 
 export default async function AdminSettingsPage() {
   await requireAdmin();
@@ -19,12 +20,18 @@ export default async function AdminSettingsPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="border-b border-zinc-200 pb-5">
-        <h1 className="text-3xl font-extrabold text-zinc-900 tracking-tight">
-          System Settings & Storage
+        <h1 className="text-3xl font-extrabold text-[#0A192F] font-serif tracking-tight">
+          System Settings & Mithila Queen CMS
         </h1>
+        <p className="text-xs text-zinc-500 mt-1">
+          Manage Google Drive video storage, upload policies, admin security, and competition parameters.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+        {/* Mithila Queen Competition CMS */}
+        <CompetitionSettingsCard />
+
         {/* Google Drive Integration Card */}
         <Card className="border-zinc-200 hover:border-zinc-300 transition-colors shadow-xs flex flex-col justify-between">
           <CardHeader>

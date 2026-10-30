@@ -18,6 +18,7 @@ import {
   KeyRound,
   CheckCircle2,
   Lock,
+  Crown,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -148,21 +149,24 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col justify-center items-center p-4 text-zinc-900 selection:bg-emerald-600 selection:text-white">
+    <div className="min-h-screen bg-[#FDFBF7] flex flex-col justify-center items-center p-4 text-[#0A192F] selection:bg-[#0A192F] selection:text-[#FDFBF7]">
       <div className="w-full max-w-md">
         {/* Brand Header */}
         <div className="text-center mb-6">
-          <Link href="/" className="inline-flex items-center justify-center gap-2 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
-              <Trophy className="w-5 h-5" />
+          <Link href="/" className="inline-flex items-center justify-center gap-2 mb-2">
+            <div className="w-10 h-10 rounded-xl bg-[#0A192F] text-[#C5A880] border border-[#C5A880]/50 flex items-center justify-center shadow-xs">
+              <Crown className="w-5 h-5 stroke-[1.8]" />
             </div>
-            <span className="text-2xl font-black text-zinc-900 tracking-tight">Form Central</span>
+            <span className="text-2xl font-black text-[#0A192F] font-serif tracking-tight">The Origin Foundation</span>
           </Link>
+          <p className="text-xs text-[#C5A880] font-bold uppercase tracking-wider">
+            Origin Foundation Admin Portal • Mithila Queen
+          </p>
         </div>
 
         {/* Main Card */}
-        <Card className="border-zinc-200 bg-white shadow-xs rounded-2xl overflow-hidden">
-          <CardHeader className="pb-4 border-b border-zinc-100">
+        <Card className="border-[#E9E2D5] bg-white shadow-xs rounded-2xl overflow-hidden">
+          <CardHeader className="pb-4 border-b border-[#E9E2D5]">
             <CardTitle className="text-xl font-bold text-zinc-900">
               {mode === "LOGIN"
                 ? "Sign In"
@@ -506,7 +510,7 @@ export function LoginForm() {
             className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-900 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Return to Form Central Home</span>
+            <span>Return to The Origin Foundation Home</span>
           </Link>
         </div>
       </div>
