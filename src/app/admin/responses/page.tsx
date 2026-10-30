@@ -69,6 +69,7 @@ export default async function AdminAllResponsesPage() {
     tiktokHandle: app.tiktokHandle,
     facebookUrl: app.facebookUrl,
     profilePhotoUrl: app.profilePhotoUrl,
+    videoUrl: app.videoUrl,
     documentUrl: app.documentUrl,
     registrationFee: app.registrationFee,
     paymentStatus: app.paymentStatus,

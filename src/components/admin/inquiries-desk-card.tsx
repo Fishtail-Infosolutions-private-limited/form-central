@@ -210,3 +210,4 @@ export function InquiriesDeskCard({ initialInquiries }: { initialInquiries: Inqu
     </>
   );
 }
+

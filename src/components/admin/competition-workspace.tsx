@@ -4,29 +4,18 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Crown,
   FileText,
   CreditCard,
   Calendar,
   Info,
   ExternalLink,
-  Users,
-  CheckCircle2,
-  Clock,
-  ArrowRight,
   Upload,
   Loader2,
   Save,
   Plus,
   Trash2,
-  Eye,
-  Sliders,
   ShieldCheck,
-  AlertCircle,
-  Phone,
-  Mail,
-  MapPin,
-  Share2,
+  CheckCircle2,
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -37,8 +26,6 @@ import { toast } from "sonner";
 import { BuilderWorkspace } from "@/components/admin/form-builder/builder-workspace";
 import { FormQrCard } from "@/components/admin/form-qr-card";
 import { updateSiteSettingsAction } from "@/server/actions/site-settings-actions";
-import { MithilaHeritageMandala } from "@/components/brand/brand-logos";
-import { formatNepalDateTime } from "@/lib/utils/timezone";
 import { FormSchemaDefinition } from "@/types/form";
 
 interface CompetitionWorkspaceProps {
@@ -55,23 +42,23 @@ interface CompetitionWorkspaceProps {
     }>;
   };
   siteSetting: any;
-  stats: {
-    totalRegs: number;
-    completedRegs: number;
-    verifiedPayments: number;
-    appsUnderReview: number;
-    approvedApps: number;
+  stats?: {
+    totalRegs?: number;
+    completedRegs?: number;
+    verifiedPayments?: number;
+    appsUnderReview?: number;
+    approvedApps?: number;
   };
 }
 
 export function CompetitionWorkspace({
   form,
   siteSetting,
-  stats,
 }: CompetitionWorkspaceProps) {
+  // Directly open Form Editor as requested by user
   const [activeTab, setActiveTab] = useState<
-    "overview" | "builder" | "payment" | "schedule" | "information" | "public_page"
-  >("overview");
+    "builder" | "payment" | "schedule" | "information" | "public_page"
+  >("builder");
 
   const [isSaving, setIsSaving] = useState(false);
   const [isUploadingQr, setIsUploadingQr] = useState(false);
@@ -89,7 +76,7 @@ export function CompetitionWorkspace({
   );
   const [paymentInstructions, setPaymentInstructions] = useState(
     siteSetting?.paymentInstructions ||
-      "Please pay exactly NPR 399 via eSewa or Direct Bank Transfer. Take a clear screenshot of the transaction showing the transaction reference/code and attach it in Step 6 of registration."
+      "Please pay NPR 399 via eSewa or Direct Bank Transfer. Take a clear screenshot of the transaction showing the transaction reference code and attach it in the registration payment step."
   );
   const [paymentReferenceInstructions, setPaymentReferenceInstructions] = useState(
     siteSetting?.paymentReferenceInstructions ||
@@ -117,8 +104,6 @@ export function CompetitionWorkspace({
     siteSetting?.competitionTagline || "Celebrating Mithila's Culture, Confidence & Talent."
   );
   const [regFee, setRegFee] = useState(siteSetting?.registrationFee?.toString() || "399");
-  const [minAge, setMinAge] = useState("16");
-  const [maxAge, setMaxAge] = useState("28");
   const [whatsappContact, setWhatsappContact] = useState(
     siteSetting?.whatsappContact || "+977 9704571941"
   );
@@ -130,7 +115,7 @@ export function CompetitionWorkspace({
   );
   const [videoGuidelines, setVideoGuidelines] = useState(
     siteSetting?.videoGuidelines ||
-      "Record a 1-minute video introducing yourself, your connection to Mithila culture, and your unique talent. You can upload via the form or submit directly to our official WhatsApp helpline."
+      "Record a 1-minute video introducing yourself, your connection to Mithila culture, and your unique talent. You can upload directly through the form or submit to our official WhatsApp helpline."
   );
 
   // FAQs
@@ -244,49 +229,62 @@ export function CompetitionWorkspace({
   };
 
   const tabs = [
-    { id: "overview", label: "1. Overview", icon: Crown },
-    { id: "builder", label: "2. Form Builder", icon: FileText },
-    { id: "payment", label: "3. Payment & QR", icon: CreditCard },
-    { id: "schedule", label: "4. Schedule & Dates", icon: Calendar },
-    { id: "information", label: "5. Competition Info", icon: Info },
-    { id: "public_page", label: "6. Public Form & QR", icon: ExternalLink },
+    { id: "builder", label: "Form Editor", icon: FileText },
+    { id: "payment", label: `Payment & Fee (NPR ${regFee})`, icon: CreditCard },
+    { id: "schedule", label: "Schedule & Dates", icon: Calendar },
+    { id: "information", label: "Competition Details & FAQ", icon: Info },
+    { id: "public_page", label: "Public Link & QR", icon: ExternalLink },
   ] as const;
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Top Banner */}
-      <div className="bg-[#FFFFFF] p-6 rounded-lg border border-[#E2E8F0] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Clean, Human-Crafted Top Header */}
+      <div className="bg-white p-6 rounded-xl border border-stone-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <MithilaHeritageMandala className="w-5 h-5 text-[#C5A880]" />
-            <span className="text-[11px] font-bold tracking-widest uppercase text-[#C5A880]">
-              Dedicated Competition Workspace &bull; The Origin Foundation
+            <span className="text-[11px] font-semibold tracking-wider uppercase text-[#B89150]">
+              The Origin Foundation &bull; Janakpur Dham
+            </span>
+            <span className="text-stone-300">•</span>
+            <span
+              className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                isRegOpen
+                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                  : "bg-stone-100 text-stone-600 border border-stone-200"
+              }`}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  isRegOpen ? "bg-emerald-600 animate-pulse" : "bg-stone-400"
+                }`}
+              />
+              {isRegOpen ? "Registration Open" : "Registration Closed"}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F] tracking-tight">
+          <h1 className="text-2xl font-serif font-bold text-[#292524] tracking-tight">
             Manage Competition: Mithila Queen
           </h1>
-          <p className="text-xs sm:text-sm text-[#0A192F]/70">
-            One dedicated flagship competition. Customize questions, payment QR, dates, rules, and public preview.
+          <p className="text-xs sm:text-sm text-stone-600">
+            Configure registration fields, fee (NPR {regFee}), payment QR, dates, and audition requirements.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <Link href="/register/mithila-queen" target="_blank">
             <Button
               variant="outline"
               size="sm"
-              className="gap-1.5 border-[#E2E8F0] text-[#0A192F] hover:bg-[#F8FAFC] text-xs h-9 font-semibold"
+              className="gap-2 border-stone-200 text-stone-700 hover:bg-[#F7F1E5] hover:text-[#7F1D2D] text-xs h-9 font-medium"
             >
               <span>Test Live Form</span>
-              <ExternalLink className="w-3.5 h-3.5 text-[#A64B36]" />
+              <ExternalLink className="w-3.5 h-3.5 text-[#D97706]" />
             </Button>
           </Link>
         </div>
       </div>
 
-      {/* Structured Horizontal Workspace Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[#E2E8F0]">
+      {/* Clean Horizontal Tabs */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-stone-200">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -294,128 +292,20 @@ export function CompetitionWorkspace({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-3.5 py-2.5 rounded-md text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                 isActive
-                  ? "bg-[#0A192F] text-[#F1F5F9] border border-[#C5A880]/40"
-                  : "bg-[#FFFFFF] text-[#0A192F]/80 hover:bg-[#F8FAFC] border border-[#E2E8F0]"
+                  ? "bg-[#7F1D2D] text-white shadow-xs"
+                  : "bg-white text-stone-700 hover:bg-[#F7F1E5]/70 hover:text-stone-900 border border-stone-200/80"
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#C5A880]" : "text-[#A64B36]"}`} />
+              <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#F7F1E5]" : "text-[#D97706]"}`} />
               <span>{tab.label}</span>
             </button>
           );
         })}
       </div>
 
-      {/* TAB 1: OVERVIEW */}
-      {activeTab === "overview" && (
-        <div className="space-y-6">
-          {/* Summary Card */}
-          <div className="bg-[#FFFFFF] rounded-lg border border-[#E2E8F0] p-6 shadow-xs space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E2E8F0]">
-              <div className="space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880]">
-                  Flagship Competition Summary
-                </span>
-                <h2 className="text-xl font-serif font-bold text-[#0A192F]">
-                  Mithila Queen 2026
-                </h2>
-                <p className="text-xs text-[#0A192F]/70">
-                  Organized by <strong>The Origin Foundation</strong> &bull; Janakpur Dham, Nepal
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span
-                  className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${
-                    isRegOpen
-                      ? "bg-[#0A192F] text-[#F1F5F9] border-[#C5A880]/40"
-                      : "bg-[#F8FAFC] text-[#A64B36] border-[#A64B36]/30"
-                  }`}
-                >
-                  {isRegOpen ? "Registration Open" : "Registration Closed"}
-                </span>
-              </div>
-            </div>
-
-            {/* Quick Metrics */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC]">
-                <span className="text-[11px] text-zinc-500 font-medium">Official Entry Fee</span>
-                <div className="text-2xl font-serif font-black text-[#0A192F] mt-1">NPR {regFee}</div>
-                <span className="text-[10px] text-zinc-400 font-mono">Configurable in settings</span>
-              </div>
-
-              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC]">
-                <span className="text-[11px] text-zinc-500 font-medium">Total Registrations</span>
-                <div className="text-2xl font-serif font-black text-[#0A192F] mt-1">{stats.totalRegs}</div>
-                <span className="text-[10px] text-zinc-400 font-mono">All entries initiated</span>
-              </div>
-
-              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC]">
-                <span className="text-[11px] text-zinc-500 font-medium">Completed Dossiers</span>
-                <div className="text-2xl font-serif font-black text-[#0A192F] mt-1">{stats.completedRegs}</div>
-                <span className="text-[10px] text-zinc-400 font-mono">Finished 7 steps</span>
-              </div>
-
-              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC]">
-                <span className="text-[11px] text-zinc-500 font-medium">Verified Payments</span>
-                <div className="text-2xl font-serif font-black text-[#0A192F] mt-1">{stats.verifiedPayments}</div>
-                <span className="text-[10px] text-zinc-400 font-mono">Manually approved</span>
-              </div>
-            </div>
-
-            {/* Primary Action Buttons */}
-            <div className="pt-2">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#0A192F] mb-3">
-                Workspace Quick Actions
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("builder")}
-                  className="p-4 rounded-md border border-[#E2E8F0] bg-[#FFFFFF] hover:bg-[#F8FAFC] hover:border-[#C5A880] text-left transition-all group"
-                >
-                  <div className="flex items-center justify-between">
-                    <FileText className="w-4 h-4 text-[#A64B36]" />
-                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                  <div className="text-xs font-bold text-[#0A192F] mt-2">Edit Registration Form</div>
-                  <p className="text-[11px] text-zinc-500 mt-0.5">Customize questions and steps in two-panel editor</p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("payment")}
-                  className="p-4 rounded-md border border-[#E2E8F0] bg-[#FFFFFF] hover:bg-[#F8FAFC] hover:border-[#C5A880] text-left transition-all group"
-                >
-                  <div className="flex items-center justify-between">
-                    <CreditCard className="w-4 h-4 text-[#C5A880]" />
-                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                  <div className="text-xs font-bold text-[#0A192F] mt-2">Configure Payment & QR</div>
-                  <p className="text-[11px] text-zinc-500 mt-0.5">Upload official QR code image and instructions</p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("schedule")}
-                  className="p-4 rounded-md border border-[#E2E8F0] bg-[#FFFFFF] hover:bg-[#F8FAFC] hover:border-[#C5A880] text-left transition-all group"
-                >
-                  <div className="flex items-center justify-between">
-                    <Calendar className="w-4 h-4 text-[#A64B36]" />
-                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                  <div className="text-xs font-bold text-[#0A192F] mt-2">Manage Schedule & Dates</div>
-                  <p className="text-[11px] text-zinc-500 mt-0.5">Set opening date, closing deadline, and venue</p>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* TAB 2: REGISTRATION FORM BUILDER */}
+      {/* TAB 1: FORM BUILDER / EDITOR (PRIMARY DEFAULT VIEW) */}
       {activeTab === "builder" && (
         <div className="space-y-4">
           <BuilderWorkspace
@@ -432,53 +322,57 @@ export function CompetitionWorkspace({
         </div>
       )}
 
-      {/* TAB 3: PAYMENT CONFIGURATION */}
+      {/* TAB 2: PAYMENT & FEE CONFIGURATION */}
       {activeTab === "payment" && (
-        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
-          <CardHeader className="flex flex-row items-center justify-between">
+        <Card className="border-stone-200/80 bg-white shadow-xs">
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-100 pb-5">
             <div>
-              <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
-                Official Payment Gateway & QR Configuration
+              <CardTitle className="text-lg font-serif font-bold text-[#292524]">
+                Payment & Fee Configuration
               </CardTitle>
-              <CardDescription className="text-xs text-[#0A192F]/70">
-                Manage the official Mithila Queen payment QR code image, provider account details, and participant instructions.
+              <CardDescription className="text-xs text-stone-500 mt-1">
+                Manage the registration fee, payment QR code image, merchant details, and instructions.
               </CardDescription>
             </div>
             <Button
               onClick={() => handleSaveSettings("Payment Settings")}
               disabled={isSaving}
-              className="gap-1.5 bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-9 px-4 font-semibold border border-[#C5A880]/40"
+              className="gap-2 bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
             >
-              {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" /> : <Save className="w-3.5 h-3.5 text-[#C5A880]" />}
+              {isSaving ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Save className="w-3.5 h-3.5" />
+              )}
               <span>Save Payment Settings</span>
             </Button>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 pt-6">
             {/* Official QR Code Upload Area */}
-            <div className="p-5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] flex flex-col sm:flex-row items-center gap-6">
-              <div className="relative w-44 h-44 bg-white border border-[#E2E8F0] rounded-lg p-2.5 shadow-xs shrink-0 flex items-center justify-center">
+            <div className="p-5 rounded-xl border border-stone-200 bg-[#FFFDF7] flex flex-col sm:flex-row items-center gap-6">
+              <div className="relative w-40 h-40 bg-white border border-stone-200 rounded-lg p-2.5 shadow-2xs shrink-0 flex items-center justify-center">
                 {paymentQrUrl ? (
                   <Image
                     src={paymentQrUrl}
                     alt="Official Payment QR"
-                    width={160}
-                    height={160}
+                    width={150}
+                    height={150}
                     className="object-contain w-full h-full"
                     unoptimized
                   />
                 ) : (
-                  <div className="text-center p-2 text-zinc-400 text-xs">
+                  <div className="text-center p-2 text-stone-400 text-xs">
                     No QR uploaded
                   </div>
                 )}
               </div>
               <div className="space-y-3 flex-1 text-center sm:text-left">
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#0A192F]">
-                    Official Mithila Queen Payment QR Image
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-stone-800">
+                    Official Payment QR Code
                   </h4>
-                  <p className="text-xs text-[#0A192F]/70 mt-1 leading-relaxed">
-                    This official QR is presented to every participant in Step 7 of registration and on their post-submission payment screen.
+                  <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                    This official QR code is shown to participants during registration step 7 and on the payment submission screen.
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
@@ -490,11 +384,11 @@ export function CompetitionWorkspace({
                       disabled={isUploadingQr}
                       className="hidden"
                     />
-                    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-md bg-[#0A192F] text-[#F1F5F9] text-xs font-semibold hover:bg-[#1E293B] transition-colors">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#7F1D2D] text-white text-xs font-medium hover:bg-[#5B131E] transition-colors">
                       {isUploadingQr ? (
-                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
                       ) : (
-                        <Upload className="w-3.5 h-3.5 text-[#C5A880]" />
+                        <Upload className="w-3.5 h-3.5" />
                       )}
                       <span>{isUploadingQr ? "Uploading..." : "Upload New QR Image"}</span>
                     </div>
@@ -505,13 +399,13 @@ export function CompetitionWorkspace({
                       variant="outline"
                       size="sm"
                       onClick={() => setPaymentQrUrl("/assets/brand/origin-foundation-qr.png")}
-                      className="h-8 text-xs border-[#E2E8F0] text-[#0A192F] hover:bg-[#FFFFFF]"
+                      className="h-8 text-xs border-stone-200 text-stone-700 hover:bg-stone-50"
                     >
                       Reset to Default QR
                     </Button>
                   )}
                 </div>
-                <p className="text-[11px] text-zinc-500 font-mono truncate max-w-md">
+                <p className="text-[11px] text-stone-400 font-mono truncate max-w-md">
                   Active Asset: {paymentQrUrl}
                 </p>
               </div>
@@ -520,7 +414,7 @@ export function CompetitionWorkspace({
             {/* Provider and Account Details */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5 sm:col-span-2">
-                <Label className="text-xs font-bold text-[#0A192F]">Registration Fee (NPR)</Label>
+                <Label className="text-xs font-semibold text-stone-700">Registration Fee (NPR)</Label>
                 <div className="flex items-center gap-3">
                   <Input
                     type="number"
@@ -528,89 +422,89 @@ export function CompetitionWorkspace({
                     step="1"
                     value={regFee}
                     onChange={(e) => setRegFee(e.target.value)}
-                    className="h-10 text-xs border-slate-200 bg-white font-mono font-bold max-w-xs"
+                    className="h-10 text-xs border-stone-200 bg-white font-mono font-bold max-w-xs focus:ring-[#7F1D2D]"
                     placeholder="399"
                   />
-                  <span className="text-[11px] text-slate-500 font-medium">
-                    Collected in Nepalese Rupees per registered participant.
+                  <span className="text-[11px] text-stone-500">
+                    Collected in Nepalese Rupees per registered candidate (Standard: NPR 399).
                   </span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Payment Provider Name</Label>
+                <Label className="text-xs font-semibold text-stone-700">Payment Provider Name</Label>
                 <Input
                   value={paymentProviderName}
                   onChange={(e) => setPaymentProviderName(e.target.value)}
-                  className="h-9 text-xs border-slate-200 bg-white"
+                  className="h-9 text-xs border-stone-200 bg-white"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Official eSewa ID / Merchant Phone</Label>
+                <Label className="text-xs font-semibold text-stone-700">Official eSewa ID / Merchant Phone</Label>
                 <Input
                   value={esewaId}
                   onChange={(e) => setEsewaId(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
+                  className="h-9 text-xs border-stone-200 bg-stone-50 font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Account Beneficiary Name</Label>
+                <Label className="text-xs font-semibold text-stone-700">Account Beneficiary Name</Label>
                 <Input
                   value={accountHolder}
                   onChange={(e) => setAccountHolder(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
+                  className="h-9 text-xs border-stone-200 bg-stone-50"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Direct Bank Name & Branch</Label>
+                <Label className="text-xs font-semibold text-stone-700">Direct Bank Name & Branch</Label>
                 <Input
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
+                  className="h-9 text-xs border-stone-200 bg-stone-50"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Bank Account Number</Label>
+                <Label className="text-xs font-semibold text-stone-700">Bank Account Number</Label>
                 <Input
                   value={accountNumber}
                   onChange={(e) => setAccountNumber(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
+                  className="h-9 text-xs border-stone-200 bg-stone-50 font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Remarks / Transaction Reference Instructions</Label>
+                <Label className="text-xs font-semibold text-stone-700">Remarks / Transaction Reference Instructions</Label>
                 <Input
                   value={paymentReferenceInstructions}
                   onChange={(e) => setPaymentReferenceInstructions(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
+                  className="h-9 text-xs border-stone-200 bg-stone-50"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#0A192F]">Full Payment Instructions for Applicants</Label>
+              <Label className="text-xs font-semibold text-stone-700">Full Payment Instructions for Applicants</Label>
               <Textarea
                 rows={3}
                 value={paymentInstructions}
                 onChange={(e) => setPaymentInstructions(e.target.value)}
-                className="text-xs border-[#E2E8F0] bg-[#F8FAFC]"
+                className="text-xs border-stone-200 bg-stone-50"
               />
             </div>
 
-            {/* Private Storage & Manual Verification Notice */}
-            <div className="p-4 rounded-md bg-[#F8FAFC] border border-[#C5A880]/30 text-xs text-[#0A192F] flex items-start gap-3">
-              <ShieldCheck className="w-5 h-5 text-[#C5A880] shrink-0 mt-0.5" />
+            {/* Verification Notice */}
+            <div className="p-4 rounded-lg bg-[#FFFDF7] border border-[#B89150]/30 text-xs text-stone-700 flex items-start gap-3">
+              <ShieldCheck className="w-5 h-5 text-[#B89150] shrink-0 mt-0.5" />
               <div className="space-y-1">
-                <div className="font-bold text-[#0A192F]">
-                  Private Screenshot Storage & Manual Verification Policy
+                <div className="font-semibold text-stone-800">
+                  Private Screenshot Storage & Manual Verification
                 </div>
-                <p className="text-[11px] text-[#0A192F]/70 leading-relaxed">
-                  Participants upload transaction receipts and payment screenshots privately. Uploading a screenshot <strong>never</strong> automatically marks payment as verified. Administrators must inspect bank/eSewa statements and manually approve entries in the Applications portal.
+                <p className="text-[11px] text-stone-600 leading-relaxed">
+                  Participants upload transaction receipts and payment screenshots securely. All entries are manually reviewed and verified by administrators in the Applications portal.
                 </p>
               </div>
             </div>
@@ -618,35 +512,39 @@ export function CompetitionWorkspace({
         </Card>
       )}
 
-      {/* TAB 4: REGISTRATION SCHEDULE */}
+      {/* TAB 3: SCHEDULE & DATES */}
       {activeTab === "schedule" && (
-        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
-          <CardHeader className="flex flex-row items-center justify-between">
+        <Card className="border-stone-200/80 bg-white shadow-xs">
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-100 pb-5">
             <div>
-              <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
-                Registration Schedule & Event Timeline
+              <CardTitle className="text-lg font-serif font-bold text-[#292524]">
+                Registration Schedule & Timeline
               </CardTitle>
-              <CardDescription className="text-xs text-[#0A192F]/70">
-                Control the automated opening date, closing deadline, and event schedule in Nepal Standard Time (UTC+05:45).
+              <CardDescription className="text-xs text-stone-500 mt-1">
+                Set the automated opening date, closing deadline, and audition timeline in Nepal Standard Time (UTC+05:45).
               </CardDescription>
             </div>
             <Button
               onClick={() => handleSaveSettings("Schedule")}
               disabled={isSaving}
-              className="gap-1.5 bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-9 px-4 font-semibold border border-[#C5A880]/40"
+              className="gap-2 bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
             >
-              {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" /> : <Save className="w-3.5 h-3.5 text-[#C5A880]" />}
+              {isSaving ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Save className="w-3.5 h-3.5" />
+              )}
               <span>Save Schedule</span>
             </Button>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 pt-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Current Registration Status</Label>
+                <Label className="text-xs font-semibold text-stone-700">Current Registration Status</Label>
                 <select
                   value={isRegOpen ? "OPEN" : "CLOSED"}
                   onChange={(e) => setIsRegOpen(e.target.value === "OPEN")}
-                  className="w-full h-9 px-3 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] text-xs font-semibold text-[#0A192F]"
+                  className="w-full h-9 px-3 rounded-lg border border-stone-200 bg-stone-50 text-xs font-medium text-stone-800"
                 >
                   <option value="OPEN">Registration Open</option>
                   <option value="CLOSED">Registration Closed</option>
@@ -654,125 +552,129 @@ export function CompetitionWorkspace({
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Registration Opening Date & Time</Label>
+                <Label className="text-xs font-semibold text-stone-700">Registration Opening Date & Time</Label>
                 <Input
                   type="datetime-local"
                   value={regOpeningDate}
                   onChange={(e) => setRegOpeningDate(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
+                  className="h-9 text-xs border-stone-200 bg-stone-50 font-mono"
                 />
-                <p className="text-[10px] text-zinc-500">Scheduled time when form opens automatically.</p>
+                <p className="text-[10px] text-stone-400">Scheduled time when form opens automatically.</p>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Registration Closing Deadline & Time</Label>
+                <Label className="text-xs font-semibold text-stone-700">Registration Closing Deadline & Time</Label>
                 <Input
                   type="datetime-local"
                   value={regClosingDate}
                   onChange={(e) => setRegClosingDate(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
+                  className="h-9 text-xs border-stone-200 bg-stone-50 font-mono"
                 />
-                <p className="text-[10px] text-zinc-500">Scheduled deadline when submissions close.</p>
+                <p className="text-[10px] text-stone-400">Scheduled deadline when submissions close.</p>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Grand Finale / Auditions Date</Label>
+                <Label className="text-xs font-semibold text-stone-700">Grand Finale / Auditions Date</Label>
                 <Input
                   value={eventSchedule}
                   onChange={(e) => setEventSchedule(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
+                  className="h-9 text-xs border-stone-200 bg-stone-50"
                 />
-                <p className="text-[10px] text-zinc-500">Displays on public pages (default: &quot;To Be Announced&quot;).</p>
+                <p className="text-[10px] text-stone-400">Publicly visible date (default: &quot;To Be Announced&quot;).</p>
               </div>
 
               <div className="space-y-1.5 sm:col-span-2">
-                <Label className="text-xs font-bold text-[#0A192F]">Audition & Finale Venue</Label>
+                <Label className="text-xs font-semibold text-stone-700">Audition & Finale Venue</Label>
                 <Input
                   value={eventVenue}
                   onChange={(e) => setEventVenue(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
+                  className="h-9 text-xs border-stone-200 bg-stone-50"
                 />
-                <p className="text-[10px] text-zinc-500">Official venue in Janakpur Dham, Nepal.</p>
+                <p className="text-[10px] text-stone-400">Official venue in Janakpur Dham, Nepal.</p>
               </div>
             </div>
           </CardContent>
         </Card>
       )}
 
-      {/* TAB 5: COMPETITION INFORMATION */}
+      {/* TAB 4: COMPETITION DETAILS & FAQ */}
       {activeTab === "information" && (
-        <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
-          <CardHeader className="flex flex-row items-center justify-between">
+        <Card className="border-stone-200/80 bg-white shadow-xs">
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-100 pb-5">
             <div>
-              <CardTitle className="text-lg font-serif font-bold text-[#0A192F]">
-                Competition Guidelines & Editorial Content
+              <CardTitle className="text-lg font-serif font-bold text-[#292524]">
+                Competition Details & FAQ
               </CardTitle>
-              <CardDescription className="text-xs text-[#0A192F]/70">
-                Update competition title, age criteria, audition video rules, and FAQs.
+              <CardDescription className="text-xs text-stone-500 mt-1">
+                Update competition title, tagline, WhatsApp audition helpline, and public FAQs.
               </CardDescription>
             </div>
             <Button
               onClick={() => handleSaveSettings("Competition Information")}
               disabled={isSaving}
-              className="gap-1.5 bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] text-xs h-9 px-4 font-semibold border border-[#C5A880]/40"
+              className="gap-2 bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
             >
-              {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" /> : <Save className="w-3.5 h-3.5 text-[#C5A880]" />}
-              <span>Save Information</span>
+              {isSaving ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Save className="w-3.5 h-3.5" />
+              )}
+              <span>Save Details</span>
             </Button>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 pt-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Competition Title</Label>
+                <Label className="text-xs font-semibold text-stone-700">Competition Title</Label>
                 <Input
                   value={compName}
                   onChange={(e) => setCompName(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
+                  className="h-9 text-xs border-stone-200 bg-stone-50"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Competition Motto & Tagline</Label>
+                <Label className="text-xs font-semibold text-stone-700">Competition Motto & Tagline</Label>
                 <Input
                   value={compTagline}
                   onChange={(e) => setCompTagline(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
+                  className="h-9 text-xs border-stone-200 bg-stone-50"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Official WhatsApp Audition Helpline</Label>
+                <Label className="text-xs font-semibold text-stone-700">Official WhatsApp Audition Helpline</Label>
                 <Input
                   value={whatsappContact}
                   onChange={(e) => setWhatsappContact(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC] font-mono"
+                  className="h-9 text-xs border-stone-200 bg-stone-50 font-mono"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-bold text-[#0A192F]">Official Instagram Handle</Label>
+                <Label className="text-xs font-semibold text-stone-700">Official Instagram Handle</Label>
                 <Input
                   value={officialInstagram}
                   onChange={(e) => setOfficialInstagram(e.target.value)}
-                  className="h-9 text-xs border-[#E2E8F0] bg-[#F8FAFC]"
+                  className="h-9 text-xs border-stone-200 bg-stone-50"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#0A192F]">Audition Video Submission Instructions</Label>
+              <Label className="text-xs font-semibold text-stone-700">Audition Video Submission Instructions</Label>
               <Textarea
                 rows={2}
                 value={videoGuidelines}
                 onChange={(e) => setVideoGuidelines(e.target.value)}
-                className="text-xs border-[#E2E8F0] bg-[#F8FAFC]"
+                className="text-xs border-stone-200 bg-stone-50"
               />
             </div>
 
             {/* FAQs Management */}
-            <div className="pt-4 border-t border-[#E2E8F0]">
+            <div className="pt-4 border-t border-stone-200">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#0A192F]">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-800">
                   Frequently Asked Questions (FAQs)
                 </h4>
                 <Button
@@ -780,25 +682,25 @@ export function CompetitionWorkspace({
                   size="sm"
                   variant="outline"
                   onClick={addFaq}
-                  className="h-7 text-xs border-[#E2E8F0] hover:bg-[#F8FAFC] text-[#0A192F] gap-1"
+                  className="h-8 text-xs border-stone-200 hover:bg-stone-50 text-stone-700 gap-1.5"
                 >
-                  <Plus className="w-3 h-3 text-[#A64B36]" />
+                  <Plus className="w-3.5 h-3.5 text-[#D97706]" />
                   <span>Add FAQ</span>
                 </Button>
               </div>
 
               <div className="space-y-3">
                 {faqs.map((faq, idx) => (
-                  <div key={idx} className="p-3.5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2">
+                  <div key={idx} className="p-4 rounded-xl border border-stone-200 bg-[#FFFDF7] space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-[#C5A880] uppercase">
+                      <span className="text-[10px] font-semibold text-[#B89150] uppercase tracking-wider">
                         Question #{idx + 1}
                       </span>
                       {faqs.length > 1 && (
                         <button
                           type="button"
                           onClick={() => removeFaq(idx)}
-                          className="text-[#A64B36] hover:text-rose-800 text-xs p-1"
+                          className="text-stone-400 hover:text-red-600 text-xs p-1 transition-colors"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -808,14 +710,14 @@ export function CompetitionWorkspace({
                       value={faq.q}
                       onChange={(e) => updateFaq(idx, "q", e.target.value)}
                       placeholder="Question..."
-                      className="h-8 text-xs bg-white border-[#E2E8F0]"
+                      className="h-8 text-xs bg-white border-stone-200"
                     />
                     <Textarea
                       rows={2}
                       value={faq.a}
                       onChange={(e) => updateFaq(idx, "a", e.target.value)}
                       placeholder="Answer..."
-                      className="text-xs bg-white border-[#E2E8F0]"
+                      className="text-xs bg-white border-stone-200"
                     />
                   </div>
                 ))}
@@ -825,7 +727,7 @@ export function CompetitionWorkspace({
         </Card>
       )}
 
-      {/* TAB 6: PUBLIC REGISTRATION PAGE PREVIEW & QR */}
+      {/* TAB 5: PUBLIC LINK & QR */}
       {activeTab === "public_page" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           <FormQrCard
@@ -834,30 +736,30 @@ export function CompetitionWorkspace({
             slug={form.slug}
           />
 
-          <Card className="border-[#E2E8F0] bg-[#FFFFFF] shadow-none">
+          <Card className="border-stone-200/80 bg-white shadow-xs">
             <CardHeader>
-              <CardTitle className="text-sm font-serif font-bold text-[#0A192F]">
-                Live Public Registration Portal
+              <CardTitle className="text-base font-serif font-bold text-[#292524]">
+                Live Public Registration Link
               </CardTitle>
-              <CardDescription className="text-xs text-[#0A192F]/70">
+              <CardDescription className="text-xs text-stone-500">
                 Direct access to the live public registration flow for Mithila Queen 2026.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] space-y-2 text-xs">
-                <div className="font-bold text-[#0A192F]">Primary Public URL:</div>
-                <div className="font-mono text-[11px] text-[#A64B36]">
+              <div className="p-4 rounded-lg border border-stone-200 bg-[#FFFDF7] space-y-2 text-xs">
+                <div className="font-semibold text-stone-700">Primary Public URL:</div>
+                <div className="font-mono text-xs text-[#7F1D2D] font-semibold">
                   /register/mithila-queen
                 </div>
-                <p className="text-[11px] text-zinc-500">
+                <p className="text-[11px] text-stone-500">
                   Participants can also access registration through the main website at <code>/register</code>.
                 </p>
               </div>
 
               <Link href="/register/mithila-queen" target="_blank">
-                <Button className="w-full text-xs h-9 bg-[#0A192F] hover:bg-[#1E293B] text-[#F1F5F9] font-semibold gap-2 border border-[#C5A880]/40 shadow-xs">
+                <Button className="w-full text-xs h-9 bg-[#7F1D2D] hover:bg-[#5B131E] text-white font-medium gap-2 shadow-xs">
                   <span>Open Registration Form in New Tab</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-[#C5A880]" />
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </Button>
               </Link>
             </CardContent>
@@ -867,4 +769,3 @@ export function CompetitionWorkspace({
     </div>
   );
 }
-

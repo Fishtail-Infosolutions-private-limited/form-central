@@ -97,7 +97,7 @@ export function FormPreview({
               <div key={st.id} className="flex items-center gap-2 flex-1">
                 <div
                   className={`flex-1 h-1.5 rounded-full ${
-                    i <= currentStepIndex ? "bg-[#A64B36]" : "bg-zinc-200"
+                    i <= currentStepIndex ? "bg-[#7F1D2D]" : "bg-stone-200"
                   }`}
                 />
               </div>
@@ -285,7 +285,7 @@ export function FormPreview({
               <Button
                 size="sm"
                 onClick={() => setCurrentStepIndex((i) => i + 1)}
-                className="bg-[#A64B36] hover:bg-[#8F3E2C] text-white text-xs gap-1 font-semibold"
+                className="bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs gap-1 font-semibold"
               >
                 <span>Next Step</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -297,7 +297,7 @@ export function FormPreview({
                   setIsSubmitted(true);
                   toast.success("Simulation Complete: All form fields validated!");
                 }}
-                className="bg-[#A64B36] hover:bg-[#8F3E2C] text-white text-xs gap-1 font-bold shadow-xs"
+                className="bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs gap-1 font-bold shadow-xs"
               >
                 <Check className="w-3.5 h-3.5" />
                 <span>Complete Registration</span>

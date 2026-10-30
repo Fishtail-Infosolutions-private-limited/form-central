@@ -433,24 +433,24 @@ export function BuilderWorkspace({
   return (
     <div className="flex flex-col gap-4 min-h-[600px]">
       {/* Workspace Sub-Header */}
-      <div className="bg-[#FFFFFF] p-4 rounded-lg border border-[#E2E8F0] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white p-4 rounded-xl border border-stone-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-md bg-[#F8FAFC] border border-[#C5A880]/40 text-[#C5A880] flex items-center justify-center shrink-0">
-            <Crown className="w-5 h-5 text-[#C5A880]" />
+          <div className="w-9 h-9 rounded-lg bg-[#FFFDF7] border border-[#B89150]/30 text-[#B89150] flex items-center justify-center shrink-0 shadow-2xs">
+            <Crown className="w-5 h-5 text-[#B89150]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-serif font-bold text-[#0A192F]">
+              <h2 className="text-sm font-serif font-bold text-[#292524]">
                 {form.name} &bull; Form Customizer
               </h2>
               {publishedVersionNumber && (
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#F8FAFC] border border-[#E2E8F0] text-[#0A192F] font-semibold">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-stone-100 border border-stone-200 text-stone-700 font-semibold">
                   v{publishedVersionNumber} Live
                 </span>
               )}
             </div>
-            <p className="text-[11px] text-zinc-500">
-              Customize questions, choices, and rules across the 7-step candidate dossier.
+            <p className="text-[11px] text-stone-500">
+              Customize questions, media uploads (including audition videos), and rules.
             </p>
           </div>
         </div>
@@ -458,8 +458,8 @@ export function BuilderWorkspace({
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2 shrink-0">
           {hasUnsavedChanges && (
-            <span className="text-[10px] font-semibold text-[#A64B36] bg-[#F8FAFC] border border-[#A64B36]/30 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#A64B36] animate-pulse" />
+            <span className="text-[10px] font-semibold text-[#D97706] bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D97706] animate-pulse" />
               <span>Unsaved changes</span>
             </span>
           )}
@@ -469,9 +469,9 @@ export function BuilderWorkspace({
             variant="outline"
             size="sm"
             onClick={() => setIsPaletteOpen(!isPaletteOpen)}
-            className="text-xs h-8 font-semibold gap-1.5 border-[#E2E8F0] text-[#0A192F] hover:bg-[#F8FAFC]"
+            className="text-xs h-8 font-medium gap-1.5 border-stone-200 text-stone-700 hover:bg-[#F7F1E5]"
           >
-            <Plus className="w-3.5 h-3.5 text-[#A64B36]" />
+            <Plus className="w-3.5 h-3.5 text-[#D97706]" />
             <span>{isPaletteOpen ? "Close Palette" : "Add Question"}</span>
           </Button>
 
@@ -480,9 +480,9 @@ export function BuilderWorkspace({
             variant="outline"
             size="sm"
             onClick={() => setIsPreviewOpen(true)}
-            className="text-xs h-8 font-semibold gap-1.5 border-[#E2E8F0] text-[#0A192F] hover:bg-[#F8FAFC]"
+            className="text-xs h-8 font-medium gap-1.5 border-stone-200 text-stone-700 hover:bg-[#F7F1E5]"
           >
-            <Eye className="w-3.5 h-3.5 text-[#C5A880]" />
+            <Eye className="w-3.5 h-3.5 text-[#B89150]" />
             <span>Full Form Preview</span>
           </Button>
 
@@ -492,12 +492,12 @@ export function BuilderWorkspace({
             size="sm"
             disabled={isSaving}
             onClick={handleSaveDraft}
-            className="text-xs h-8 font-semibold gap-1.5 border-[#E2E8F0] text-[#0A192F] hover:bg-[#F8FAFC]"
+            className="text-xs h-8 font-medium gap-1.5 border-stone-200 text-stone-700 hover:bg-[#F7F1E5]"
           >
             {isSaving ? (
-              <Loader2 className="w-3 h-3 animate-spin text-[#C5A880]" />
+              <Loader2 className="w-3 h-3 animate-spin text-[#B89150]" />
             ) : (
-              <Save className="w-3.5 h-3.5 text-[#C5A880]" />
+              <Save className="w-3.5 h-3.5 text-[#B89150]" />
             )}
             <span>Save Draft</span>
           </Button>
@@ -507,7 +507,7 @@ export function BuilderWorkspace({
             size="sm"
             disabled={isPublishing}
             onClick={handlePublish}
-            className="text-xs h-8 font-bold gap-1.5 bg-[#A64B36] hover:bg-[#8F3E2C] text-white shadow-xs"
+            className="text-xs h-8 font-semibold gap-1.5 bg-[#7F1D2D] hover:bg-[#5B131E] text-white shadow-xs"
           >
             {isPublishing ? (
               <Loader2 className="w-3 h-3 animate-spin" />
@@ -521,19 +521,19 @@ export function BuilderWorkspace({
 
       {/* Field Palette Popout Tray */}
       {isPaletteOpen && (
-        <div className="bg-[#FFFFFF] p-4 rounded-lg border border-[#C5A880]/40 shadow-sm animate-in fade-in slide-in-from-top-2">
-          <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E2E8F0]">
+        <div className="bg-white p-4 rounded-xl border border-[#B89150]/30 shadow-sm animate-in fade-in slide-in-from-top-2">
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
             <div>
-              <h3 className="font-serif font-bold text-xs uppercase tracking-wider text-[#0A192F]">
+              <h3 className="font-serif font-bold text-xs uppercase tracking-wider text-[#292524]">
                 Add Question to Step {activeStepIndex + 1}: {currentStep.title}
               </h3>
-              <p className="text-[11px] text-zinc-500">
+              <p className="text-[11px] text-stone-500">
                 Click any input type below to insert it into the active step.
               </p>
             </div>
             <button
               onClick={() => setIsPaletteOpen(false)}
-              className="p-1 rounded text-zinc-400 hover:text-[#0A192F]"
+              className="p-1 rounded text-stone-400 hover:text-[#292524]"
             >
               <X className="w-4 h-4" />
             </button>
@@ -547,13 +547,13 @@ export function BuilderWorkspace({
         <div
           className={`px-4 py-2.5 rounded-lg border flex items-center justify-between text-xs shrink-0 ${
             message.type === "success"
-              ? "bg-[#F8FAFC] border-[#C5A880]/40 text-[#0A192F]"
+              ? "bg-emerald-50 border-emerald-200 text-emerald-800"
               : "bg-red-50 border-red-200 text-red-800"
           }`}
         >
           <div className="flex items-center gap-2 font-medium">
             {message.type === "success" ? (
-              <CheckCircle2 className="w-4 h-4 text-[#C5A880] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
             ) : (
               <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
             )}
@@ -598,17 +598,17 @@ export function BuilderWorkspace({
               onClose={() => setSelectedFieldId(null)}
             />
           ) : (
-            <div className="bg-[#FFFFFF] rounded-lg border border-[#E2E8F0] p-6 h-full flex flex-col justify-between overflow-y-auto">
+            <div className="bg-white rounded-xl border border-stone-200/80 p-6 h-full flex flex-col justify-between overflow-y-auto shadow-xs">
               <div className="space-y-4">
-                <div className="border-b border-[#E2E8F0] pb-3">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880]">
-                    Live Step Preview &bull; Step {activeStepIndex + 1}
+                <div className="border-b border-stone-100 pb-3">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-[#B89150]">
+                    Step Preview &bull; Step {activeStepIndex + 1}
                   </span>
-                  <h3 className="font-serif font-bold text-lg text-[#0A192F]">
+                  <h3 className="font-serif font-bold text-lg text-[#292524]">
                     {currentStep.title}
                   </h3>
                   {currentStep.description && (
-                    <p className="text-xs text-zinc-500 mt-1">
+                    <p className="text-xs text-stone-500 mt-1">
                       {currentStep.description}
                     </p>
                   )}
@@ -619,21 +619,21 @@ export function BuilderWorkspace({
                     <div
                       key={f.id}
                       onClick={() => setSelectedFieldId(f.id)}
-                      className="p-3.5 rounded-md border border-[#E2E8F0] bg-[#F8FAFC]/40 hover:border-[#C5A880] transition-colors cursor-pointer group"
+                      className="p-3.5 rounded-lg border border-stone-200/80 bg-[#FFFDF7]/50 hover:border-[#B89150] transition-colors cursor-pointer group"
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <label className="text-xs font-bold text-[#0A192F] flex items-center gap-1.5">
+                        <label className="text-xs font-semibold text-stone-800 flex items-center gap-1.5">
                           <span>{f.label}</span>
-                          {f.required && <span className="text-[#A64B36]">*</span>}
+                          {f.required && <span className="text-[#D97706]">*</span>}
                         </label>
-                        <span className="text-[10px] text-zinc-400 group-hover:text-[#A64B36] font-mono">
+                        <span className="text-[10px] text-stone-400 group-hover:text-[#7F1D2D] font-mono">
                           Click to edit
                         </span>
                       </div>
                       {f.description && (
-                        <p className="text-[11px] text-zinc-500 mb-2">{f.description}</p>
+                        <p className="text-[11px] text-stone-500 mb-2">{f.description}</p>
                       )}
-                      <div className="h-8 rounded bg-white border border-[#E2E8F0] px-3 flex items-center text-xs text-zinc-400">
+                      <div className="h-8 rounded bg-white border border-stone-200 px-3 flex items-center text-xs text-stone-400">
                         {f.placeholder || `[${f.type} input placeholder]`}
                       </div>
                     </div>
@@ -641,9 +641,9 @@ export function BuilderWorkspace({
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#E2E8F0] text-center">
-                <p className="text-xs text-zinc-500">
-                  Click any question on the left panel to configure its label, validation, choices, or instructions.
+              <div className="pt-4 border-t border-stone-100 text-center">
+                <p className="text-xs text-stone-500">
+                  Select any question on the left to configure label, help text, or choices.
                 </p>
               </div>
             </div>

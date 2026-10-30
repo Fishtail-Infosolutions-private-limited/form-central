@@ -450,6 +450,7 @@ model MithilaQueenRegistration {
   profilePhotoUrl           String?
   additionalPhotoUrl        String?
   documentUrl               String?
+  videoUrl                  String?
 
   // Fee & Payment Tracking (NPR 399)
   registrationFee           Int                     @default(399)

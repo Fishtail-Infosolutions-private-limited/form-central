@@ -38,30 +38,13 @@ export default async function AdminManageCompetitionPage() {
     notFound();
   }
 
-  // Fetch Site Settings & Dossier statistics
-  const [siteSetting, totalRegs, completedRegs, verifiedPayments, appsUnderReview, approvedApps] =
-    await Promise.all([
-      prisma.siteSetting.findUnique({ where: { id: "primary" } }),
-      prisma.mithilaQueenRegistration.count(),
-      prisma.mithilaQueenRegistration.count({ where: { isCompleted: true } }),
-      prisma.mithilaQueenRegistration.count({ where: { paymentStatus: "VERIFIED" } }),
-      prisma.mithilaQueenRegistration.count({
-        where: { applicationStatus: { in: ["UNDER_REVIEW", "SUBMITTED"] } },
-      }),
-      prisma.mithilaQueenRegistration.count({ where: { applicationStatus: "APPROVED" } }),
-    ]);
+  // Fetch Site Settings
+  const siteSetting = await prisma.siteSetting.findUnique({ where: { id: "primary" } });
 
   return (
     <CompetitionWorkspace
       form={form as any}
       siteSetting={siteSetting}
-      stats={{
-        totalRegs,
-        completedRegs,
-        verifiedPayments,
-        appsUnderReview,
-        approvedApps,
-      }}
     />
   );
 }

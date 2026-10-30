@@ -79,6 +79,7 @@ export interface UnifiedApplication {
   tiktokHandle?: string | null;
   facebookUrl?: string | null;
   profilePhotoUrl?: string | null;
+  videoUrl?: string | null;
   documentUrl?: string | null;
 
   // Payment Tracking
@@ -828,6 +829,22 @@ export function UnifiedResponsesView({
                           alt="Profile"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                         />
+                      </a>
+                    </div>
+                  )}
+
+                  {selectedApp.videoUrl && (
+                    <div>
+                      <span className="text-[11px] text-stone-500 block mb-1">Audition Video:</span>
+                      <a
+                        href={selectedApp.videoUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 p-3 rounded-xl bg-[#F7F1E5] border border-[#EADBCE] text-[#7F1D2D] hover:bg-[#EADBCE]/50 transition-colors font-bold text-xs"
+                      >
+                        <Video className="w-4 h-4 text-[#D97706]" />
+                        <span>Watch Audition Video</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-stone-400" />
                       </a>
                     </div>
                   )}

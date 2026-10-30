@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { promises as fs } from "fs";
+import path from "path";
 import { nanoid } from "nanoid";
 import { prisma } from "@/lib/db/prisma";
 import { uploadVideoToDrive, getAuthenticatedDriveClient } from "@/lib/google-drive/client";
@@ -9,6 +11,7 @@ const ALLOWED_VIDEO_TYPES = [
   "video/webm",
   "video/quicktime",
   "video/x-msvideo",
+  "video/ogg",
 ];
 const MAX_VIDEO_BYTES = 100 * 1024 * 1024; // 100MB
 
@@ -24,7 +27,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No video file provided" }, { status: 400 });
     }
 
-    if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
+    const isValidVideo =
+      ALLOWED_VIDEO_TYPES.includes(file.type) ||
+      file.type.startsWith("video/") ||
+      /\.(mp4|webm|mov|avi|m4v|mkv|ogg)$/i.test(file.name);
+
+    if (!isValidVideo) {
       return NextResponse.json(
         { error: "Invalid video format. Supported formats: MP4, WebM, QuickTime (MOV)." },
         { status: 400 }
@@ -36,28 +44,6 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: `Video "${file.name}" is ${sizeMb} MB, which exceeds the maximum allowed 100 MB limit.` },
         { status: 400 }
-      );
-    }
-
-    // Check Google Drive configuration
-    const driveAuth = await getAuthenticatedDriveClient();
-    if (!driveAuth || !driveAuth.integration.isConnected) {
-      return NextResponse.json(
-        {
-          error:
-            "Google Drive video storage is not currently connected by the event administrator. Please contact event support.",
-        },
-        { status: 503 }
-      );
-    }
-
-    if (!driveAuth.integration.folderId) {
-      return NextResponse.json(
-        {
-          error:
-            "No Google Drive destination folder has been configured by the event administrator.",
-        },
-        { status: 503 }
       );
     }
 
@@ -82,33 +68,78 @@ export async function POST(request: Request) {
       }
     }
 
-    // Upload to Google Drive API v3
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const sanitizedName = `video_${nanoid(8)}_${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
-
-    const driveFile = await uploadVideoToDrive(
-      buffer,
-      sanitizedName,
-      file.type,
-      driveAuth.integration.folderId
-    );
-
-    if (!driveFile?.id) {
-      return NextResponse.json(
-        { error: "Failed to upload video to Google Drive. Please retry." },
-        { status: 500 }
-      );
+    // Check Google Drive configuration
+    let driveAuth = null;
+    try {
+      driveAuth = await getAuthenticatedDriveClient();
+    } catch {
+      driveAuth = null;
     }
 
-    // Persist upload metadata in PostgreSQL
+    const hasDrive = Boolean(driveAuth?.integration?.isConnected && driveAuth?.integration?.folderId);
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    if (hasDrive && driveAuth?.integration?.folderId) {
+      // Upload to Google Drive API v3
+      const sanitizedName = `video_${nanoid(8)}_${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+      const driveFile = await uploadVideoToDrive(
+        buffer,
+        sanitizedName,
+        file.type,
+        driveAuth.integration.folderId
+      );
+
+      if (driveFile?.id) {
+        const driveUrl = `https://drive.google.com/file/d/${driveFile.id}/view`;
+        const uploadedRecord = await prisma.uploadedFile.create({
+          data: {
+            fieldKey,
+            originalName: file.name,
+            storageProvider: "GOOGLE_DRIVE",
+            storagePath: driveUrl,
+            driveFileId: driveFile.id,
+            mimeType: file.type || "video/mp4",
+            fileSize: file.size,
+            uploadSessionToken,
+            status: "PENDING",
+          },
+        });
+
+        return NextResponse.json({
+          success: true,
+          fileId: uploadedRecord.id,
+          url: driveUrl,
+          driveFileId: driveFile.id,
+          filename: file.name,
+          fileSize: file.size,
+        });
+      }
+    }
+
+    // Local Disk Fallback: public/user-uploads/videos/YYYY/MM/
+    const now = new Date();
+    const year = now.getFullYear().toString();
+    const month = (now.getMonth() + 1).toString().padStart(2, "0");
+    const relativeDir = path.join("user-uploads", "videos", year, month);
+    const absoluteDir = path.join(process.cwd(), "public", relativeDir);
+
+    await fs.mkdir(absoluteDir, { recursive: true });
+
+    const nameExt = path.extname(file.name).toLowerCase();
+    const ext = nameExt && nameExt.length > 1 ? nameExt : ".mp4";
+    const uniqueFilename = `${nanoid(16)}${ext}`;
+    const absoluteFilePath = path.join(absoluteDir, uniqueFilename);
+    const publicUrl = `/${relativeDir.replace(/\\/g, "/")}/${uniqueFilename}`;
+
+    await fs.writeFile(absoluteFilePath, buffer);
+
     const uploadedRecord = await prisma.uploadedFile.create({
       data: {
         fieldKey,
         originalName: file.name,
-        storageProvider: "GOOGLE_DRIVE",
-        storagePath: driveFile.id,
-        driveFileId: driveFile.id,
-        mimeType: file.type,
+        storageProvider: "LOCAL",
+        storagePath: publicUrl,
+        mimeType: file.type || "video/mp4",
         fileSize: file.size,
         uploadSessionToken,
         status: "PENDING",
@@ -118,14 +149,14 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       fileId: uploadedRecord.id,
-      driveFileId: driveFile.id,
+      url: publicUrl,
       filename: file.name,
       fileSize: file.size,
     });
   } catch (err: unknown) {
-    console.error("Video upload to Drive failed:", err);
+    console.error("Video upload failed:", err);
     return NextResponse.json(
-      { error: "Internal server error during Google Drive video upload" },
+      { error: "Internal server error during video upload" },
       { status: 500 }
     );
   }

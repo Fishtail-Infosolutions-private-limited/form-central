@@ -114,3 +114,4 @@ export async function deleteContactInquiryAction(id: string) {
     return { success: false, error: "Failed to delete inquiry." };
   }
 }
+

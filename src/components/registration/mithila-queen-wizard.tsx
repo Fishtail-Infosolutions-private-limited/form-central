@@ -23,6 +23,7 @@ import {
   Copy,
   Check,
   Mail,
+  Phone,
   RefreshCw,
   ExternalLink,
 } from "lucide-react";
@@ -123,6 +124,10 @@ export function MithilaQueenWizard() {
   // Step 5: Uploads
   const [profilePhotoUrl, setProfilePhotoUrl] = useState("");
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [videoUrl, setVideoUrl] = useState("");
+  const [isUploadingVideo, setIsUploadingVideo] = useState(false);
+  const [documentUrl, setDocumentUrl] = useState("");
+  const [isUploadingDoc, setIsUploadingDoc] = useState(false);
 
   // Step 6: Rules & Consents
   const [agreedToRules, setAgreedToRules] = useState(false);
@@ -282,6 +287,8 @@ export function MithilaQueenWizard() {
         if (d.tiktokHandle) setTiktokHandle(d.tiktokHandle);
         if (d.facebookUrl) setFacebookUrl(d.facebookUrl);
         if (d.profilePhotoUrl) setProfilePhotoUrl(d.profilePhotoUrl);
+        if (d.videoUrl) setVideoUrl(d.videoUrl);
+        if (d.documentUrl) setDocumentUrl(d.documentUrl);
 
         toast.success("Welcome back! Your saved application draft has been restored.");
         setStep(res.resumeStep || 2);
@@ -333,6 +340,79 @@ export function MithilaQueenWizard() {
       toast.error("Upload network error.");
     } finally {
       setIsUploadingPhoto(false);
+    }
+  };
+
+  // Handle Video Upload
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("video/") && !/\.(mp4|webm|mov|avi|m4v|mkv)$/i.test(file.name)) {
+      toast.error("Please upload a valid video file (MP4, MOV, WebM).");
+      return;
+    }
+
+    if (file.size > 100 * 1024 * 1024) {
+      toast.error("Video size exceeds 100MB limit.");
+      return;
+    }
+
+    setIsUploadingVideo(true);
+    const form = new FormData();
+    form.append("file", file);
+    form.append("fieldKey", "audition_video");
+
+    try {
+      const res = await fetch("/api/public/upload/video", {
+        method: "POST",
+        body: form,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setVideoUrl(data.url);
+        toast.success("Audition video uploaded successfully!");
+      } else {
+        toast.error(data.error || "Failed to upload video.");
+      }
+    } catch {
+      toast.error("Video upload network error.");
+    } finally {
+      setIsUploadingVideo(false);
+    }
+  };
+
+  // Handle Document Upload
+  const handleDocUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Document size exceeds 10MB limit.");
+      return;
+    }
+
+    setIsUploadingDoc(true);
+    const form = new FormData();
+    form.append("file", file);
+    form.append("fieldKey", "identity_document");
+
+    try {
+      const res = await fetch("/api/public/upload/document", {
+        method: "POST",
+        body: form,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setDocumentUrl(data.url);
+        toast.success("Document uploaded successfully!");
+      } else {
+        toast.error(data.error || "Failed to upload document.");
+      }
+    } catch {
+      toast.error("Document upload network error.");
+    } finally {
+      setIsUploadingDoc(false);
     }
   };
 
@@ -438,6 +518,8 @@ export function MithilaQueenWizard() {
           tiktokHandle,
           facebookUrl,
           profilePhotoUrl,
+          videoUrl,
+          documentUrl,
         },
       }).catch((err) => console.error("Draft auto-save error:", err));
     }
@@ -487,6 +569,8 @@ export function MithilaQueenWizard() {
       tiktokHandle,
       facebookUrl,
       profilePhotoUrl,
+      videoUrl,
+      documentUrl,
 
       agreedToRules,
       agreedToMedia,
@@ -1370,63 +1454,167 @@ export function MithilaQueenWizard() {
           </div>
         )}
 
-        {/* STEP 5: PHOTO UPLOAD */}
+        {/* STEP 5: PHOTO & MEDIA UPLOADS */}
         {step === 5 && (
-          <div className="space-y-5">
-            <div className="border-b border-[#E2E8F0] pb-3">
-              <h2 className="text-xl font-bold font-serif text-[#0A192F]">
-                5. Participant Photograph
+          <div className="space-y-6">
+            <div className="border-b border-[#EADBCE] pb-3">
+              <h2 className="text-xl font-bold font-serif text-[#7F1D2D]">
+                5. Photo &amp; Media Uploads
               </h2>
-              <p className="text-xs text-[#1E293B] mt-1">
-                Upload a clear portrait or passport-style photograph for your competition dossier and official PDF confirmation.
+              <p className="text-xs text-stone-600 mt-1">
+                Upload your portrait photo and your 1-minute cultural audition video.
               </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="border-2 border-dashed border-[#E2E8F0] rounded-lg p-6 text-center hover:border-[#C5A880] transition-colors bg-[#F8FAFC]/30">
-                {profilePhotoUrl ? (
-                  <div className="space-y-3">
-                    <div className="w-32 h-40 mx-auto rounded-md overflow-hidden border border-[#E2E8F0] relative bg-white shadow-xs">
-                      <img
-                        src={profilePhotoUrl}
-                        alt="Participant portrait"
-                        className="w-full h-full object-cover"
-                      />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* 1. Portrait Photo */}
+              <div className="p-4 rounded-xl border border-[#EADBCE] bg-white space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-stone-900 flex items-center gap-1.5">
+                    <User className="w-4 h-4 text-[#D97706]" />
+                    <span>Recent Portrait Photo <span className="text-rose-600">*</span></span>
+                  </span>
+                  <span className="text-[10px] text-stone-500 font-mono">JPG / PNG &bull; 10MB</span>
+                </div>
+
+                <div className="border-2 border-dashed border-[#EADBCE] rounded-xl p-4 text-center hover:border-[#D97706] transition-colors bg-[#F7F1E5]/20 min-h-[160px] flex items-center justify-center">
+                  {profilePhotoUrl ? (
+                    <div className="space-y-2">
+                      <div className="w-24 h-32 mx-auto rounded-lg overflow-hidden border border-[#EADBCE] relative bg-white shadow-xs">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={profilePhotoUrl}
+                          alt="Participant portrait"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <label className="cursor-pointer text-xs font-bold text-[#D97706] hover:underline block">
+                        <span>Change photograph</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handlePhotoUpload}
+                          className="hidden"
+                        />
+                      </label>
                     </div>
-                    <label className="cursor-pointer text-xs font-bold text-[#C5A880] hover:underline block">
-                      <span>Change photograph</span>
+                  ) : (
+                    <label className="cursor-pointer block space-y-2 py-2">
+                      <div className="w-10 h-10 rounded-full bg-[#F7F1E5] text-[#D97706] mx-auto flex items-center justify-center border border-[#EADBCE]">
+                        {isUploadingPhoto ? (
+                          <Loader2 className="w-5 h-5 animate-spin text-[#D97706]" />
+                        ) : (
+                          <Upload className="w-5 h-5" />
+                        )}
+                      </div>
+                      <span className="text-xs font-bold text-stone-900 block">
+                        {isUploadingPhoto ? "Uploading photograph..." : "Upload Portrait Photo"}
+                      </span>
+                      <span className="text-[10px] text-stone-500 block">
+                        Clear face portrait for candidate dossier
+                      </span>
                       <input
                         type="file"
                         accept="image/*"
+                        disabled={isUploadingPhoto}
                         onChange={handlePhotoUpload}
                         className="hidden"
                       />
                     </label>
-                  </div>
-                ) : (
-                  <label className="cursor-pointer block space-y-2">
-                    <div className="w-12 h-12 rounded-full bg-[#F8FAFC] text-[#C5A880] mx-auto flex items-center justify-center border border-[#C5A880]/40">
-                      {isUploadingPhoto ? (
-                        <Loader2 className="w-6 h-6 animate-spin text-[#C5A880]" />
+                  )}
+                </div>
+              </div>
+
+              {/* 2. Audition Video */}
+              <div className="p-4 rounded-xl border border-[#EADBCE] bg-white space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-stone-900 flex items-center gap-1.5">
+                    <Video className="w-4 h-4 text-[#D97706]" />
+                    <span>Audition Video (Optional)</span>
+                  </span>
+                  <span className="text-[10px] text-stone-500 font-mono">MP4 / MOV &bull; 100MB</span>
+                </div>
+
+                <div className="border-2 border-dashed border-[#EADBCE] rounded-xl p-4 text-center hover:border-[#D97706] transition-colors bg-[#F7F1E5]/20 min-h-[160px] flex items-center justify-center">
+                  {videoUrl ? (
+                    <div className="space-y-2 w-full">
+                      {videoUrl.startsWith("http") && !videoUrl.includes("drive.google") ? (
+                        <video
+                          src={videoUrl}
+                          controls
+                          className="w-full max-h-36 rounded-lg border border-[#EADBCE] bg-black"
+                        />
                       ) : (
-                        <Upload className="w-6 h-6" />
+                        <div className="p-3 bg-[#F7F1E5] rounded-lg border border-[#EADBCE] text-xs space-y-1">
+                          <span className="font-bold text-[#7F1D2D] block flex items-center justify-center gap-1">
+                            <Video className="w-3.5 h-3.5 text-[#D97706]" />
+                            <span>Video Uploaded</span>
+                          </span>
+                          <p className="text-[10px] text-stone-600 truncate">{videoUrl}</p>
+                        </div>
                       )}
+                      <label className="cursor-pointer text-xs font-bold text-[#D97706] hover:underline block">
+                        <span>Replace video</span>
+                        <input
+                          type="file"
+                          accept="video/mp4,video/webm,video/quicktime,video/*"
+                          onChange={handleVideoUpload}
+                          className="hidden"
+                        />
+                      </label>
                     </div>
-                    <span className="text-xs font-bold text-[#0A192F] block">
-                      {isUploadingPhoto ? "Uploading photograph..." : "Click to upload recent portrait"}
-                    </span>
-                    <span className="text-[11px] text-zinc-500 block">
-                      JPG, PNG, or WEBP up to 10MB
-                    </span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      disabled={isUploadingPhoto}
-                      onChange={handlePhotoUpload}
-                      className="hidden"
-                    />
-                  </label>
-                )}
+                  ) : (
+                    <label className="cursor-pointer block space-y-2 py-2">
+                      <div className="w-10 h-10 rounded-full bg-[#F7F1E5] text-[#D97706] mx-auto flex items-center justify-center border border-[#EADBCE]">
+                        {isUploadingVideo ? (
+                          <Loader2 className="w-5 h-5 animate-spin text-[#D97706]" />
+                        ) : (
+                          <Video className="w-5 h-5" />
+                        )}
+                      </div>
+                      <span className="text-xs font-bold text-stone-900 block">
+                        {isUploadingVideo ? "Uploading video..." : "Upload 1-Minute Audition Video"}
+                      </span>
+                      <span className="text-[10px] text-stone-500 block">
+                        Introduce yourself &amp; your cultural talent
+                      </span>
+                      <input
+                        type="file"
+                        accept="video/mp4,video/webm,video/quicktime,video/*"
+                        disabled={isUploadingVideo}
+                        onChange={handleVideoUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  )}
+                </div>
+
+                {/* Alternative link input */}
+                <div className="pt-1">
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-500 mb-1">
+                    <span>Or paste video link (Drive/YouTube):</span>
+                  </div>
+                  <Input
+                    type="url"
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    placeholder="https://drive.google.com/... or youtube.com/..."
+                    className="h-8 text-xs border-[#EADBCE] bg-[#F7F1E5]/30 focus-visible:ring-[#D97706]"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Direct WhatsApp Video submission note */}
+            <div className="p-3.5 rounded-xl bg-[#F7F1E5] border border-[#EADBCE] text-xs text-stone-700 flex items-start gap-2.5">
+              <Phone className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" />
+              <div className="space-y-0.5">
+                <span className="font-bold text-[#7F1D2D]">
+                  WhatsApp Audition Helpline:
+                </span>
+                <p className="text-[11px] text-stone-600 leading-relaxed">
+                  You may also send your 1-minute audition video directly to our organizers via WhatsApp at <strong>+977 9704571941</strong> after submitting this form.
+                </p>
               </div>
             </div>
           </div>

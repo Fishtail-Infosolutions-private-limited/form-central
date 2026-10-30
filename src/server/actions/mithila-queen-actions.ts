@@ -288,6 +288,8 @@ export async function verifyMithilaQueenStep1OtpAction({
           tiktokHandle: existingReg.tiktokHandle || "",
           facebookUrl: existingReg.facebookUrl || "",
           profilePhotoUrl: existingReg.profilePhotoUrl || "",
+          videoUrl: existingReg.videoUrl || "",
+          documentUrl: existingReg.documentUrl || "",
         },
       };
     }
@@ -411,6 +413,8 @@ export async function saveMithilaQueenDraftAction({
     if (formData.tiktokHandle !== undefined) updateData.tiktokHandle = formData.tiktokHandle?.trim() || null;
     if (formData.facebookUrl !== undefined) updateData.facebookUrl = formData.facebookUrl?.trim() || null;
     if (formData.profilePhotoUrl !== undefined) updateData.profilePhotoUrl = formData.profilePhotoUrl?.trim() || null;
+    if (formData.videoUrl !== undefined) updateData.videoUrl = formData.videoUrl?.trim() || null;
+    if (formData.documentUrl !== undefined) updateData.documentUrl = formData.documentUrl?.trim() || null;
 
     await prisma.mithilaQueenRegistration.update({
       where: { id: existingReg.id },
@@ -466,10 +470,11 @@ export async function submitMithilaQueenRegistrationAction(formData: {
   tiktokHandle?: string;
   facebookUrl?: string;
 
-  // Photos
+  // Media & Documents
   profilePhotoUrl?: string;
   additionalPhotoUrl?: string;
   documentUrl?: string;
+  videoUrl?: string;
 
   // Consent checkboxes
   agreedToRules: boolean;
@@ -593,6 +598,7 @@ export async function submitMithilaQueenRegistrationAction(formData: {
           profilePhotoUrl: formData.profilePhotoUrl || null,
           additionalPhotoUrl: formData.additionalPhotoUrl || null,
           documentUrl: formData.documentUrl || null,
+          videoUrl: formData.videoUrl || null,
 
           registrationFee: effectiveFee,
           paymentStatus: PaymentStatus.PENDING,
@@ -645,6 +651,7 @@ export async function submitMithilaQueenRegistrationAction(formData: {
           profilePhotoUrl: formData.profilePhotoUrl || null,
           additionalPhotoUrl: formData.additionalPhotoUrl || null,
           documentUrl: formData.documentUrl || null,
+          videoUrl: formData.videoUrl || null,
 
           registrationFee: effectiveFee,
           paymentStatus: PaymentStatus.PENDING,
@@ -970,6 +977,8 @@ export async function verifyStatusLookupOtpAction({
         tiktokHandle: reg.tiktokHandle,
         facebookUrl: reg.facebookUrl,
         profilePhotoUrl: reg.profilePhotoUrl,
+        videoUrl: reg.videoUrl,
+        documentUrl: reg.documentUrl,
 
         paymentStatus: reg.paymentStatus,
         applicationStatus: reg.applicationStatus,
@@ -1040,6 +1049,8 @@ export async function participantUpdateDetailsAction({
     tiktokHandle?: string;
     facebookUrl?: string;
     profilePhotoUrl?: string;
+    videoUrl?: string;
+    documentUrl?: string;
   };
 }) {
   try {
@@ -1143,6 +1154,8 @@ export async function participantUpdateDetailsAction({
           tiktokHandle: updatedFields.tiktokHandle !== undefined ? updatedFields.tiktokHandle?.trim() || null : reg.tiktokHandle,
           facebookUrl: updatedFields.facebookUrl !== undefined ? updatedFields.facebookUrl?.trim() || null : reg.facebookUrl,
           profilePhotoUrl: updatedFields.profilePhotoUrl !== undefined ? updatedFields.profilePhotoUrl?.trim() || null : reg.profilePhotoUrl,
+          videoUrl: updatedFields.videoUrl !== undefined ? updatedFields.videoUrl?.trim() || null : reg.videoUrl,
+          documentUrl: updatedFields.documentUrl !== undefined ? updatedFields.documentUrl?.trim() || null : reg.documentUrl,
 
           applicationStatus: newApplicationStatus,
         },
