@@ -343,7 +343,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
               <label
                 className={`p-3 rounded-xl border cursor-pointer transition-all flex items-start gap-3 ${
                   capacityType === "unlimited"
-                    ? "border-saffron bg-soft-cream ring-1 ring-[#B89150]"
+                    ? "border-saffron bg-soft-cream ring-1 ring-maroon"
                     : "border-zinc-200 bg-white hover:border-zinc-300"
                 }`}
               >
@@ -364,7 +364,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
               <label
                 className={`p-3 rounded-xl border cursor-pointer transition-all flex items-start gap-3 ${
                   capacityType === "limited"
-                    ? "border-saffron bg-soft-cream ring-1 ring-[#B89150]"
+                    ? "border-saffron bg-soft-cream ring-1 ring-maroon"
                     : "border-zinc-200 bg-white hover:border-zinc-300"
                 }`}
               >
@@ -635,7 +635,7 @@ export function FormSettingsForm({ form }: FormSettingsFormProps) {
             <Link
               href={`/register/${slug || form.slug}`}
               target="_blank"
-              className="text-xs text-saffron hover:text-[#B59870] font-semibold flex items-center gap-1"
+              className="text-xs text-saffron hover:text-maroon font-semibold flex items-center gap-1"
             >
               <span>View Public Page</span>
               <ExternalLink className="w-3.5 h-3.5" />

@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/db/prisma";
 import { requireAdmin } from "@/lib/auth/guards";
 import { revalidatePath } from "next/cache";
+import { DEFAULT_OFFICIAL_SETTINGS } from "@/lib/constants/official-settings";
 
 export async function getPublicSiteSettingsAction() {
   try {
@@ -50,6 +51,46 @@ export async function getPublicSiteSettingsAction() {
         paymentProviderName: setting.paymentProviderName,
         paymentInstructions: setting.paymentInstructions,
         paymentReferenceInstructions: setting.paymentReferenceInstructions,
+        // Wallet & Bank Configuration
+        enableWalletPayment: setting.enableWalletPayment,
+        walletProviderName: setting.walletProviderName,
+        walletId: setting.walletId,
+        walletBeneficiaryName: setting.walletBeneficiaryName,
+        walletInstructions: setting.walletInstructions,
+        walletReferenceInstructions: setting.walletReferenceInstructions,
+        enableBankPayment: setting.enableBankPayment,
+        bankName: setting.bankName,
+        bankBranch: setting.bankBranch,
+        bankBeneficiaryName: setting.bankBeneficiaryName,
+        bankAccountNumber: setting.bankAccountNumber,
+        bankInstructions: setting.bankInstructions,
+        bankReferenceInstructions: setting.bankReferenceInstructions,
+        // Competition Details & Links
+        shortIntro: setting.shortIntro,
+        fullDescription: setting.fullDescription,
+        officialFacebook: setting.officialFacebook,
+        officialYoutube: setting.officialYoutube,
+        // Dates & Venue
+        grandFinaleDate: setting.grandFinaleDate,
+        grandFinaleTime: setting.grandFinaleTime,
+        auditionDate: setting.auditionDate,
+        auditionTime: setting.auditionTime,
+        dateInstructions: setting.dateInstructions,
+        venueAddress: setting.venueAddress,
+        venueCity: setting.venueCity,
+        venueDirections: setting.venueDirections,
+        venueInstructions: setting.venueInstructions,
+        // Audition Guidelines
+        videoRequirements: setting.videoRequirements,
+        videoDuration: setting.videoDuration,
+        videoSubmissionDeadline: setting.videoSubmissionDeadline,
+        videoSubmissionMethod: setting.videoSubmissionMethod,
+        applicantInstructions: setting.applicantInstructions,
+        // Public Modules
+        homepageIntroText: setting.homepageIntroText,
+        competitionHighlightsJson: setting.competitionHighlightsJson,
+        importantNoticesJson: setting.importantNoticesJson,
+        contactInfoJson: setting.contactInfoJson,
         whatsappContact: setting.whatsappContact,
         officialInstagram: setting.officialInstagram,
         officialTiktok: setting.officialTiktok,
@@ -78,22 +119,51 @@ export async function getSiteSettingsAction() {
     setting = await prisma.siteSetting.create({
       data: {
         id: "primary",
-        organizationName: "The Origin Foundation",
-        organizationTagline: "Rooted in Identity. Driven by Purpose.",
-        competitionName: "Mithila Queen",
-        competitionTagline: "Celebrating Mithila's Culture, Confidence & Talent.",
-        location: "Janakpur Dham, Nepal",
-        officialEmail: "originfoundation107@gmail.com",
-        registrationFee: 399,
-        eventSchedule: "To Be Announced",
-        eventVenue: "To Be Announced",
-        isRegistrationOpen: true,
-        whatsappContact: "+977 9704571941",
+        ...DEFAULT_OFFICIAL_SETTINGS,
       },
     });
   }
 
-  return { success: true, setting };
+  // Ensure all inputs are filled by default as per the official PDF
+  const mergedSetting = {
+    ...DEFAULT_OFFICIAL_SETTINGS,
+    ...(setting || {}),
+    organizationName: setting?.organizationName || DEFAULT_OFFICIAL_SETTINGS.organizationName,
+    organizationTagline: setting?.organizationTagline || DEFAULT_OFFICIAL_SETTINGS.organizationTagline,
+    competitionName: setting?.competitionName || DEFAULT_OFFICIAL_SETTINGS.competitionName,
+    competitionTagline: setting?.competitionTagline || DEFAULT_OFFICIAL_SETTINGS.competitionTagline,
+    shortIntro: setting?.shortIntro || DEFAULT_OFFICIAL_SETTINGS.shortIntro,
+    fullDescription: setting?.fullDescription || DEFAULT_OFFICIAL_SETTINGS.fullDescription,
+    location: setting?.location || DEFAULT_OFFICIAL_SETTINGS.location,
+    officialEmail: setting?.officialEmail || DEFAULT_OFFICIAL_SETTINGS.officialEmail,
+    registrationFee: setting?.registrationFee || DEFAULT_OFFICIAL_SETTINGS.registrationFee,
+    eventSchedule: setting?.eventSchedule || DEFAULT_OFFICIAL_SETTINGS.eventSchedule,
+    eventVenue: setting?.eventVenue || DEFAULT_OFFICIAL_SETTINGS.eventVenue,
+    venueCity: setting?.venueCity || DEFAULT_OFFICIAL_SETTINGS.venueCity,
+    venueAddress: setting?.venueAddress || DEFAULT_OFFICIAL_SETTINGS.venueAddress,
+    dateInstructions: setting?.dateInstructions || DEFAULT_OFFICIAL_SETTINGS.dateInstructions,
+    venueInstructions: setting?.venueInstructions || DEFAULT_OFFICIAL_SETTINGS.venueInstructions,
+    grandFinaleTime: setting?.grandFinaleTime || DEFAULT_OFFICIAL_SETTINGS.grandFinaleTime,
+    auditionTime: setting?.auditionTime || DEFAULT_OFFICIAL_SETTINGS.auditionTime,
+    whatsappContact: setting?.whatsappContact || DEFAULT_OFFICIAL_SETTINGS.whatsappContact,
+    officialInstagram: setting?.officialInstagram || DEFAULT_OFFICIAL_SETTINGS.officialInstagram,
+    officialTiktok: setting?.officialTiktok || DEFAULT_OFFICIAL_SETTINGS.officialTiktok,
+    officialFacebook: setting?.officialFacebook || DEFAULT_OFFICIAL_SETTINGS.officialFacebook,
+    officialYoutube: setting?.officialYoutube || DEFAULT_OFFICIAL_SETTINGS.officialYoutube,
+    requiredHashtags: setting?.requiredHashtags || DEFAULT_OFFICIAL_SETTINGS.requiredHashtags,
+    videoDuration: setting?.videoDuration || DEFAULT_OFFICIAL_SETTINGS.videoDuration,
+    videoGuidelines: setting?.videoGuidelines || DEFAULT_OFFICIAL_SETTINGS.videoGuidelines,
+    videoRequirements: setting?.videoRequirements || DEFAULT_OFFICIAL_SETTINGS.videoRequirements,
+    videoSubmissionMethod: setting?.videoSubmissionMethod || DEFAULT_OFFICIAL_SETTINGS.videoSubmissionMethod,
+    applicantInstructions: setting?.applicantInstructions || DEFAULT_OFFICIAL_SETTINGS.applicantInstructions,
+    homepageIntroText: setting?.homepageIntroText || DEFAULT_OFFICIAL_SETTINGS.homepageIntroText,
+    competitionHighlightsJson: setting?.competitionHighlightsJson || DEFAULT_OFFICIAL_SETTINGS.competitionHighlightsJson,
+    contactInfoJson: setting?.contactInfoJson || DEFAULT_OFFICIAL_SETTINGS.contactInfoJson,
+    prizesJson: setting?.prizesJson || DEFAULT_OFFICIAL_SETTINGS.prizesJson,
+    faqsJson: setting?.faqsJson || DEFAULT_OFFICIAL_SETTINGS.faqsJson,
+  };
+
+  return { success: true, setting: mergedSetting };
 }
 
 export async function updateSiteSettingsAction(data: {
@@ -115,6 +185,46 @@ export async function updateSiteSettingsAction(data: {
   paymentProviderName?: string | null;
   paymentInstructions?: string | null;
   paymentReferenceInstructions?: string | null;
+  // Wallet & Bank Configuration
+  enableWalletPayment?: boolean;
+  walletProviderName?: string | null;
+  walletId?: string | null;
+  walletBeneficiaryName?: string | null;
+  walletInstructions?: string | null;
+  walletReferenceInstructions?: string | null;
+  enableBankPayment?: boolean;
+  bankName?: string | null;
+  bankBranch?: string | null;
+  bankBeneficiaryName?: string | null;
+  bankAccountNumber?: string | null;
+  bankInstructions?: string | null;
+  bankReferenceInstructions?: string | null;
+  // Competition Details & Links
+  shortIntro?: string | null;
+  fullDescription?: string | null;
+  officialFacebook?: string | null;
+  officialYoutube?: string | null;
+  // Dates & Venue
+  grandFinaleDate?: Date | string | null;
+  grandFinaleTime?: string | null;
+  auditionDate?: Date | string | null;
+  auditionTime?: string | null;
+  dateInstructions?: string | null;
+  venueAddress?: string | null;
+  venueCity?: string | null;
+  venueDirections?: string | null;
+  venueInstructions?: string | null;
+  // Audition Guidelines
+  videoRequirements?: string | null;
+  videoDuration?: string | null;
+  videoSubmissionDeadline?: Date | string | null;
+  videoSubmissionMethod?: string | null;
+  applicantInstructions?: string | null;
+  // Public Modules
+  homepageIntroText?: string | null;
+  competitionHighlightsJson?: any;
+  importantNoticesJson?: any;
+  contactInfoJson?: any;
   whatsappContact?: string;
   officialInstagram?: string;
   officialTiktok?: string;
@@ -147,10 +257,31 @@ export async function updateSiteSettingsAction(data: {
       ? null
       : undefined;
 
+    const finaleDate = data.grandFinaleDate
+      ? new Date(data.grandFinaleDate)
+      : data.grandFinaleDate === null
+      ? null
+      : undefined;
+
+    const audDate = data.auditionDate
+      ? new Date(data.auditionDate)
+      : data.auditionDate === null
+      ? null
+      : undefined;
+
+    const vidDeadline = data.videoSubmissionDeadline
+      ? new Date(data.videoSubmissionDeadline)
+      : data.videoSubmissionDeadline === null
+      ? null
+      : undefined;
+
     const cleanData: any = { ...data };
     if (openingDate !== undefined) cleanData.registrationOpeningDate = openingDate;
     if (closingDate !== undefined) cleanData.registrationClosingDate = closingDate;
     if (evDate !== undefined) cleanData.eventDate = evDate;
+    if (finaleDate !== undefined) cleanData.grandFinaleDate = finaleDate;
+    if (audDate !== undefined) cleanData.auditionDate = audDate;
+    if (vidDeadline !== undefined) cleanData.videoSubmissionDeadline = vidDeadline;
 
     const updated = await prisma.siteSetting.upsert({
       where: { id: "primary" },
@@ -188,8 +319,13 @@ export async function updateSiteSettingsAction(data: {
 
     revalidatePath("/");
     revalidatePath("/admin/settings");
+    revalidatePath("/admin/event-settings");
+    revalidatePath("/admin/registration-form");
     revalidatePath("/admin/dashboard");
     revalidatePath("/register");
+    revalidatePath("/faq");
+    revalidatePath("/mithila-queen");
+    revalidatePath("/contact");
     revalidatePath("/registration-status");
 
     return { success: true, setting: updated };

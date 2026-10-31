@@ -24,7 +24,7 @@ export function FieldConfigPanel({
   if (!field) {
     return (
       <div className="bg-white rounded-xl border border-stone-200/80 p-6 flex flex-col items-center justify-center text-center h-full min-h-[350px] shadow-xs">
-        <div className="w-10 h-10 rounded-lg bg-warm-ivory border border-[#B89150]/30 text-[#B89150] flex items-center justify-center mb-3">
+        <div className="w-10 h-10 rounded-lg bg-warm-ivory border border-cream-dark text-maroon flex items-center justify-center mb-3">
           <Sliders className="w-5 h-5" />
         </div>
         <p className="font-serif font-bold text-sm text-charcoal">No Question Selected</p>
@@ -84,7 +84,7 @@ export function FieldConfigPanel({
         </div>
         <div className="flex items-center gap-2">
           {field.isSystem && (
-            <span className="text-[10px] font-semibold text-[#B89150] bg-warm-ivory border border-[#B89150]/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <span className="text-[10px] font-semibold text-maroon bg-warm-ivory border border-cream-dark px-2 py-0.5 rounded-full flex items-center gap-1">
               <Lock className="w-2.5 h-2.5" />
               <span>Protected Requirement</span>
             </span>
@@ -101,8 +101,8 @@ export function FieldConfigPanel({
 
       <div className="flex-1 overflow-y-auto space-y-4 py-4 pr-1 text-xs">
         {field.isSystem && (
-          <div className="p-3 rounded-lg bg-warm-ivory border border-[#B89150]/30 text-[11px] text-stone-700 leading-relaxed flex items-start gap-2">
-            <Lock className="w-3.5 h-3.5 text-[#B89150] shrink-0 mt-0.5" />
+          <div className="p-3 rounded-lg bg-warm-ivory border border-cream-dark text-[11px] text-stone-700 leading-relaxed flex items-start gap-2">
+            <Lock className="w-3.5 h-3.5 text-maroon shrink-0 mt-0.5" />
             <div>
               <strong className="text-stone-900">Core Requirement:</strong> You can customize the visible label, helper text, and placeholders. This question cannot be deleted because it is required for candidate identity verification.
             </div>
@@ -185,7 +185,7 @@ export function FieldConfigPanel({
                 checked={field.required}
                 disabled={field.isSystem}
                 onChange={(e) => onChange({ ...field, required: e.target.checked })}
-                className="w-4 h-4 rounded text-maroon focus:ring-[#7F1D2D] cursor-pointer"
+                className="w-4 h-4 rounded text-maroon focus:ring-maroon cursor-pointer"
               />
             </label>
           </div>

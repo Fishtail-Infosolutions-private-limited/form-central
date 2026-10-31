@@ -9,7 +9,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col bg-warm-ivory text-charcoal selection:bg-maroon selection:text-[#FFFDF7]">
+    <div className="min-h-screen flex flex-col bg-warm-ivory text-charcoal selection:bg-maroon selection:text-warm-ivory">
       <PublicNavbar />
       <main className="flex-1">
         <PageTransition>{children}</PageTransition>

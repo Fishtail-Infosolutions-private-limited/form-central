@@ -99,7 +99,7 @@ export function DeleteFormCard({
                 size="sm"
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className="bg-maroon hover:bg-[#8E3B29] text-white font-bold text-xs gap-1.5 px-4 shadow-sm"
+                className="bg-maroon hover:bg-maroon-dark text-white font-bold text-xs gap-1.5 px-4 shadow-sm"
               >
                 {isDeleting ? (
                   <>

@@ -1,19 +1,12 @@
 import type { Metadata } from "next";
-import { Poppins, Playfair_Display } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 
 const poppins = Poppins({
+  subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
-  subsets: ["latin"],
   variable: "--font-poppins",
-  display: "swap",
-});
-
-const playfair = Playfair_Display({
-  weight: ["400", "500", "600", "700", "800", "900"],
-  subsets: ["latin"],
-  variable: "--font-playfair",
   display: "swap",
 });
 
@@ -37,8 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${poppins.variable} ${playfair.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans selection:bg-maroon selection:text-[#FFFDF7] bg-warm-ivory text-charcoal">
+    <html lang="en" className={`${poppins.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col font-sans selection:bg-[var(--color-brand-primary)] selection:text-white bg-[var(--color-brand-surface)] text-[var(--color-brand-text)]">
         {children}
         <Toaster richColors position="top-right" closeButton />
       </body>

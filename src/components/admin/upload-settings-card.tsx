@@ -54,7 +54,7 @@ export function UploadSettingsCard() {
           <CardTitle className="text-base font-serif font-bold text-maroon">
             Upload Limits & Media Policy
           </CardTitle>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-saffron bg-soft-cream px-2 py-0.5 rounded border border-[#B89150]/30">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-saffron bg-soft-cream px-2 py-0.5 rounded border border-cream-dark">
             Storage
           </span>
         </div>

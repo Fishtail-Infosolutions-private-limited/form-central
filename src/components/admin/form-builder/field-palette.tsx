@@ -74,7 +74,7 @@ export function FieldPalette({ onAddField }: FieldPaletteProps) {
               key={item.type}
               type="button"
               onClick={() => onAddField(item.type)}
-              className="flex items-center justify-between p-2 rounded-lg border border-stone-100 hover:border-[#B89150] hover:bg-warm-ivory text-left transition-all group w-full"
+              className="flex items-center justify-between p-2 rounded-lg border border-stone-100 hover:border-cream-dark hover:bg-warm-ivory text-left transition-all group w-full"
             >
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-6 h-6 rounded-md bg-stone-100 group-hover:bg-maroon group-hover:text-white text-stone-600 flex items-center justify-center shrink-0 transition-colors">

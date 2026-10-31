@@ -405,8 +405,12 @@ export async function closeFormAction(
       },
     });
 
+    revalidatePath("/admin/registration-form");
     revalidatePath(`/admin/forms/${formId}`);
+    revalidatePath(`/admin/forms/${formId}/builder`);
     revalidatePath("/admin/forms");
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/register");
     revalidatePath(`/register/${form.slug}`);
     return { success: true };
   } catch (err: unknown) {
@@ -438,8 +442,12 @@ export async function reopenFormAction(
       },
     });
 
+    revalidatePath("/admin/registration-form");
     revalidatePath(`/admin/forms/${formId}`);
+    revalidatePath(`/admin/forms/${formId}/builder`);
     revalidatePath("/admin/forms");
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/register");
     revalidatePath(`/register/${form.slug}`);
     return { success: true };
   } catch (err: unknown) {
@@ -490,14 +498,26 @@ export async function saveFormSchemaAction(formId: string, schema: FormSchemaDef
     });
   }
 
+  // If appearance config exists in schema, update form record
+  if (schema.appearance) {
+    await prisma.registrationForm.update({
+      where: { id: formId },
+      data: {
+        appearanceJson: schema.appearance as any,
+      },
+    });
+  }
+
+  revalidatePath(`/admin/registration-form`);
   revalidatePath(`/admin/forms/${formId}/builder`);
+  revalidatePath(`/admin/forms`);
   return { success: true };
 }
 
 export async function publishFormAction(
   formId: string,
   schema?: FormSchemaDefinition
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; error?: string; errors?: string[] }> {
   const admin = await requireAdmin();
 
   const form = await prisma.registrationForm.findUnique({
@@ -511,6 +531,89 @@ export async function publishFormAction(
   });
 
   if (!form) return { success: false, error: "Form not found" };
+
+  const targetSchema = schema || (form.versions[0]?.schema as unknown as FormSchemaDefinition) || getInitialFormSchema();
+
+  // 1. Validate mandatory Step 1 fields
+  const step1 = targetSchema.steps?.[0];
+  if (!step1) {
+    return {
+      success: false,
+      error: "The form must contain at least one step.",
+      errors: ["No steps configured in the registration form."],
+    };
+  }
+
+  const hasFullName = step1.fields?.some((f) => f.fieldKey === "fullName" && f.required);
+  const hasEmail = step1.fields?.some((f) => f.fieldKey === "email" && f.required);
+  const hasPhone = step1.fields?.some((f) => f.fieldKey === "phone" && f.required);
+
+  if (!hasFullName || !hasEmail || !hasPhone) {
+    return {
+      success: false,
+      error: "Publication blocked: Step 1 must contain mandatory identity fields: Full Name, Email Address, and Phone Number (all required).",
+      errors: [
+        "Step 1 identity fields (Full Name, Email Address, Phone Number) are required for OTP verification.",
+      ],
+    };
+  }
+
+  // 2. Validate official Payment QR is configured in SiteSettings
+  const siteSetting = await prisma.siteSetting.findUnique({
+    where: { id: "primary" },
+  });
+
+  const qrUrl = siteSetting?.paymentQrCodeUrl;
+  const isDummyQr = qrUrl === "/assets/brand/origin-foundation-qr.png";
+  if (!qrUrl || qrUrl.trim() === "" || isDummyQr) {
+    return {
+      success: false,
+      error: "Publication blocked: Official merchant payment QR code has not been uploaded. Please upload your merchant payment QR code under Payment & Fee Settings before publishing.",
+      errors: [
+        "Payment QR Code: No merchant payment QR code uploaded. Upload a verified payment QR image before publishing.",
+      ],
+    };
+  }
+
+  // 3. Validate Start Opening Date & Time and Availability Timeline
+  const openingDate = siteSetting?.registrationOpeningDate || form.opensAt;
+  if (!openingDate) {
+    return {
+      success: false,
+      error: "Publication blocked: Registration Start Opening Date & Time must be configured before publishing. Please set the opening schedule under Registration Availability.",
+      errors: [
+        "Opening Schedule: Start opening date & time is missing. Please configure when registration officially opens.",
+      ],
+    };
+  }
+
+  const closingDate = siteSetting?.registrationClosingDate || form.closesAt;
+  if (closingDate && new Date(closingDate) <= new Date(openingDate)) {
+    return {
+      success: false,
+      error: "Publication blocked: Registration closing date & time must be strictly after the start opening date & time.",
+      errors: [
+        "Closing Deadline: The deadline cannot be earlier than or equal to the registration opening date.",
+      ],
+    };
+  }
+
+  // 4. Check for duplicate internal field keys
+  const allKeys = targetSchema.steps.flatMap((s) => s.fields.map((f) => f.fieldKey));
+  const seen = new Set<string>();
+  const duplicates = new Set<string>();
+  for (const k of allKeys) {
+    if (seen.has(k)) duplicates.add(k);
+    seen.add(k);
+  }
+
+  if (duplicates.size > 0) {
+    return {
+      success: false,
+      error: `Publication blocked: Duplicate internal field keys detected: ${Array.from(duplicates).join(", ")}. Each question must have a unique identifier.`,
+      errors: Array.from(duplicates).map((k) => `Question field key "${k}" is duplicated across steps.`),
+    };
+  }
 
   let versionToPublish = form.versions[0];
 
@@ -551,6 +654,7 @@ export async function publishFormAction(
     data: {
       status: FormStatus.PUBLISHED,
       publishedVersionId: versionToPublish.id,
+      appearanceJson: targetSchema.appearance ? (targetSchema.appearance as any) : undefined,
     },
   });
 
@@ -565,10 +669,12 @@ export async function publishFormAction(
     },
   });
 
+  revalidatePath("/admin/registration-form");
   revalidatePath(`/admin/forms/${formId}`);
   revalidatePath(`/admin/forms/${formId}/builder`);
   revalidatePath("/admin/forms");
   revalidatePath("/admin/dashboard");
+  revalidatePath("/register");
   revalidatePath(`/register/${form.slug}`);
 
   return { success: true };
@@ -597,8 +703,12 @@ export async function unpublishFormAction(
       },
     });
 
+    revalidatePath("/admin/registration-form");
     revalidatePath(`/admin/forms/${formId}`);
+    revalidatePath(`/admin/forms/${formId}/builder`);
     revalidatePath("/admin/forms");
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/register");
     revalidatePath(`/register/${form.slug}`);
     return { success: true };
   } catch (err: unknown) {

@@ -30,8 +30,8 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
       width: 400,
       margin: 2,
       color: {
-        dark: "#292524",
-        light: "#FFFFFF",
+        dark: "#292824",
+        light: "#FFFEFC",
       },
       errorCorrectionLevel: "H",
     })
@@ -65,8 +65,8 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
         width: 800,
         margin: 2,
         color: {
-          dark: "#292524",
-          light: "#FFFFFF",
+          dark: "#292824",
+          light: "#FFFEFC",
         },
         errorCorrectionLevel: "H",
       });
@@ -91,16 +91,16 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
         throw new Error("Unable to create canvas rendering context");
       }
 
-      // Background: Pure White
-      ctx.fillStyle = "#FFFFFF";
+      // Background: Warm White
+      ctx.fillStyle = "#FFFEFC";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Top Header Banner
-      ctx.fillStyle = "#7F1D2D";
+      ctx.fillStyle = "#5C5751";
       ctx.fillRect(0, 0, canvas.width, 100);
 
       // App / Event System Label
-      ctx.fillStyle = "#F7F1E5";
+      ctx.fillStyle = "#FFFEFC";
       ctx.font = "bold 26px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
       ctx.textAlign = "center";
       ctx.fillText("THE ORIGIN FOUNDATION • OFFICIAL COMPETITION REGISTRATION", 500, 60);
@@ -112,12 +112,12 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
       ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
 
       // Border outline around QR code
-      ctx.strokeStyle = "#EADBCE";
+      ctx.strokeStyle = "#DCD8D1";
       ctx.lineWidth = 3;
       ctx.strokeRect(qrX, qrY, qrSize, qrSize);
 
       // Event / Form Name below QR (with multi-line wrap support)
-      ctx.fillStyle = "#7F1D2D";
+      ctx.fillStyle = "#292824";
       ctx.font = "bold 42px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
       ctx.textAlign = "center";
 
@@ -141,19 +141,19 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
 
       // Instructions Subtitle
       yPos += 48;
-      ctx.fillStyle = "#292524";
+      ctx.fillStyle = "#8A8580";
       ctx.font = "500 24px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
       ctx.fillText("Point your phone camera to register online • Janakpur Dham, Nepal", 500, yPos);
 
       // Footer Box with Public URL
       yPos += 46;
-      ctx.fillStyle = "#F7F1E5";
+      ctx.fillStyle = "#F3F1ED";
       ctx.fillRect(80, yPos, 840, 64);
-      ctx.strokeStyle = "#EADBCE";
+      ctx.strokeStyle = "#DCD8D1";
       ctx.lineWidth = 2;
       ctx.strokeRect(80, yPos, 840, 64);
 
-      ctx.fillStyle = "#D97706";
+      ctx.fillStyle = "#5C5751";
       ctx.font = "bold 22px monospace";
       ctx.fillText(registrationUrl, 500, yPos + 40);
 
@@ -205,7 +205,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
             </div>
           </div>
 
-          <span className="text-[10px] font-semibold text-[#B89150] bg-white border border-[#B89150]/30 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+          <span className="text-[10px] font-semibold text-saffron bg-white border border-cream-dark px-2.5 py-0.5 rounded-full uppercase tracking-wider">
             Ready to Print
           </span>
         </div>
@@ -275,7 +275,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
               />
             ) : (
               <div className="flex flex-col items-center justify-center text-stone-400 gap-1">
-                <Loader2 className="w-5 h-5 animate-spin text-[#B89150]" />
+                <Loader2 className="w-5 h-5 animate-spin text-saffron" />
                 <span className="text-[10px]">Generating...</span>
               </div>
             )}
@@ -295,7 +295,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
                 type="button"
                 disabled={!qrDataUrl || isDownloading}
                 onClick={handleDownloadJpg}
-                className="w-full sm:w-auto h-9 text-xs bg-maroon hover:bg-[#5B131E] text-white font-medium gap-2 px-4 shadow-xs"
+                className="w-full sm:w-auto h-9 text-xs bg-maroon hover:bg-maroon-dark text-white font-medium gap-2 px-4 shadow-xs"
               >
                 {isDownloading ? (
                   <>

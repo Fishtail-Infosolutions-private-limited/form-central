@@ -53,14 +53,31 @@ export interface FormFieldDefinition {
   condition?: FieldCondition;
 }
 
+export interface FormAppearanceConfig {
+  formTitle?: string;
+  mainHeading?: string;
+  shortDescription?: string;
+  welcomeMessage?: string;
+  instructionsBefore?: string;
+  logoUrl?: string;
+  headerImageUrl?: string;
+  introImageUrl?: string;
+  textBeforeFirstStep?: string;
+  footerInformation?: string;
+  submitButtonText?: string;
+  successMessage?: string;
+}
+
 export interface FormStepDefinition {
   id: string;
   title: string;
   description?: string;
   order: number;
+  isPaymentStep?: boolean;
   fields: FormFieldDefinition[];
 }
 
 export interface FormSchemaDefinition {
   steps: FormStepDefinition[];
+  appearance?: FormAppearanceConfig;
 }

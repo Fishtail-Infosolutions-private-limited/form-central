@@ -161,7 +161,7 @@ export function FormPreview({
               <Button
                 size="sm"
                 onClick={onClose}
-                className="bg-maroon hover:bg-[#8F3E2C] text-white text-xs h-9 px-4 font-bold"
+                className="bg-maroon hover:bg-maroon-dark text-white text-xs h-9 px-4 font-bold"
               >
                 Exit Preview
               </Button>
@@ -296,7 +296,7 @@ export function FormPreview({
               <Button
                 size="sm"
                 onClick={() => setCurrentStepIndex((i) => i + 1)}
-                className="bg-maroon hover:bg-[#5B131E] text-white text-xs gap-1 font-semibold"
+                className="bg-maroon hover:bg-maroon-dark text-white text-xs gap-1 font-semibold"
               >
                 <span>Next Step</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -308,7 +308,7 @@ export function FormPreview({
                   setIsSubmitted(true);
                   toast.success("Simulation Complete: All form fields validated!");
                 }}
-                className="bg-maroon hover:bg-[#5B131E] text-white text-xs gap-1 font-bold shadow-xs"
+                className="bg-maroon hover:bg-maroon-dark text-white text-xs gap-1 font-bold shadow-xs"
               >
                 <Check className="w-3.5 h-3.5" />
                 <span>Complete Registration</span>

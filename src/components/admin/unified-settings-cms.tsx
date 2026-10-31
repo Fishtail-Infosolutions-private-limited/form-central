@@ -650,17 +650,6 @@ export function UnifiedSettingsCMS({
                       <span>{isUploadingQr ? "Uploading..." : "Upload New QR Code"}</span>
                     </div>
                   </label>
-                  {paymentQrUrl && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setPaymentQrUrl("/assets/brand/origin-foundation-qr.png")}
-                      className="h-8 text-xs border-cream-dark text-maroon"
-                    >
-                      Reset to Default
-                    </Button>
-                  )}
                 </div>
                 <p className="text-[11px] text-zinc-500 font-mono truncate max-w-md">
                   Active URL: {paymentQrUrl}

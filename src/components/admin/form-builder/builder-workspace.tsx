@@ -435,8 +435,8 @@ export function BuilderWorkspace({
       {/* Workspace Sub-Header */}
       <div className="bg-white p-4 rounded-xl border border-stone-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-warm-ivory border border-[#B89150]/30 text-[#B89150] flex items-center justify-center shrink-0 shadow-2xs">
-            <Crown className="w-5 h-5 text-[#B89150]" />
+          <div className="w-9 h-9 rounded-lg bg-warm-ivory border border-cream-dark text-maroon flex items-center justify-center shrink-0 shadow-2xs">
+            <Crown className="w-5 h-5 text-saffron" />
           </div>
           <div>
             <div className="flex items-center gap-2">
@@ -482,7 +482,7 @@ export function BuilderWorkspace({
             onClick={() => setIsPreviewOpen(true)}
             className="text-xs h-8 font-medium gap-1.5 border-stone-200 text-stone-700 hover:bg-soft-cream"
           >
-            <Eye className="w-3.5 h-3.5 text-[#B89150]" />
+            <Eye className="w-3.5 h-3.5 text-maroon" />
             <span>Full Form Preview</span>
           </Button>
 
@@ -495,9 +495,9 @@ export function BuilderWorkspace({
             className="text-xs h-8 font-medium gap-1.5 border-stone-200 text-stone-700 hover:bg-soft-cream"
           >
             {isSaving ? (
-              <Loader2 className="w-3 h-3 animate-spin text-[#B89150]" />
+              <Loader2 className="w-3 h-3 animate-spin text-maroon" />
             ) : (
-              <Save className="w-3.5 h-3.5 text-[#B89150]" />
+              <Save className="w-3.5 h-3.5 text-maroon" />
             )}
             <span>Save Draft</span>
           </Button>
@@ -507,7 +507,7 @@ export function BuilderWorkspace({
             size="sm"
             disabled={isPublishing}
             onClick={handlePublish}
-            className="text-xs h-8 font-semibold gap-1.5 bg-maroon hover:bg-[#5B131E] text-white shadow-xs"
+            className="text-xs h-8 font-semibold gap-1.5 bg-maroon hover:bg-maroon-dark text-white shadow-xs"
           >
             {isPublishing ? (
               <Loader2 className="w-3 h-3 animate-spin" />
@@ -521,7 +521,7 @@ export function BuilderWorkspace({
 
       {/* Field Palette Popout Tray */}
       {isPaletteOpen && (
-        <div className="bg-white p-4 rounded-xl border border-[#B89150]/30 shadow-sm animate-in fade-in slide-in-from-top-2">
+        <div className="bg-white p-4 rounded-xl border border-cream-dark shadow-sm animate-in fade-in slide-in-from-top-2">
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
             <div>
               <h3 className="font-serif font-bold text-xs uppercase tracking-wider text-charcoal">
@@ -601,7 +601,7 @@ export function BuilderWorkspace({
             <div className="bg-white rounded-xl border border-stone-200/80 p-6 h-full flex flex-col justify-between overflow-y-auto shadow-xs">
               <div className="space-y-4">
                 <div className="border-b border-stone-100 pb-3">
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-[#B89150]">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-maroon">
                     Step Preview &bull; Step {activeStepIndex + 1}
                   </span>
                   <h3 className="font-serif font-bold text-lg text-charcoal">
@@ -619,7 +619,7 @@ export function BuilderWorkspace({
                     <div
                       key={f.id}
                       onClick={() => setSelectedFieldId(f.id)}
-                      className="p-3.5 rounded-lg border border-stone-200/80 bg-warm-ivory/50 hover:border-[#B89150] transition-colors cursor-pointer group"
+                      className="p-3.5 rounded-lg border border-stone-200/80 bg-warm-ivory/50 hover:border-maroon transition-colors cursor-pointer group"
                     >
                       <div className="flex items-center justify-between mb-1">
                         <label className="text-xs font-semibold text-stone-800 flex items-center gap-1.5">
@@ -666,18 +666,18 @@ export function BuilderWorkspace({
         <div
           role="alert"
           aria-live="assertive"
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 w-[92vw] max-w-lg bg-maroon text-white rounded-lg shadow-2xl border border-antique-gold/40 overflow-hidden"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 w-[92vw] max-w-lg bg-maroon text-white rounded-lg shadow-2xl border border-cream-dark overflow-hidden"
         >
           <div className="p-3 sm:p-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded bg-maroon-dark border border-antique-gold/30 flex items-center justify-center shrink-0 text-saffron">
+              <div className="w-8 h-8 rounded bg-maroon-dark border border-cream-dark/30 flex items-center justify-center shrink-0 text-saffron">
                 <RotateCcw className="w-4 h-4" />
               </div>
               <div className="min-w-0">
                 <div className="text-xs font-bold text-white truncate">
                   Deleted &ldquo;{deletedStepSnapshot.step.title}&rdquo;
                 </div>
-                <div className="text-[11px] text-[#E2E8F0]/70 flex items-center gap-1.5">
+                <div className="text-[11px] text-warm-ivory/80 flex items-center gap-1.5">
                   <span>
                     {deletedStepSnapshot.step.fields.length}{" "}
                     {deletedStepSnapshot.step.fields.length === 1 ? "question" : "questions"}
@@ -695,11 +695,11 @@ export function BuilderWorkspace({
                 type="button"
                 size="sm"
                 onClick={() => handleUndoStep()}
-                className="h-8 px-3 text-xs font-bold bg-maroon hover:bg-[#8F3E2C] text-white gap-1.5 shadow-xs"
+                className="h-8 px-3 text-xs font-bold bg-maroon hover:bg-maroon-dark text-white gap-1.5 shadow-xs"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Undo</span>
-                <span className="bg-[#783323] px-1.5 py-0.5 rounded text-[10px] tabular-nums font-mono">
+                <span className="bg-maroon-dark px-1.5 py-0.5 rounded text-[10px] tabular-nums font-mono">
                   {undoSecondsLeft}s
                 </span>
               </Button>

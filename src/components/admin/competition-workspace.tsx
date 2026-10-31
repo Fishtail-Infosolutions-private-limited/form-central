@@ -301,7 +301,7 @@ export function CompetitionWorkspace({
                   : "bg-white text-stone-700 hover:bg-soft-cream/70 hover:text-stone-900 border border-stone-200/80"
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#F7F1E5]" : "text-saffron"}`} />
+              <Icon className={`w-3.5 h-3.5 ${isActive ? "text-warm-ivory" : "text-saffron"}`} />
               <span>{tab.label}</span>
             </button>
           );
@@ -340,7 +340,7 @@ export function CompetitionWorkspace({
             <Button
               onClick={() => handleSaveSettings("Payment Settings")}
               disabled={isSaving}
-              className="gap-2 bg-maroon hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
+              className="gap-2 bg-maroon hover:bg-maroon-dark text-white text-xs h-9 px-4 font-medium"
             >
               {isSaving ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -387,7 +387,7 @@ export function CompetitionWorkspace({
                       disabled={isUploadingQr}
                       className="hidden"
                     />
-                    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-maroon text-white text-xs font-medium hover:bg-[#5B131E] transition-colors">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-maroon text-white text-xs font-medium hover:bg-maroon-dark transition-colors">
                       {isUploadingQr ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
                       ) : (
@@ -396,20 +396,9 @@ export function CompetitionWorkspace({
                       <span>{isUploadingQr ? "Uploading..." : "Upload New QR Image"}</span>
                     </div>
                   </label>
-                  {paymentQrUrl && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setPaymentQrUrl("/assets/brand/origin-foundation-qr.png")}
-                      className="h-8 text-xs border-stone-200 text-stone-700 hover:bg-stone-50"
-                    >
-                      Reset to Default QR
-                    </Button>
-                  )}
                 </div>
                 <p className="text-[11px] text-stone-400 font-mono truncate max-w-md">
-                  Active Asset: {paymentQrUrl}
+                  Active Asset: {paymentQrUrl || "None"}
                 </p>
               </div>
             </div>
@@ -425,7 +414,7 @@ export function CompetitionWorkspace({
                     step="1"
                     value={regFee}
                     onChange={(e) => setRegFee(e.target.value)}
-                    className="h-10 text-xs border-stone-200 bg-white font-mono font-bold max-w-xs focus:ring-[#7F1D2D]"
+                    className="h-10 text-xs border-stone-200 bg-white font-mono font-bold max-w-xs focus:ring-maroon"
                     placeholder="399"
                   />
                   <span className="text-[11px] text-stone-500">
@@ -498,19 +487,6 @@ export function CompetitionWorkspace({
                 className="text-xs border-stone-200 bg-stone-50"
               />
             </div>
-
-            {/* Verification Notice */}
-            <div className="p-4 rounded-lg bg-warm-ivory border border-[#B89150]/30 text-xs text-stone-700 flex items-start gap-3">
-              <ShieldCheck className="w-5 h-5 text-[#B89150] shrink-0 mt-0.5" />
-              <div className="space-y-1">
-                <div className="font-semibold text-stone-800">
-                  Private Screenshot Storage & Manual Verification
-                </div>
-                <p className="text-[11px] text-stone-600 leading-relaxed">
-                  Participants upload transaction receipts and payment screenshots securely. All entries are manually reviewed and verified by administrators in the Applications portal.
-                </p>
-              </div>
-            </div>
           </CardContent>
         </Card>
       )}
@@ -530,7 +506,7 @@ export function CompetitionWorkspace({
             <Button
               onClick={() => handleSaveSettings("Schedule")}
               disabled={isSaving}
-              className="gap-2 bg-maroon hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
+              className="gap-2 bg-maroon hover:bg-maroon-dark text-white text-xs h-9 px-4 font-medium"
             >
               {isSaving ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -619,7 +595,7 @@ export function CompetitionWorkspace({
             <Button
               onClick={() => handleSaveSettings("Competition Information")}
               disabled={isSaving}
-              className="gap-2 bg-maroon hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
+              className="gap-2 bg-maroon hover:bg-maroon-dark text-white text-xs h-9 px-4 font-medium"
             >
               {isSaving ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -700,7 +676,7 @@ export function CompetitionWorkspace({
                 {faqs.map((faq, idx) => (
                   <div key={idx} className="p-4 rounded-xl border border-stone-200 bg-warm-ivory space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-semibold text-[#B89150] uppercase tracking-wider">
+                      <span className="text-[10px] font-semibold text-saffron uppercase tracking-wider">
                         Question #{idx + 1}
                       </span>
                       {faqs.length > 1 && (
@@ -764,7 +740,7 @@ export function CompetitionWorkspace({
               </div>
 
               <Link href="/register/mithila-queen" target="_blank">
-                <Button className="w-full text-xs h-9 bg-maroon hover:bg-[#5B131E] text-white font-medium gap-2 shadow-xs">
+                <Button className="w-full text-xs h-9 bg-maroon hover:bg-maroon-dark text-white font-medium gap-2 shadow-xs">
                   <span>Open Registration Form in New Tab</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </Button>
