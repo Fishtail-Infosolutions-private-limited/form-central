@@ -180,44 +180,8 @@ export default async function RegisterPage() {
   }
 
   // 3. Active Registration Form (Published and Open)
-  const appearance = (form?.appearanceJson as FormAppearanceConfig) || {};
-  const formTitle = appearance.formTitle || "Mithila Queen Registration";
-  const mainHeading = appearance.mainHeading || "Mithila Queen Registration";
-  const description =
-    appearance.shortDescription ||
-    "Celebrating Mithila's Culture, Confidence & Talent. Complete the online application below to register your candidacy.";
-
   return (
-    <div className="py-10 sm:py-16 space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Editorial Header */}
-      <div className="max-w-2xl mx-auto text-center space-y-3">
-        {appearance.logoUrl ? (
-          <div className="w-16 h-16 mx-auto rounded-xl overflow-hidden border border-[#DCE5ED] bg-white shadow-xs p-1">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={appearance.logoUrl} alt="Logo" className="w-full h-full object-contain" />
-          </div>
-        ) : (
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#F4F7FA] border border-[#DCE5ED] text-[#183153] text-xs font-semibold shadow-xs">
-            <MithilaHeritageMandala className="w-3.5 h-3.5 text-[#356FA8]" />
-            <span>The Origin Foundation &bull; Janakpur Dham</span>
-          </div>
-        )}
-
-        <h1 className="text-3xl sm:text-5xl font-bold text-[#263238] tracking-tight">
-          {mainHeading}
-        </h1>
-
-        <p className="text-xs sm:text-sm text-[#546E7A] leading-relaxed max-w-xl mx-auto">
-          {description}
-        </p>
-
-        {appearance.instructionsBefore && (
-          <div className="p-3.5 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] text-xs text-[#263238] text-left max-w-xl mx-auto mt-2">
-            <p className="whitespace-pre-line">{appearance.instructionsBefore}</p>
-          </div>
-        )}
-      </div>
-
+    <div className="py-8 sm:py-12 max-w-4xl mx-auto px-4 sm:px-6">
       {/* Application Registration Wizard */}
       {(() => {
         const latestSchema = form.versions?.[0]?.schema as any;

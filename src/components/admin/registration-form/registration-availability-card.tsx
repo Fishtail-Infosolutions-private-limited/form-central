@@ -129,21 +129,27 @@ export function RegistrationAvailabilityCard({
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold text-[#263238]">
-              {isOpen ? "Accepting Submissions" : "Closed"}
-            </span>
+            {isOpen ? (
+              <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                Accepting Submissions
+              </span>
+            ) : (
+              <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                Closed
+              </span>
+            )}
             <button
               type="button"
               role="switch"
               aria-checked={isOpen}
               onClick={() => setIsOpen(!isOpen)}
-              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
-                isOpen ? "bg-dark-taupe" : "bg-warm-stone"
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full p-0.5 border transition-colors duration-200 ease-in-out focus:outline-none ${
+                isOpen ? "bg-[#183153] border-[#183153]" : "bg-slate-300 border-slate-300"
               }`}
             >
               <span
-                className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                  isOpen ? "translate-x-4" : "translate-x-0"
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                  isOpen ? "translate-x-5" : "translate-x-0"
                 }`}
               />
             </button>
@@ -152,9 +158,9 @@ export function RegistrationAvailabilityCard({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <Label className="text-xs font-semibold text-[#263238] flex items-center justify-between">
+            <Label className="text-xs font-semibold text-[#183153] flex items-center justify-between">
               <span>Opening Date &amp; Time</span>
-              <span className="text-[10px] text-taupe-grey">Nepal Time (UTC+05:45)</span>
+              <span className="text-[10px] text-[#546E7A]">Nepal Time (UTC+05:45)</span>
             </Label>
             <Input
               type="datetime-local"
@@ -162,15 +168,15 @@ export function RegistrationAvailabilityCard({
               onChange={(e) => setOpenDate(e.target.value)}
               className="h-9 text-xs border-[#DCE5ED] bg-white font-mono"
             />
-            <p className="text-[11px] text-taupe-grey">
+            <p className="text-[11px] text-[#546E7A]">
               Before this date, prospective participants cannot submit registration.
             </p>
           </div>
 
           <div className="space-y-1.5">
-            <Label className="text-xs font-semibold text-[#263238] flex items-center justify-between">
+            <Label className="text-xs font-semibold text-[#183153] flex items-center justify-between">
               <span>Closing Deadline</span>
-              <span className="text-[10px] text-taupe-grey">Nepal Time (UTC+05:45)</span>
+              <span className="text-[10px] text-[#546E7A]">Nepal Time (UTC+05:45)</span>
             </Label>
             <Input
               type="datetime-local"
@@ -178,15 +184,15 @@ export function RegistrationAvailabilityCard({
               onChange={(e) => setCloseDate(e.target.value)}
               className="h-9 text-xs border-[#DCE5ED] bg-white font-mono"
             />
-            <p className="text-[11px] text-taupe-grey">
+            <p className="text-[11px] text-[#546E7A]">
               Leave blank to keep registration open indefinitely until manually toggled off.
             </p>
           </div>
         </div>
 
         <div className="flex items-center justify-between pt-2 border-t border-[#DCE5ED]/50">
-          <p className="text-[11px] text-taupe-grey flex items-center gap-1.5">
-            <Info className="w-3.5 h-3.5 text-dark-taupe shrink-0" />
+          <p className="text-[11px] text-[#546E7A] flex items-center gap-1.5">
+            <Info className="w-3.5 h-3.5 text-[#356FA8] shrink-0" />
             <span>
               Existing registered candidates can continue checking application status even after closure.
             </span>
@@ -196,7 +202,7 @@ export function RegistrationAvailabilityCard({
             size="sm"
             onClick={handleSave}
             disabled={isSaving}
-            className="gap-2 bg-dark-taupe hover:bg-dark-taupe-hover text-white text-xs h-8 px-3 font-semibold shadow-2xs"
+            className="gap-2 bg-[#183153] hover:bg-[#12243D] text-white text-xs h-9 px-4 font-bold shadow-xs"
           >
             {isSaving ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />

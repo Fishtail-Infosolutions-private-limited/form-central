@@ -186,18 +186,18 @@ export function PaymentFeeSettings({
       {/* Overview & Save Action Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-xl border border-[#DCE5ED] bg-white shadow-xs">
         <div>
-          <h2 className="text-base font-bold text-[#263238] flex items-center gap-2">
-            <CreditCard className="w-4 h-4 text-dark-taupe" />
+          <h2 className="text-base font-bold text-[#183153] flex items-center gap-2">
+            <CreditCard className="w-4 h-4 text-[#356FA8]" />
             <span>Payment &amp; Fee Configuration</span>
           </h2>
-          <p className="text-xs text-taupe-grey mt-0.5">
+          <p className="text-xs text-[#546E7A] mt-0.5">
             Configure the official candidate registration fee, mandatory payment QR code, and optional wallet/bank details.
           </p>
         </div>
         <Button
           onClick={handleSave}
           disabled={isSaving}
-          className="gap-2 bg-dark-taupe hover:bg-dark-taupe-hover text-white text-xs h-9 px-4 font-semibold shadow-xs"
+          className="gap-2 bg-[#183153] hover:bg-[#12243D] text-white text-xs h-9 px-5 font-bold shadow-sm"
         >
           {isSaving ? (
             <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -213,16 +213,16 @@ export function PaymentFeeSettings({
         <CardHeader className="pb-3 border-b border-[#DCE5ED]/50">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <CardTitle className="text-sm font-bold text-[#263238] flex items-center gap-2">
-                <QrCode className="w-4 h-4 text-dark-taupe" />
+              <CardTitle className="text-sm font-bold text-[#183153] flex items-center gap-2">
+                <QrCode className="w-4 h-4 text-[#356FA8]" />
                 <span>Official Payment QR Code</span>
               </CardTitle>
-              <CardDescription className="text-xs text-taupe-grey">
+              <CardDescription className="text-xs text-[#546E7A]">
                 Mandatory for registration publication. Displayed to candidates in Step 7 and on the payment upload screen.
               </CardDescription>
             </div>
             {hasValidQr ? (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#F4F7FA] text-[#263238] border border-warm-stone">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#F4F7FA] text-[#183153] border border-[#356FA8]">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                 <span>Valid QR Configured</span>
               </span>
@@ -238,7 +238,7 @@ export function PaymentFeeSettings({
         <CardContent className="pt-5 space-y-5">
           <div className="p-4 rounded-xl border border-[#DCE5ED] bg-[#F4F7FA] flex flex-col sm:flex-row items-center gap-6">
             {/* QR Preview Box */}
-            <div className="w-36 h-36 bg-white rounded-lg border border-warm-stone p-2 shadow-2xs flex items-center justify-center shrink-0">
+            <div className="w-36 h-36 bg-white rounded-lg border border-[#DCE5ED] p-2 shadow-xs flex items-center justify-center shrink-0">
               {hasValidQr ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -250,7 +250,7 @@ export function PaymentFeeSettings({
                 <div className="flex flex-col items-center justify-center text-center p-2 space-y-1">
                   <AlertCircle className="w-7 h-7 text-amber-500" />
                   <span className="text-[11px] font-bold text-[#263238] block leading-tight">No QR Uploaded</span>
-                  <span className="text-[9px] text-taupe-grey block leading-tight">Required to publish form</span>
+                  <span className="text-[9px] text-[#546E7A] block leading-tight">Required to publish form</span>
                 </div>
               )}
             </div>
@@ -258,7 +258,7 @@ export function PaymentFeeSettings({
             {/* Upload & Remove Controls */}
             <div className="flex-1 space-y-2 text-center sm:text-left min-w-0">
               <h4 className="text-xs font-bold text-[#263238]">Official Merchant QR Image</h4>
-              <p className="text-xs text-taupe-grey leading-relaxed">
+              <p className="text-xs text-[#546E7A] leading-relaxed">
                 Upload your official Fonepay, eSewa, or bank merchant QR code image. Candidates will scan this image to pay the NPR {regFee} fee.
               </p>
               <div className="flex flex-wrap items-center gap-2.5 pt-1">
@@ -270,7 +270,7 @@ export function PaymentFeeSettings({
                     disabled={isUploadingQr}
                     className="hidden"
                   />
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-dark-taupe text-white text-xs font-semibold hover:bg-dark-taupe-hover transition-colors shadow-2xs">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#183153] hover:bg-[#12243D] text-white text-xs font-bold transition-all shadow-sm cursor-pointer">
                     {isUploadingQr ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
                     ) : (
@@ -288,14 +288,14 @@ export function PaymentFeeSettings({
                       setPaymentQrUrl("");
                       toast.info("QR code removed. Save settings to apply.");
                     }}
-                    className="h-8 text-xs border-rose-200 text-rose-700 hover:bg-rose-50 hover:text-rose-800 gap-1.5"
+                    className="h-9 text-xs border-rose-200 text-rose-700 hover:bg-rose-50 hover:text-rose-800 gap-1.5 font-semibold"
                   >
                     <Trash2 className="w-3.5 h-3.5 text-rose-600" />
                     <span>Remove QR</span>
                   </Button>
                 )}
               </div>
-              <p className="text-[11px] text-taupe-grey font-mono truncate max-w-md pt-0.5">
+              <p className="text-[11px] text-[#546E7A] font-mono truncate max-w-md pt-0.5">
                 Status: {hasValidQr ? `Uploaded (${paymentQrUrl})` : "Not uploaded (Form cannot be published)"}
               </p>
             </div>
@@ -368,31 +368,37 @@ export function PaymentFeeSettings({
         <CardHeader className="pb-3 border-b border-[#DCE5ED]/50">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <CardTitle className="text-sm font-bold text-[#263238] flex items-center gap-2">
-                <Wallet className="w-4 h-4 text-dark-taupe" />
+              <CardTitle className="text-sm font-bold text-[#183153] flex items-center gap-2">
+                <Wallet className="w-4 h-4 text-[#356FA8]" />
                 <span>Wallet Payment Details</span>
               </CardTitle>
-              <CardDescription className="text-xs text-taupe-grey">
+              <CardDescription className="text-xs text-[#546E7A]">
                 Optional digital wallet information (eSewa / Khalti / Fonepay).
               </CardDescription>
             </div>
             {/* Toggle Switch */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-taupe-grey">
-                {enableWallet ? "Enabled" : "Disabled"}
-              </span>
+            <div className="flex items-center gap-2.5">
+              {enableWallet ? (
+                <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  Enabled
+                </span>
+              ) : (
+                <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                  Disabled
+                </span>
+              )}
               <button
                 type="button"
                 role="switch"
                 aria-checked={enableWallet}
                 onClick={() => setEnableWallet(!enableWallet)}
-                className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
-                  enableWallet ? "bg-dark-taupe" : "bg-warm-stone"
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full p-0.5 border transition-colors duration-200 ease-in-out focus:outline-none ${
+                  enableWallet ? "bg-[#183153] border-[#183153]" : "bg-slate-300 border-slate-300"
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    enableWallet ? "translate-x-4" : "translate-x-0"
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                    enableWallet ? "translate-x-5" : "translate-x-0"
                   }`}
                 />
               </button>
@@ -470,31 +476,37 @@ export function PaymentFeeSettings({
         <CardHeader className="pb-3 border-b border-[#DCE5ED]/50">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <CardTitle className="text-sm font-bold text-[#263238] flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-dark-taupe" />
+              <CardTitle className="text-sm font-bold text-[#183153] flex items-center gap-2">
+                <Building2 className="w-4 h-4 text-[#356FA8]" />
                 <span>Bank Transfer Details</span>
               </CardTitle>
-              <CardDescription className="text-xs text-taupe-grey">
+              <CardDescription className="text-xs text-[#546E7A]">
                 Optional direct bank account transfer details for corporate or branch deposits.
               </CardDescription>
             </div>
             {/* Toggle Switch */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-taupe-grey">
-                {enableBank ? "Enabled" : "Disabled"}
-              </span>
+            <div className="flex items-center gap-2.5">
+              {enableBank ? (
+                <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  Enabled
+                </span>
+              ) : (
+                <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                  Disabled
+                </span>
+              )}
               <button
                 type="button"
                 role="switch"
                 aria-checked={enableBank}
                 onClick={() => setEnableBank(!enableBank)}
-                className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
-                  enableBank ? "bg-dark-taupe" : "bg-warm-stone"
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full p-0.5 border transition-colors duration-200 ease-in-out focus:outline-none ${
+                  enableBank ? "bg-[#183153] border-[#183153]" : "bg-slate-300 border-slate-300"
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    enableBank ? "translate-x-4" : "translate-x-0"
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                    enableBank ? "translate-x-5" : "translate-x-0"
                   }`}
                 />
               </button>

@@ -117,6 +117,12 @@
   --color-slate-navy: var(--color-brand-primary);
   --color-ivory: var(--color-brand-surface);
 
+  /* Admin UI component tokens (mapped to brand palette) */
+  --color-dark-taupe: #183153;
+  --color-dark-taupe-hover: #12243D;
+  --color-warm-stone: #DCE5ED;
+  --color-taupe-grey: #546E7A;
+
   --font-serif: var(--font-serif);
   --font-sans: var(--font-sans);
 }

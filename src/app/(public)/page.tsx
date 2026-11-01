@@ -263,148 +263,236 @@ export default async function HomePage() {
       )}
 
       {/* ==================================================================== */}
-      {/* 1. HERO SECTION: REFINED LIGHT TINT, SUBTLE PATTERN, CRISP READABILITY */}
+      {/* 1. HERO SECTION: BALANCED 2-COLUMN EDITORIAL, HIGH CONTRAST & SLEEK */}
       {/* ==================================================================== */}
-      <section className="relative py-16 sm:py-24 border-b border-[#DCE5ED] bg-gradient-to-b from-[#FAFBFD] via-[#F4F7FA]/75 to-[#FFFFFF] overflow-hidden">
+      <section className="relative py-12 sm:py-20 border-b border-[#DCE5ED] bg-gradient-to-b from-[#FAFBFD] via-[#F4F7FA]/60 to-[#FFFFFF] overflow-hidden">
         {/* Subtle Ambient Radial Highlight */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-15%,rgba(53,111,168,0.06),transparent_70%)] pointer-events-none" />
 
         {/* Faint Cultural Mandala Watermark */}
-        <div className="absolute -right-24 top-1/2 -translate-y-1/2 opacity-[0.035] text-[#183153] pointer-events-none hidden lg:block">
-          <MithilaHeritageMandala className="w-[520px] h-[520px]" />
+        <div className="absolute -right-16 top-1/2 -translate-y-1/2 opacity-[0.03] text-[#183153] pointer-events-none hidden xl:block">
+          <MithilaHeritageMandala className="w-[580px] h-[580px]" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl space-y-6">
-            {/* Institution Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DCE5ED] shadow-2xs text-xs font-semibold text-[#183153]">
-              <span className="w-2 h-2 rounded-full bg-[#356FA8]" />
-              <span>
-                {setting?.organizationName || "The Origin Foundation"} &bull; {setting?.location || "Janakpur Dham, Nepal"}
-              </span>
-            </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Left Column: Headlines, Context & Prominent Actions */}
+            <div className="lg:col-span-7 space-y-6">
+              {/* Institution Eyebrow Badge */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DCE5ED] shadow-2xs text-xs font-semibold text-[#183153]">
+                <span className="w-2 h-2 rounded-full bg-[#356FA8] animate-pulse" />
+                <span>
+                  {setting?.organizationName || "The Origin Foundation"} &bull; {setting?.location || "Janakpur Dham, Nepal"}
+                </span>
+              </div>
 
-            {/* Main Title & Subtitle */}
-            <div className="space-y-2">
-              <h1 className="text-4xl sm:text-6xl font-black font-sans tracking-tight text-[#183153] leading-tight">
-                {setting?.competitionName || "Mithila Queen"}
-              </h1>
-              <p className="text-xl sm:text-2xl font-serif text-[#356FA8] italic">
-                &ldquo;{setting?.competitionTagline || "Celebrating Mithila's Culture, Confidence & Talent."}&rdquo;
+              {/* Main Title & Tagline */}
+              <div className="space-y-2">
+                <h1 className="text-4xl sm:text-6xl font-black font-sans tracking-tight text-[#183153] leading-[1.1]">
+                  {setting?.competitionName || "Mithila Queen"}
+                </h1>
+                <p className="text-xl sm:text-2xl font-serif text-[#356FA8] italic">
+                  &ldquo;{setting?.competitionTagline || "Celebrating Mithila's Culture, Confidence & Talent."}&rdquo;
+                </p>
+              </div>
+
+              {/* Explanatory Paragraph */}
+              <p className="text-sm sm:text-base text-[#546E7A] leading-relaxed max-w-2xl">
+                {setting?.shortIntro ||
+                  "The Origin Foundation is a cultural platform in Janakpur Dham, Nepal. Mithila Queen is its flagship competition designed to honor regional identity, nurture public confidence, and champion the creativity of young women across Madhesh Province and Nepal."}
               </p>
-            </div>
 
-            {/* Immediate Explanation: The Origin Foundation & Mithila Queen */}
-            <p className="text-sm sm:text-base text-[#546E7A] leading-relaxed max-w-2xl">
-              {setting?.shortIntro ||
-                "The Origin Foundation is a cultural platform in Janakpur Dham, Nepal. Mithila Queen is its flagship competition designed to honor regional identity, nurture public confidence, and champion the creativity of young women across Madhesh Province and Nepal."}
-            </p>
-
-            {/* Registration Availability Banner - Dynamic Dates & Status */}
-            <div className="p-4 rounded-xl bg-white border border-[#DCE5ED] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-              <div className="flex items-center gap-2.5">
-                {regStatusVariant === "emerald" ? (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                ) : regStatusVariant === "amber" ? (
-                  <Clock className="w-4 h-4 text-amber-600 shrink-0" />
-                ) : regStatusVariant === "rose" ? (
-                  <Lock className="w-4 h-4 text-rose-600 shrink-0" />
-                ) : (
-                  <Sparkles className="w-4 h-4 text-[#356FA8] shrink-0" />
-                )}
-                <div className="text-[#263238] font-medium">
-                  <span>{regHeadline}</span>
-                  {regDeadlineText && (
-                    <span className="font-bold text-[#183153] ml-1.5 sm:inline block">
-                      &bull; {regDeadlineText}
-                    </span>
+              {/* Dynamic Registration Timeline Status Box */}
+              <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-[#DCE5ED] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  {regStatusVariant === "emerald" ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  ) : regStatusVariant === "amber" ? (
+                    <Clock className="w-4 h-4 text-amber-600 shrink-0" />
+                  ) : regStatusVariant === "rose" ? (
+                    <Lock className="w-4 h-4 text-rose-600 shrink-0" />
+                  ) : (
+                    <Sparkles className="w-4 h-4 text-[#356FA8] shrink-0" />
                   )}
+                  <div className="text-[#263238] font-medium truncate">
+                    <span className="font-semibold text-[#183153]">{regHeadline}</span>
+                    {regDeadlineText && (
+                      <span className="font-bold text-[#183153] ml-1.5 sm:inline block">
+                        &bull; {regDeadlineText}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <span
-                  className={`inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-semibold border ${
-                    regStatusVariant === "emerald"
-                      ? "bg-emerald-50 text-emerald-800 border-emerald-200"
-                      : regStatusVariant === "amber"
-                      ? "bg-amber-50 text-amber-800 border-amber-200"
-                      : regStatusVariant === "rose"
-                      ? "bg-rose-50 text-rose-800 border-rose-200"
-                      : "bg-blue-50 text-blue-800 border-blue-200"
-                  }`}
-                >
-                  {regStatusBadge}
-                </span>
-                <span className="font-mono font-bold text-[#183153] bg-[#F4F7FA] border border-[#DCE5ED] px-2.5 py-0.5 rounded">
-                  Fee: NPR {regFee}
-                </span>
-              </div>
-            </div>
 
-            {/* Action Buttons: Register Now & Check Application Status - Prominent & High Contrast */}
-            <div className="pt-4 pb-2 space-y-3">
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                <Link href="/register" className="w-full sm:w-auto">
-                  <Button className="w-full sm:w-auto bg-[#183153] hover:bg-[#12243D] text-white font-bold text-sm h-13 px-8 rounded-xl shadow-md gap-3 transition-all hover:scale-[1.01]">
-                    <span>
-                      {regStatusVariant === "amber"
-                        ? `Registration Starts ${formatNepalDateOnly(openingDate)}`
+                <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-semibold border ${
+                      regStatusVariant === "emerald"
+                        ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                        : regStatusVariant === "amber"
+                        ? "bg-amber-50 text-amber-800 border-amber-200"
                         : regStatusVariant === "rose"
-                        ? "Registrations Closed"
-                        : "Register for Mithila Queen"}
-                    </span>
-                    <span className="text-[11px] bg-white/20 text-white px-2 py-0.5 rounded-md font-mono font-bold">
-                      NPR {regFee}
-                    </span>
-                    <ArrowRight className="w-4 h-4 text-[#DCE5ED]" />
-                  </Button>
-                </Link>
-
-                <Link href="/registration-status" className="w-full sm:w-auto">
-                  <Button
-                    variant="outline"
-                    className="w-full sm:w-auto border-2 border-[#183153]/25 hover:border-[#183153] bg-white hover:bg-[#F4F7FA] text-[#183153] font-bold text-sm h-13 px-7 rounded-xl shadow-2xs gap-2.5 transition-all"
+                        ? "bg-rose-50 text-rose-800 border-rose-200"
+                        : "bg-blue-50 text-blue-800 border-blue-200"
+                    }`}
                   >
-                    <Search className="w-4 h-4 text-[#356FA8]" />
-                    <span>Check Application Status</span>
-                  </Button>
-                </Link>
+                    {regStatusBadge}
+                  </span>
+                  <span className="font-mono font-bold text-[#183153] bg-[#F4F7FA] border border-[#DCE5ED] px-2.5 py-0.5 rounded">
+                    NPR {regFee}
+                  </span>
+                </div>
               </div>
 
-              <p className="text-[11px] text-[#546E7A] flex items-center gap-2 pt-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span>Instant OTP verification &bull; Independent bank review &bull; Open to all girls of any age</span>
-              </p>
+              {/* Action Buttons: Register Now & Check Application Status */}
+              <div className="space-y-3 pt-1">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+                  <Link href="/register" className="w-full sm:w-auto">
+                    <Button className="w-full sm:w-auto bg-[#183153] hover:bg-[#12243D] text-white font-bold text-sm sm:text-base h-13 px-8 rounded-xl shadow-md gap-3 transition-all hover:scale-[1.01]">
+                      <span>
+                        {regStatusVariant === "amber"
+                          ? `Registration Starts ${formatNepalDateOnly(openingDate)}`
+                          : regStatusVariant === "rose"
+                          ? "Registrations Closed"
+                          : "Register for Mithila Queen"}
+                      </span>
+                      <span className="text-[11px] bg-white/20 text-white px-2 py-0.5 rounded-md font-mono font-bold">
+                        NPR {regFee}
+                      </span>
+                      <ArrowRight className="w-4 h-4 text-[#DCE5ED]" />
+                    </Button>
+                  </Link>
+
+                  <Link href="/registration-status" className="w-full sm:w-auto">
+                    <Button
+                      variant="outline"
+                      className="w-full sm:w-auto border-2 border-[#183153]/25 hover:border-[#183153] bg-white hover:bg-[#F4F7FA] text-[#183153] font-bold text-sm sm:text-base h-13 px-7 rounded-xl shadow-2xs gap-2.5 transition-all"
+                    >
+                      <Search className="w-4 h-4 text-[#356FA8]" />
+                      <span>Check Application Status</span>
+                    </Button>
+                  </Link>
+                </div>
+
+                <p className="text-[11px] text-[#546E7A] flex items-center gap-1.5 pt-0.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Instant 6-digit OTP verification &bull; Independent bank review &bull; Open to all girls of any age</span>
+                </p>
+              </div>
             </div>
 
-            {/* Quick Bulletin Line */}
-            <div className="pt-6 border-t border-[#DCE5ED] grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-[#546E7A]">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] flex items-center justify-center shrink-0">
-                  <Calendar className="w-4 h-4 text-[#356FA8]" />
+            {/* Right Column: Visual Event Snapshot Card */}
+            <div className="lg:col-span-5">
+              <div className="bg-white rounded-2xl p-6 sm:p-7 border border-[#DCE5ED] shadow-sm space-y-5 relative overflow-hidden">
+                {/* Accent Top Border */}
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#183153] via-[#356FA8] to-[#183153]" />
+
+                {/* Card Title & Cultural Badge */}
+                <div className="flex items-center justify-between pb-4 border-b border-[#DCE5ED]">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#F4F7FA] border border-[#356FA8] text-[#183153] flex items-center justify-center shrink-0">
+                      <Crown className="w-5 h-5 text-[#356FA8]" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-sm text-[#183153]">Mithila Queen 2026</h3>
+                      <p className="text-[11px] text-[#546E7A]">Official Cultural Competition Dossier</p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-bold text-[#183153] bg-[#F4F7FA] px-2.5 py-1 rounded-full border border-[#DCE5ED]">
+                    Janakpur Dham
+                  </span>
                 </div>
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-[#546E7A] block">Event Schedule</span>
-                  <span className="font-semibold text-[#183153]">{setting?.eventSchedule || "To Be Announced"}</span>
+
+                {/* Quick Key Facts */}
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div className="p-3 rounded-xl bg-[#F4F7FA] border border-[#DCE5ED] space-y-0.5">
+                    <span className="text-[10px] font-bold text-[#546E7A] uppercase tracking-wider block">Candidate Fee</span>
+                    <span className="font-mono font-bold text-[#183153] text-sm">NPR {regFee}</span>
+                    <span className="text-[10px] text-[#546E7A] block">Nepalese Rupees</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-[#F4F7FA] border border-[#DCE5ED] space-y-0.5">
+                    <span className="text-[10px] font-bold text-[#546E7A] uppercase tracking-wider block">Eligibility</span>
+                    <span className="font-bold text-[#183153] text-sm">Girls Only</span>
+                    <span className="text-[10px] text-[#546E7A] block">Any age &amp; background</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-[#F4F7FA] border border-[#DCE5ED] space-y-0.5">
+                    <span className="text-[10px] font-bold text-[#546E7A] uppercase tracking-wider block">Experience</span>
+                    <span className="font-bold text-[#183153] text-sm">Zero Required</span>
+                    <span className="text-[10px] text-[#546E7A] block">Beginners welcome</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-[#F4F7FA] border border-[#DCE5ED] space-y-0.5">
+                    <span className="text-[10px] font-bold text-[#546E7A] uppercase tracking-wider block">Venue</span>
+                    <span className="font-bold text-[#183153] text-sm">Janakpur Dham</span>
+                    <span className="text-[10px] text-[#546E7A] block">Madhesh Province</span>
+                  </div>
+                </div>
+
+                {/* Official Candidate Checklist */}
+                <div className="p-3.5 rounded-xl bg-white border border-[#DCE5ED] space-y-2 text-xs">
+                  <span className="font-bold text-[11px] text-[#183153] block">Candidate Entry Checklist</span>
+                  <div className="space-y-1.5 text-[#546E7A] text-[11px]">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>Online application with 6-digit email OTP verification</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>Upload official payment QR transfer receipt</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>Instant MQ-YYYY-XXXXXX reference pass generated</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Link Footer */}
+                <div className="pt-1 flex items-center justify-between text-xs border-t border-[#DCE5ED]/60 text-[#546E7A]">
+                  <Link href="/mithila-queen" className="text-[#356FA8] hover:underline font-semibold inline-flex items-center gap-1">
+                    <span>Competition Guidelines</span>
+                    <ChevronRight className="w-3 h-3" />
+                  </Link>
+                  <Link href="/registration-status" className="text-[#183153] hover:underline font-semibold inline-flex items-center gap-1">
+                    <span>Look up Status</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
                 </div>
               </div>
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] flex items-center justify-center shrink-0">
-                  <MapPin className="w-4 h-4 text-[#356FA8]" />
-                </div>
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-[#546E7A] block">Location</span>
-                  <span className="font-semibold text-[#183153]">{setting?.location || "Janakpur Dham, Nepal"}</span>
-                </div>
+            </div>
+          </div>
+
+          {/* Quick Bulletin 3-Feature Bar */}
+          <div className="pt-6 border-t border-[#DCE5ED] grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-[#546E7A]">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-white/70 border border-[#DCE5ED]/80 shadow-2xs">
+              <div className="w-9 h-9 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] flex items-center justify-center shrink-0">
+                <Calendar className="w-4 h-4 text-[#356FA8]" />
               </div>
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] flex items-center justify-center shrink-0">
-                  <ShieldCheck className="w-4 h-4 text-[#356FA8]" />
-                </div>
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-[#546E7A] block">Participation</span>
-                  <span className="font-semibold text-[#183153]">Girls Only (Any Age)</span>
-                </div>
+              <div>
+                <span className="text-[10px] uppercase font-bold text-[#546E7A] block">Event Schedule</span>
+                <span className="font-bold text-[#183153]">{setting?.eventSchedule || "Auditions & Finale TBA"}</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-white/70 border border-[#DCE5ED]/80 shadow-2xs">
+              <div className="w-9 h-9 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] flex items-center justify-center shrink-0">
+                <MapPin className="w-4 h-4 text-[#356FA8]" />
+              </div>
+              <div>
+                <span className="text-[10px] uppercase font-bold text-[#546E7A] block">Headquarters</span>
+                <span className="font-bold text-[#183153]">{setting?.location || "Janakpur Dham, Nepal"}</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-white/70 border border-[#DCE5ED]/80 shadow-2xs">
+              <div className="w-9 h-9 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] flex items-center justify-center shrink-0">
+                <Award className="w-4 h-4 text-[#356FA8]" />
+              </div>
+              <div>
+                <span className="text-[10px] uppercase font-bold text-[#546E7A] block">Flagship Awards</span>
+                <span className="font-bold text-[#183153]">{prizes?.[0]?.title ? "Crown & Prestigious Honors" : "Official Recognition"}</span>
               </div>
             </div>
           </div>

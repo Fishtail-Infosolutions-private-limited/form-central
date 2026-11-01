@@ -89,18 +89,18 @@ export function QuestionConfigDrawer({
       <div className="p-4 border-b border-[#DCE5ED] bg-[#F4F7FA] flex items-center justify-between">
         <div className="space-y-0.5 min-w-0 pr-2">
           <div className="flex items-center gap-1.5">
-            {isSystemField && <Lock className="w-3.5 h-3.5 text-dark-taupe" />}
-            <span className="text-xs font-bold text-[#263238] truncate block">
+            {isSystemField && <Lock className="w-3.5 h-3.5 text-[#356FA8]" />}
+            <span className="text-xs font-bold text-[#183153] truncate block">
               {field.label || "Untitled Question"}
             </span>
           </div>
-          <span className="text-[10px] text-taupe-grey font-medium uppercase tracking-wider block">
+          <span className="text-[10px] text-[#546E7A] font-medium uppercase tracking-wider block">
             Type: {field.type}
           </span>
         </div>
         <button
           onClick={onClose}
-          className="p-1.5 rounded-lg text-taupe-grey hover:text-[#263238] hover:bg-cream-dark/40 transition-colors"
+          className="p-1.5 rounded-lg text-[#546E7A] hover:text-[#183153] hover:bg-slate-100 transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
@@ -110,10 +110,10 @@ export function QuestionConfigDrawer({
       <div className="flex items-center border-b border-[#DCE5ED] bg-white px-3">
         <button
           onClick={() => setActiveTab("general")}
-          className={`flex items-center gap-1.5 py-2.5 px-3 text-xs font-semibold border-b-2 transition-colors ${
+          className={`flex items-center gap-1.5 py-2.5 px-3 text-xs font-bold border-b-2 transition-colors ${
             activeTab === "general"
-              ? "border-dark-taupe text-[#263238]"
-              : "border-transparent text-taupe-grey hover:text-[#263238]"
+              ? "border-[#183153] text-[#183153]"
+              : "border-transparent text-[#546E7A] hover:text-[#183153]"
           }`}
         >
           <Settings className="w-3.5 h-3.5" />
@@ -121,10 +121,10 @@ export function QuestionConfigDrawer({
         </button>
         <button
           onClick={() => setActiveTab("validation")}
-          className={`flex items-center gap-1.5 py-2.5 px-3 text-xs font-semibold border-b-2 transition-colors ${
+          className={`flex items-center gap-1.5 py-2.5 px-3 text-xs font-bold border-b-2 transition-colors ${
             activeTab === "validation"
-              ? "border-dark-taupe text-[#263238]"
-              : "border-transparent text-taupe-grey hover:text-[#263238]"
+              ? "border-[#183153] text-[#183153]"
+              : "border-transparent text-[#546E7A] hover:text-[#183153]"
           }`}
         >
           <Sliders className="w-3.5 h-3.5" />
@@ -188,8 +188,8 @@ export function QuestionConfigDrawer({
             {/* Required Toggle */}
             <div className="flex items-center justify-between p-3 rounded-lg border border-[#DCE5ED] bg-[#F4F7FA]">
               <div>
-                <span className="font-semibold text-[#263238] block">Mandatory Field</span>
-                <span className="text-[10px] text-taupe-grey">
+                <span className="font-bold text-xs text-[#183153] block">Mandatory Field</span>
+                <span className="text-[11px] text-[#546E7A]">
                   Participant must answer this question to proceed.
                 </span>
               </div>
@@ -197,13 +197,13 @@ export function QuestionConfigDrawer({
                 type="button"
                 disabled={isSystemField}
                 onClick={() => onUpdate({ ...field, required: !field.required })}
-                className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
-                  field.required ? "bg-dark-taupe" : "bg-warm-stone"
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full p-0.5 border transition-colors duration-200 ease-in-out ${
+                  field.required ? "bg-[#183153] border-[#183153]" : "bg-slate-300 border-slate-300"
                 } ${isSystemField ? "opacity-70 cursor-not-allowed" : ""}`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    field.required ? "translate-x-4" : "translate-x-0"
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                    field.required ? "translate-x-5" : "translate-x-0"
                   }`}
                 />
               </button>
@@ -452,7 +452,7 @@ export function QuestionConfigDrawer({
             type="button"
             size="sm"
             onClick={onClose}
-            className="h-8 text-xs bg-dark-taupe hover:bg-dark-taupe-hover text-white font-semibold"
+            className="h-8 text-xs bg-[#183153] hover:bg-[#12243D] text-white font-bold px-4"
           >
             Done
           </Button>

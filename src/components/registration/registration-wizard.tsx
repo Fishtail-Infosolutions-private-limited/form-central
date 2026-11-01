@@ -525,7 +525,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
         {/* Step Info Row */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-[#183153] text-[#356FA8] font-black flex items-center justify-center text-sm shadow-sm shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[#183153] text-white font-bold flex items-center justify-center text-sm shadow-sm shrink-0">
               {currentStepNumber}
             </div>
             <div>
@@ -538,7 +538,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                   {progressPercent}% Complete
                 </span>
               </div>
-              <h2 className="text-lg sm:text-xl font-extrabold text-[#183153] font-bold leading-tight mt-0.5">
+              <h2 className="text-lg sm:text-xl font-bold text-[#183153] leading-tight mt-0.5">
                 {isReviewStep ? "Review & Confirm Details" : currentStep?.title}
               </h2>
             </div>
@@ -556,7 +556,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                 </span>
               </div>
             )}
-            <div className="px-3.5 py-1.5 rounded-full bg-slate-100 border border-[#DCE5ED] text-xs font-mono font-bold text-[#183153] shrink-0">
+            <div className="px-3.5 py-1.5 rounded-full bg-[#F4F7FA] border border-[#356FA8] text-xs font-mono font-bold text-[#183153] shrink-0">
               Fee: NPR {dynamicFee}
             </div>
           </div>

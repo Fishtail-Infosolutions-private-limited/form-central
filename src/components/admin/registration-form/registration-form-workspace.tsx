@@ -454,18 +454,36 @@ export function RegistrationFormWorkspace({
   };
 
   // -------------------------------------------------------------
-  // SAVE DRAFT
+  // SAVE (Auto-publishes if form is already published)
   // -------------------------------------------------------------
   const handleSaveDraft = async () => {
     setIsSavingDraft(true);
     setValidationErrors([]);
     try {
       const fullSchema = getFullSchema();
-      const res = await saveFormSchemaAction(form.id, fullSchema);
-      if (res.success) {
-        toast.success("Draft saved successfully! (Not publicly live until published)");
+
+      if (isPublished) {
+        // If already published, save directly to the published version so changes go live immediately
+        const res = await publishFormAction(form.id, fullSchema);
+        if (res.success) {
+          toast.success("Changes saved and live on the registration form!");
+        } else {
+          // If publish-level validation fails (e.g. missing QR), fall back to draft save
+          const draftRes = await saveFormSchemaAction(form.id, fullSchema);
+          if (draftRes.success) {
+            toast.success("Saved as draft. Publish to make changes live.");
+          } else {
+            toast.error(draftRes.error || "Failed to save");
+          }
+        }
       } else {
-        toast.error(res.error || "Failed to save draft");
+        // Not yet published — save as draft
+        const res = await saveFormSchemaAction(form.id, fullSchema);
+        if (res.success) {
+          toast.success("Form saved successfully!");
+        } else {
+          toast.error(res.error || "Failed to save");
+        }
       }
     } catch (err: any) {
       toast.error(err.message || "An error occurred");
@@ -593,21 +611,20 @@ export function RegistrationFormWorkspace({
             <span>{viewMode === "editor" ? "Preview Form" : "Back to Editor"}</span>
           </Button>
 
-          {/* Save Draft */}
+          {/* Save Button */}
           <Button
             type="button"
-            variant="outline"
             size="sm"
             disabled={isSavingDraft || isPublishing || isUnpublishing}
             onClick={handleSaveDraft}
-            className="h-9 text-xs border-[#DCE5ED] text-[#263238] hover:bg-[#F4F7FA] gap-1.5 font-semibold"
+            className="h-9 text-xs bg-[#183153] hover:bg-[#12243D] text-white gap-1.5 font-bold shadow-xs px-4"
           >
             {isSavingDraft ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
             ) : (
-              <Save className="w-3.5 h-3.5 text-[#546E7A]" />
+              <Save className="w-3.5 h-3.5" />
             )}
-            <span>Save Draft</span>
+            <span>Save</span>
           </Button>
 
           {/* Publish / Unpublish Toggle Action */}
