@@ -47,9 +47,21 @@ import {
   QrCode,
   Building2,
   Wallet,
+  X,
+  Eye,
 } from "lucide-react";
 import { toast } from "sonner";
 import { getPublicSiteSettingsAction } from "@/server/actions/site-settings-actions";
+
+const PROVINCE_DISTRICTS: Record<string, string[]> = {
+  "Madhesh Province": ["Dhanusha", "Mahottari", "Sarlahi", "Siraha", "Saptari", "Rautahat", "Bara", "Parsa"],
+  "Bagmati Province": ["Kathmandu", "Lalitpur", "Bhaktapur", "Kavrepalanchok", "Chitwan", "Makwanpur", "Sindhuli", "Dhading", "Nuwakot", "Ramechhap", "Sindhupalchok", "Dolakha", "Rasuwa"],
+  "Koshi Province": ["Morang", "Sunsari", "Jhapa", "Udayapur", "Ilam", "Dhankuta", "Bhojpur", "Sankhuwasabha", "Solukhumbu", "Okhaldhunga", "Khotang", "Terhathum", "Panchthar", "Taplejung"],
+  "Gandaki Province": ["Kaski", "Tanahun", "Syangja", "Gorkha", "Lamjung", "Nawalpur", "Baglung", "Parbat", "Myagdi", "Manang", "Mustang"],
+  "Lumbini Province": ["Rupandehi", "Kapilvastu", "Dang", "Banke", "Bardiya", "Palpa", "Parasi", "Arghakhanchi", "Gulmi", "Pyuthan", "Rolpa", "Rukum East"],
+  "Karnali Province": ["Surkhet", "Dailekh", "Jajarkot", "Salyan", "Rukum West", "Jumla", "Kalikot", "Mugu", "Humla", "Dolpa"],
+  "Sudurpashchim Province": ["Kailali", "Kanchanpur", "Dadeldhura", "Doti", "Achham", "Baitadi", "Bajhang", "Bajura", "Darchula"],
+};
 
 interface RegistrationWizardProps {
   form: {
@@ -69,6 +81,12 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
   const [filePreviews, setFilePreviews] = useState<
     Record<string, { id?: string; name: string; size?: string; url?: string; driveId?: string }>
   >({});
+
+  // Payment Method & Lightbox State
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"qr" | "wallet" | "bank">("qr");
+  const [copiedWallet, setCopiedWallet] = useState(false);
+  const [copiedBank, setCopiedBank] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState<{ url: string; title: string } | null>(null);
 
   // OTP State
   const [otpSent, setOtpSent] = useState(false);
@@ -261,7 +279,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
           driveId: data.driveFileId,
         },
       }));
-      handleInputChange(fieldKey, data.filename || file.name);
+      handleInputChange(fieldKey, data.url || data.filename || file.name);
       // Clear any previous error on this field
       setFieldErrors((prev) => {
         const next = { ...prev };
@@ -315,14 +333,16 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
       }
     } else if (currentStep) {
       if (currentStep.isPaymentStep) {
-        if (!answers.transactionReference && !answers.paymentReference) {
-          errors.transactionReference = "Please enter your transaction reference number.";
-        }
+        // Transaction Reference is strictly optional as requested; only Screenshot is required
         if (!filePreviews["paymentScreenshot"] && !answers.paymentScreenshot) {
           errors.paymentScreenshot = "Please upload your payment receipt screenshot.";
         }
       }
       for (const field of currentStep.fields) {
+        // Skip transaction reference / payment reference check since it's optional
+        if (field.fieldKey === "transactionReference" || field.fieldKey === "paymentReference") {
+          continue;
+        }
         if (field.required && !["heading", "divider"].includes(field.type)) {
           const val = answers[field.fieldKey];
           if (
@@ -750,112 +770,282 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
           {!isReviewStep && currentStepIndex > 0 && (
             <div className="space-y-5">
               {currentStep.isPaymentStep && (
-                <div className="p-5 rounded-2xl bg-white border border-[#DCE5ED] shadow-xs space-y-4">
-                  <div className="flex items-center gap-2.5 pb-3 border-b border-[#DCE5ED]">
-                    <div className="w-8 h-8 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] text-[#183153] flex items-center justify-center">
-                      <QrCode className="w-4 h-4 text-[#356FA8]" />
+                <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#DCE5ED] shadow-sm space-y-5">
+                  <div className="flex items-center justify-between pb-3.5 border-b border-[#DCE5ED]">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#F4F7FA] border border-[#356FA8] text-[#183153] flex items-center justify-center shrink-0">
+                        <QrCode className="w-5 h-5 text-[#356FA8]" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-sm text-[#183153]">Official Registration Fee & Payment</h3>
+                        <p className="text-xs text-[#546E7A]">
+                          Amount: <strong className="text-[#183153] font-black">NPR {dynamicFee}</strong> &bull; Non-refundable administrative fee
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-bold text-sm text-[#263238]">Official Registration Fee & Payment</h3>
-                      <p className="text-[11px] text-[#546E7A]">
-                        Fee: <strong>NPR {dynamicFee}</strong> &bull; Please scan the official QR code or transfer to the account below.
-                      </p>
-                    </div>
+                    <Badge variant="outline" className="border-[#356FA8] text-[#183153] bg-[#F4F7FA] font-bold text-xs px-3 py-1">
+                      NPR {dynamicFee}
+                    </Badge>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-                    <div className="flex flex-col items-center justify-center p-4 bg-[#F4F7FA] rounded-xl border border-[#DCE5ED] text-center space-y-2">
-                      {siteSettings?.paymentQrCodeUrl ? (
-                        <div className="p-2 bg-white rounded-lg border border-[#DCE5ED] shadow-2xs">
-                          <img
-                            src={siteSettings.paymentQrCodeUrl}
-                            alt="Payment QR"
-                            className="w-40 h-40 object-contain mx-auto"
-                          />
-                        </div>
-                      ) : (
-                        <div className="w-40 h-40 rounded-lg bg-white border border-dashed border-[#DCE5ED] flex flex-col items-center justify-center text-[#546E7A] p-3">
-                          <QrCode className="w-8 h-8 mb-1 text-[#356FA8] opacity-50" />
-                          <span className="text-[10px]">Official QR Code</span>
-                        </div>
-                      )}
-                      <span className="text-xs font-bold text-[#263238]">
-                        {siteSettings?.paymentProviderName || "Scan with Any Banking App"}
-                      </span>
-                    </div>
+                  {/* Payment Method Selector Tabs (If Wallet or Bank options exist) */}
+                  {(Boolean(siteSettings?.enableWalletPayment && siteSettings?.walletId) ||
+                    Boolean(siteSettings?.enableBankPayment && siteSettings?.bankAccountNumber)) && (
+                    <div className="flex flex-wrap gap-2 p-1.5 bg-[#F4F7FA] rounded-xl border border-[#DCE5ED]">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedPaymentMethod("qr");
+                          handleInputChange("paymentMethod", "Official Merchant QR");
+                        }}
+                        className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                          selectedPaymentMethod === "qr"
+                            ? "bg-[#183153] text-white shadow-xs"
+                            : "text-[#546E7A] hover:text-[#183153] hover:bg-white/60"
+                        }`}
+                      >
+                        <QrCode className="w-3.5 h-3.5" />
+                        <span>Scan Official QR</span>
+                      </button>
 
-                    <div className="space-y-2.5">
                       {siteSettings?.enableWalletPayment && siteSettings?.walletId && (
-                        <div className="p-3 rounded-lg border border-[#DCE5ED] bg-white space-y-0.5 text-xs">
-                          <span className="font-bold text-[#263238] flex items-center gap-1.5">
-                            <Wallet className="w-3 h-3 text-[#356FA8]" />
-                            <span>{siteSettings.walletProviderName || "Digital Wallet"}</span>
-                          </span>
-                          <p className="font-mono font-bold text-[#183153] text-xs">{siteSettings.walletId}</p>
-                          {siteSettings.walletBeneficiaryName && (
-                            <p className="text-[10px] text-[#546E7A]">A/C Name: {siteSettings.walletBeneficiaryName}</p>
-                          )}
-                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedPaymentMethod("wallet");
+                            handleInputChange("paymentMethod", siteSettings.walletProviderName || "Digital Wallet");
+                          }}
+                          className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                            selectedPaymentMethod === "wallet"
+                              ? "bg-[#183153] text-white shadow-xs"
+                              : "text-[#546E7A] hover:text-[#183153] hover:bg-white/60"
+                          }`}
+                        >
+                          <Wallet className="w-3.5 h-3.5" />
+                          <span>{siteSettings.walletProviderName || "eSewa / Digital Wallet"}</span>
+                        </button>
                       )}
 
                       {siteSettings?.enableBankPayment && siteSettings?.bankAccountNumber && (
-                        <div className="p-3 rounded-lg border border-[#DCE5ED] bg-white space-y-0.5 text-xs">
-                          <span className="font-bold text-[#263238] flex items-center gap-1.5">
-                            <Building2 className="w-3 h-3 text-[#356FA8]" />
-                            <span>{siteSettings.bankName || "Bank Transfer"}</span>
-                          </span>
-                          <p className="font-mono font-bold text-[#183153] text-xs">{siteSettings.bankAccountNumber}</p>
-                          {siteSettings.bankBeneficiaryName && (
-                            <p className="text-[10px] text-[#546E7A]">Beneficiary: {siteSettings.bankBeneficiaryName}</p>
-                          )}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedPaymentMethod("bank");
+                            handleInputChange("paymentMethod", siteSettings.bankName || "Bank Transfer");
+                          }}
+                          className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                            selectedPaymentMethod === "bank"
+                              ? "bg-[#183153] text-white shadow-xs"
+                              : "text-[#546E7A] hover:text-[#183153] hover:bg-white/60"
+                          }`}
+                        >
+                          <Building2 className="w-3.5 h-3.5" />
+                          <span>Direct Bank Transfer</span>
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Method View 1: Official QR Scan */}
+                  {selectedPaymentMethod === "qr" && (
+                    <div className="flex flex-col items-center justify-center p-6 bg-[#F4F7FA] rounded-2xl border border-[#DCE5ED] text-center space-y-3">
+                      {siteSettings?.paymentQrCodeUrl ? (
+                        <div className="p-3 bg-white rounded-xl border border-[#DCE5ED] shadow-sm">
+                          <img
+                            src={siteSettings.paymentQrCodeUrl}
+                            alt="Official Payment QR"
+                            className="w-48 h-48 object-contain mx-auto cursor-pointer hover:opacity-95 transition-opacity"
+                            onClick={() =>
+                              setLightboxImage({
+                                url: siteSettings.paymentQrCodeUrl,
+                                title: "Official Payment Merchant QR Code",
+                              })
+                            }
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-48 h-48 rounded-xl bg-white border-2 border-dashed border-[#DCE5ED] flex flex-col items-center justify-center text-[#546E7A] p-4">
+                          <QrCode className="w-12 h-12 mb-2 text-[#356FA8] opacity-50" />
+                          <span className="text-xs font-bold text-[#183153]">Official Payment QR</span>
+                          <span className="text-[10px] text-[#546E7A] mt-1">NPR {dynamicFee}</span>
                         </div>
                       )}
+                      <div>
+                        <p className="text-xs font-bold text-[#183153]">
+                          {siteSettings?.paymentProviderName || "Scan with Any Banking or Wallet App"}
+                        </p>
+                        <p className="text-[11px] text-[#546E7A] max-w-sm mt-0.5">
+                          {siteSettings?.paymentInstructions ||
+                            `Scan the merchant QR code using your mobile banking app, eSewa, or Khalti to transfer NPR ${dynamicFee}. Save your transfer receipt screenshot.`}
+                        </p>
+                      </div>
+                    </div>
+                  )}
 
-                      {siteSettings?.paymentInstructions && (
-                        <p className="text-[11px] text-[#546E7A] leading-relaxed bg-[#F4F7FA] p-2.5 rounded-lg border border-[#DCE5ED]">
-                          {siteSettings.paymentInstructions}
+                  {/* Method View 2: Digital Wallet */}
+                  {selectedPaymentMethod === "wallet" && siteSettings?.walletId && (
+                    <div className="p-5 rounded-2xl bg-[#F4F7FA] border border-[#DCE5ED] space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-xs text-[#183153] flex items-center gap-2">
+                          <Wallet className="w-4 h-4 text-[#356FA8]" />
+                          <span>{siteSettings.walletProviderName || "eSewa / Digital Wallet"}</span>
+                        </span>
+                        <Badge className="bg-emerald-600 text-white text-[10px]">Instant Transfer</Badge>
+                      </div>
+                      <div className="p-3 bg-white rounded-xl border border-[#DCE5ED] flex items-center justify-between gap-3">
+                        <div>
+                          <span className="text-[10px] font-bold text-[#546E7A] uppercase tracking-wider block">Wallet ID / Mobile Number</span>
+                          <span className="font-mono font-bold text-sm text-[#183153]">{siteSettings.walletId}</span>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            navigator.clipboard.writeText(siteSettings.walletId);
+                            setCopiedWallet(true);
+                            setTimeout(() => setCopiedWallet(false), 2000);
+                            toast.success("Wallet ID copied!");
+                          }}
+                          className="h-8 text-xs gap-1.5 font-bold"
+                        >
+                          {copiedWallet ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                          <span>{copiedWallet ? "Copied" : "Copy ID"}</span>
+                        </Button>
+                      </div>
+                      {siteSettings.walletBeneficiaryName && (
+                        <p className="text-xs text-[#546E7A]">
+                          A/C Beneficiary Name: <strong className="text-[#183153]">{siteSettings.walletBeneficiaryName}</strong>
+                        </p>
+                      )}
+                      {siteSettings.walletInstructions && (
+                        <p className="text-[11px] text-[#546E7A] bg-white/70 p-2.5 rounded-lg border border-[#DCE5ED]">
+                          {siteSettings.walletInstructions}
                         </p>
                       )}
                     </div>
-                  </div>
+                  )}
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-[#DCE5ED]">
-                    <div className="space-y-1">
-                      <Label htmlFor="transactionReference" required={true}>
-                        Transaction Reference Number
-                      </Label>
+                  {/* Method View 3: Bank Transfer */}
+                  {selectedPaymentMethod === "bank" && siteSettings?.bankAccountNumber && (
+                    <div className="p-5 rounded-2xl bg-[#F4F7FA] border border-[#DCE5ED] space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-xs text-[#183153] flex items-center gap-2">
+                          <Building2 className="w-4 h-4 text-[#356FA8]" />
+                          <span>{siteSettings.bankName || "Direct Bank Transfer"}</span>
+                        </span>
+                        <Badge className="bg-[#183153] text-white text-[10px]">Bank Deposit</Badge>
+                      </div>
+                      <div className="p-3 bg-white rounded-xl border border-[#DCE5ED] flex items-center justify-between gap-3">
+                        <div>
+                          <span className="text-[10px] font-bold text-[#546E7A] uppercase tracking-wider block">Bank Account Number</span>
+                          <span className="font-mono font-bold text-sm text-[#183153]">{siteSettings.bankAccountNumber}</span>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            navigator.clipboard.writeText(siteSettings.bankAccountNumber);
+                            setCopiedBank(true);
+                            setTimeout(() => setCopiedBank(false), 2000);
+                            toast.success("Account number copied!");
+                          }}
+                          className="h-8 text-xs gap-1.5 font-bold"
+                        >
+                          {copiedBank ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                          <span>{copiedBank ? "Copied" : "Copy A/C"}</span>
+                        </Button>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                        {siteSettings.bankBeneficiaryName && (
+                          <div className="p-2.5 bg-white rounded-lg border border-[#DCE5ED]">
+                            <span className="text-[10px] text-[#546E7A] block">Account Holder:</span>
+                            <span className="font-bold text-[#183153]">{siteSettings.bankBeneficiaryName}</span>
+                          </div>
+                        )}
+                        {siteSettings.bankBranch && (
+                          <div className="p-2.5 bg-white rounded-lg border border-[#DCE5ED]">
+                            <span className="text-[10px] text-[#546E7A] block">Branch Name:</span>
+                            <span className="font-bold text-[#183153]">{siteSettings.bankBranch}</span>
+                          </div>
+                        )}
+                      </div>
+                      {siteSettings.bankInstructions && (
+                        <p className="text-[11px] text-[#546E7A] bg-white/70 p-2.5 rounded-lg border border-[#DCE5ED]">
+                          {siteSettings.bankInstructions}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Payment Inputs: Reference (Optional) & Screenshot (Required) */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-[#DCE5ED]">
+                    {/* Single Transaction Reference (Optional) */}
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="transactionReference" className="text-xs font-bold text-[#183153]">
+                          Payment Transaction Reference / UTR Code
+                        </Label>
+                        <span className="text-[11px] text-[#546E7A] font-medium bg-[#F4F7FA] px-2 py-0.5 rounded border border-[#DCE5ED]">
+                          Optional
+                        </span>
+                      </div>
                       <Input
                         id="transactionReference"
                         value={answers.transactionReference || answers.paymentReference || ""}
                         onChange={(e) => {
                           handleInputChange("transactionReference", e.target.value);
                           handleInputChange("paymentReference", e.target.value);
-                          if (fieldErrors.transactionReference) {
-                            setFieldErrors((prev) => {
-                              const n = { ...prev };
-                              delete n.transactionReference;
-                              return n;
-                            });
-                          }
                         }}
-                        placeholder="e.g. 0284729104"
-                        className="bg-white text-xs"
+                        placeholder="e.g. 0284729104 (optional)"
+                        className="bg-white text-xs h-10"
                       />
-                      {fieldErrors.transactionReference && (
-                        <p className="text-xs text-red-600 font-semibold">{fieldErrors.transactionReference}</p>
-                      )}
+                      <p className="text-[11px] text-[#546E7A]">
+                        Obtained from your payment receipt screenshot after completing the NPR {dynamicFee} transfer.
+                      </p>
                     </div>
 
-                    <div className="space-y-1">
-                      <Label htmlFor="paymentScreenshot" required={true}>
-                        Payment Screenshot / Receipt
+                    {/* Single Screenshot Upload (Required) */}
+                    <div className="space-y-1.5">
+                      <Label htmlFor="paymentScreenshot" required={true} className="text-xs font-bold text-[#183153]">
+                        Payment Screenshot / Bank Voucher Upload
                       </Label>
                       {filePreviews["paymentScreenshot"] ? (
-                        <div className="p-2 rounded-lg bg-[#F4F7FA] border border-[#356FA8] flex items-center justify-between gap-2 text-xs">
-                          <span className="truncate font-medium text-[#263238]">
-                            {filePreviews["paymentScreenshot"].name}
-                          </span>
-                          <label className="cursor-pointer text-[11px] text-[#356FA8] font-bold hover:underline shrink-0">
+                        <div className="p-2.5 rounded-xl bg-[#F4F7FA] border border-[#356FA8] flex items-center justify-between gap-3 text-xs">
+                          <div
+                            className="flex items-center gap-2.5 min-w-0 cursor-pointer"
+                            onClick={() => {
+                              if (filePreviews["paymentScreenshot"]?.url) {
+                                setLightboxImage({
+                                  url: filePreviews["paymentScreenshot"].url,
+                                  title: "Payment Receipt Screenshot",
+                                });
+                              }
+                            }}
+                          >
+                            {filePreviews["paymentScreenshot"].url ? (
+                              <img
+                                src={filePreviews["paymentScreenshot"].url}
+                                alt="Payment receipt thumbnail"
+                                className="w-10 h-10 rounded-lg object-cover border border-[#DCE5ED] shrink-0 hover:opacity-80 transition"
+                              />
+                            ) : (
+                              <div className="w-10 h-10 rounded-lg bg-white border border-[#DCE5ED] flex items-center justify-center shrink-0">
+                                <FileCheck className="w-5 h-5 text-[#356FA8]" />
+                              </div>
+                            )}
+                            <div className="min-w-0">
+                              <span className="truncate font-bold text-[#183153] block text-xs">
+                                {filePreviews["paymentScreenshot"].name}
+                              </span>
+                              <span className="text-[10px] text-[#356FA8] font-semibold flex items-center gap-1">
+                                <Eye className="w-3 h-3" />
+                                <span>Click to preview</span>
+                              </span>
+                            </div>
+                          </div>
+                          <label className="cursor-pointer text-xs text-[#183153] bg-white px-2.5 py-1 rounded-lg border border-[#DCE5ED] hover:bg-slate-50 font-bold shrink-0 transition">
                             Change
                             <input
                               type="file"
@@ -863,15 +1053,27 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                               className="hidden"
                               onChange={(e) => {
                                 const f = e.target.files?.[0];
-                                if (f) handleFileUpload("paymentScreenshot", "image", f);
+                                if (f) {
+                                  handleFileUpload("paymentScreenshot", "image", f);
+                                  if (fieldErrors.paymentScreenshot) {
+                                    setFieldErrors((prev) => {
+                                      const n = { ...prev };
+                                      delete n.paymentScreenshot;
+                                      return n;
+                                    });
+                                  }
+                                }
                               }}
                             />
                           </label>
                         </div>
                       ) : (
-                        <label className="flex items-center justify-center p-2.5 rounded-lg border-2 border-dashed border-[#DCE5ED] bg-[#F4F7FA]/50 hover:border-[#356FA8] cursor-pointer text-xs font-semibold text-[#356FA8] gap-1.5 transition-colors">
-                          <Upload className="w-3.5 h-3.5" />
-                          <span>Upload Receipt (JPG, PNG, PDF)</span>
+                        <label className="flex flex-col items-center justify-center p-4 rounded-xl border-2 border-dashed border-[#DCE5ED] bg-[#F4F7FA]/60 hover:border-[#356FA8] hover:bg-[#F4F7FA] cursor-pointer text-xs font-semibold text-[#183153] gap-1.5 transition-all text-center">
+                          <Upload className="w-5 h-5 text-[#356FA8]" />
+                          <span className="font-bold text-[#183153]">Upload Receipt (JPG, PNG, PDF)</span>
+                          <span className="text-[10px] text-[#546E7A]">
+                            Screenshot or bank voucher showing transaction amount & date
+                          </span>
                           <input
                             type="file"
                             accept="image/*,.pdf"
@@ -900,7 +1102,20 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                 </div>
               )}
 
-              {currentStep.fields.filter(isFieldVisible).map((field) => (
+              {currentStep.fields
+                .filter((f) => {
+                  // Do not render duplicate payment fields below when already on the payment step
+                  if (
+                    currentStep.isPaymentStep &&
+                    (f.fieldKey === "transactionReference" ||
+                      f.fieldKey === "paymentReference" ||
+                      f.fieldKey === "paymentScreenshot")
+                  ) {
+                    return false;
+                  }
+                  return isFieldVisible(f);
+                })
+                .map((field) => (
                 <div key={field.id} className="space-y-1.5">
                   {field.type === "heading" ? (
                     <div className="pt-2 border-t border-slate-100">
@@ -936,7 +1151,18 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="">{field.placeholder || "Select option..."}</SelectItem>
-                            {(field.options || []).map((opt) => (
+                            {(field.fieldKey === "district" &&
+                            answers.province &&
+                            PROVINCE_DISTRICTS[answers.province]
+                              ? [
+                                  ...PROVINCE_DISTRICTS[answers.province].map((d) => ({
+                                    label: d,
+                                    value: d,
+                                  })),
+                                  { label: "Other District", value: "Other District" },
+                                ]
+                              : field.options || []
+                            ).map((opt) => (
                               <SelectItem key={opt.value} value={opt.value}>
                                 {opt.label}
                               </SelectItem>
@@ -1238,20 +1464,65 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                               <span className="text-zinc-500 font-medium block text-[11px]">{f.label}:</span>
                               {isFileField ? (
                                 preview?.name || (rawVal && !String(rawVal).startsWith("/")) ? (
-                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#F4F7FA] text-[#183153] border border-[#356FA8] text-xs font-semibold max-w-full">
-                                    {f.type === "video" ? (
-                                      <Video className="w-3.5 h-3.5 text-[#356FA8] shrink-0" />
-                                    ) : f.type === "file" ? (
-                                      <FileCheck className="w-3.5 h-3.5 text-[#356FA8] shrink-0" />
-                                    ) : (
-                                      <ImageIcon className="w-3.5 h-3.5 text-[#356FA8] shrink-0" />
-                                    )}
-                                    <span className="truncate">{preview?.name || String(rawVal)}</span>
-                                    {preview?.size && (
-                                      <span className="text-[10px] text-[#356FA8] font-normal shrink-0">
-                                        ({preview.size})
-                                      </span>
-                                    )}
+                                  <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-[#F4F7FA] border border-[#DCE5ED]">
+                                    <div
+                                      className="flex items-center gap-2.5 min-w-0 cursor-pointer"
+                                      onClick={() => {
+                                        const imgUrl = preview?.url || (rawVal && String(rawVal).startsWith("/") ? String(rawVal) : null);
+                                        if (imgUrl && (f.type === "image" || f.fieldKey.toLowerCase().includes("photo") || f.fieldKey.toLowerCase().includes("screenshot"))) {
+                                          setLightboxImage({
+                                            url: imgUrl,
+                                            title: f.label,
+                                          });
+                                        }
+                                      }}
+                                    >
+                                      {(preview?.url || (rawVal && String(rawVal).startsWith("/"))) &&
+                                      (f.type === "image" || f.fieldKey.toLowerCase().includes("photo") || f.fieldKey.toLowerCase().includes("screenshot")) ? (
+                                        <img
+                                          src={preview?.url || String(rawVal)}
+                                          alt={preview?.name || f.label}
+                                          className="w-10 h-10 rounded-lg object-cover border border-[#DCE5ED] shrink-0 hover:opacity-85 transition"
+                                        />
+                                      ) : (
+                                        <div className="w-9 h-9 rounded-lg bg-white border border-[#DCE5ED] text-[#356FA8] flex items-center justify-center shrink-0">
+                                          {f.type === "video" ? (
+                                            <Video className="w-4 h-4 text-[#356FA8]" />
+                                          ) : f.type === "file" ? (
+                                            <FileCheck className="w-4 h-4 text-[#356FA8]" />
+                                          ) : (
+                                            <ImageIcon className="w-4 h-4 text-[#356FA8]" />
+                                          )}
+                                        </div>
+                                      )}
+                                      <div className="min-w-0">
+                                        <span className="truncate font-semibold text-xs text-[#183153] block max-w-[150px] sm:max-w-xs">
+                                          {preview?.name || String(rawVal)}
+                                        </span>
+                                        {preview?.size && (
+                                          <span className="text-[10px] text-[#546E7A] font-medium block">
+                                            {preview.size}
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    {(preview?.url || (rawVal && String(rawVal).startsWith("/"))) &&
+                                      (f.type === "image" || f.fieldKey.toLowerCase().includes("photo") || f.fieldKey.toLowerCase().includes("screenshot")) && (
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setLightboxImage({
+                                              url: preview?.url || String(rawVal),
+                                              title: f.label,
+                                            });
+                                          }}
+                                          className="text-[11px] font-bold text-[#356FA8] hover:underline flex items-center gap-1 shrink-0 px-2 py-1 bg-white rounded-md border border-[#DCE5ED] cursor-pointer"
+                                        >
+                                          <Eye className="w-3 h-3" />
+                                          <span>Preview</span>
+                                        </button>
+                                      )}
                                   </div>
                                 ) : (
                                   <span className="text-zinc-400 block px-2.5 py-1.5">-</span>
@@ -1265,21 +1536,78 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                           );
                         })}
                       {st.isPaymentStep && (
-                        <div className="sm:col-span-2 pt-2 border-t border-[#DCE5ED]/60 flex items-center justify-between text-xs bg-[#F4F7FA] p-3 rounded-xl border border-[#DCE5ED]">
-                          <div>
-                            <span className="font-bold text-[#263238] block">Payment Reference</span>
-                            <span className="text-[11px] text-[#546E7A]">
-                              Txn Ref: <code className="font-mono font-bold text-[#183153]">{answers.transactionReference || answers.paymentReference || "Entered"}</code>
-                            </span>
+                        <div className="sm:col-span-2 pt-3 border-t border-[#DCE5ED] bg-[#F4F7FA] p-4 rounded-xl border border-[#DCE5ED] space-y-3">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                              <span className="font-bold text-xs text-[#183153] block">Official Registration Fee</span>
+                              <span className="text-xs font-black text-[#183153]">NPR {dynamicFee}</span>
+                              {answers.paymentMethod && (
+                                <span className="text-[11px] text-[#546E7A] block mt-0.5">
+                                  Method: <strong>{answers.paymentMethod}</strong>
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-right">
+                              <span className="text-[10px] text-[#546E7A] uppercase font-bold block">Transaction Reference / UTR</span>
+                              <code className="font-mono text-xs font-bold text-[#183153]">
+                                {answers.transactionReference || answers.paymentReference || "Not provided (optional)"}
+                              </code>
+                            </div>
                           </div>
+
                           {filePreviews["paymentScreenshot"] ? (
-                            <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-                              Receipt Attached
-                            </span>
+                            <div className="flex items-center justify-between p-2.5 bg-white rounded-lg border border-[#DCE5ED]">
+                              <div
+                                className="flex items-center gap-2.5 cursor-pointer min-w-0"
+                                onClick={() => {
+                                  if (filePreviews["paymentScreenshot"]?.url) {
+                                    setLightboxImage({
+                                      url: filePreviews["paymentScreenshot"].url,
+                                      title: "Official Payment Receipt / Screenshot",
+                                    });
+                                  }
+                                }}
+                              >
+                                {filePreviews["paymentScreenshot"].url ? (
+                                  <img
+                                    src={filePreviews["paymentScreenshot"].url}
+                                    alt="Receipt"
+                                    className="w-10 h-10 object-cover rounded-md border border-[#DCE5ED] shrink-0 hover:opacity-85 transition"
+                                  />
+                                ) : (
+                                  <FileCheck className="w-5 h-5 text-emerald-600 shrink-0" />
+                                )}
+                                <div className="min-w-0">
+                                  <span className="text-xs font-bold text-[#183153] truncate block">
+                                    {filePreviews["paymentScreenshot"].name}
+                                  </span>
+                                  <span className="text-[10px] text-emerald-700 font-bold flex items-center gap-1">
+                                    <CheckCircle2 className="w-3 h-3" />
+                                    <span>Receipt Attached &bull; Click to View</span>
+                                  </span>
+                                </div>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (filePreviews["paymentScreenshot"]?.url) {
+                                    setLightboxImage({
+                                      url: filePreviews["paymentScreenshot"].url,
+                                      title: "Official Payment Receipt / Screenshot",
+                                    });
+                                  }
+                                }}
+                                className="px-2.5 py-1 text-xs font-bold text-[#356FA8] bg-[#F4F7FA] rounded-md border border-[#DCE5ED] hover:bg-slate-100 flex items-center gap-1 shrink-0 cursor-pointer"
+                              >
+                                <Eye className="w-3 h-3" />
+                                <span>View Receipt</span>
+                              </button>
+                            </div>
                           ) : (
-                            <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-                              Receipt Pending
-                            </span>
+                            <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-800 flex items-center gap-2">
+                              <AlertCircle className="w-4 h-4 shrink-0 text-amber-600" />
+                              <span>Receipt pending upload</span>
+                            </div>
                           )}
                         </div>
                       )}
@@ -1345,6 +1673,55 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
           )}
         </div>
       </Card>
+
+      {/* Lightbox Image Preview Modal */}
+      {lightboxImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6"
+          onClick={() => setLightboxImage(null)}
+        >
+          <div
+            className="relative max-w-3xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-150"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#DCE5ED] bg-[#F4F7FA]">
+              <div className="flex items-center gap-2 min-w-0">
+                <ImageIcon className="w-4 h-4 text-[#356FA8] shrink-0" />
+                <h4 className="font-bold text-sm text-[#183153] truncate">{lightboxImage.title}</h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => setLightboxImage(null)}
+                className="w-8 h-8 rounded-full hover:bg-slate-200 flex items-center justify-center text-slate-600 hover:text-black transition-colors cursor-pointer shrink-0"
+                aria-label="Close preview"
+              >
+                <X className="w-5 h-5 stroke-[2.5]" />
+              </button>
+            </div>
+            <div className="p-4 sm:p-6 flex items-center justify-center bg-slate-900/5 max-h-[75vh] overflow-auto">
+              <img
+                src={lightboxImage.url}
+                alt={lightboxImage.title}
+                className="max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-md"
+              />
+            </div>
+            <div className="px-5 py-3 bg-[#F4F7FA] border-t border-[#DCE5ED] flex items-center justify-between text-xs">
+              <span className="text-[#546E7A] text-[11px]">Click outside or press X to close</span>
+              {lightboxImage.url && (
+                <a
+                  href={lightboxImage.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#356FA8] font-bold hover:underline inline-flex items-center gap-1.5"
+                >
+                  <span>Open Full Resolution</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

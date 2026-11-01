@@ -333,9 +333,6 @@ export function PaymentFeeSettings({
                   placeholder="399"
                 />
               </div>
-              <p className="text-[11px] text-taupe-grey">
-                Fixed in Nepalese Rupees (Standard: NPR 399).
-              </p>
             </div>
           </div>
 

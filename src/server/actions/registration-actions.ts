@@ -100,6 +100,11 @@ export async function submitRegistrationAction({
       }
     }
 
+    // Transaction reference is strictly optional as requested
+    if (field.fieldKey === "transactionReference" || field.fieldKey === "paymentReference") {
+      continue;
+    }
+
     if (isVisible && field.required) {
       const val = answers[field.fieldKey];
       if (val === undefined || val === null || val === "" || (Array.isArray(val) && val.length === 0)) {
@@ -111,8 +116,9 @@ export async function submitRegistrationAction({
     }
   }
 
-  // 5. Generate Unique Reference Number: FC-2026-XXXXXX
-  const referenceNumber = `FC-2026-${generateRefCode()}`;
+  // 5. Generate Unique Reference Number: MQ-2026-XXXXXX for Mithila Queen, FC-2026-XXXXXX for other forms
+  const prefix = form.slug === "mithila-queen" ? "MQ-2026" : "FC-2026";
+  const referenceNumber = `${prefix}-${generateRefCode()}`;
 
   // 6. Execute Transaction (with atomic concurrency protection)
   let submission;
@@ -182,6 +188,65 @@ export async function submitRegistrationAction({
       if (answerEntries.length > 0) {
         await tx.submissionAnswer.createMany({
           data: answerEntries,
+        });
+      }
+
+      // If Mithila Queen flagship, also record into MithilaQueenRegistration for full adjudication
+      if (form.slug === "mithila-queen") {
+        const rawDob = answers.dob ? new Date(answers.dob) : new Date();
+        const diffYears = Math.abs(new Date(Date.now() - rawDob.getTime()).getUTCFullYear() - 1970);
+        const isMinor = diffYears < 18;
+
+        const pPhoto = uploadedFilesMap.get("profilePhotoUrl") || uploadedFilesMap.get("profilePhoto") || answers.profilePhotoUrl || answers.profilePhoto;
+        const pScreenshot = uploadedFilesMap.get("paymentScreenshot") || answers.paymentScreenshot;
+        const pDoc = uploadedFilesMap.get("documentUrl") || uploadedFilesMap.get("identityDoc") || answers.documentUrl;
+        const pVideo = uploadedFilesMap.get("videoUrl") || uploadedFilesMap.get("videoFile") || answers.videoUrl;
+
+        await tx.mithilaQueenRegistration.create({
+          data: {
+            registrationId: referenceNumber,
+            fullName,
+            dob: rawDob,
+            isMinor,
+            email,
+            phone,
+            alternatePhone: answers.alternatePhone ? String(answers.alternatePhone) : null,
+            province: answers.province ? String(answers.province) : "Madhesh Province",
+            district: answers.district ? String(answers.district) : "Dhanusha",
+            municipality: answers.municipality ? String(answers.municipality) : "Janakpurdham",
+            cityVillage: answers.cityVillage ? String(answers.cityVillage) : "Janakpur",
+            currentAddress: answers.currentAddress ? String(answers.currentAddress) : "Janakpur Dham",
+            guardianName: answers.guardianName ? String(answers.guardianName) : null,
+            guardianPhone: answers.guardianPhone ? String(answers.guardianPhone) : null,
+            guardianRelation: answers.guardianRelation ? String(answers.guardianRelation) : null,
+            guardianConsentRecorded: Boolean(answers.guardianConsent),
+            guardianConsentTimestamp: answers.guardianConsent ? new Date() : null,
+            motivationReason: answers.motivationReason ? String(answers.motivationReason) : null,
+            mithilaMeaning: answers.mithilaMeaning ? String(answers.mithilaMeaning) : null,
+            qualitiesBrought: answers.qualitiesBrought ? String(answers.qualitiesBrought) : null,
+            talentsSkills: answers.talentsSkills ? String(answers.talentsSkills) : null,
+            languagesSpoken: answers.languagesSpoken ? String(answers.languagesSpoken) : null,
+            culturalInterests: answers.culturalInterests ? String(answers.culturalInterests) : null,
+            hobbiesInterests: answers.hobbiesInterests ? String(answers.hobbiesInterests) : null,
+            educationLevel: answers.educationLevel ? String(answers.educationLevel) : null,
+            institution: answers.institution ? String(answers.institution) : null,
+            previousExperience: Boolean(answers.previousExperience),
+            experienceDetails: answers.experienceDetails ? String(answers.experienceDetails) : null,
+            heightCm: answers.heightCm ? parseFloat(String(answers.heightCm)) : null,
+            instagramHandle: answers.instagramHandle ? String(answers.instagramHandle) : null,
+            tiktokHandle: answers.tiktokHandle ? String(answers.tiktokHandle) : null,
+            facebookUrl: answers.facebookUrl ? String(answers.facebookUrl) : null,
+            profilePhotoUrl: pPhoto ? String(pPhoto) : null,
+            videoUrl: pVideo ? String(pVideo) : null,
+            documentUrl: pDoc ? String(pDoc) : null,
+            registrationFee: 399,
+            paymentStatus: pScreenshot ? "UNDER_REVIEW" : "PENDING",
+            paymentReference: answers.transactionReference || answers.paymentReference ? String(answers.transactionReference || answers.paymentReference) : null,
+            paymentScreenshotUrl: pScreenshot ? String(pScreenshot) : null,
+            paymentSubmittedAt: pScreenshot ? new Date() : null,
+            applicationStatus: "SUBMITTED",
+            submittedAt: new Date(),
+          },
         });
       }
 

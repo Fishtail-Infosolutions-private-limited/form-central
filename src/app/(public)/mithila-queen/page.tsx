@@ -83,27 +83,35 @@ export default async function MithilaQueenPage() {
   ];
 
   const prizes: Array<{ place: string; title: string; badge?: string; status?: string; value?: string }> =
-    (setting?.prizesJson as any) || [
-      {
-        place: "First Prize",
-        title: "iPhone 18 Pro Max, Red, 512 GB",
-        status: "Proposed by organizers",
-        badge: "Crown Winner",
-      },
-      {
-        place: "Second Prize",
-        title: "MAC Beauty Products Collection",
-        value: "Approx. NPR 30,000 estimated value",
-        status: "Proposed value",
-        badge: "First Runner-Up",
-      },
-      {
-        place: "Third Prize",
-        title: "Smartphone or Quality Electronic Device",
-        status: "To be confirmed",
-        badge: "Second Runner-Up",
-      },
-    ];
+    Array.isArray(setting?.prizesJson) && (setting.prizesJson as any[]).length > 0
+      ? (setting.prizesJson as any[]).map((p: any) => ({
+          place: p.position || p.place || "Award",
+          title: p.title || "",
+          badge: p.badge,
+          status: p.status,
+          value: p.value,
+        }))
+      : [
+          {
+            place: "First Prize",
+            title: "iPhone 18 Pro Max, Red, 512 GB",
+            status: "Proposed by organizers",
+            badge: "Crown Winner",
+          },
+          {
+            place: "Second Prize",
+            title: "MAC Beauty Products Collection",
+            value: "Approx. NPR 30,000 estimated value",
+            status: "Proposed value",
+            badge: "First Runner-Up",
+          },
+          {
+            place: "Third Prize",
+            title: "Smartphone or Quality Electronic Device",
+            status: "To be confirmed",
+            badge: "Second Runner-Up",
+          },
+        ];
 
   const videoSteps = [
     {
@@ -426,6 +434,19 @@ export default async function MithilaQueenPage() {
               <p className="text-xs text-[#546E7A] pt-2 border-t border-[#DCE5ED]">{p.status}</p>
             </div>
           ))}
+        </div>
+
+        {/* 4th & 5th Prize Notice per PDF Brief */}
+        <div className="p-4 rounded-xl bg-[#F4F7FA] border border-[#DCE5ED] text-xs text-[#546E7A] flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#356FA8] shrink-0" />
+            <span>
+              <strong>Fourth &amp; Fifth Honors:</strong> Details to be announced later by the organizing committee.
+            </span>
+          </div>
+          <span className="text-[11px] font-medium text-[#183153] hidden sm:inline">
+            Status: Proposed by organizers
+          </span>
         </div>
       </section>
 

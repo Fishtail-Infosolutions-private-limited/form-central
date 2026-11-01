@@ -66,10 +66,12 @@ export default async function AdminRegistrationFormPage() {
     });
   }
 
-  // Ensure form has at least one version with full schema
+  // Ensure form has at least one version with full schema and modern separated step structure
   const latestVersion = form?.versions?.[0];
   const schemaSteps = (latestVersion?.schema as any)?.steps;
-  if (!latestVersion || !Array.isArray(schemaSteps) || schemaSteps.length === 0) {
+  const hasSeparatedLocationStep = Array.isArray(schemaSteps) && schemaSteps.some((s: any) => s.id === "step-personal-location");
+
+  if (!latestVersion || !Array.isArray(schemaSteps) || schemaSteps.length === 0 || !hasSeparatedLocationStep) {
     const nextVerNum = (latestVersion?.versionNumber || 0) + 1;
     const newVersion = await prisma.formVersion.create({
       data: {

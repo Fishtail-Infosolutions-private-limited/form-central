@@ -125,7 +125,10 @@ export default async function AdminAllResponsesPage() {
     };
   });
 
-  const allApplications = [...mappedMithilaQueen, ...mappedSubmissions];
+  // Deduplicate by registrationId so Mithila Queen submissions aren't listed twice
+  const mqRegIds = new Set(mappedMithilaQueen.map((m) => m.registrationId));
+  const filteredSubmissions = mappedSubmissions.filter((s) => !mqRegIds.has(s.registrationId));
+  const allApplications = [...mappedMithilaQueen, ...filteredSubmissions];
 
   // Build unique form options list
   const formOptions = [

@@ -14,12 +14,12 @@ import { FormSchemaDefinition } from "@/types/form";
 export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
   steps: [
     // -------------------------------------------------------------------------
-    // STEP 1: Personal Information & Location
+    // STEP 1: Contact & Email Verification (Locked System Step)
     // -------------------------------------------------------------------------
     {
       id: "step-1",
-      title: "Personal Information & Location",
-      description: "Official legal identification, contact, and residential address in Nepal",
+      title: "Contact & Email Verification",
+      description: "Official legal identification, contact, and email OTP verification",
       order: 0,
       fields: [
         {
@@ -34,15 +34,6 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
           order: 0,
         },
         {
-          id: "field-dob",
-          fieldKey: "dob",
-          type: "date",
-          label: "Date of Birth",
-          description: "Required to determine participant age and minor safeguarding (<18) consent requirements.",
-          required: true,
-          order: 1,
-        },
-        {
           id: "field-email",
           fieldKey: "email",
           type: "email",
@@ -51,7 +42,7 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
           description: "Mandatory 6-digit OTP verification code is sent to this address to verify your identity.",
           required: true,
           isSystem: true,
-          order: 2,
+          order: 1,
         },
         {
           id: "field-phone",
@@ -62,7 +53,28 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
           description: "Primary active WhatsApp or mobile number for event notifications and audition updates.",
           required: true,
           isSystem: true,
-          order: 3,
+          order: 2,
+        },
+      ],
+    },
+
+    // -------------------------------------------------------------------------
+    // STEP 2: Personal Information & Location
+    // -------------------------------------------------------------------------
+    {
+      id: "step-personal-location",
+      title: "Personal Information & Location",
+      description: "Date of birth (minor check) and full residential address in Nepal",
+      order: 1,
+      fields: [
+        {
+          id: "field-dob",
+          fieldKey: "dob",
+          type: "date",
+          label: "Date of Birth",
+          description: "Required to determine participant age and minor safeguarding (<18) consent requirements.",
+          required: true,
+          order: 0,
         },
         {
           id: "field-alt-phone",
@@ -72,7 +84,7 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
           placeholder: "e.g. +977 98...",
           description: "Optional secondary number or family contact number.",
           required: false,
-          order: 4,
+          order: 1,
         },
         {
           id: "field-province",
@@ -81,7 +93,7 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
           label: "Province",
           description: "Select your current residential province in Nepal.",
           required: true,
-          order: 5,
+          order: 2,
           options: [
             { label: "Madhesh Province", value: "Madhesh Province" },
             { label: "Bagmati Province", value: "Bagmati Province" },
@@ -99,7 +111,7 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
           label: "District",
           description: "Select your residential district.",
           required: true,
-          order: 6,
+          order: 3,
           options: [
             { label: "Dhanusha", value: "Dhanusha" },
             { label: "Mahottari", value: "Mahottari" },
@@ -125,7 +137,7 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
           placeholder: "e.g. Janakpurdham Sub-Metropolitan City",
           description: "Official municipality, sub-metropolitan city, or gaunpalika name.",
           required: true,
-          order: 7,
+          order: 4,
         },
         {
           id: "field-city-village",
@@ -135,7 +147,7 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
           placeholder: "e.g. Ramanand Chowk, Janakpur",
           description: "Neighborhood, village, or tole name.",
           required: true,
-          order: 8,
+          order: 5,
         },
         {
           id: "field-current-address",
@@ -145,7 +157,7 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
           placeholder: "Ward number, street name, house landmark...",
           description: "Detailed current residential address.",
           required: true,
-          order: 9,
+          order: 6,
         },
         {
           id: "field-short-intro",
@@ -155,19 +167,19 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
           placeholder: "Brief one-paragraph summary introducing yourself...",
           description: "Optional brief overview of your background and interests.",
           required: false,
-          order: 10,
+          order: 7,
         },
       ],
     },
 
     // -------------------------------------------------------------------------
-    // STEP 2: Participant Profile & Cultural Background
+    // STEP 3: Participant Profile & Cultural Background
     // -------------------------------------------------------------------------
     {
       id: "step-2",
       title: "Participant Profile & Cultural Background",
       description: "Creative aspirations, spoken languages, and cultural connection to Mithila",
-      order: 1,
+      order: 2,
       fields: [
         {
           id: "field-motivation",
@@ -291,13 +303,13 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
     },
 
     // -------------------------------------------------------------------------
-    // STEP 3: Height & Voluntary Details
+    // STEP 4: Height & Voluntary Details
     // -------------------------------------------------------------------------
     {
       id: "step-3",
       title: "Height & Voluntary Details",
       description: "Voluntary physical information. Mithila Queen is a cultural and talent platform, not a physical modeling contest.",
-      order: 2,
+      order: 3,
       fields: [
         {
           id: "field-height",
@@ -322,13 +334,13 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
     },
 
     // -------------------------------------------------------------------------
-    // STEP 4: Social Media Accounts
+    // STEP 5: Social Media Accounts
     // -------------------------------------------------------------------------
     {
       id: "step-4",
       title: "Social Media Accounts",
       description: "At least one social account (Instagram, TikTok, or Facebook) is required for video audition cross-referencing.",
-      order: 3,
+      order: 4,
       fields: [
         {
           id: "field-instagram",
@@ -364,13 +376,13 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
     },
 
     // -------------------------------------------------------------------------
-    // STEP 5: Photo & Document Uploads
+    // STEP 6: Photo & Document Uploads
     // -------------------------------------------------------------------------
     {
       id: "step-5",
       title: "Photo & Media Uploads",
       description: "Clear portrait photograph for candidate identification dossier.",
-      order: 4,
+      order: 5,
       fields: [
         {
           id: "field-profile-photo",
@@ -412,13 +424,13 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
     },
 
     // -------------------------------------------------------------------------
-    // STEP 6: Rules, Minor Safeguarding & Legal Consents
+    // STEP 7: Rules, Minor Safeguarding & Legal Consents
     // -------------------------------------------------------------------------
     {
       id: "step-6",
       title: "Competition Rules, Minor Safeguarding & Consent",
       description: "Official code of conduct, safeguarding for participants under 18, and data privacy agreements.",
-      order: 5,
+      order: 6,
       fields: [
         {
           id: "field-agree-rules",
@@ -504,23 +516,23 @@ export const DEFAULT_MITHILA_QUEEN_SCHEMA: FormSchemaDefinition = {
     },
 
     // -------------------------------------------------------------------------
-    // STEP 7: Review & Registration Fee (NPR 399)
+    // STEP 8: Official Registration Fee & Payment (Separate Drag-and-Drop Step)
     // -------------------------------------------------------------------------
     {
-      id: "step-7",
-      title: "Review & Registration Fee (NPR 399)",
-      description: "Final dossier review and verified payment submission via official merchant QR code.",
-      order: 6,
+      id: "step-payment",
+      title: "Official Registration Fee & Payment",
+      description: "Scan official payment QR code, or transfer to the account, and upload transfer receipt.",
+      order: 7,
       isPaymentStep: true,
       fields: [
         {
           id: "field-tx-reference",
           fieldKey: "transactionReference",
           type: "text",
-          label: "Payment Transaction Reference / UTR Code",
-          placeholder: "e.g. 12-digit transaction ID, bank journal number, or eSewa ref",
-          description: "Obtained from your payment receipt screenshot after completing the NPR 399 transfer.",
-          required: true,
+          label: "Payment Transaction Reference / UTR Code (Optional)",
+          placeholder: "e.g. 12-digit transaction ID, bank journal number, or wallet ref",
+          description: "Optional transaction reference or journal code from your payment receipt.",
+          required: false,
           order: 0,
         },
         {

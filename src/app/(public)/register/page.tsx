@@ -2,8 +2,9 @@ import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { prisma } from "@/lib/db/prisma";
-import { MithilaQueenWizard } from "@/components/registration/mithila-queen-wizard";
-import { MithilaHeritageMandala, MithilaQueenLogo } from "@/components/brand/brand-logos";
+import { RegistrationWizard } from "@/components/registration/registration-wizard";
+import { DEFAULT_MITHILA_QUEEN_SCHEMA } from "@/lib/constants/default-form-schema";
+import { MithilaHeritageMandala } from "@/components/brand/brand-logos";
 import { Button } from "@/components/ui/button";
 import {
   Clock,
@@ -29,6 +30,12 @@ export default async function RegisterPage() {
   const [form, setting] = await Promise.all([
     prisma.registrationForm.findUnique({
       where: { slug: "mithila-queen" },
+      include: {
+        versions: {
+          orderBy: { versionNumber: "desc" },
+          take: 1,
+        },
+      },
     }),
     prisma.siteSetting.findUnique({
       where: { id: "primary" },
@@ -212,7 +219,26 @@ export default async function RegisterPage() {
       </div>
 
       {/* Application Registration Wizard */}
-      <MithilaQueenWizard />
+      {(() => {
+        const latestSchema = form.versions?.[0]?.schema as any;
+        const hasSeparatedLocationStep =
+          Array.isArray(latestSchema?.steps) &&
+          latestSchema.steps.some((s: any) => s.id === "step-personal-location");
+        const activeSchema = hasSeparatedLocationStep ? latestSchema : DEFAULT_MITHILA_QUEEN_SCHEMA;
+
+        return (
+          <RegistrationWizard
+            form={{
+              id: form.id,
+              name: form.name,
+              slug: form.slug,
+              description: form.description,
+              instructions: form.instructions,
+            }}
+            schema={activeSchema}
+          />
+        );
+      })()}
     </div>
   );
 }

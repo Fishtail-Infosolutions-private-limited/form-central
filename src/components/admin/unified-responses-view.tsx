@@ -182,6 +182,8 @@ export function UnifiedResponsesView({
   // Action states
   const [isVerifyingPayment, setIsVerifyingPayment] = useState(false);
   const [quickVerifyingId, setQuickVerifyingId] = useState<string | null>(null);
+  const [quickApprovingId, setQuickApprovingId] = useState<string | null>(null);
+  const [quickDownloadingId, setQuickDownloadingId] = useState<string | null>(null);
   const [clarificationNotes, setClarificationNotes] = useState("");
   const [showClarificationInput, setShowClarificationInput] = useState(false);
 
@@ -318,6 +320,84 @@ export function UnifiedResponsesView({
       }
     } else {
       toast.error(res.error || "Failed to verify payment.");
+    }
+  };
+
+  // 1-Click Direct Application Approval from Table (only for VERIFIED payments)
+  const handleQuickApproveApplication = async (app: UnifiedApplication, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (app.paymentStatus !== "VERIFIED") {
+      toast.error("Payment must be independently verified before application approval.");
+      return;
+    }
+
+    setQuickApprovingId(app.registrationId);
+    const res = await adminAdjudicateApplicationAction({
+      registrationId: app.registrationId,
+      decision: "APPROVE",
+      reason: "Approved following administrative verification of payment and documents.",
+    });
+    setQuickApprovingId(null);
+
+    if (res.success) {
+      toast.success(`Application officially approved for ${app.fullName} (${app.registrationId})! Confirmation PDF generated.`);
+      setLocalApplications((prev) =>
+        prev.map((a) =>
+          a.registrationId === app.registrationId
+            ? {
+                ...a,
+                applicationStatus: "APPROVED",
+                pdfGeneratedAt: new Date(),
+              }
+            : a
+        )
+      );
+      if (selectedApp && selectedApp.registrationId === app.registrationId) {
+        setSelectedApp((prev) =>
+          prev
+            ? {
+                ...prev,
+                applicationStatus: "APPROVED",
+                pdfGeneratedAt: new Date(),
+              }
+            : null
+        );
+      }
+    } else {
+      toast.error(res.error || "Failed to approve application.");
+    }
+  };
+
+  // 1-Click Quick PDF Download from Table
+  const handleQuickDownloadPdf = async (app: UnifiedApplication, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setQuickDownloadingId(app.registrationId);
+
+    const res = await downloadApprovedPdfAction({
+      registrationId: app.registrationId,
+      verificationContact: app.email,
+    });
+    setQuickDownloadingId(null);
+
+    if (res.success && res.pdfBase64) {
+      const byteCharacters = atob(res.pdfBase64);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Confirmation-${app.registrationId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      toast.success(`Confirmation PDF downloaded for ${app.fullName}.`);
+    } else {
+      toast.error(res.error || "Failed to download confirmation PDF.");
     }
   };
 
@@ -741,7 +821,14 @@ export function UnifiedResponsesView({
               <tbody className="divide-y divide-[#DCE5ED]">
                 {filteredApplications.map((app) => {
                   const isQuickVerifying = quickVerifyingId === app.registrationId;
+                  const isQuickApproving = quickApprovingId === app.registrationId;
+                  const isQuickDownloading = quickDownloadingId === app.registrationId;
                   const isPaymentUnderReview = app.paymentStatus === "UNDER_REVIEW";
+                  const canQuickApprove =
+                    app.paymentStatus === "VERIFIED" &&
+                    app.applicationStatus !== "APPROVED" &&
+                    app.applicationStatus !== "REJECTED";
+                  const isApproved = app.applicationStatus === "APPROVED";
 
                   return (
                     <tr key={app.id} className="hover:bg-[#F4F7FA]/50 transition-colors">
@@ -868,6 +955,43 @@ export function UnifiedResponsesView({
                                 <Check className="w-3 h-3" />
                               )}
                               <span>Verify</span>
+                            </Button>
+                          )}
+
+                          {/* 1-Click Direct "Approve" Button when Payment is Verified */}
+                          {canQuickApprove && (
+                            <Button
+                              size="sm"
+                              disabled={isQuickApproving}
+                              onClick={(e) => handleQuickApproveApplication(app, e)}
+                              className="bg-[#183153] hover:bg-[#12243D] text-white text-[11px] h-7 px-2.5 rounded-lg shadow-none font-semibold gap-1"
+                              title="1-Click approve application & generate PDF"
+                            >
+                              {isQuickApproving ? (
+                                <Loader2 className="w-3 h-3 animate-spin" />
+                              ) : (
+                                <Sparkles className="w-3 h-3 text-[#356FA8]" />
+                              )}
+                              <span>Approve</span>
+                            </Button>
+                          )}
+
+                          {/* 1-Click Direct PDF Download for Approved Applications */}
+                          {isApproved && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={isQuickDownloading}
+                              onClick={(e) => handleQuickDownloadPdf(app, e)}
+                              className="border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-[11px] h-7 px-2 rounded-lg shadow-none font-semibold gap-1"
+                              title="Download Confirmation PDF"
+                            >
+                              {isQuickDownloading ? (
+                                <Loader2 className="w-3 h-3 animate-spin" />
+                              ) : (
+                                <FileDown className="w-3 h-3 text-emerald-700" />
+                              )}
+                              <span>PDF</span>
                             </Button>
                           )}
 

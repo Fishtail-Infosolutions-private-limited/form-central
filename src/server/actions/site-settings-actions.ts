@@ -15,17 +15,7 @@ export async function getPublicSiteSettingsAction() {
       setting = await prisma.siteSetting.create({
         data: {
           id: "primary",
-          organizationName: "The Origin Foundation",
-          organizationTagline: "Rooted in Identity. Driven by Purpose.",
-          competitionName: "Mithila Queen",
-          competitionTagline: "Celebrating Mithila's Culture, Confidence & Talent.",
-          location: "Janakpur Dham, Nepal",
-          officialEmail: "originfoundation107@gmail.com",
-          registrationFee: 399,
-          eventSchedule: "To Be Announced",
-          eventVenue: "To Be Announced",
-          isRegistrationOpen: true,
-          whatsappContact: "+977 9704571941",
+          ...DEFAULT_OFFICIAL_SETTINGS,
         },
       });
     }
@@ -33,15 +23,15 @@ export async function getPublicSiteSettingsAction() {
     return {
       success: true,
       setting: {
-        organizationName: setting.organizationName,
-        organizationTagline: setting.organizationTagline,
-        competitionName: setting.competitionName,
-        competitionTagline: setting.competitionTagline,
-        location: setting.location,
-        officialEmail: setting.officialEmail,
-        registrationFee: setting.registrationFee,
-        eventSchedule: setting.eventSchedule,
-        eventVenue: setting.eventVenue,
+        organizationName: setting.organizationName || DEFAULT_OFFICIAL_SETTINGS.organizationName,
+        organizationTagline: setting.organizationTagline || DEFAULT_OFFICIAL_SETTINGS.organizationTagline,
+        competitionName: setting.competitionName || DEFAULT_OFFICIAL_SETTINGS.competitionName,
+        competitionTagline: setting.competitionTagline || DEFAULT_OFFICIAL_SETTINGS.competitionTagline,
+        location: setting.location || DEFAULT_OFFICIAL_SETTINGS.location,
+        officialEmail: setting.officialEmail || DEFAULT_OFFICIAL_SETTINGS.officialEmail,
+        registrationFee: setting.registrationFee || DEFAULT_OFFICIAL_SETTINGS.registrationFee,
+        eventSchedule: setting.eventSchedule || DEFAULT_OFFICIAL_SETTINGS.eventSchedule,
+        eventVenue: setting.eventVenue || DEFAULT_OFFICIAL_SETTINGS.eventVenue,
         eventDate: setting.eventDate,
         eventTime: setting.eventTime,
         isRegistrationOpen: setting.isRegistrationOpen,
@@ -66,39 +56,48 @@ export async function getPublicSiteSettingsAction() {
         bankInstructions: setting.bankInstructions,
         bankReferenceInstructions: setting.bankReferenceInstructions,
         // Competition Details & Links
-        shortIntro: setting.shortIntro,
-        fullDescription: setting.fullDescription,
-        officialFacebook: setting.officialFacebook,
-        officialYoutube: setting.officialYoutube,
+        shortIntro: setting.shortIntro || DEFAULT_OFFICIAL_SETTINGS.shortIntro,
+        fullDescription: setting.fullDescription || DEFAULT_OFFICIAL_SETTINGS.fullDescription,
+        officialFacebook: setting.officialFacebook || DEFAULT_OFFICIAL_SETTINGS.officialFacebook,
+        officialYoutube: setting.officialYoutube || DEFAULT_OFFICIAL_SETTINGS.officialYoutube,
         // Dates & Venue
         grandFinaleDate: setting.grandFinaleDate,
-        grandFinaleTime: setting.grandFinaleTime,
+        grandFinaleTime: setting.grandFinaleTime || DEFAULT_OFFICIAL_SETTINGS.grandFinaleTime,
         auditionDate: setting.auditionDate,
-        auditionTime: setting.auditionTime,
-        dateInstructions: setting.dateInstructions,
-        venueAddress: setting.venueAddress,
-        venueCity: setting.venueCity,
+        auditionTime: setting.auditionTime || DEFAULT_OFFICIAL_SETTINGS.auditionTime,
+        dateInstructions: setting.dateInstructions || DEFAULT_OFFICIAL_SETTINGS.dateInstructions,
+        venueAddress: setting.venueAddress || DEFAULT_OFFICIAL_SETTINGS.venueAddress,
+        venueCity: setting.venueCity || DEFAULT_OFFICIAL_SETTINGS.venueCity,
         venueDirections: setting.venueDirections,
-        venueInstructions: setting.venueInstructions,
+        venueInstructions: setting.venueInstructions || DEFAULT_OFFICIAL_SETTINGS.venueInstructions,
         // Audition Guidelines
-        videoRequirements: setting.videoRequirements,
-        videoDuration: setting.videoDuration,
+        videoRequirements: setting.videoRequirements || DEFAULT_OFFICIAL_SETTINGS.videoRequirements,
+        videoDuration: setting.videoDuration || DEFAULT_OFFICIAL_SETTINGS.videoDuration,
         videoSubmissionDeadline: setting.videoSubmissionDeadline,
-        videoSubmissionMethod: setting.videoSubmissionMethod,
-        applicantInstructions: setting.applicantInstructions,
+        videoSubmissionMethod: setting.videoSubmissionMethod || DEFAULT_OFFICIAL_SETTINGS.videoSubmissionMethod,
+        applicantInstructions: setting.applicantInstructions || DEFAULT_OFFICIAL_SETTINGS.applicantInstructions,
         // Public Modules
-        homepageIntroText: setting.homepageIntroText,
-        competitionHighlightsJson: setting.competitionHighlightsJson,
+        homepageIntroText: setting.homepageIntroText || DEFAULT_OFFICIAL_SETTINGS.homepageIntroText,
+        competitionHighlightsJson:
+          Array.isArray(setting.competitionHighlightsJson) && (setting.competitionHighlightsJson as any[]).length > 0
+            ? setting.competitionHighlightsJson
+            : DEFAULT_OFFICIAL_SETTINGS.competitionHighlightsJson,
         importantNoticesJson: setting.importantNoticesJson,
-        contactInfoJson: setting.contactInfoJson,
-        whatsappContact: setting.whatsappContact,
-        officialInstagram: setting.officialInstagram,
-        officialTiktok: setting.officialTiktok,
-        requiredHashtags: setting.requiredHashtags,
-        videoGuidelines: setting.videoGuidelines,
-        prizesJson: setting.prizesJson,
+        contactInfoJson: setting.contactInfoJson || DEFAULT_OFFICIAL_SETTINGS.contactInfoJson,
+        whatsappContact: setting.whatsappContact || DEFAULT_OFFICIAL_SETTINGS.whatsappContact,
+        officialInstagram: setting.officialInstagram || DEFAULT_OFFICIAL_SETTINGS.officialInstagram,
+        officialTiktok: setting.officialTiktok || DEFAULT_OFFICIAL_SETTINGS.officialTiktok,
+        requiredHashtags: setting.requiredHashtags || DEFAULT_OFFICIAL_SETTINGS.requiredHashtags,
+        videoGuidelines: setting.videoGuidelines || DEFAULT_OFFICIAL_SETTINGS.videoGuidelines,
+        prizesJson:
+          Array.isArray(setting.prizesJson) && (setting.prizesJson as any[]).length > 0
+            ? setting.prizesJson
+            : DEFAULT_OFFICIAL_SETTINGS.prizesJson,
         announcementsJson: setting.announcementsJson,
-        faqsJson: setting.faqsJson,
+        faqsJson:
+          Array.isArray(setting.faqsJson) && (setting.faqsJson as any[]).length > 0
+            ? setting.faqsJson
+            : DEFAULT_OFFICIAL_SETTINGS.faqsJson,
         rulesJson: setting.rulesJson,
       },
     };

@@ -140,54 +140,64 @@ export default async function HomePage() {
     },
   ];
 
-  const prizes = (setting?.prizesJson as any) || [
-    {
-      position: "First Prize",
-      title: "iPhone 18 Pro Max, Red, 512 GB",
-      badge: "Crown Winner",
-      status: "Proposed by organizers",
-    },
-    {
-      position: "Second Prize",
-      title: "MAC Beauty Products Collection",
-      badge: "First Runner-Up",
-      status: "Approx. NPR 30,000 value",
-    },
-    {
-      position: "Third Prize",
-      title: "Smartphone or Quality Electronic Device",
-      badge: "Second Runner-Up",
-      status: "To be confirmed by organizers",
-    },
-  ];
+  const prizes =
+    Array.isArray(setting?.prizesJson) && (setting.prizesJson as any[]).length > 0
+      ? (setting.prizesJson as any[])
+      : [
+          {
+            position: "First Prize",
+            title: "iPhone 18 Pro Max, Red, 512 GB",
+            badge: "Crown Winner",
+            status: "Proposed by organizers",
+          },
+          {
+            position: "Second Prize",
+            title: "MAC Beauty Products Collection",
+            badge: "First Runner-Up",
+            status: "Approx. NPR 30,000 value",
+          },
+          {
+            position: "Third Prize",
+            title: "Smartphone or Quality Electronic Device",
+            badge: "Second Runner-Up",
+            status: "To be confirmed by organizers",
+          },
+        ];
 
-  const faqs = (setting?.faqsJson as any) || [
-    {
-      category: "Organization",
-      q: "What is The Origin Foundation?",
-      a: "The Origin Foundation is a non-profit cultural initiative platform in Janakpur Dham, Nepal, created to preserve regional heritage, celebrate creative talents, and foster opportunities for participation, confidence, and community representation.",
-    },
-    {
-      category: "Competition",
-      q: "What is Mithila Queen?",
-      a: "Mithila Queen is the flagship initiative of The Origin Foundation. It is an annual cultural and talent competition intended to bring together young women who want to express their talent, confidence, creativity, and connection with Mithila's heritage.",
-    },
-    {
-      category: "Fee & Payment",
-      q: "What is the registration fee?",
-      a: `The registration fee is strictly NPR ${regFee} per registration, payable in Nepalese rupees only. This nominal administrative fee covers dossier preparation, independent banking verification, and certification.`,
-    },
-    {
-      category: "Schedule & Format",
-      q: "When will the audition and grand finale take place?",
-      a: "Event Schedule: To Be Announced. Online registrations are conducted via this official website. Exact audition schedules and venue locations will be communicated directly to verified participants.",
-    },
-    {
-      category: "Eligibility",
-      q: "Can beginners without modeling or stage experience apply?",
-      a: "Yes! Absolutely. Mithila Queen is a cultural and talent platform, not a physical beauty pageant. Beginners and first-time applicants are warmly welcomed and evaluated with complete impartiality.",
-    },
-  ];
+  const rawFaqs =
+    Array.isArray(setting?.faqsJson) && (setting.faqsJson as any[]).length > 0
+      ? (setting.faqsJson as any[]).filter((f) => f.published !== false)
+      : null;
+
+  const faqs = rawFaqs && rawFaqs.length > 0
+    ? rawFaqs
+    : [
+        {
+          category: "Organization",
+          q: "What is The Origin Foundation?",
+          a: "The Origin Foundation is a non-profit cultural initiative platform in Janakpur Dham, Nepal, created to preserve regional heritage, celebrate creative talents, and foster opportunities for participation, confidence, and community representation.",
+        },
+        {
+          category: "Competition",
+          q: "What is Mithila Queen?",
+          a: "Mithila Queen is the flagship initiative of The Origin Foundation. It is an annual cultural and talent competition intended to bring together young women who want to express their talent, confidence, creativity, and connection with Mithila's heritage.",
+        },
+        {
+          category: "Fee & Payment",
+          q: "What is the registration fee?",
+          a: `The registration fee is strictly NPR ${regFee} per registration, payable in Nepalese rupees only. This nominal administrative fee covers dossier preparation, independent banking verification, and certification.`,
+        },
+        {
+          category: "Schedule & Format",
+          q: "When will the audition and grand finale take place?",
+          a: "Event Schedule: To Be Announced. Online registrations are conducted via this official website. Exact audition schedules and venue locations will be communicated directly to verified participants.",
+        },
+        {
+          category: "Eligibility",
+          q: "Can beginners without modeling or stage experience apply?",
+          a: "Yes! Absolutely. Mithila Queen is a cultural and talent platform, not a physical beauty pageant. Beginners and first-time applicants are warmly welcomed and evaluated with complete impartiality.",
+        },
+      ];
 
   // 1. Dynamic Availability & Registration Timeline Logic
   const now = new Date();
@@ -645,10 +655,111 @@ export default async function HomePage() {
             </div>
           ))}
         </div>
+
+        {/* 4th & 5th Prize Notice per PDF Brief */}
+        <div className="p-4 rounded-xl bg-[#F4F7FA] border border-[#DCE5ED] text-xs text-[#546E7A] flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#356FA8] shrink-0" />
+            <span>
+              <strong>Fourth &amp; Fifth Honors:</strong> Details to be announced later by the organizing committee.
+            </span>
+          </div>
+          <span className="text-[11px] font-medium text-[#183153] hidden sm:inline">
+            Status: Proposed by organizers
+          </span>
+        </div>
       </section>
 
       {/* ==================================================================== */}
-      {/* 8. EXPANDABLE FREQUENTLY ASKED QUESTIONS */}
+      {/* 8. EXECUTIVE GOVERNANCE & LEADERSHIP DIRECTORY */}
+      {/* ==================================================================== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="max-w-2xl space-y-2">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#356FA8]">
+            Executive Governance
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#263238]">
+            Organizing Committee &bull; Managing Directors
+          </h2>
+          <p className="text-xs sm:text-sm text-[#546E7A]">
+            Direct leadership contacts with equal operational standing for authentic, transparent correspondence.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
+          {/* Gaurav Gupta */}
+          <div className="p-6 sm:p-7 rounded-2xl bg-white border border-[#DCE5ED] shadow-xs space-y-4 hover:border-[#356FA8] transition-colors">
+            <div className="space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#356FA8] block">
+                Executive Leadership
+              </span>
+              <h3 className="text-xl font-bold text-[#183153]">Gaurav Gupta</h3>
+              <p className="text-xs font-semibold text-[#546E7A]">
+                Managing Director &bull; Operations &amp; Administration
+              </p>
+            </div>
+            <p className="text-xs text-[#546E7A] leading-relaxed">
+              Leading candidate relations, audition video intake, and administrative coordination for Mithila Queen.
+            </p>
+            <div className="pt-3 border-t border-[#DCE5ED] space-y-1.5 text-xs">
+              <div className="flex items-center justify-between text-[#546E7A]">
+                <span>Direct Contact:</span>
+                <a
+                  href="tel:+9779704571941"
+                  className="font-mono font-bold text-[#183153] hover:text-[#356FA8] transition-colors"
+                >
+                  +977 9704571941
+                </a>
+              </div>
+              <div className="flex items-center justify-between text-[#546E7A]">
+                <span>WhatsApp:</span>
+                <a
+                  href="https://wa.me/9779704571941"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono font-bold text-[#356FA8] hover:underline"
+                >
+                  +977 9704571941
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Dipendra Shah Kalwar */}
+          <div className="p-6 sm:p-7 rounded-2xl bg-white border border-[#DCE5ED] shadow-xs space-y-4 hover:border-[#356FA8] transition-colors">
+            <div className="space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#356FA8] block">
+                Executive Leadership
+              </span>
+              <h3 className="text-xl font-bold text-[#183153]">Dipendra Shah Kalwar</h3>
+              <p className="text-xs font-semibold text-[#546E7A]">
+                Managing Director &bull; Strategic Outreach &amp; Community Relations
+              </p>
+            </div>
+            <p className="text-xs text-[#546E7A] leading-relaxed">
+              Directing community partnerships, regional outreach across Madhesh Province, and institutional engagement.
+            </p>
+            <div className="pt-3 border-t border-[#DCE5ED] space-y-1.5 text-xs">
+              <div className="flex items-center justify-between text-[#546E7A]">
+                <span>Direct Contact:</span>
+                <a
+                  href="tel:+9779812005468"
+                  className="font-mono font-bold text-[#183153] hover:text-[#356FA8] transition-colors"
+                >
+                  +977 981-2005468
+                </a>
+              </div>
+              <div className="flex items-center justify-between text-[#546E7A]">
+                <span>Location:</span>
+                <span className="font-semibold text-[#183153]">Janakpur Dham, Nepal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
+      {/* 9. EXPANDABLE FREQUENTLY ASKED QUESTIONS */}
       {/* ==================================================================== */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="text-center space-y-2 max-w-xl mx-auto">
