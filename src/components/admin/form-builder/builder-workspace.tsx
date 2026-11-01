@@ -435,12 +435,12 @@ export function BuilderWorkspace({
       {/* Workspace Sub-Header */}
       <div className="bg-white p-4 rounded-xl border border-stone-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-[#FFFDF7] border border-[#B89150]/30 text-[#B89150] flex items-center justify-center shrink-0 shadow-2xs">
+          <div className="w-9 h-9 rounded-lg bg-warm-ivory border border-[#B89150]/30 text-[#B89150] flex items-center justify-center shrink-0 shadow-2xs">
             <Crown className="w-5 h-5 text-[#B89150]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-serif font-bold text-[#292524]">
+              <h2 className="text-sm font-serif font-bold text-charcoal">
                 {form.name} &bull; Form Customizer
               </h2>
               {publishedVersionNumber && (
@@ -458,8 +458,8 @@ export function BuilderWorkspace({
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2 shrink-0">
           {hasUnsavedChanges && (
-            <span className="text-[10px] font-semibold text-[#D97706] bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D97706] animate-pulse" />
+            <span className="text-[10px] font-semibold text-saffron bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-saffron animate-pulse" />
               <span>Unsaved changes</span>
             </span>
           )}
@@ -469,9 +469,9 @@ export function BuilderWorkspace({
             variant="outline"
             size="sm"
             onClick={() => setIsPaletteOpen(!isPaletteOpen)}
-            className="text-xs h-8 font-medium gap-1.5 border-stone-200 text-stone-700 hover:bg-[#F7F1E5]"
+            className="text-xs h-8 font-medium gap-1.5 border-stone-200 text-stone-700 hover:bg-soft-cream"
           >
-            <Plus className="w-3.5 h-3.5 text-[#D97706]" />
+            <Plus className="w-3.5 h-3.5 text-saffron" />
             <span>{isPaletteOpen ? "Close Palette" : "Add Question"}</span>
           </Button>
 
@@ -480,7 +480,7 @@ export function BuilderWorkspace({
             variant="outline"
             size="sm"
             onClick={() => setIsPreviewOpen(true)}
-            className="text-xs h-8 font-medium gap-1.5 border-stone-200 text-stone-700 hover:bg-[#F7F1E5]"
+            className="text-xs h-8 font-medium gap-1.5 border-stone-200 text-stone-700 hover:bg-soft-cream"
           >
             <Eye className="w-3.5 h-3.5 text-[#B89150]" />
             <span>Full Form Preview</span>
@@ -492,7 +492,7 @@ export function BuilderWorkspace({
             size="sm"
             disabled={isSaving}
             onClick={handleSaveDraft}
-            className="text-xs h-8 font-medium gap-1.5 border-stone-200 text-stone-700 hover:bg-[#F7F1E5]"
+            className="text-xs h-8 font-medium gap-1.5 border-stone-200 text-stone-700 hover:bg-soft-cream"
           >
             {isSaving ? (
               <Loader2 className="w-3 h-3 animate-spin text-[#B89150]" />
@@ -507,7 +507,7 @@ export function BuilderWorkspace({
             size="sm"
             disabled={isPublishing}
             onClick={handlePublish}
-            className="text-xs h-8 font-semibold gap-1.5 bg-[#7F1D2D] hover:bg-[#5B131E] text-white shadow-xs"
+            className="text-xs h-8 font-semibold gap-1.5 bg-maroon hover:bg-[#5B131E] text-white shadow-xs"
           >
             {isPublishing ? (
               <Loader2 className="w-3 h-3 animate-spin" />
@@ -524,7 +524,7 @@ export function BuilderWorkspace({
         <div className="bg-white p-4 rounded-xl border border-[#B89150]/30 shadow-sm animate-in fade-in slide-in-from-top-2">
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
             <div>
-              <h3 className="font-serif font-bold text-xs uppercase tracking-wider text-[#292524]">
+              <h3 className="font-serif font-bold text-xs uppercase tracking-wider text-charcoal">
                 Add Question to Step {activeStepIndex + 1}: {currentStep.title}
               </h3>
               <p className="text-[11px] text-stone-500">
@@ -533,7 +533,7 @@ export function BuilderWorkspace({
             </div>
             <button
               onClick={() => setIsPaletteOpen(false)}
-              className="p-1 rounded text-stone-400 hover:text-[#292524]"
+              className="p-1 rounded text-stone-400 hover:text-charcoal"
             >
               <X className="w-4 h-4" />
             </button>
@@ -604,7 +604,7 @@ export function BuilderWorkspace({
                   <span className="text-[10px] font-semibold uppercase tracking-wider text-[#B89150]">
                     Step Preview &bull; Step {activeStepIndex + 1}
                   </span>
-                  <h3 className="font-serif font-bold text-lg text-[#292524]">
+                  <h3 className="font-serif font-bold text-lg text-charcoal">
                     {currentStep.title}
                   </h3>
                   {currentStep.description && (
@@ -619,14 +619,14 @@ export function BuilderWorkspace({
                     <div
                       key={f.id}
                       onClick={() => setSelectedFieldId(f.id)}
-                      className="p-3.5 rounded-lg border border-stone-200/80 bg-[#FFFDF7]/50 hover:border-[#B89150] transition-colors cursor-pointer group"
+                      className="p-3.5 rounded-lg border border-stone-200/80 bg-warm-ivory/50 hover:border-[#B89150] transition-colors cursor-pointer group"
                     >
                       <div className="flex items-center justify-between mb-1">
                         <label className="text-xs font-semibold text-stone-800 flex items-center gap-1.5">
                           <span>{f.label}</span>
-                          {f.required && <span className="text-[#D97706]">*</span>}
+                          {f.required && <span className="text-saffron">*</span>}
                         </label>
-                        <span className="text-[10px] text-stone-400 group-hover:text-[#7F1D2D] font-mono">
+                        <span className="text-[10px] text-stone-400 group-hover:text-maroon font-mono">
                           Click to edit
                         </span>
                       </div>
@@ -666,11 +666,11 @@ export function BuilderWorkspace({
         <div
           role="alert"
           aria-live="assertive"
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 w-[92vw] max-w-lg bg-[#0A192F] text-[#F1F5F9] rounded-lg shadow-2xl border border-[#C5A880]/40 overflow-hidden"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 w-[92vw] max-w-lg bg-maroon text-white rounded-lg shadow-2xl border border-antique-gold/40 overflow-hidden"
         >
           <div className="p-3 sm:p-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded bg-[#071324] border border-[#C5A880]/30 flex items-center justify-center shrink-0 text-[#C5A880]">
+              <div className="w-8 h-8 rounded bg-maroon-dark border border-antique-gold/30 flex items-center justify-center shrink-0 text-saffron">
                 <RotateCcw className="w-4 h-4" />
               </div>
               <div className="min-w-0">
@@ -683,7 +683,7 @@ export function BuilderWorkspace({
                     {deletedStepSnapshot.step.fields.length === 1 ? "question" : "questions"}
                   </span>
                   <span>&bull;</span>
-                  <span className="text-[#C5A880] font-medium font-mono">
+                  <span className="text-saffron font-medium font-mono">
                     Undo expires in {undoSecondsLeft}s
                   </span>
                 </div>
@@ -695,7 +695,7 @@ export function BuilderWorkspace({
                 type="button"
                 size="sm"
                 onClick={() => handleUndoStep()}
-                className="h-8 px-3 text-xs font-bold bg-[#A64B36] hover:bg-[#8F3E2C] text-white gap-1.5 shadow-xs"
+                className="h-8 px-3 text-xs font-bold bg-maroon hover:bg-[#8F3E2C] text-white gap-1.5 shadow-xs"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Undo</span>
@@ -707,7 +707,7 @@ export function BuilderWorkspace({
               <button
                 type="button"
                 onClick={handleDismissUndo}
-                className="p-1.5 text-zinc-400 hover:text-white rounded hover:bg-[#1E293B] transition-colors"
+                className="p-1.5 text-zinc-400 hover:text-white rounded hover:bg-maroon-dark transition-colors"
                 title="Dismiss undo"
                 aria-label="Dismiss"
               >
@@ -717,9 +717,9 @@ export function BuilderWorkspace({
           </div>
 
           {/* 10-second Animated Countdown Progress Bar */}
-          <div className="w-full bg-[#071324] h-1 overflow-hidden">
+          <div className="w-full bg-maroon-dark h-1 overflow-hidden">
             <div
-              className="bg-[#C5A880] h-full transition-all duration-100 ease-linear"
+              className="bg-saffron h-full transition-all duration-100 ease-linear"
               style={{
                 width: `${undoProgressPercent}%`,
               }}

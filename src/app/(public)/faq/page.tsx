@@ -73,14 +73,14 @@ export default async function FaqPage() {
     <div className="py-12 sm:py-20 space-y-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* HEADER */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-slate-200 text-[#0A192F] text-xs font-semibold shadow-xs">
-          <Crown className="w-3.5 h-3.5 text-[#C5A880]" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-soft-cream border border-cream-dark text-maroon text-xs font-semibold shadow-xs">
+          <Crown className="w-3.5 h-3.5 text-saffron" />
           <span>Official Information Desk</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#0A192F] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-maroon tracking-tight">
           Frequently Asked Questions
         </h1>
-        <p className="text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
+        <p className="text-sm text-stone-600 max-w-xl mx-auto leading-relaxed">
           Clear, verified answers regarding The Origin Foundation, Mithila Queen registration, payment verification, and competition guidelines.
         </p>
       </div>
@@ -90,20 +90,20 @@ export default async function FaqPage() {
         {faqs.map((faq: any, i: number) => (
           <div
             key={i}
-            className="p-6 rounded-md bg-white border border-slate-200 shadow-xs space-y-2.5 transition-colors hover:border-[#C5A880]"
+            className="p-6 rounded-xl bg-white border border-cream-dark shadow-xs space-y-2.5 transition-colors hover:border-saffron"
           >
             {faq.category && (
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-saffron bg-soft-cream px-2 py-0.5 rounded border border-cream-dark">
                   {faq.category}
                 </span>
               </div>
             )}
-            <h2 className="text-base font-bold text-[#0A192F] font-serif flex items-start gap-2.5">
-              <HelpCircle className="w-5 h-5 text-[#C5A880] shrink-0 mt-0.5" />
+            <h2 className="text-base font-bold text-maroon font-serif flex items-start gap-2.5">
+              <HelpCircle className="w-5 h-5 text-saffron shrink-0 mt-0.5" />
               <span>{faq.q}</span>
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 pl-7 leading-relaxed">
+            <p className="text-xs sm:text-sm text-stone-600 pl-7 leading-relaxed">
               {faq.a}
             </p>
           </div>
@@ -111,23 +111,23 @@ export default async function FaqPage() {
       </div>
 
       {/* STILL HAVE QUESTIONS */}
-      <div className="p-8 rounded-lg bg-[#0A192F] text-white border border-[#C5A880]/30 text-center space-y-4 shadow-md">
+      <div className="p-8 rounded-xl bg-maroon text-white border border-white/20 text-center space-y-4 shadow-md">
         <h3 className="text-xl font-bold font-serif text-white">Still have questions?</h3>
-        <p className="text-xs text-slate-300 max-w-md mx-auto">
+        <p className="text-xs text-stone-200 max-w-md mx-auto">
           Our team in Janakpur Dham is here to assist with any registration or payment inquiries.
         </p>
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-mono">
           <a
             href="mailto:originfoundation107@gmail.com"
-            className="text-[#C5A880] hover:text-white flex items-center gap-1.5 transition-colors"
+            className="text-antique-gold hover:text-white flex items-center gap-1.5 transition-colors"
           >
             <Mail className="w-4 h-4" />
             <span>originfoundation107@gmail.com</span>
           </a>
-          <span className="hidden sm:inline text-slate-600">•</span>
+          <span className="hidden sm:inline text-white/40">•</span>
           <a
             href="tel:+9779704571941"
-            className="text-[#C5A880] hover:text-white flex items-center gap-1.5 transition-colors"
+            className="text-antique-gold hover:text-white flex items-center gap-1.5 transition-colors"
           >
             <Phone className="w-4 h-4" />
             <span>+977 9704571941</span>

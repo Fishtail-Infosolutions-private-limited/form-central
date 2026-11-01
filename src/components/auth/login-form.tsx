@@ -150,22 +150,22 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F1F5F9] flex flex-col justify-center items-center p-4 text-[#0A192F] selection:bg-[#0A192F] selection:text-[#F1F5F9]">
+    <div className="min-h-screen bg-soft-cream flex flex-col justify-center items-center p-4 text-maroon selection:bg-maroon selection:text-white">
       <div className="w-full max-w-md">
         {/* Brand Header */}
         <div className="text-center mb-6">
           <Link href="/" className="inline-block hover:opacity-90 transition-opacity mb-2">
             <OriginFoundationLogo variant="stacked" theme="dark" />
           </Link>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E2E8F0]/60 border border-[#C5A880]/40 text-[#0A192F] text-[10.5px] font-bold uppercase tracking-wider mt-2">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#C5A880]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cream-dark/60 border border-antique-gold/40 text-maroon text-[10.5px] font-bold uppercase tracking-wider mt-2">
+            <ShieldCheck className="w-3.5 h-3.5 text-saffron" />
             <span>Executive Admin Portal &bull; Mithila Queen</span>
           </div>
         </div>
 
         {/* Main Card */}
-        <Card className="border-[#E2E8F0] bg-white shadow-xs rounded-md overflow-hidden">
-          <CardHeader className="pb-4 border-b border-[#E2E8F0]">
+        <Card className="border-cream-dark bg-white shadow-xs rounded-md overflow-hidden">
+          <CardHeader className="pb-4 border-b border-cream-dark">
             <CardTitle className="text-xl font-bold text-zinc-900">
               {mode === "LOGIN"
                 ? "Sign In"
@@ -223,7 +223,7 @@ export function LoginForm() {
                     onChange={(e) => setLoginEmail(e.target.value)}
                     required
                     error={Boolean(loginState?.fieldErrors?.email)}
-                    className="h-10 text-sm border-zinc-300 focus:border-[#C5A880] focus:ring-[#C5A880] bg-white"
+                    className="h-10 text-sm border-zinc-300 focus:border-saffron focus:ring-saffron bg-white"
                   />
                   {loginState?.fieldErrors?.email && (
                     <p className="text-xs text-red-600 font-medium">{loginState.fieldErrors.email[0]}</p>
@@ -244,7 +244,7 @@ export function LoginForm() {
                         setMode("FORGOT_EMAIL");
                         setResetError(null);
                       }}
-                      className="text-xs font-semibold text-[#A64B36] hover:text-[#0A192F] hover:underline"
+                      className="text-xs font-semibold text-maroon hover:text-maroon hover:underline"
                     >
                       Forgot Password?
                     </button>
@@ -260,7 +260,7 @@ export function LoginForm() {
                     onChange={(e) => setLoginPassword(e.target.value)}
                     required
                     error={Boolean(loginState?.fieldErrors?.password)}
-                    className="h-10 text-sm border-zinc-300 focus:border-[#C5A880] focus:ring-[#C5A880] bg-white font-mono"
+                    className="h-10 text-sm border-zinc-300 focus:border-saffron focus:ring-saffron bg-white font-mono"
                   />
                   {loginState?.fieldErrors?.password && (
                     <p className="text-xs text-red-600 font-medium">{loginState.fieldErrors.password[0]}</p>
@@ -271,7 +271,7 @@ export function LoginForm() {
                   <Button
                     type="submit"
                     disabled={isLoginPending}
-                    className="w-full h-10 text-xs bg-[#0A192F] hover:bg-[#0A192F]/90 border border-[#C5A880]/40 text-[#F1F5F9] text-white font-bold transition-all shadow-xs gap-2"
+                    className="w-full h-10 text-xs bg-maroon hover:bg-maroon/90 border border-antique-gold/40 text-white text-white font-bold transition-all shadow-xs gap-2"
                   >
                     {isLoginPending ? (
                       <>
@@ -314,7 +314,7 @@ export function LoginForm() {
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-10 text-xs bg-[#0A192F] hover:bg-[#0A192F]/90 border border-[#C5A880]/40 text-[#F1F5F9] text-white font-bold gap-2"
+                    className="w-full h-10 text-xs bg-maroon hover:bg-maroon/90 border border-antique-gold/40 text-white text-white font-bold gap-2"
                   >
                     {isLoading ? (
                       <>
@@ -366,7 +366,7 @@ export function LoginForm() {
                       type="button"
                       disabled={resendCooldown > 0 || isLoading}
                       onClick={handleSendOtp}
-                      className="text-[#A64B36] font-bold hover:underline disabled:text-zinc-400 disabled:no-underline"
+                      className="text-maroon font-bold hover:underline disabled:text-zinc-400 disabled:no-underline"
                     >
                       {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend Code"}
                     </button>
@@ -377,7 +377,7 @@ export function LoginForm() {
                   <Button
                     type="submit"
                     disabled={isLoading || otpCode.length !== 6}
-                    className="w-full h-10 text-xs bg-[#0A192F] hover:bg-[#0A192F]/90 border border-[#C5A880]/40 text-[#F1F5F9] text-white font-bold gap-2"
+                    className="w-full h-10 text-xs bg-maroon hover:bg-maroon/90 border border-antique-gold/40 text-white text-white font-bold gap-2"
                   >
                     {isLoading ? (
                       <>
@@ -445,7 +445,7 @@ export function LoginForm() {
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-10 text-xs bg-[#0A192F] hover:bg-[#0A192F]/90 border border-[#C5A880]/40 text-[#F1F5F9] text-white font-bold gap-2"
+                    className="w-full h-10 text-xs bg-maroon hover:bg-maroon/90 border border-antique-gold/40 text-white text-white font-bold gap-2"
                   >
                     {isLoading ? (
                       <>
@@ -466,7 +466,7 @@ export function LoginForm() {
             {/* 5. SUCCESS CONFIRMATION */}
             {mode === "SUCCESS" && (
               <div className="text-center py-4 space-y-4">
-                <div className="w-14 h-14 rounded-md bg-[#F8FAFC] text-[#A64B36] mx-auto flex items-center justify-center border border-[#E2E8F0]">
+                <div className="w-14 h-14 rounded-md bg-soft-cream text-maroon mx-auto flex items-center justify-center border border-cream-dark">
                   <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
                 </div>
 
@@ -492,7 +492,7 @@ export function LoginForm() {
                       setLoginEmail(resetEmail);
                     }
                   }}
-                  className="w-full h-10 text-xs bg-[#0A192F] hover:bg-[#0A192F]/90 border border-[#C5A880]/40 text-[#F1F5F9] text-white font-bold gap-2"
+                  className="w-full h-10 text-xs bg-maroon hover:bg-maroon/90 border border-antique-gold/40 text-white text-white font-bold gap-2"
                 >
                   <span>Sign In Now</span>
                   <ArrowRight className="w-4 h-4" />

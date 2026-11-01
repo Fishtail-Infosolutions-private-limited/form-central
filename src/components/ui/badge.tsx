@@ -3,34 +3,34 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#C5A880] focus:ring-offset-2",
+  "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-saffron focus:ring-offset-2",
   {
     variants: {
       variant: {
         default:
-          "border border-slate-200 bg-slate-100 text-[#0A192F]",
+          "border border-cream-dark bg-soft-cream text-charcoal",
         secondary:
-          "border border-slate-200 bg-white text-[#0A192F]",
+          "border border-cream-dark bg-white text-charcoal",
         destructive:
           "border-transparent bg-rose-600 text-white font-medium",
         outline:
-          "border border-slate-300 text-[#0A192F] bg-white",
+          "border border-cream-dark text-charcoal bg-white",
         warning:
           "border border-amber-300 bg-amber-50 text-amber-900",
         accent:
-          "border border-[#C5A880]/40 bg-slate-50 text-[#C5A880]",
+          "border border-antique-gold/40 bg-soft-cream text-antique-gold",
         published:
-          "border-transparent bg-[#0A192F] text-white font-semibold",
+          "border-transparent bg-maroon text-white font-semibold",
         draft:
-          "border border-slate-200 bg-slate-100 text-slate-700 font-medium",
+          "border border-cream-dark bg-soft-cream text-stone-700 font-medium",
         closed:
-          "border-transparent bg-slate-700 text-white font-medium",
+          "border-transparent bg-stone-700 text-white font-medium",
         black:
-          "border-transparent bg-[#0A192F] text-white font-medium",
+          "border-transparent bg-maroon text-white font-medium",
         forest:
-          "border-transparent bg-[#0A192F] text-white font-medium",
+          "border-transparent bg-maroon text-white font-medium",
         terracotta:
-          "border-transparent bg-[#C5A880] text-[#0A192F] font-bold",
+          "border-transparent bg-saffron text-white font-bold",
       },
     },
     defaultVariants: {

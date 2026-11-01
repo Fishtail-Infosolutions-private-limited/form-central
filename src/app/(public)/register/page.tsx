@@ -13,14 +13,14 @@ export default function RegisterPage() {
     <div className="py-10 sm:py-16 space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Editorial Header */}
       <div className="max-w-2xl mx-auto text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-slate-200 text-[#0A192F] text-xs font-semibold shadow-xs">
-          <MithilaHeritageMandala className="w-3.5 h-3.5 text-[#C5A880]" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-soft-cream border border-cream-dark text-maroon text-xs font-semibold shadow-xs">
+          <MithilaHeritageMandala className="w-3.5 h-3.5 text-saffron" />
           <span>The Origin Foundation &bull; Janakpur Dham</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#0A192F] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-maroon tracking-tight">
           Mithila Queen Registration
         </h1>
-        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl mx-auto">
+        <p className="text-xs sm:text-sm text-stone-600 leading-relaxed max-w-xl mx-auto">
           Celebrating Mithila&apos;s Culture, Confidence & Talent. Complete the structured 7-step application below to register your candidacy.
         </p>
       </div>

@@ -123,7 +123,7 @@ export function FormsTable({ forms }: { forms: FormItem[] }) {
                     className="hover:bg-zinc-50/80 cursor-pointer transition-colors group"
                   >
                     <td className="px-5 py-4">
-                      <div className="font-bold text-zinc-900 text-sm group-hover:text-[#C5A880] transition-colors">
+                      <div className="font-bold text-zinc-900 text-sm group-hover:text-saffron transition-colors">
                         {form.name}
                       </div>
                       <p className="text-xs text-zinc-500 line-clamp-1 max-w-sm mt-0.5">
@@ -139,11 +139,11 @@ export function FormsTable({ forms }: { forms: FormItem[] }) {
                         <button
                           type="button"
                           onClick={(e) => copyPublicUrl(e, form)}
-                          className="text-zinc-400 hover:text-[#C5A880] p-1 rounded hover:bg-zinc-100 transition-colors"
+                          className="text-zinc-400 hover:text-saffron p-1 rounded hover:bg-zinc-100 transition-colors"
                           title="Copy public URL"
                         >
                           {copiedId === form.id ? (
-                            <Check className="w-3.5 h-3.5 text-[#C5A880]" />
+                            <Check className="w-3.5 h-3.5 text-saffron" />
                           ) : (
                             <Copy className="w-3.5 h-3.5" />
                           )}
@@ -152,7 +152,7 @@ export function FormsTable({ forms }: { forms: FormItem[] }) {
                           href={`/register/${form.slug}`}
                           target="_blank"
                           onClick={(e) => e.stopPropagation()}
-                          className="text-zinc-400 hover:text-[#C5A880] p-1 rounded hover:bg-zinc-100 transition-colors"
+                          className="text-zinc-400 hover:text-saffron p-1 rounded hover:bg-zinc-100 transition-colors"
                           title="Open live public form in new tab"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
@@ -167,17 +167,17 @@ export function FormsTable({ forms }: { forms: FormItem[] }) {
                         disabled={isToggling}
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all shadow-2xs border ${
                           isActive
-                            ? "bg-[#F8FAFC] text-[#0A192F] border-[#C5A880] hover:bg-[#F8FAFC]/80"
+                            ? "bg-soft-cream text-maroon border-saffron hover:bg-soft-cream/80"
                             : "bg-zinc-100 text-zinc-600 border-zinc-200 hover:bg-zinc-200"
                         }`}
                         title={isActive ? "Click to deactivate form" : "Click to activate form"}
                       >
                         {isToggling ? (
-                          <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C5A880]" />
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-saffron" />
                         ) : (
                           <span
                             className={`w-2 h-2 rounded-full ${
-                              isActive ? "bg-[#C5A880]" : "bg-zinc-400"
+                              isActive ? "bg-saffron" : "bg-zinc-400"
                             }`}
                           />
                         )}
@@ -188,7 +188,7 @@ export function FormsTable({ forms }: { forms: FormItem[] }) {
                     <td className="px-5 py-4 text-center" onClick={(e) => e.stopPropagation()}>
                       <Link
                         href={`/admin/forms/${form.id}/responses`}
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 hover:bg-[#F8FAFC] hover:text-[#0A192F] text-xs font-bold text-zinc-700 transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 hover:bg-soft-cream hover:text-maroon text-xs font-bold text-zinc-700 transition-colors"
                         title="View Submissions"
                       >
                         <Inbox className="w-3.5 h-3.5 text-zinc-400" />
@@ -205,7 +205,7 @@ export function FormsTable({ forms }: { forms: FormItem[] }) {
                         <Link href={`/admin/forms/${form.id}`}>
                           <Button
                             size="sm"
-                            className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold gap-1 text-xs h-8 px-2.5 shadow-2xs"
+                            className="bg-maroon hover:bg-maroon-dark text-white font-bold gap-1 text-xs h-8 px-2.5 shadow-2xs"
                             title="Edit Form (Name, Slug, Capacity, Deadline, Settings)"
                           >
                             <Pencil className="w-3.5 h-3.5" />

@@ -245,13 +245,13 @@ export function GoogleDriveManager({
         <div
           className={`p-4 rounded-xl border flex items-start justify-between text-sm ${
             message.type === "success"
-              ? "bg-[#F8FAFC] border-[#E2E8F0] text-[#0A192F]"
+              ? "bg-soft-cream border-cream-dark text-maroon"
               : "bg-red-50 border-red-200 text-red-800"
           }`}
         >
           <div className="flex items-center gap-2">
             {message.type === "success" ? (
-              <CheckCircle2 className="w-5 h-5 text-[#C5A880] shrink-0" />
+              <CheckCircle2 className="w-5 h-5 text-saffron shrink-0" />
             ) : (
               <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
             )}
@@ -271,9 +271,9 @@ export function GoogleDriveManager({
         <CardHeader className="bg-zinc-50/70 border-b border-zinc-200 pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-[#0A192F] p-0.5 flex items-center justify-center shadow-xs">
+              <div className="w-11 h-11 rounded-xl bg-maroon p-0.5 flex items-center justify-center shadow-xs">
                 <div className="w-full h-full bg-white rounded-[9px] flex items-center justify-center text-zinc-800">
-                  <HardDrive className="w-5 h-5 text-[#C5A880]" />
+                  <HardDrive className="w-5 h-5 text-saffron" />
                 </div>
               </div>
               <div>
@@ -282,7 +282,7 @@ export function GoogleDriveManager({
                   <span
                     className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded border ${
                       isConnected
-                        ? "bg-[#F8FAFC] text-[#0A192F] border-[#E2E8F0]"
+                        ? "bg-soft-cream text-maroon border-cream-dark"
                         : "bg-zinc-100 text-zinc-600 border-zinc-200"
                     }`}
                   >
@@ -323,7 +323,7 @@ export function GoogleDriveManager({
                 <a href="/api/google-drive/auth">
                   <Button
                     size="sm"
-                    className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs gap-1.5 px-4 shadow-xs"
+                    className="bg-maroon hover:bg-maroon-dark text-white font-bold text-xs gap-1.5 px-4 shadow-xs"
                   >
                     <HardDrive className="w-3.5 h-3.5" />
                     <span>Connect Google Drive</span>
@@ -352,7 +352,7 @@ export function GoogleDriveManager({
                 </div>
 
                 <a href="/api/google-drive/auth" className="inline-block">
-                  <Button className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs h-10 px-6 gap-2 shadow-sm">
+                  <Button className="bg-maroon hover:bg-maroon-dark text-white font-bold text-xs h-10 px-6 gap-2 shadow-sm">
                     <HardDrive className="w-4 h-4" />
                     <span>Connect Account with Google</span>
                   </Button>
@@ -424,7 +424,7 @@ export function GoogleDriveManager({
                     Connected Google Account
                   </span>
                   <div className="text-sm font-bold text-zinc-900 flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#C5A880] shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-saffron shrink-0" />
                     <span className="font-mono truncate">{integration?.accountEmail}</span>
                   </div>
                   <span className="text-[11px] text-zinc-400 mt-1 block">
@@ -438,7 +438,7 @@ export function GoogleDriveManager({
                   </span>
                   <div className="text-sm font-bold text-zinc-900 flex items-center justify-between">
                     <div className="flex items-center gap-2 min-w-0">
-                      <Folder className="w-4 h-4 text-[#C5A880] shrink-0" />
+                      <Folder className="w-4 h-4 text-saffron shrink-0" />
                       <span className="truncate">{selectedFolderName || "Root Drive"}</span>
                     </div>
                     <Button
@@ -462,7 +462,7 @@ export function GoogleDriveManager({
                   <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
                     <div>
                       <h4 className="text-sm font-bold text-zinc-900 flex items-center gap-2">
-                        <Folder className="w-4 h-4 text-[#C5A880]" />
+                        <Folder className="w-4 h-4 text-saffron" />
                         <span>Select Destination Folder on Google Drive</span>
                       </h4>
                       <p className="text-xs text-zinc-500 mt-0.5">
@@ -490,7 +490,7 @@ export function GoogleDriveManager({
                     <Button
                       type="submit"
                       disabled={isCreatingFolder || !newFolderName.trim()}
-                      className="bg-[#0A192F] hover:bg-[#1E293B] text-xs h-9 shrink-0 gap-1 font-semibold text-white"
+                      className="bg-maroon hover:bg-maroon-dark text-xs h-9 shrink-0 gap-1 font-semibold text-white"
                     >
                       {isCreatingFolder ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -509,7 +509,7 @@ export function GoogleDriveManager({
                         <button
                           type="button"
                           onClick={() => handleNavigateBreadcrumb(idx)}
-                          className={`hover:text-[#0A192F] font-medium whitespace-nowrap px-1 py-0.5 rounded ${
+                          className={`hover:text-maroon font-medium whitespace-nowrap px-1 py-0.5 rounded ${
                             idx === folderHistory.length - 1
                               ? "font-bold text-zinc-900 bg-white shadow-2xs"
                               : "text-zinc-600"
@@ -525,7 +525,7 @@ export function GoogleDriveManager({
                   <div className="min-h-[160px] max-h-[280px] overflow-y-auto divide-y divide-zinc-100 rounded-lg border border-zinc-200">
                     {isLoadingFolders ? (
                       <div className="p-8 text-center text-xs text-zinc-400 flex items-center justify-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin text-[#C5A880]" />
+                        <Loader2 className="w-4 h-4 animate-spin text-saffron" />
                         <span>Loading Google Drive folders...</span>
                       </div>
                     ) : folders.length === 0 ? (
@@ -539,21 +539,21 @@ export function GoogleDriveManager({
                           <div
                             key={folder.id}
                             className={`p-3 flex items-center justify-between hover:bg-zinc-50 transition-colors ${
-                              isCurrentSelected ? "bg-[#F8FAFC]" : ""
+                              isCurrentSelected ? "bg-soft-cream" : ""
                             }`}
                           >
                             <button
                               type="button"
                               onClick={() => handleNavigateFolder(folder)}
-                              className="flex items-center gap-2.5 text-left font-medium text-xs text-zinc-800 hover:text-[#0A192F] flex-1 min-w-0"
+                              className="flex items-center gap-2.5 text-left font-medium text-xs text-zinc-800 hover:text-maroon flex-1 min-w-0"
                             >
-                              <Folder className="w-4 h-4 text-[#C5A880] shrink-0" />
+                              <Folder className="w-4 h-4 text-saffron shrink-0" />
                               <span className="truncate">{folder.name}</span>
                             </button>
 
                             <div className="flex items-center gap-2">
                               {isCurrentSelected ? (
-                                <span className="text-[11px] font-bold text-[#0A192F] bg-[#F8FAFC] px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <span className="text-[11px] font-bold text-maroon bg-soft-cream px-2 py-0.5 rounded-full flex items-center gap-1">
                                   <CheckCircle2 className="w-3 h-3" />
                                   <span>Selected</span>
                                 </span>
@@ -562,7 +562,7 @@ export function GoogleDriveManager({
                                   size="sm"
                                   disabled={isSaving}
                                   onClick={() => handleSelectFolder(folder.id!, folder.name!)}
-                                  className="h-7 text-xs bg-[#0A192F] hover:bg-[#1E293B] text-white font-medium px-2.5"
+                                  className="h-7 text-xs bg-maroon hover:bg-maroon-dark text-white font-medium px-2.5"
                                 >
                                   Select Destination
                                 </Button>

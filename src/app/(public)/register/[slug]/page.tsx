@@ -59,7 +59,7 @@ export default async function PublicRegistrationPage({
             ) : availability.status === "DEADLINE_PASSED" ? (
               <CalendarX2 className="w-7 h-7 text-zinc-800" />
             ) : availability.status === "NOT_OPEN_YET" ? (
-              <Clock className="w-7 h-7 text-[#A64B36]" />
+              <Clock className="w-7 h-7 text-maroon" />
             ) : availability.status === "CLOSED" ? (
               <Lock className="w-7 h-7 text-zinc-800" />
             ) : (

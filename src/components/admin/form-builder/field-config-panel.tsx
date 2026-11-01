@@ -24,10 +24,10 @@ export function FieldConfigPanel({
   if (!field) {
     return (
       <div className="bg-white rounded-xl border border-stone-200/80 p-6 flex flex-col items-center justify-center text-center h-full min-h-[350px] shadow-xs">
-        <div className="w-10 h-10 rounded-lg bg-[#FFFDF7] border border-[#B89150]/30 text-[#B89150] flex items-center justify-center mb-3">
+        <div className="w-10 h-10 rounded-lg bg-warm-ivory border border-[#B89150]/30 text-[#B89150] flex items-center justify-center mb-3">
           <Sliders className="w-5 h-5" />
         </div>
-        <p className="font-serif font-bold text-sm text-[#292524]">No Question Selected</p>
+        <p className="font-serif font-bold text-sm text-charcoal">No Question Selected</p>
         <p className="text-xs text-stone-500 max-w-xs mt-1.5 leading-relaxed">
           Select any question on the left panel to edit its label, help text, choices, or constraints.
         </p>
@@ -78,13 +78,13 @@ export function FieldConfigPanel({
       {/* Header */}
       <div className="flex items-center justify-between pb-3.5 border-b border-stone-100 shrink-0">
         <div className="flex items-center gap-2">
-          <h3 className="font-serif font-bold text-sm text-[#292524] capitalize">
+          <h3 className="font-serif font-bold text-sm text-charcoal capitalize">
             Configure {field.type.replace("-", " ")}
           </h3>
         </div>
         <div className="flex items-center gap-2">
           {field.isSystem && (
-            <span className="text-[10px] font-semibold text-[#B89150] bg-[#FFFDF7] border border-[#B89150]/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <span className="text-[10px] font-semibold text-[#B89150] bg-warm-ivory border border-[#B89150]/30 px-2 py-0.5 rounded-full flex items-center gap-1">
               <Lock className="w-2.5 h-2.5" />
               <span>Protected Requirement</span>
             </span>
@@ -101,7 +101,7 @@ export function FieldConfigPanel({
 
       <div className="flex-1 overflow-y-auto space-y-4 py-4 pr-1 text-xs">
         {field.isSystem && (
-          <div className="p-3 rounded-lg bg-[#FFFDF7] border border-[#B89150]/30 text-[11px] text-stone-700 leading-relaxed flex items-start gap-2">
+          <div className="p-3 rounded-lg bg-warm-ivory border border-[#B89150]/30 text-[11px] text-stone-700 leading-relaxed flex items-start gap-2">
             <Lock className="w-3.5 h-3.5 text-[#B89150] shrink-0 mt-0.5" />
             <div>
               <strong className="text-stone-900">Core Requirement:</strong> You can customize the visible label, helper text, and placeholders. This question cannot be deleted because it is required for candidate identity verification.
@@ -118,7 +118,7 @@ export function FieldConfigPanel({
             id="fieldLabel"
             value={field.label}
             onChange={(e) => handleLabelChange(e.target.value)}
-            className="text-xs h-9 font-medium border-stone-200 bg-[#FFFDF7]"
+            className="text-xs h-9 font-medium border-stone-200 bg-warm-ivory"
             placeholder="e.g. Talent Specialization or Audition Link"
           />
         </div>
@@ -173,7 +173,7 @@ export function FieldConfigPanel({
         {/* Required Toggle */}
         {!isLayoutField && (
           <div className="pt-2 border-t border-stone-100">
-            <label className="flex items-center justify-between cursor-pointer p-2.5 rounded-lg hover:bg-[#FFFDF7] border border-stone-200">
+            <label className="flex items-center justify-between cursor-pointer p-2.5 rounded-lg hover:bg-warm-ivory border border-stone-200">
               <div>
                 <span className="font-semibold text-xs text-stone-800 block">Mandatory Question</span>
                 <span className="text-[10px] text-stone-500">
@@ -185,7 +185,7 @@ export function FieldConfigPanel({
                 checked={field.required}
                 disabled={field.isSystem}
                 onChange={(e) => onChange({ ...field, required: e.target.checked })}
-                className="w-4 h-4 rounded text-[#7F1D2D] focus:ring-[#7F1D2D] cursor-pointer"
+                className="w-4 h-4 rounded text-maroon focus:ring-[#7F1D2D] cursor-pointer"
               />
             </label>
           </div>
@@ -203,7 +203,7 @@ export function FieldConfigPanel({
                 onClick={handleAddOption}
                 className="h-7 text-xs font-medium gap-1 text-stone-700 hover:bg-stone-50 border-stone-200"
               >
-                <Plus className="w-3 h-3 text-[#D97706]" />
+                <Plus className="w-3 h-3 text-saffron" />
                 <span>Add Option</span>
               </Button>
             </div>

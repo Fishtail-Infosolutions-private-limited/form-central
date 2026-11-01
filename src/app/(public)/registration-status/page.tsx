@@ -414,11 +414,11 @@ function RegistrationStatusContent() {
     <div className="py-12 sm:py-20 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F7F1E5] border border-[#B89150]/30 text-[#7F1D2D] text-xs font-semibold">
-          <Crown className="w-3.5 h-3.5 text-[#D97706]" />
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-soft-cream border border-antique-gold/30 text-maroon text-xs font-semibold">
+          <Crown className="w-3.5 h-3.5 text-saffron" />
           <span>The Origin Foundation &bull; Mithila Queen 2026</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#292524] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-charcoal tracking-tight">
           Application Status
         </h1>
         <p className="text-xs sm:text-sm text-stone-600 max-w-lg mx-auto leading-relaxed">
@@ -439,7 +439,7 @@ function RegistrationStatusContent() {
               }}
               className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-md text-xs font-semibold transition-all ${
                 searchMode === "email"
-                  ? "bg-[#7F1D2D] text-white shadow-xs"
+                  ? "bg-maroon text-white shadow-xs"
                   : "text-stone-600 hover:text-stone-900"
               }`}
             >
@@ -455,7 +455,7 @@ function RegistrationStatusContent() {
               }}
               className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-md text-xs font-semibold transition-all ${
                 searchMode === "registrationId"
-                  ? "bg-[#7F1D2D] text-white shadow-xs"
+                  ? "bg-maroon text-white shadow-xs"
                   : "text-stone-600 hover:text-stone-900"
               }`}
             >
@@ -480,7 +480,7 @@ function RegistrationStatusContent() {
                       onChange={(e) => setEmailInput(e.target.value)}
                       placeholder="e.g. anjali@example.com"
                       required
-                      className="h-10 text-xs border-stone-200 bg-[#FFFDF7] focus-visible:ring-[#7F1D2D]"
+                      className="h-10 text-xs border-stone-200 bg-warm-ivory focus-visible:ring-maroon"
                     />
                     <p className="text-[11px] text-stone-500">
                       A 6-digit one-time access code will be sent to this email to unlock your full application.
@@ -490,7 +490,7 @@ function RegistrationStatusContent() {
                   <Button
                     type="submit"
                     disabled={isSendingOtp}
-                    className="w-full bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
+                    className="w-full bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
                   >
                     {isSendingOtp ? (
                       <>
@@ -507,10 +507,10 @@ function RegistrationStatusContent() {
                 </form>
               ) : (
                 <form onSubmit={handleVerifyEmailOtp} className="space-y-4">
-                  <div className="p-4 rounded-lg bg-[#FFFDF7] border border-[#B89150]/30 text-xs text-stone-700 space-y-1">
+                  <div className="p-4 rounded-lg bg-warm-ivory border border-antique-gold/30 text-xs text-stone-700 space-y-1">
                     <p className="font-semibold text-stone-900">Access Code Sent</p>
                     <p>
-                      We have sent a 6-digit access code to <strong className="font-mono text-[#7F1D2D]">{emailInput}</strong>. Enter it below to access your application dossier.
+                      We have sent a 6-digit access code to <strong className="font-mono text-maroon">{emailInput}</strong>. Enter it below to access your application dossier.
                     </p>
                   </div>
 
@@ -526,7 +526,7 @@ function RegistrationStatusContent() {
                       maxLength={6}
                       required
                       autoFocus
-                      className="h-12 text-center text-xl font-mono font-bold tracking-widest border-[#B89150] bg-white"
+                      className="h-12 text-center text-xl font-mono font-bold tracking-widest border-antique-gold bg-white"
                     />
                   </div>
 
@@ -534,7 +534,7 @@ function RegistrationStatusContent() {
                     <Button
                       type="submit"
                       disabled={isVerifyingOtp || otpCode.length !== 6}
-                      className="flex-1 bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
+                      className="flex-1 bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
                     >
                       {isVerifyingOtp ? (
                         <>
@@ -554,7 +554,7 @@ function RegistrationStatusContent() {
                       variant="outline"
                       disabled={resendCooldown > 0 || isSendingOtp}
                       onClick={handleRequestEmailOtp}
-                      className="border-stone-200 text-stone-700 text-xs font-medium h-11 px-4 gap-1.5 hover:bg-[#F7F1E5]"
+                      className="border-stone-200 text-stone-700 text-xs font-medium h-11 px-4 gap-1.5 hover:bg-soft-cream"
                     >
                       <RefreshCw className="w-3.5 h-3.5" />
                       <span>{resendCooldown > 0 ? `Resend (${resendCooldown}s)` : "Resend Code"}</span>
@@ -591,7 +591,7 @@ function RegistrationStatusContent() {
                   onChange={(e) => setRegistrationIdInput(e.target.value.toUpperCase())}
                   placeholder="e.g. MQ-2026-X8Y7Z"
                   required
-                  className="h-10 text-xs border-stone-200 bg-[#FFFDF7] font-mono uppercase focus-visible:ring-[#7F1D2D]"
+                  className="h-10 text-xs border-stone-200 bg-warm-ivory font-mono uppercase focus-visible:ring-maroon"
                 />
                 <p className="text-[11px] text-stone-500">
                   Enter the unique Registration ID from your submission confirmation screen or email.
@@ -601,7 +601,7 @@ function RegistrationStatusContent() {
               <Button
                 type="submit"
                 disabled={isSearching}
-                className="w-full bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
+                className="w-full bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
               >
                 {isSearching ? (
                   <>
@@ -627,7 +627,7 @@ function RegistrationStatusContent() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-100 pb-5">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-[#B89150]">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-antique-gold">
                   Candidate Dossier
                 </span>
                 {isEmailVerified ? (
@@ -642,7 +642,7 @@ function RegistrationStatusContent() {
                   </span>
                 )}
               </div>
-              <h2 className="text-2xl font-serif font-bold text-[#292524]">
+              <h2 className="text-2xl font-serif font-bold text-charcoal">
                 {record.fullName}
               </h2>
               <span className="text-xs text-stone-500">
@@ -654,14 +654,14 @@ function RegistrationStatusContent() {
               <span className="text-[10px] uppercase font-bold text-stone-400 tracking-wider">
                 Registration ID
               </span>
-              <span className="text-lg font-bold font-mono text-[#7F1D2D]">
+              <span className="text-lg font-bold font-mono text-maroon">
                 {record.registrationId}
               </span>
               <div className="flex items-center gap-2 mt-1">
                 <Button
                   size="sm"
                   onClick={handleOpenEditModal}
-                  className="bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs font-semibold h-8 px-3 gap-1.5 shadow-2xs"
+                  className="bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold h-8 px-3 gap-1.5 shadow-2xs"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
                   <span>Edit Details</span>
@@ -672,9 +672,9 @@ function RegistrationStatusContent() {
 
           {/* Verification Notice Banner if entered via Registration ID without OTP */}
           {!isEmailVerified && (
-            <div className="p-3.5 rounded-lg bg-[#FFFDF7] border border-[#B89150]/30 text-xs text-stone-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="p-3.5 rounded-lg bg-warm-ivory border border-antique-gold/30 text-xs text-stone-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-start gap-2.5">
-                <ShieldCheck className="w-4 h-4 text-[#B89150] shrink-0 mt-0.5" />
+                <ShieldCheck className="w-4 h-4 text-antique-gold shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-stone-900 block font-semibold">
                     Want to update your application details?
@@ -688,7 +688,7 @@ function RegistrationStatusContent() {
                 size="sm"
                 variant="outline"
                 onClick={handleOpenEditModal}
-                className="border-[#B89150] text-[#7F1D2D] hover:bg-[#F7F1E5] text-xs font-semibold h-8 shrink-0 self-start sm:self-auto"
+                className="border-antique-gold text-maroon hover:bg-soft-cream text-xs font-semibold h-8 shrink-0 self-start sm:self-auto"
               >
                 <span>Verify Email to Edit</span>
               </Button>
@@ -698,7 +698,7 @@ function RegistrationStatusContent() {
           {/* Dual Status Indicators: Payment Status & Application Review Status */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Payment Status Card */}
-            <div className="p-5 rounded-xl bg-[#FFFDF7] border border-stone-200/80 space-y-2">
+            <div className="p-5 rounded-xl bg-warm-ivory border border-stone-200/80 space-y-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">
                 Payment Verification (NPR {record?.registrationFee || siteSettings?.registrationFee || 399})
               </span>
@@ -734,14 +734,14 @@ function RegistrationStatusContent() {
             </div>
 
             {/* Application Review Status Card */}
-            <div className="p-5 rounded-xl bg-[#FFFDF7] border border-stone-200/80 space-y-2">
+            <div className="p-5 rounded-xl bg-warm-ivory border border-stone-200/80 space-y-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">
                 Application Review Status
               </span>
               <div className="flex items-center gap-2">
                 {record.applicationStatus === "APPROVED" ? (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#7F1D2D] text-white">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#F7F1E5]" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-maroon text-white">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-soft-cream" />
                     Approved & Confirmed
                   </span>
                 ) : record.applicationStatus === "REJECTED" ? (
@@ -772,17 +772,17 @@ function RegistrationStatusContent() {
 
           {/* PAYMENT RESUBMISSION BOX (If Pending or Clarification Required) */}
           {(record.paymentStatus === "PENDING" || record.paymentStatus === "CLARIFICATION_REQUIRED") && (
-            <div className="p-6 rounded-xl bg-[#FFFDF7] border border-[#B89150]/40 space-y-4">
+            <div className="p-6 rounded-xl bg-warm-ivory border border-antique-gold/40 space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-serif font-bold text-sm text-[#292524]">
+                  <h4 className="font-serif font-bold text-sm text-charcoal">
                     Submit Fee Payment Verification (NPR {record?.registrationFee || siteSettings?.registrationFee || 399})
                   </h4>
                   <p className="text-xs text-stone-600 mt-0.5">
                     Scan the official QR code to pay NPR {record?.registrationFee || siteSettings?.registrationFee || 399} and submit your transaction code.
                   </p>
                 </div>
-                <QrCode className="w-5 h-5 text-[#B89150]" />
+                <QrCode className="w-5 h-5 text-antique-gold" />
               </div>
 
               {/* QR Image Display */}
@@ -820,7 +820,7 @@ function RegistrationStatusContent() {
                 <Button
                   type="submit"
                   disabled={isReSubmittingPayment}
-                  className="w-full bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs font-semibold h-10 gap-2"
+                  className="w-full bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold h-10 gap-2"
                 >
                   {isReSubmittingPayment ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -835,17 +835,17 @@ function RegistrationStatusContent() {
 
           {/* OFFICIAL PDF DOWNLOAD (If Verified & Approved) */}
           {record.isPdfAvailable && (
-            <div className="p-6 rounded-xl bg-[#7F1D2D] text-white space-y-4 shadow-xs">
+            <div className="p-6 rounded-xl bg-maroon text-white space-y-4 shadow-xs">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-serif font-bold text-base text-white">
                     Official Registration Confirmation PDF
                   </h3>
-                  <p className="text-xs text-[#F7F1E5]/80 mt-0.5">
+                  <p className="text-xs text-soft-cream/80 mt-0.5">
                     Verified Document &bull; Issued by The Origin Foundation
                   </p>
                 </div>
-                <FileCheck2 className="w-6 h-6 text-[#F7F1E5]" />
+                <FileCheck2 className="w-6 h-6 text-soft-cream" />
               </div>
 
               <p className="text-xs text-white/90 leading-relaxed">
@@ -855,7 +855,7 @@ function RegistrationStatusContent() {
               <Button
                 onClick={handleDownloadPdf}
                 disabled={isDownloadingPdf}
-                className="w-full bg-[#FFFDF7] hover:bg-[#F7F1E5] text-[#7F1D2D] font-bold text-xs h-11 rounded-lg shadow-xs gap-2"
+                className="w-full bg-warm-ivory hover:bg-soft-cream text-maroon font-bold text-xs h-11 rounded-lg shadow-xs gap-2"
               >
                 {isDownloadingPdf ? (
                   <>
@@ -864,7 +864,7 @@ function RegistrationStatusContent() {
                   </>
                 ) : (
                   <>
-                    <FileDown className="w-4 h-4 text-[#7F1D2D]" />
+                    <FileDown className="w-4 h-4 text-maroon" />
                     <span>Download Official Confirmation Certificate (A4 PDF)</span>
                   </>
                 )}
@@ -875,36 +875,36 @@ function RegistrationStatusContent() {
           {/* APPLICATION DETAILS BREAKDOWN */}
           <div className="space-y-4 pt-4 border-t border-stone-100">
             <div className="flex items-center justify-between">
-              <h3 className="font-serif font-bold text-base text-[#292524]">
+              <h3 className="font-serif font-bold text-base text-charcoal">
                 Submitted Candidate Profile
               </h3>
               <Button
                 size="sm"
                 variant="outline"
                 onClick={handleOpenEditModal}
-                className="border-stone-200 text-stone-700 hover:bg-[#F7F1E5] hover:text-[#7F1D2D] text-xs h-8 gap-1.5"
+                className="border-stone-200 text-stone-700 hover:bg-soft-cream hover:text-maroon text-xs h-8 gap-1.5"
               >
-                <Edit3 className="w-3.5 h-3.5 text-[#D97706]" />
+                <Edit3 className="w-3.5 h-3.5 text-saffron" />
                 <span>Update Profile</span>
               </Button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div className="p-3.5 bg-[#FFFDF7] rounded-lg border border-stone-200/80">
+              <div className="p-3.5 bg-warm-ivory rounded-lg border border-stone-200/80">
                 <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">
                   Contact Email
                 </span>
                 <span className="font-mono text-stone-800 font-semibold">{record.email}</span>
               </div>
 
-              <div className="p-3.5 bg-[#FFFDF7] rounded-lg border border-stone-200/80">
+              <div className="p-3.5 bg-warm-ivory rounded-lg border border-stone-200/80">
                 <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">
                   Mobile Phone
                 </span>
                 <span className="font-mono text-stone-800 font-semibold">{record.phone}</span>
               </div>
 
-              <div className="p-3.5 bg-[#FFFDF7] rounded-lg border border-stone-200/80">
+              <div className="p-3.5 bg-warm-ivory rounded-lg border border-stone-200/80">
                 <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">
                   Date of Birth
                 </span>
@@ -913,7 +913,7 @@ function RegistrationStatusContent() {
                 </span>
               </div>
 
-              <div className="p-3.5 bg-[#FFFDF7] rounded-lg border border-stone-200/80">
+              <div className="p-3.5 bg-warm-ivory rounded-lg border border-stone-200/80">
                 <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">
                   Origin & Location
                 </span>
@@ -925,7 +925,7 @@ function RegistrationStatusContent() {
 
             {/* Cultural & Talents info if present */}
             {record.talentsSkills && (
-              <div className="p-4 bg-[#FFFDF7] rounded-lg border border-stone-200/80 text-xs space-y-1">
+              <div className="p-4 bg-warm-ivory rounded-lg border border-stone-200/80 text-xs space-y-1">
                 <span className="text-stone-400 uppercase font-bold text-[10px] tracking-wider">
                   Talent Specialization & Cultural Skills
                 </span>
@@ -934,7 +934,7 @@ function RegistrationStatusContent() {
             )}
 
             {record.personalIntro && (
-              <div className="p-4 bg-[#FFFDF7] rounded-lg border border-stone-200/80 text-xs space-y-1">
+              <div className="p-4 bg-warm-ivory rounded-lg border border-stone-200/80 text-xs space-y-1">
                 <span className="text-stone-400 uppercase font-bold text-[10px] tracking-wider">
                   Personal Introduction
                 </span>
@@ -944,9 +944,9 @@ function RegistrationStatusContent() {
 
             {/* Audition Video link if present */}
             {record.videoUrl && (
-              <div className="p-4 bg-[#FFFDF7] rounded-lg border border-stone-200/80 text-xs flex items-center justify-between gap-3">
+              <div className="p-4 bg-warm-ivory rounded-lg border border-stone-200/80 text-xs flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 min-w-0">
-                  <Video className="w-4 h-4 text-[#D97706] shrink-0" />
+                  <Video className="w-4 h-4 text-saffron shrink-0" />
                   <div className="min-w-0">
                     <span className="font-semibold text-stone-800 block truncate">Audition Video</span>
                     <span className="text-[11px] text-stone-500 truncate block font-mono">
@@ -958,7 +958,7 @@ function RegistrationStatusContent() {
                   href={record.videoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#7F1D2D] text-white hover:bg-[#5B131E] font-medium text-xs shrink-0"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-maroon text-white hover:bg-maroon-dark font-medium text-xs shrink-0"
                 >
                   <span>Watch Video</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -971,7 +971,7 @@ function RegistrationStatusContent() {
           {record.editLogs && record.editLogs.length > 0 && (
             <div className="space-y-3 pt-4 border-t border-stone-100">
               <div className="flex items-center gap-2">
-                <History className="w-4 h-4 text-[#B89150]" />
+                <History className="w-4 h-4 text-antique-gold" />
                 <h4 className="font-bold text-xs uppercase tracking-wider text-stone-800">
                   Modification History & Audit Log
                 </h4>
@@ -1006,7 +1006,7 @@ function RegistrationStatusContent() {
             <button
               type="button"
               onClick={handleResetSearch}
-              className="text-xs text-stone-500 hover:text-[#7F1D2D] font-medium underline"
+              className="text-xs text-stone-500 hover:text-maroon font-medium underline"
             >
               Check another registration record
             </button>
@@ -1020,8 +1020,8 @@ function RegistrationStatusContent() {
           <div className="bg-white rounded-xl max-w-md w-full p-6 sm:p-8 space-y-5 border border-stone-200 shadow-2xl animate-in fade-in slide-in-from-bottom-2">
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">
               <div className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-[#7F1D2D]" />
-                <h3 className="font-serif font-bold text-base text-[#292524]">
+                <Lock className="w-4 h-4 text-maroon" />
+                <h3 className="font-serif font-bold text-base text-charcoal">
                   Verify Email to Edit Details
                 </h3>
               </div>
@@ -1039,7 +1039,7 @@ function RegistrationStatusContent() {
 
             {!unlockOtpSent ? (
               <div className="space-y-4 pt-2">
-                <div className="p-3.5 rounded-lg bg-[#FFFDF7] border border-[#B89150]/30 text-xs text-stone-700">
+                <div className="p-3.5 rounded-lg bg-warm-ivory border border-antique-gold/30 text-xs text-stone-700">
                   <div className="font-semibold text-stone-800">Dispatch Verification Code</div>
                   <div className="text-[11px] text-stone-600 mt-0.5">
                     Click the button below to receive a 6-digit access code at your registered email address.
@@ -1059,7 +1059,7 @@ function RegistrationStatusContent() {
                     type="button"
                     disabled={isSendingUnlockOtp}
                     onClick={handleSendUnlockOtp}
-                    className="bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs font-semibold gap-1.5"
+                    className="bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold gap-1.5"
                   >
                     {isSendingUnlockOtp ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -1084,7 +1084,7 @@ function RegistrationStatusContent() {
                     maxLength={6}
                     required
                     autoFocus
-                    className="h-11 text-center text-lg font-mono font-bold tracking-widest border-[#B89150] bg-white"
+                    className="h-11 text-center text-lg font-mono font-bold tracking-widest border-antique-gold bg-white"
                   />
                   <p className="text-[11px] text-stone-500">
                     Enter the code sent to {maskedEmail || "your email"}.
@@ -1118,7 +1118,7 @@ function RegistrationStatusContent() {
                       type="submit"
                       size="sm"
                       disabled={isVerifyingUnlockOtp || unlockOtpCode.length !== 6}
-                      className="bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs font-semibold"
+                      className="bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold"
                     >
                       {isVerifyingUnlockOtp ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin mr-1" />
@@ -1141,7 +1141,7 @@ function RegistrationStatusContent() {
           <div className="bg-white rounded-xl max-w-2xl w-full p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto border border-stone-200 shadow-2xl">
             <div className="flex items-center justify-between border-b border-stone-100 pb-4">
               <div>
-                <h3 className="font-serif font-bold text-xl text-[#292524]">
+                <h3 className="font-serif font-bold text-xl text-charcoal">
                   Edit Application Details
                 </h3>
                 <p className="text-xs text-stone-500 mt-0.5">
@@ -1390,7 +1390,7 @@ function RegistrationStatusContent() {
                 <Button
                   type="submit"
                   disabled={isSavingEdits}
-                  className="bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs font-semibold gap-2"
+                  className="bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold gap-2"
                 >
                   {isSavingEdits ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -1413,7 +1413,7 @@ export default function RegistrationStatusPage() {
     <Suspense
       fallback={
         <div className="py-24 text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#7F1D2D]" />
+          <Loader2 className="w-8 h-8 animate-spin mx-auto text-maroon" />
           <p className="text-xs text-stone-500 mt-2 font-mono">Loading application lookup...</p>
         </div>
       }

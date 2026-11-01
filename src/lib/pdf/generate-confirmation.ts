@@ -27,11 +27,12 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
   const fontOblique = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
 
   // Brand Palette RGB Colors (0 - 1) — Charcoal, Antique Gold, Terracotta & Warm Ivory
-  const colorNavy = rgb(10 / 255, 25 / 255, 47 / 255);       // #0A192F (Charcoal)
-  const colorGold = rgb(197 / 255, 168 / 255, 128 / 255);   // #C5A880 (Antique Gold)
-  const colorIvory = rgb(248 / 255, 250 / 255, 252 / 255);  // #F1F5F9 (Warm Ivory)
-  const colorTerracotta = rgb(166 / 255, 75 / 255, 54 / 255); // #A64B36 (Terracotta)
-  const colorDark = rgb(10 / 255, 25 / 255, 47 / 255);      // #0A192F (Charcoal)
+  // Color Palette per official Brand Guidelines (Maroon, Saffron Gold, Warm Ivory, Charcoal)
+  const colorNavy = rgb(127 / 255, 29 / 255, 45 / 255);        // #7F1D2D (Deep Maroon)
+  const colorGold = rgb(184 / 255, 145 / 255, 80 / 255);       // #B89150 (Antique Heritage Gold)
+  const colorIvory = rgb(255 / 255, 253 / 255, 247 / 255);     // #FFFDF7 (Warm Ivory)
+  const colorTerracotta = rgb(217 / 255, 119 / 255, 6 / 255);  // #D97706 (Saffron Accent)
+  const colorDark = rgb(41 / 255, 37 / 255, 36 / 255);         // #292524 (Charcoal)
   const colorGray = rgb(110 / 255, 108 / 255, 98 / 255);
   const colorSlate = rgb(50 / 255, 60 / 255, 55 / 255);
 
@@ -214,7 +215,7 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
       width: 120,
       margin: 1,
       color: {
-        dark: "#0A192FFF",
+        dark: "#7F1D2DFF",
         light: "#FFFFFFFF",
       },
     });

@@ -48,13 +48,13 @@ export function UploadSettingsCard() {
   };
 
   return (
-    <Card className="border-[#EADBCE] shadow-xs bg-[#FFFDF7]">
+    <Card className="border-cream-dark shadow-xs bg-warm-ivory">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base font-serif font-bold text-[#7F1D2D]">
+          <CardTitle className="text-base font-serif font-bold text-maroon">
             Upload Limits & Media Policy
           </CardTitle>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#D97706] bg-[#F7F1E5] px-2 py-0.5 rounded border border-[#B89150]/30">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-saffron bg-soft-cream px-2 py-0.5 rounded border border-[#B89150]/30">
             Storage
           </span>
         </div>
@@ -62,15 +62,15 @@ export function UploadSettingsCard() {
 
       <CardContent className="space-y-4 pt-1">
         {/* Participant Video */}
-        <div className="p-3.5 rounded-lg border border-[#EADBCE] bg-[#F7F1E5]/40 space-y-2.5">
+        <div className="p-3.5 rounded-lg border border-cream-dark bg-soft-cream/40 space-y-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Video className="w-4 h-4 text-[#D97706]" />
-              <Label className="text-xs font-bold text-[#7F1D2D]">
+              <Video className="w-4 h-4 text-saffron" />
+              <Label className="text-xs font-bold text-maroon">
                 Audition Video Limit (MP4, MOV, WebM)
               </Label>
             </div>
-            <span className="text-xs font-mono font-bold text-[#7F1D2D] bg-white px-2 py-0.5 rounded border border-[#EADBCE]">
+            <span className="text-xs font-mono font-bold text-maroon bg-white px-2 py-0.5 rounded border border-cream-dark">
               {videoLimit} MB
             </span>
           </div>
@@ -82,8 +82,8 @@ export function UploadSettingsCard() {
                 onClick={() => setVideoLimit(size)}
                 className={`text-xs px-3 py-1 rounded-md font-semibold transition-all border ${
                   videoLimit === size
-                    ? "bg-[#7F1D2D] text-white border-[#7F1D2D]"
-                    : "bg-white text-stone-700 border-[#EADBCE] hover:bg-[#F7F1E5]"
+                    ? "bg-maroon text-white border-maroon"
+                    : "bg-white text-stone-700 border-cream-dark hover:bg-soft-cream"
                 }`}
               >
                 {size} MB
@@ -93,15 +93,15 @@ export function UploadSettingsCard() {
         </div>
 
         {/* Participant Images */}
-        <div className="p-3.5 rounded-lg border border-[#EADBCE] bg-[#F7F1E5]/40 space-y-2.5">
+        <div className="p-3.5 rounded-lg border border-cream-dark bg-soft-cream/40 space-y-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <ImageIcon className="w-4 h-4 text-[#D97706]" />
-              <Label className="text-xs font-bold text-[#7F1D2D]">
+              <ImageIcon className="w-4 h-4 text-saffron" />
+              <Label className="text-xs font-bold text-maroon">
                 Photograph Size Limit (JPEG, PNG, WebP)
               </Label>
             </div>
-            <span className="text-xs font-mono font-bold text-[#7F1D2D] bg-white px-2 py-0.5 rounded border border-[#EADBCE]">
+            <span className="text-xs font-mono font-bold text-maroon bg-white px-2 py-0.5 rounded border border-cream-dark">
               {imageLimit} MB
             </span>
           </div>
@@ -113,8 +113,8 @@ export function UploadSettingsCard() {
                 onClick={() => setImageLimit(size)}
                 className={`text-xs px-3 py-1 rounded-md font-semibold transition-all border ${
                   imageLimit === size
-                    ? "bg-[#7F1D2D] text-white border-[#7F1D2D]"
-                    : "bg-white text-stone-700 border-[#EADBCE] hover:bg-[#F7F1E5]"
+                    ? "bg-maroon text-white border-maroon"
+                    : "bg-white text-stone-700 border-cream-dark hover:bg-soft-cream"
                 }`}
               >
                 {size} MB
@@ -124,15 +124,15 @@ export function UploadSettingsCard() {
         </div>
 
         {/* Identity & Consent Proof */}
-        <div className="p-3.5 rounded-lg border border-[#EADBCE] bg-[#F7F1E5]/40 space-y-2.5">
+        <div className="p-3.5 rounded-lg border border-cream-dark bg-soft-cream/40 space-y-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-[#D97706]" />
-              <Label className="text-xs font-bold text-[#7F1D2D]">
+              <FileText className="w-4 h-4 text-saffron" />
+              <Label className="text-xs font-bold text-maroon">
                 Document / Minor Consent Limit (PDF, DOC, DOCX)
               </Label>
             </div>
-            <span className="text-xs font-mono font-bold text-[#7F1D2D] bg-white px-2 py-0.5 rounded border border-[#EADBCE]">
+            <span className="text-xs font-mono font-bold text-maroon bg-white px-2 py-0.5 rounded border border-cream-dark">
               {docLimit} MB
             </span>
           </div>
@@ -144,8 +144,8 @@ export function UploadSettingsCard() {
                 onClick={() => setDocLimit(size)}
                 className={`text-xs px-3 py-1 rounded-md font-semibold transition-all border ${
                   docLimit === size
-                    ? "bg-[#7F1D2D] text-white border-[#7F1D2D]"
-                    : "bg-white text-stone-700 border-[#EADBCE] hover:bg-[#F7F1E5]"
+                    ? "bg-maroon text-white border-maroon"
+                    : "bg-white text-stone-700 border-cream-dark hover:bg-soft-cream"
                 }`}
               >
                 {size} MB
@@ -158,7 +158,7 @@ export function UploadSettingsCard() {
           <Button
             onClick={handleSave}
             disabled={isSaving || isLoading}
-            className="w-full bg-[#D97706] hover:bg-[#B45309] text-white font-bold text-xs h-10 rounded-lg shadow-sm gap-2"
+            className="w-full bg-saffron hover:bg-saffron-dark text-white font-bold text-xs h-10 rounded-lg shadow-sm gap-2"
           >
             {isSaving ? (
               <>

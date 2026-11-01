@@ -17,21 +17,21 @@ export default async function PrivacyPolicyPage() {
   return (
     <div className="py-12 sm:py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       <div className="text-center space-y-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
+        <span className="text-xs font-bold uppercase tracking-wider text-saffron">
           Data Protection & Safeguarding
         </span>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#0A192F] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-maroon tracking-tight">
           Privacy Policy
         </h1>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-stone-500">
           The Origin Foundation • Janakpur Dham, Nepal • Last updated: October 2026
         </p>
       </div>
 
-      <div className="p-8 sm:p-12 rounded-lg bg-white border border-slate-200 shadow-xs space-y-8 text-xs sm:text-sm text-slate-600 leading-relaxed">
+      <div className="p-8 sm:p-12 rounded-xl bg-white border border-cream-dark shadow-xs space-y-8 text-xs sm:text-sm text-stone-600 leading-relaxed">
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F] flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-[#C5A880]" />
+          <h2 className="text-lg font-bold font-serif text-maroon flex items-center gap-2">
+            <ShieldCheck className="w-5 h-5 text-saffron" />
             <span>1. Commitment to Privacy</span>
           </h2>
           <p>
@@ -43,8 +43,8 @@ export default async function PrivacyPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F] flex items-center gap-2">
-            <UserCheck className="w-5 h-5 text-[#C5A880]" />
+          <h2 className="text-lg font-bold font-serif text-maroon flex items-center gap-2">
+            <UserCheck className="w-5 h-5 text-saffron" />
             <span>2. Minor Safeguarding Protocol</span>
           </h2>
           <p>
@@ -59,8 +59,8 @@ export default async function PrivacyPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F] flex items-center gap-2">
-            <FileText className="w-5 h-5 text-[#C5A880]" />
+          <h2 className="text-lg font-bold font-serif text-maroon flex items-center gap-2">
+            <FileText className="w-5 h-5 text-saffron" />
             <span>3. Information We Collect</span>
           </h2>
           <p>We collect only the personal information strictly necessary for competition administration:</p>
@@ -73,8 +73,8 @@ export default async function PrivacyPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F] flex items-center gap-2">
-            <Lock className="w-5 h-5 text-[#C5A880]" />
+          <h2 className="text-lg font-bold font-serif text-maroon flex items-center gap-2">
+            <Lock className="w-5 h-5 text-saffron" />
             <span>4. Security & Document Access</span>
           </h2>
           <p>
@@ -83,16 +83,16 @@ export default async function PrivacyPolicyPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold font-serif text-[#0A192F] flex items-center gap-2">
-            <Eye className="w-5 h-5 text-[#C5A880]" />
+          <h2 className="text-lg font-bold font-serif text-maroon flex items-center gap-2">
+            <Eye className="w-5 h-5 text-saffron" />
             <span>5. Contact for Privacy Inquiries</span>
           </h2>
           <p>
             If you have questions about your personal data, guardian records, or desire to update or withdraw an application, please contact:
           </p>
-          <div className="p-4 rounded-md bg-slate-50 border border-slate-200 space-y-1 text-xs">
-            <p><strong className="text-[#0A192F]">The Origin Foundation — Privacy Officer</strong></p>
-            <p>Email: <a href="mailto:originfoundation107@gmail.com" className="text-[#0A192F] font-semibold underline">originfoundation107@gmail.com</a></p>
+          <div className="p-4 rounded-xl bg-soft-cream border border-cream-dark space-y-1 text-xs">
+            <p><strong className="text-maroon">The Origin Foundation — Privacy Officer</strong></p>
+            <p>Email: <a href="mailto:originfoundation107@gmail.com" className="text-maroon font-semibold underline">originfoundation107@gmail.com</a></p>
             <p>Janakpur Dham, Madhesh Province, Nepal</p>
           </div>
         </section>

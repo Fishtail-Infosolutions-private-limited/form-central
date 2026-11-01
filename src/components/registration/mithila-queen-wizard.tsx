@@ -627,40 +627,40 @@ export function MithilaQueenWizard() {
   // ==========================================
   if (existingNotice) {
     return (
-      <div className="max-w-xl mx-auto p-8 rounded-lg bg-white border border-[#E2E8F0] shadow-sm space-y-6 text-center">
-        <div className="w-14 h-14 rounded-full bg-[#F8FAFC] text-[#C5A880] mx-auto flex items-center justify-center border border-[#C5A880]">
+      <div className="max-w-xl mx-auto p-8 rounded-lg bg-white border border-cream-dark shadow-sm space-y-6 text-center">
+        <div className="w-14 h-14 rounded-full bg-soft-cream text-saffron mx-auto flex items-center justify-center border border-saffron">
           <CheckCircle2 className="w-8 h-8 stroke-[2.2]" />
         </div>
         <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
+          <span className="text-xs font-bold uppercase tracking-wider text-saffron">
             Existing Registration Found
           </span>
-          <h2 className="text-2xl font-serif font-extrabold text-[#0A192F]">
+          <h2 className="text-2xl font-serif font-extrabold text-maroon">
             Application Already Submitted
           </h2>
-          <p className="text-xs text-[#1E293B] max-w-md mx-auto leading-relaxed">
+          <p className="text-xs text-stone-700 max-w-md mx-auto leading-relaxed">
             An application for <strong>{existingNotice.fullName}</strong> is already registered under <strong>{email}</strong>.
           </p>
         </div>
 
-        <div className="p-4 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] space-y-2 text-xs">
-          <div className="flex justify-between items-center py-1 border-b border-[#E2E8F0]">
+        <div className="p-4 rounded-md bg-soft-cream border border-cream-dark space-y-2 text-xs">
+          <div className="flex justify-between items-center py-1 border-b border-cream-dark">
             <span className="text-zinc-500 font-medium">Registration ID:</span>
-            <span className="font-mono font-bold text-[#0A192F] text-sm">{existingNotice.registrationId}</span>
+            <span className="font-mono font-bold text-maroon text-sm">{existingNotice.registrationId}</span>
           </div>
-          <div className="flex justify-between items-center py-1 border-b border-[#E2E8F0]">
+          <div className="flex justify-between items-center py-1 border-b border-cream-dark">
             <span className="text-zinc-500 font-medium">Application Status:</span>
-            <span className="font-bold text-[#0A192F] uppercase text-[11px]">{existingNotice.status}</span>
+            <span className="font-bold text-maroon uppercase text-[11px]">{existingNotice.status}</span>
           </div>
           <div className="flex justify-between items-center py-1">
             <span className="text-zinc-500 font-medium">Payment Status:</span>
-            <span className="font-bold text-[#0A192F] uppercase text-[11px]">{existingNotice.paymentStatus}</span>
+            <span className="font-bold text-maroon uppercase text-[11px]">{existingNotice.paymentStatus}</span>
           </div>
         </div>
 
         <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
           <Link href={`/registration-status?ref=${encodeURIComponent(existingNotice.registrationId)}`} className="w-full sm:w-auto">
-            <Button className="w-full bg-[#C5A880] hover:bg-[#B59870] text-[#0A192F] font-bold text-xs h-10 px-6 gap-2">
+            <Button className="w-full bg-saffron hover:bg-saffron-dark text-maroon font-bold text-xs h-10 px-6 gap-2">
               <span>View Application Status</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
@@ -673,7 +673,7 @@ export function MithilaQueenWizard() {
               setOtpSent(false);
               setOtpCode("");
             }}
-            className="w-full sm:w-auto border-[#E2E8F0] text-[#0A192F] text-xs h-10"
+            className="w-full sm:w-auto border-cream-dark text-maroon text-xs h-10"
           >
             Use a Different Email
           </Button>
@@ -692,29 +692,29 @@ export function MithilaQueenWizard() {
     const instructions = siteSettings?.paymentInstructions || "Please scan the official QR code to complete the fee payment. Enter the transaction reference code below and submit for verification.";
 
     return (
-      <div className="max-w-2xl mx-auto p-6 sm:p-10 rounded-lg bg-white border border-[#E2E8F0] shadow-xs space-y-8">
+      <div className="max-w-2xl mx-auto p-6 sm:p-10 rounded-lg bg-white border border-cream-dark shadow-xs space-y-8">
         <div className="text-center space-y-3">
-          <div className="w-14 h-14 rounded-md bg-[#0A192F] text-[#C5A880] mx-auto flex items-center justify-center border border-[#C5A880]/50 shadow-xs">
+          <div className="w-14 h-14 rounded-md bg-maroon text-saffron mx-auto flex items-center justify-center border border-saffron/50 shadow-xs">
             <CheckCircle2 className="w-8 h-8 stroke-[2.2]" />
           </div>
-          <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
+          <span className="text-xs font-bold uppercase tracking-wider text-saffron">
             Application Successfully Saved
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] font-serif">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-maroon font-serif">
             Mithila Queen Registration
           </h2>
-          <p className="text-xs text-[#1E293B] max-w-md mx-auto leading-relaxed">
+          <p className="text-xs text-stone-700 max-w-md mx-auto leading-relaxed">
             Your personal information and profile have been securely stored. Please complete the verified payment step below to submit for administrative review.
           </p>
         </div>
 
         {/* Registration ID Banner */}
-        <div className="p-5 rounded-md bg-[#F8FAFC] border border-[#C5A880] flex items-center justify-between">
+        <div className="p-5 rounded-md bg-soft-cream border border-saffron flex items-center justify-between">
           <div>
             <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 block">
               Your Unique Registration ID
             </span>
-            <span className="text-xl font-extrabold font-mono text-[#0A192F] tracking-wide">
+            <span className="text-xl font-extrabold font-mono text-maroon tracking-wide">
               {registeredId}
             </span>
           </div>
@@ -722,49 +722,49 @@ export function MithilaQueenWizard() {
             size="sm"
             onClick={copyRegId}
             variant="outline"
-            className="border-[#C5A880] text-[#0A192F] hover:bg-[#E2E8F0]/50 gap-1.5 text-xs font-semibold"
+            className="border-saffron text-maroon hover:bg-soft-cream gap-1.5 text-xs font-semibold"
           >
-            {copiedRef ? <Check className="w-3.5 h-3.5 text-[#C5A880]" /> : <Copy className="w-3.5 h-3.5" />}
+            {copiedRef ? <Check className="w-3.5 h-3.5 text-saffron" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copiedRef ? "Copied" : "Copy ID"}</span>
           </Button>
         </div>
 
         {paymentSuccess ? (
-          <div className="p-6 rounded-md bg-[#F8FAFC] border border-amber-300 text-center space-y-3">
+          <div className="p-6 rounded-md bg-soft-cream border border-amber-300 text-center space-y-3">
             <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-800 mx-auto flex items-center justify-center">
               <Check className="w-5 h-5 stroke-[2.5]" />
             </div>
-            <h4 className="font-bold text-[#0A192F] text-base">Payment Details Submitted</h4>
-            <p className="text-xs text-[#1E293B] max-w-md mx-auto leading-relaxed">
+            <h4 className="font-bold text-maroon text-base">Payment Details Submitted</h4>
+            <p className="text-xs text-stone-700 max-w-md mx-auto leading-relaxed">
               Your transaction reference (<strong>{transactionRef}</strong>) has been recorded. Our finance desk will verify your payment against official bank records. You will receive an email confirmation once verified.
             </p>
             <div className="pt-2">
               <Link href={`/registration-status?ref=${encodeURIComponent(registeredId)}`}>
-                <Button className="bg-[#0A192F] text-[#F8FAFC] hover:bg-[#1E293B] text-xs font-bold h-10 px-6 gap-2">
+                <Button className="bg-maroon text-warm-ivory hover:bg-maroon-dark text-xs font-bold h-10 px-6 gap-2">
                   <span>Track Application Status</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
+                  <ArrowRight className="w-3.5 h-3.5 text-saffron" />
                 </Button>
               </Link>
             </div>
           </div>
         ) : (
           /* Payment Instructions & QR Form */
-          <div className="space-y-6 pt-2 border-t border-[#E2E8F0]">
+          <div className="space-y-6 pt-2 border-t border-cream-dark">
             <div className="text-center space-y-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#C5A880]">
+              <span className="text-xs font-bold uppercase tracking-wider text-saffron">
                 Payment Amount: NPR {fee}
               </span>
-              <h3 className="text-lg font-bold text-[#0A192F] font-serif">
+              <h3 className="text-lg font-bold text-maroon font-serif">
                 Official Payment QR Code
               </h3>
-              <p className="text-xs text-[#1E293B] max-w-sm mx-auto">
+              <p className="text-xs text-stone-700 max-w-sm mx-auto">
                 Scan using eSewa, Khalti, or any Fonepay / Mobile Banking app to pay the NPR {fee} registration fee.
               </p>
             </div>
 
             {/* QR Container */}
-            <div className="w-64 mx-auto bg-white border-2 border-dashed border-[#C5A880] rounded-lg p-5 flex flex-col items-center justify-center text-center shadow-xs">
-              <div className="w-48 h-48 relative bg-white flex items-center justify-center overflow-hidden rounded-md border border-[#E2E8F0]">
+            <div className="w-64 mx-auto bg-white border-2 border-dashed border-saffron rounded-lg p-5 flex flex-col items-center justify-center text-center shadow-xs">
+              <div className="w-48 h-48 relative bg-white flex items-center justify-center overflow-hidden rounded-md border border-cream-dark">
                 {qrUrl.startsWith("http") || qrUrl.startsWith("/") ? (
                   <img
                     src={qrUrl}
@@ -772,10 +772,10 @@ export function MithilaQueenWizard() {
                     className="w-full h-full object-contain"
                   />
                 ) : (
-                  <QrCode className="w-28 h-28 text-[#0A192F] opacity-90" />
+                  <QrCode className="w-28 h-28 text-maroon opacity-90" />
                 )}
               </div>
-              <span className="text-[12px] font-bold text-[#0A192F] font-mono mt-3">
+              <span className="text-[12px] font-bold text-maroon font-mono mt-3">
                 The Origin Foundation
               </span>
               <span className="text-[10px] text-zinc-500 mt-0.5">
@@ -788,9 +788,9 @@ export function MithilaQueenWizard() {
             </p>
 
             {/* Transaction Reference Submission Form */}
-            <form onSubmit={handlePaymentSubmit} className="space-y-4 pt-4 border-t border-[#E2E8F0]">
+            <form onSubmit={handlePaymentSubmit} className="space-y-4 pt-4 border-t border-cream-dark">
               <div className="space-y-1.5">
-                <Label htmlFor="txnRef" required className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="txnRef" required className="text-xs font-bold text-maroon">
                   Transaction Reference / UTR Number
                 </Label>
                 <Input
@@ -799,9 +799,9 @@ export function MithilaQueenWizard() {
                   onChange={(e) => setTransactionRef(e.target.value)}
                   placeholder="e.g. 981200546872 or Fonepay Txn ID"
                   required
-                  className="h-10 text-sm border-[#E2E8F0] bg-white font-mono"
+                  className="h-10 text-sm border-cream-dark bg-white font-mono"
                 />
-                <p className="text-[11px] text-[#1E293B]">
+                <p className="text-[11px] text-stone-700">
                   Enter the exact transaction reference shown in your banking or wallet receipt.
                 </p>
               </div>
@@ -809,7 +809,7 @@ export function MithilaQueenWizard() {
               <Button
                 type="submit"
                 disabled={isSubmittingPayment}
-                className="w-full bg-[#C5A880] hover:bg-[#B59870] text-[#0A192F] font-bold text-xs h-11 rounded-md shadow-xs gap-2"
+                className="w-full bg-saffron hover:bg-saffron-dark text-maroon font-bold text-xs h-11 rounded-md shadow-xs gap-2"
               >
                 {isSubmittingPayment ? (
                   <>
@@ -839,12 +839,12 @@ export function MithilaQueenWizard() {
       <div className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-[#0A192F] text-[#C5A880] font-black flex items-center justify-center text-sm shadow-sm shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-maroon text-saffron font-black flex items-center justify-center text-sm shadow-sm shrink-0">
               {step}
             </div>
             <div>
               <div className="flex items-center gap-2 text-xs">
-                <span className="font-bold uppercase tracking-wider text-[#C5A880]">
+                <span className="font-bold uppercase tracking-wider text-saffron">
                   Step {step} of {totalSteps}
                 </span>
                 <span className="text-slate-300">&bull;</span>
@@ -852,7 +852,7 @@ export function MithilaQueenWizard() {
                   {Math.round((step / totalSteps) * 100)}% Complete
                 </span>
               </div>
-              <h2 className="text-lg sm:text-xl font-extrabold text-[#0A192F] font-serif leading-tight mt-0.5">
+              <h2 className="text-lg sm:text-xl font-extrabold text-maroon font-serif leading-tight mt-0.5">
                 {step === 1 && "Personal Information & Email Verification"}
                 {step === 2 && "Profile & Cultural Interests"}
                 {step === 3 && "Additional Details"}
@@ -880,7 +880,7 @@ export function MithilaQueenWizard() {
                 </span>
               </div>
             )}
-            <div className="px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-[#0A192F] shrink-0">
+            <div className="px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-maroon shrink-0">
               Fee: NPR {siteSettings?.registrationFee || 399}
             </div>
           </div>
@@ -894,9 +894,9 @@ export function MithilaQueenWizard() {
                 key={idx}
                 className={`h-full flex-1 rounded-full transition-all duration-300 ${
                   idx + 1 < step
-                    ? "bg-[#0A192F]"
+                    ? "bg-maroon"
                     : idx + 1 === step
-                    ? "bg-[#C5A880]"
+                    ? "bg-saffron"
                     : "bg-slate-200/80"
                 }`}
               />
@@ -921,15 +921,15 @@ export function MithilaQueenWizard() {
       </div>
 
       {/* Main Wizard Form Card */}
-      <div className="p-8 sm:p-10 rounded-lg bg-white border border-[#E2E8F0] shadow-xs space-y-6">
+      <div className="p-8 sm:p-10 rounded-lg bg-white border border-cream-dark shadow-xs space-y-6">
         {/* STEP 1: PERSONAL INFORMATION & EMAIL VERIFICATION */}
         {step === 1 && (
           <div className="space-y-6">
-            <div className="border-b border-[#E2E8F0] pb-3">
-              <h2 className="text-xl font-bold font-serif text-[#0A192F]">
+            <div className="border-b border-cream-dark pb-3">
+              <h2 className="text-xl font-bold font-serif text-maroon">
                 1. Personal Information & Email Verification
               </h2>
-              <p className="text-xs text-[#1E293B] mt-1">
+              <p className="text-xs text-stone-700 mt-1">
                 Enter your legal name, contact details, and verify your email address to begin your application.
               </p>
             </div>
@@ -937,7 +937,7 @@ export function MithilaQueenWizard() {
             {/* Name Fields */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="firstName" required className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="firstName" required className="text-xs font-bold text-maroon">
                   First Name
                 </Label>
                 <Input
@@ -946,12 +946,12 @@ export function MithilaQueenWizard() {
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="e.g. Anjali"
                   required
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="lastName" required className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="lastName" required className="text-xs font-bold text-maroon">
                   Last Name
                 </Label>
                 <Input
@@ -960,7 +960,7 @@ export function MithilaQueenWizard() {
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="e.g. Jha"
                   required
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
             </div>
@@ -968,7 +968,7 @@ export function MithilaQueenWizard() {
             {/* Email & Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="email" required className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="email" required className="text-xs font-bold text-maroon">
                   Email Address
                 </Label>
                 <div className="relative">
@@ -985,14 +985,14 @@ export function MithilaQueenWizard() {
                     placeholder="anjali@example.com"
                     required
                     disabled={isEmailVerified}
-                    className={`h-10 text-xs border-[#E2E8F0] ${isEmailVerified ? "bg-[#F8FAFC] pr-8" : ""}`}
+                    className={`h-10 text-xs border-cream-dark ${isEmailVerified ? "bg-soft-cream pr-8" : ""}`}
                   />
                   {isEmailVerified && (
-                    <CheckCircle2 className="w-4 h-4 text-[#C5A880] absolute right-2.5 top-3" />
+                    <CheckCircle2 className="w-4 h-4 text-saffron absolute right-2.5 top-3" />
                   )}
                 </div>
                 {isEmailVerified && (
-                  <p className="text-[11px] text-[#C5A880] font-semibold flex items-center gap-1">
+                  <p className="text-[11px] text-saffron font-semibold flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>Email verified via 6-digit OTP</span>
                   </p>
@@ -1000,7 +1000,7 @@ export function MithilaQueenWizard() {
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="phone" required className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="phone" required className="text-xs font-bold text-maroon">
                   Mobile Phone Number
                 </Label>
                 <Input
@@ -1009,7 +1009,7 @@ export function MithilaQueenWizard() {
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="e.g. 9812000000"
                   required
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
             </div>
@@ -1017,7 +1017,7 @@ export function MithilaQueenWizard() {
             {/* DOB & Alternate Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="dob" required className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="dob" required className="text-xs font-bold text-maroon">
                   Date of Birth
                 </Label>
                 <Input
@@ -1026,18 +1026,18 @@ export function MithilaQueenWizard() {
                   value={dob}
                   onChange={(e) => setDob(e.target.value)}
                   required
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
                 {isMinor && (
-                  <p className="text-[11px] text-[#A64B36] font-semibold flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#A64B36]" />
+                  <p className="text-[11px] text-maroon font-semibold flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-maroon" />
                     <span>Minor participant detected (&lt;18). Guardian consent required in Step 6.</span>
                   </p>
                 )}
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="altPhone" className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="altPhone" className="text-xs font-bold text-maroon">
                   Alternate Phone Number (Optional)
                 </Label>
                 <Input
@@ -1045,7 +1045,7 @@ export function MithilaQueenWizard() {
                   value={alternatePhone}
                   onChange={(e) => setAlternatePhone(e.target.value)}
                   placeholder="e.g. Family contact number"
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
             </div>
@@ -1053,7 +1053,7 @@ export function MithilaQueenWizard() {
             {/* Administrative Location */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
               <div className="space-y-1.5">
-                <Label htmlFor="province" required className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="province" required className="text-xs font-bold text-maroon">
                   Province
                 </Label>
                 <Input
@@ -1061,12 +1061,12 @@ export function MithilaQueenWizard() {
                   value={province}
                   onChange={(e) => setProvince(e.target.value)}
                   required
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="district" required className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="district" required className="text-xs font-bold text-maroon">
                   District
                 </Label>
                 <Input
@@ -1074,12 +1074,12 @@ export function MithilaQueenWizard() {
                   value={district}
                   onChange={(e) => setDistrict(e.target.value)}
                   required
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="municipality" required className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="municipality" required className="text-xs font-bold text-maroon">
                   Municipality / Rural Mun.
                 </Label>
                 <Input
@@ -1087,14 +1087,14 @@ export function MithilaQueenWizard() {
                   value={municipality}
                   onChange={(e) => setMunicipality(e.target.value)}
                   required
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="cityVillage" required className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="cityVillage" required className="text-xs font-bold text-maroon">
                   City, Town or Village
                 </Label>
                 <Input
@@ -1103,12 +1103,12 @@ export function MithilaQueenWizard() {
                   onChange={(e) => setCityVillage(e.target.value)}
                   placeholder="e.g. Ramanand Chowk / Janakpur"
                   required
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="address" required className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="address" required className="text-xs font-bold text-maroon">
                   Current Street Address
                 </Label>
                 <Input
@@ -1117,23 +1117,23 @@ export function MithilaQueenWizard() {
                   onChange={(e) => setCurrentAddress(e.target.value)}
                   placeholder="Ward No. & Street Details"
                   required
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
             </div>
 
             {/* MANDATORY EMAIL OTP VERIFICATION BOX */}
-            <div className="p-5 rounded-lg bg-[#F8FAFC] border border-[#C5A880]/60 space-y-4">
+            <div className="p-5 rounded-lg bg-soft-cream border border-saffron/60 space-y-4">
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#C5A880]" />
-                <h3 className="font-bold text-xs uppercase tracking-wider text-[#0A192F]">
+                <Mail className="w-4 h-4 text-saffron" />
+                <h3 className="font-bold text-xs uppercase tracking-wider text-maroon">
                   Mandatory Email OTP Verification
                 </h3>
               </div>
 
               {!isEmailVerified ? (
                 <div className="space-y-3">
-                  <p className="text-xs text-[#1E293B] leading-relaxed">
+                  <p className="text-xs text-stone-700 leading-relaxed">
                     To prevent automated submissions and securely save your progress, we verify your email address via a one-time 6-digit code.
                   </p>
 
@@ -1142,7 +1142,7 @@ export function MithilaQueenWizard() {
                       type="button"
                       disabled={isSendingOtp}
                       onClick={handleSendOtp}
-                      className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F8FAFC] text-xs font-bold h-10 px-6 rounded-md shadow-xs gap-2"
+                      className="bg-maroon hover:bg-maroon-dark text-warm-ivory text-xs font-bold h-10 px-6 rounded-md shadow-xs gap-2"
                     >
                       {isSendingOtp ? (
                         <>
@@ -1151,15 +1151,15 @@ export function MithilaQueenWizard() {
                         </>
                       ) : (
                         <>
-                          <Mail className="w-4 h-4 text-[#C5A880]" />
+                          <Mail className="w-4 h-4 text-saffron" />
                           <span>Send 6-Digit Verification Code</span>
                         </>
                       )}
                     </Button>
                   ) : (
-                    <div className="space-y-3 pt-2 border-t border-[#E2E8F0]">
-                      <p className="text-xs text-[#1E293B]">
-                        We sent a 6-digit code to <strong className="font-mono text-[#0A192F]">{email}</strong>. Please enter it below:
+                    <div className="space-y-3 pt-2 border-t border-cream-dark">
+                      <p className="text-xs text-stone-700">
+                        We sent a 6-digit code to <strong className="font-mono text-maroon">{email}</strong>. Please enter it below:
                       </p>
 
                       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -1168,13 +1168,13 @@ export function MithilaQueenWizard() {
                           onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                           placeholder="6-digit code"
                           maxLength={6}
-                          className="h-10 w-full sm:w-48 text-center text-lg font-mono font-bold tracking-widest border-[#C5A880] bg-white"
+                          className="h-10 w-full sm:w-48 text-center text-lg font-mono font-bold tracking-widest border-saffron bg-white"
                         />
                         <Button
                           type="button"
                           disabled={isVerifyingOtp || otpCode.length !== 6}
                           onClick={handleVerifyOtp}
-                          className="bg-[#C5A880] hover:bg-[#B59870] text-[#0A192F] text-xs font-bold h-10 px-6 rounded-md shadow-xs gap-2"
+                          className="bg-saffron hover:bg-saffron-dark text-maroon text-xs font-bold h-10 px-6 rounded-md shadow-xs gap-2"
                         >
                           {isVerifyingOtp ? (
                             <>
@@ -1193,7 +1193,7 @@ export function MithilaQueenWizard() {
                           variant="ghost"
                           disabled={resendCooldown > 0 || isSendingOtp}
                           onClick={handleSendOtp}
-                          className="text-xs text-zinc-600 hover:text-[#0A192F] h-10 px-3 gap-1"
+                          className="text-xs text-zinc-600 hover:text-maroon h-10 px-3 gap-1"
                         >
                           <RefreshCw className="w-3.5 h-3.5" />
                           <span>{resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend Code"}</span>
@@ -1203,8 +1203,8 @@ export function MithilaQueenWizard() {
                   )}
                 </div>
               ) : (
-                <div className="flex items-center gap-2 text-xs text-[#0A192F] font-semibold bg-[#F8FAFC] p-3 rounded-md border border-[#C5A880]">
-                  <CheckCircle2 className="w-4 h-4 text-[#C5A880] shrink-0" />
+                <div className="flex items-center gap-2 text-xs text-maroon font-semibold bg-soft-cream p-3 rounded-md border border-saffron">
+                  <CheckCircle2 className="w-4 h-4 text-saffron shrink-0" />
                   <span>Your email address ({email}) is verified! You may advance to the next steps.</span>
                 </div>
               )}
@@ -1215,17 +1215,17 @@ export function MithilaQueenWizard() {
         {/* STEP 2: PARTICIPANT PROFILE */}
         {step === 2 && (
           <div className="space-y-5">
-            <div className="border-b border-[#E2E8F0] pb-3">
-              <h2 className="text-xl font-bold font-serif text-[#0A192F]">
+            <div className="border-b border-cream-dark pb-3">
+              <h2 className="text-xl font-bold font-serif text-maroon">
                 2. Participant Profile & Cultural Heritage
               </h2>
-              <p className="text-xs text-[#1E293B] mt-1">
+              <p className="text-xs text-stone-700 mt-1">
                 Share your personal interests, artistic skills, and connection to Mithila.
               </p>
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="motivation" required className="text-xs font-bold text-[#0A192F]">
+              <Label htmlFor="motivation" required className="text-xs font-bold text-maroon">
                 Why do you want to participate in Mithila Queen?
               </Label>
               <Textarea
@@ -1235,12 +1235,12 @@ export function MithilaQueenWizard() {
                 placeholder="What inspired you to join this cultural competition?"
                 rows={3}
                 required
-                className="text-xs border-[#E2E8F0] resize-none"
+                className="text-xs border-cream-dark resize-none"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="mithilaMeaning" className="text-xs font-bold text-[#0A192F]">
+              <Label htmlFor="mithilaMeaning" className="text-xs font-bold text-maroon">
                 What does Mithila&apos;s cultural heritage mean to you?
               </Label>
               <Textarea
@@ -1249,13 +1249,13 @@ export function MithilaQueenWizard() {
                 onChange={(e) => setMithilaMeaning(e.target.value)}
                 placeholder="Share your thoughts on Mithila art, traditions, or values..."
                 rows={3}
-                className="text-xs border-[#E2E8F0] resize-none"
+                className="text-xs border-cream-dark resize-none"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="talents" className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="talents" className="text-xs font-bold text-maroon">
                   Talents & Skills
                 </Label>
                 <Input
@@ -1263,12 +1263,12 @@ export function MithilaQueenWizard() {
                   value={talentsSkills}
                   onChange={(e) => setTalentsSkills(e.target.value)}
                   placeholder="e.g. Mithila Painting, Singing, Public Speaking"
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="languages" className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="languages" className="text-xs font-bold text-maroon">
                   Languages Spoken
                 </Label>
                 <Input
@@ -1276,14 +1276,14 @@ export function MithilaQueenWizard() {
                   value={languagesSpoken}
                   onChange={(e) => setLanguagesSpoken(e.target.value)}
                   placeholder="e.g. Maithili, Nepali, Hindi, English"
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="education" className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="education" className="text-xs font-bold text-maroon">
                   Current Education Level (Voluntary)
                 </Label>
                 <Input
@@ -1291,12 +1291,12 @@ export function MithilaQueenWizard() {
                   value={educationLevel}
                   onChange={(e) => setEducationLevel(e.target.value)}
                   placeholder="e.g. Bachelor's Degree"
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="institution" className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="institution" className="text-xs font-bold text-maroon">
                   School / College (Voluntary)
                 </Label>
                 <Input
@@ -1304,7 +1304,7 @@ export function MithilaQueenWizard() {
                   value={institution}
                   onChange={(e) => setInstitution(e.target.value)}
                   placeholder="e.g. Janakpur Higher Secondary"
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
             </div>
@@ -1314,17 +1314,17 @@ export function MithilaQueenWizard() {
         {/* STEP 3: ADDITIONAL DETAILS */}
         {step === 3 && (
           <div className="space-y-5">
-            <div className="border-b border-[#E2E8F0] pb-3">
-              <h2 className="text-xl font-bold font-serif text-[#0A192F]">
+            <div className="border-b border-cream-dark pb-3">
+              <h2 className="text-xl font-bold font-serif text-maroon">
                 3. Additional Details & Aspirations
               </h2>
-              <p className="text-xs text-[#1E293B] mt-1">
+              <p className="text-xs text-stone-700 mt-1">
                 Tell the selection committee about your background and interests.
               </p>
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="personalIntro" className="text-xs font-bold text-[#0A192F]">
+              <Label htmlFor="personalIntro" className="text-xs font-bold text-maroon">
                 Brief Personal Introduction
               </Label>
               <Textarea
@@ -1333,12 +1333,12 @@ export function MithilaQueenWizard() {
                 onChange={(e) => setPersonalIntro(e.target.value)}
                 placeholder="Introduce yourself in 2-3 sentences..."
                 rows={3}
-                className="text-xs border-[#E2E8F0] resize-none"
+                className="text-xs border-cream-dark resize-none"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="qualities" className="text-xs font-bold text-[#0A192F]">
+              <Label htmlFor="qualities" className="text-xs font-bold text-maroon">
                 What qualities make you a proud representative of Mithila?
               </Label>
               <Textarea
@@ -1347,7 +1347,7 @@ export function MithilaQueenWizard() {
                 onChange={(e) => setQualitiesBrought(e.target.value)}
                 placeholder="Confidence, cultural knowledge, community leadership..."
                 rows={3}
-                className="text-xs border-[#E2E8F0] resize-none"
+                className="text-xs border-cream-dark resize-none"
               />
             </div>
 
@@ -1357,16 +1357,16 @@ export function MithilaQueenWizard() {
                   type="checkbox"
                   checked={previousExperience}
                   onChange={(e) => setPreviousExperience(e.target.checked)}
-                  className="w-4 h-4 rounded text-[#0A192F] focus:ring-[#C5A880]"
+                  className="w-4 h-4 rounded text-maroon focus:ring-saffron"
                 />
-                <span className="text-xs text-[#0A192F] font-medium">
+                <span className="text-xs text-maroon font-medium">
                   Have you previously participated in any cultural, talent, or public events?
                 </span>
               </label>
 
               {previousExperience && (
                 <div className="space-y-1.5 pl-6">
-                  <Label htmlFor="experienceDetails" className="text-xs font-bold text-[#0A192F]">
+                  <Label htmlFor="experienceDetails" className="text-xs font-bold text-maroon">
                     Event Details (Optional)
                   </Label>
                   <Input
@@ -1374,7 +1374,7 @@ export function MithilaQueenWizard() {
                     value={experienceDetails}
                     onChange={(e) => setExperienceDetails(e.target.value)}
                     placeholder="e.g. School debate, cultural festival 2024"
-                    className="h-10 text-xs border-[#E2E8F0]"
+                    className="h-10 text-xs border-cream-dark"
                   />
                 </div>
               )}
@@ -1385,22 +1385,22 @@ export function MithilaQueenWizard() {
         {/* STEP 4: SOCIAL MEDIA */}
         {step === 4 && (
           <div className="space-y-5">
-            <div className="border-b border-[#E2E8F0] pb-3">
-              <h2 className="text-xl font-bold font-serif text-[#0A192F]">
+            <div className="border-b border-cream-dark pb-3">
+              <h2 className="text-xl font-bold font-serif text-maroon">
                 4. Social Media Profiles & Audition Channels
               </h2>
-              <p className="text-xs text-[#1E293B] mt-1">
+              <p className="text-xs text-stone-700 mt-1">
                 Provide at least one active profile for our organizers to review your talent or video submissions.
               </p>
             </div>
 
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <Label htmlFor="instagram" className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="instagram" className="text-xs font-bold text-maroon">
                   Instagram Username
                 </Label>
                 <div className="flex rounded-md shadow-xs">
-                  <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-[#E2E8F0] bg-[#F8FAFC] text-zinc-500 text-xs">
+                  <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-cream-dark bg-soft-cream text-zinc-500 text-xs">
                     @
                   </span>
                   <Input
@@ -1408,17 +1408,17 @@ export function MithilaQueenWizard() {
                     value={instagramHandle}
                     onChange={(e) => setInstagramHandle(e.target.value.replace(/^@/, ""))}
                     placeholder="username"
-                    className="h-10 text-xs border-[#E2E8F0] rounded-l-none"
+                    className="h-10 text-xs border-cream-dark rounded-l-none"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="tiktok" className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="tiktok" className="text-xs font-bold text-maroon">
                   TikTok Username
                 </Label>
                 <div className="flex rounded-md shadow-xs">
-                  <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-[#E2E8F0] bg-[#F8FAFC] text-zinc-500 text-xs">
+                  <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-cream-dark bg-soft-cream text-zinc-500 text-xs">
                     @
                   </span>
                   <Input
@@ -1426,13 +1426,13 @@ export function MithilaQueenWizard() {
                     value={tiktokHandle}
                     onChange={(e) => setTiktokHandle(e.target.value.replace(/^@/, ""))}
                     placeholder="username"
-                    className="h-10 text-xs border-[#E2E8F0] rounded-l-none"
+                    className="h-10 text-xs border-cream-dark rounded-l-none"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="facebook" className="text-xs font-bold text-[#0A192F]">
+                <Label htmlFor="facebook" className="text-xs font-bold text-maroon">
                   Facebook Profile Link
                 </Label>
                 <Input
@@ -1440,12 +1440,12 @@ export function MithilaQueenWizard() {
                   value={facebookUrl}
                   onChange={(e) => setFacebookUrl(e.target.value)}
                   placeholder="https://facebook.com/yourprofile"
-                  className="h-10 text-xs border-[#E2E8F0]"
+                  className="h-10 text-xs border-cream-dark"
                 />
               </div>
 
-              <div className="p-4 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] text-xs text-[#1E293B] space-y-1.5">
-                <p className="font-bold text-[#0A192F]">Direct WhatsApp Video Submissions:</p>
+              <div className="p-4 rounded-md bg-soft-cream border border-cream-dark text-xs text-stone-700 space-y-1.5">
+                <p className="font-bold text-maroon">Direct WhatsApp Video Submissions:</p>
                 <p className="text-[11px] leading-relaxed">
                   You can also submit your 1-minute cultural introduction video directly to our organizing desk via WhatsApp at <strong>+977 9704571941</strong> quoting your Registration ID.
                 </p>
@@ -1457,8 +1457,8 @@ export function MithilaQueenWizard() {
         {/* STEP 5: PHOTO & MEDIA UPLOADS */}
         {step === 5 && (
           <div className="space-y-6">
-            <div className="border-b border-[#EADBCE] pb-3">
-              <h2 className="text-xl font-bold font-serif text-[#7F1D2D]">
+            <div className="border-b border-cream-dark pb-3">
+              <h2 className="text-xl font-bold font-serif text-maroon">
                 5. Photo &amp; Media Uploads
               </h2>
               <p className="text-xs text-stone-600 mt-1">
@@ -1468,19 +1468,19 @@ export function MithilaQueenWizard() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* 1. Portrait Photo */}
-              <div className="p-4 rounded-xl border border-[#EADBCE] bg-white space-y-3">
+              <div className="p-4 rounded-xl border border-cream-dark bg-white space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-stone-900 flex items-center gap-1.5">
-                    <User className="w-4 h-4 text-[#D97706]" />
+                    <User className="w-4 h-4 text-saffron" />
                     <span>Recent Portrait Photo <span className="text-rose-600">*</span></span>
                   </span>
                   <span className="text-[10px] text-stone-500 font-mono">JPG / PNG &bull; 10MB</span>
                 </div>
 
-                <div className="border-2 border-dashed border-[#EADBCE] rounded-xl p-4 text-center hover:border-[#D97706] transition-colors bg-[#F7F1E5]/20 min-h-[160px] flex items-center justify-center">
+                <div className="border-2 border-dashed border-cream-dark rounded-xl p-4 text-center hover:border-saffron transition-colors bg-soft-cream/20 min-h-[160px] flex items-center justify-center">
                   {profilePhotoUrl ? (
                     <div className="space-y-2">
-                      <div className="w-24 h-32 mx-auto rounded-lg overflow-hidden border border-[#EADBCE] relative bg-white shadow-xs">
+                      <div className="w-24 h-32 mx-auto rounded-lg overflow-hidden border border-cream-dark relative bg-white shadow-xs">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={profilePhotoUrl}
@@ -1488,7 +1488,7 @@ export function MithilaQueenWizard() {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <label className="cursor-pointer text-xs font-bold text-[#D97706] hover:underline block">
+                      <label className="cursor-pointer text-xs font-bold text-saffron hover:underline block">
                         <span>Change photograph</span>
                         <input
                           type="file"
@@ -1500,9 +1500,9 @@ export function MithilaQueenWizard() {
                     </div>
                   ) : (
                     <label className="cursor-pointer block space-y-2 py-2">
-                      <div className="w-10 h-10 rounded-full bg-[#F7F1E5] text-[#D97706] mx-auto flex items-center justify-center border border-[#EADBCE]">
+                      <div className="w-10 h-10 rounded-full bg-soft-cream text-saffron mx-auto flex items-center justify-center border border-cream-dark">
                         {isUploadingPhoto ? (
-                          <Loader2 className="w-5 h-5 animate-spin text-[#D97706]" />
+                          <Loader2 className="w-5 h-5 animate-spin text-saffron" />
                         ) : (
                           <Upload className="w-5 h-5" />
                         )}
@@ -1526,34 +1526,34 @@ export function MithilaQueenWizard() {
               </div>
 
               {/* 2. Audition Video */}
-              <div className="p-4 rounded-xl border border-[#EADBCE] bg-white space-y-3">
+              <div className="p-4 rounded-xl border border-cream-dark bg-white space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-stone-900 flex items-center gap-1.5">
-                    <Video className="w-4 h-4 text-[#D97706]" />
+                    <Video className="w-4 h-4 text-saffron" />
                     <span>Audition Video (Optional)</span>
                   </span>
                   <span className="text-[10px] text-stone-500 font-mono">MP4 / MOV &bull; 100MB</span>
                 </div>
 
-                <div className="border-2 border-dashed border-[#EADBCE] rounded-xl p-4 text-center hover:border-[#D97706] transition-colors bg-[#F7F1E5]/20 min-h-[160px] flex items-center justify-center">
+                <div className="border-2 border-dashed border-cream-dark rounded-xl p-4 text-center hover:border-saffron transition-colors bg-soft-cream/20 min-h-[160px] flex items-center justify-center">
                   {videoUrl ? (
                     <div className="space-y-2 w-full">
                       {videoUrl.startsWith("http") && !videoUrl.includes("drive.google") ? (
                         <video
                           src={videoUrl}
                           controls
-                          className="w-full max-h-36 rounded-lg border border-[#EADBCE] bg-black"
+                          className="w-full max-h-36 rounded-lg border border-cream-dark bg-black"
                         />
                       ) : (
-                        <div className="p-3 bg-[#F7F1E5] rounded-lg border border-[#EADBCE] text-xs space-y-1">
-                          <span className="font-bold text-[#7F1D2D] block flex items-center justify-center gap-1">
-                            <Video className="w-3.5 h-3.5 text-[#D97706]" />
+                        <div className="p-3 bg-soft-cream rounded-lg border border-cream-dark text-xs space-y-1">
+                          <span className="font-bold text-maroon block flex items-center justify-center gap-1">
+                            <Video className="w-3.5 h-3.5 text-saffron" />
                             <span>Video Uploaded</span>
                           </span>
                           <p className="text-[10px] text-stone-600 truncate">{videoUrl}</p>
                         </div>
                       )}
-                      <label className="cursor-pointer text-xs font-bold text-[#D97706] hover:underline block">
+                      <label className="cursor-pointer text-xs font-bold text-saffron hover:underline block">
                         <span>Replace video</span>
                         <input
                           type="file"
@@ -1565,9 +1565,9 @@ export function MithilaQueenWizard() {
                     </div>
                   ) : (
                     <label className="cursor-pointer block space-y-2 py-2">
-                      <div className="w-10 h-10 rounded-full bg-[#F7F1E5] text-[#D97706] mx-auto flex items-center justify-center border border-[#EADBCE]">
+                      <div className="w-10 h-10 rounded-full bg-soft-cream text-saffron mx-auto flex items-center justify-center border border-cream-dark">
                         {isUploadingVideo ? (
-                          <Loader2 className="w-5 h-5 animate-spin text-[#D97706]" />
+                          <Loader2 className="w-5 h-5 animate-spin text-saffron" />
                         ) : (
                           <Video className="w-5 h-5" />
                         )}
@@ -1599,17 +1599,17 @@ export function MithilaQueenWizard() {
                     value={videoUrl}
                     onChange={(e) => setVideoUrl(e.target.value)}
                     placeholder="https://drive.google.com/... or youtube.com/..."
-                    className="h-8 text-xs border-[#EADBCE] bg-[#F7F1E5]/30 focus-visible:ring-[#D97706]"
+                    className="h-8 text-xs border-cream-dark bg-soft-cream/30 focus-visible:ring-saffron"
                   />
                 </div>
               </div>
             </div>
 
             {/* Direct WhatsApp Video submission note */}
-            <div className="p-3.5 rounded-xl bg-[#F7F1E5] border border-[#EADBCE] text-xs text-stone-700 flex items-start gap-2.5">
-              <Phone className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" />
+            <div className="p-3.5 rounded-xl bg-soft-cream border border-cream-dark text-xs text-stone-700 flex items-start gap-2.5">
+              <Phone className="w-4 h-4 text-saffron shrink-0 mt-0.5" />
               <div className="space-y-0.5">
-                <span className="font-bold text-[#7F1D2D]">
+                <span className="font-bold text-maroon">
                   WhatsApp Audition Helpline:
                 </span>
                 <p className="text-[11px] text-stone-600 leading-relaxed">
@@ -1623,11 +1623,11 @@ export function MithilaQueenWizard() {
         {/* STEP 6: RULES & MINOR SAFEGUARDING */}
         {step === 6 && (
           <div className="space-y-6">
-            <div className="border-b border-[#E2E8F0] pb-3">
-              <h2 className="text-xl font-bold font-serif text-[#0A192F]">
+            <div className="border-b border-cream-dark pb-3">
+              <h2 className="text-xl font-bold font-serif text-maroon">
                 6. Rules, Safeguarding & Legal Consents
               </h2>
-              <p className="text-xs text-[#1E293B] mt-1">
+              <p className="text-xs text-stone-700 mt-1">
                 Please review and accept our institutional policies and safeguarding commitments.
               </p>
             </div>
@@ -1707,38 +1707,38 @@ export function MithilaQueenWizard() {
 
             {/* General Consents */}
             <div className="space-y-3 pt-2">
-              <label className="flex items-start gap-2.5 cursor-pointer p-3 rounded-md bg-[#F8FAFC] border border-[#E2E8F0]">
+              <label className="flex items-start gap-2.5 cursor-pointer p-3 rounded-md bg-soft-cream border border-cream-dark">
                 <input
                   type="checkbox"
                   checked={agreedToRules}
                   onChange={(e) => setAgreedToRules(e.target.checked)}
-                  className="w-4 h-4 rounded text-[#0A192F] focus:ring-[#C5A880] mt-0.5"
+                  className="w-4 h-4 rounded text-maroon focus:ring-saffron mt-0.5"
                 />
-                <span className="text-xs text-[#0A192F] leading-relaxed">
+                <span className="text-xs text-maroon leading-relaxed">
                   I agree to the official <strong>Competition Rules & Eligibility</strong>. I confirm that I am a female participant and that all submitted details are authentic.
                 </span>
               </label>
 
-              <label className="flex items-start gap-2.5 cursor-pointer p-3 rounded-md bg-[#F8FAFC] border border-[#E2E8F0]">
+              <label className="flex items-start gap-2.5 cursor-pointer p-3 rounded-md bg-soft-cream border border-cream-dark">
                 <input
                   type="checkbox"
                   checked={agreedToPrivacy}
                   onChange={(e) => setAgreedToPrivacy(e.target.checked)}
-                  className="w-4 h-4 rounded text-[#0A192F] focus:ring-[#C5A880] mt-0.5"
+                  className="w-4 h-4 rounded text-maroon focus:ring-saffron mt-0.5"
                 />
-                <span className="text-xs text-[#0A192F] leading-relaxed">
+                <span className="text-xs text-maroon leading-relaxed">
                   I accept the <strong>Privacy Policy</strong> and agree that my personal data will be used strictly for competition adjudication and independent payment auditing.
                 </span>
               </label>
 
-              <label className="flex items-start gap-2.5 cursor-pointer p-3 rounded-md bg-[#F8FAFC] border border-[#E2E8F0]">
+              <label className="flex items-start gap-2.5 cursor-pointer p-3 rounded-md bg-soft-cream border border-cream-dark">
                 <input
                   type="checkbox"
                   checked={agreedToMedia}
                   onChange={(e) => setAgreedToMedia(e.target.checked)}
-                  className="w-4 h-4 rounded text-[#0A192F] focus:ring-[#C5A880] mt-0.5"
+                  className="w-4 h-4 rounded text-maroon focus:ring-saffron mt-0.5"
                 />
-                <span className="text-xs text-[#0A192F] leading-relaxed">
+                <span className="text-xs text-maroon leading-relaxed">
                   (Optional) I grant permission for submitted audition videos and event photos to be respectfully shared for official Mithila cultural promotion.
                 </span>
               </label>
@@ -1749,51 +1749,51 @@ export function MithilaQueenWizard() {
         {/* STEP 7: REVIEW & SUBMIT */}
         {step === 7 && (
           <div className="space-y-6">
-            <div className="border-b border-[#E2E8F0] pb-3">
-              <h2 className="text-xl font-bold font-serif text-[#0A192F]">
+            <div className="border-b border-cream-dark pb-3">
+              <h2 className="text-xl font-bold font-serif text-maroon">
                 7. Review Application Details
               </h2>
-              <p className="text-xs text-[#1E293B] mt-1">
+              <p className="text-xs text-stone-700 mt-1">
                 Please double-check your registration details before confirming submission.
               </p>
             </div>
 
-            <div className="p-5 rounded-md bg-[#F8FAFC] border border-[#E2E8F0] space-y-3 text-xs">
+            <div className="p-5 rounded-md bg-soft-cream border border-cream-dark space-y-3 text-xs">
               <div className="grid grid-cols-2 gap-2">
                 <span className="text-zinc-500 font-medium">Participant Name:</span>
-                <span className="font-bold text-[#0A192F]">{fullName}</span>
+                <span className="font-bold text-maroon">{fullName}</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <span className="text-zinc-500 font-medium">Date of Birth:</span>
-                <span className="font-bold text-[#0A192F]">{dob} {isMinor ? "(Minor < 18)" : ""}</span>
+                <span className="font-bold text-maroon">{dob} {isMinor ? "(Minor < 18)" : ""}</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <span className="text-zinc-500 font-medium">Verified Email:</span>
-                <span className="font-bold text-[#0A192F] font-mono">{email}</span>
+                <span className="font-bold text-maroon font-mono">{email}</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <span className="text-zinc-500 font-medium">Phone:</span>
-                <span className="font-bold text-[#0A192F] font-mono">{phone}</span>
+                <span className="font-bold text-maroon font-mono">{phone}</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <span className="text-zinc-500 font-medium">Location:</span>
-                <span className="font-bold text-[#0A192F]">{cityVillage}, {district}, {province}</span>
+                <span className="font-bold text-maroon">{cityVillage}, {district}, {province}</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <span className="text-zinc-500 font-medium">Registration Fee:</span>
-                <span className="font-bold text-[#0A192F]">NPR {siteSettings?.registrationFee || 399}</span>
+                <span className="font-bold text-maroon">NPR {siteSettings?.registrationFee || 399}</span>
               </div>
               {isMinor && (
-                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#E2E8F0]">
+                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-cream-dark">
                   <span className="text-zinc-500 font-medium">Legal Guardian:</span>
-                  <span className="font-bold text-[#0A192F]">{guardianName} ({guardianRelation})</span>
+                  <span className="font-bold text-maroon">{guardianName} ({guardianRelation})</span>
                 </div>
               )}
             </div>
 
-            <div className="p-4 rounded-md bg-[#0A192F]/10 border border-[#0A192F]/20 text-xs text-[#0A192F]">
+            <div className="p-4 rounded-md bg-maroon/10 border border-maroon/20 text-xs text-maroon">
               <p className="font-bold">Next Step After Clicking Submit:</p>
-              <p className="text-[11px] text-[#1E293B] mt-1">
+              <p className="text-[11px] text-stone-700 mt-1">
                 You will be assigned your official Registration ID (<code>MQ-YYYY-XXXXXX</code>) and shown the NPR {siteSettings?.registrationFee || 399} payment QR code to finalize your entry.
               </p>
             </div>
@@ -1801,13 +1801,13 @@ export function MithilaQueenWizard() {
         )}
 
         {/* Wizard Controls */}
-        <div className="pt-6 border-t border-[#E2E8F0] flex items-center justify-between">
+        <div className="pt-6 border-t border-cream-dark flex items-center justify-between">
           {step > 1 ? (
             <Button
               type="button"
               variant="outline"
               onClick={handlePrevStep}
-              className="border-[#0A192F]/20 text-xs font-semibold h-10 px-4 rounded-md gap-1.5"
+              className="border-maroon/20 text-xs font-semibold h-10 px-4 rounded-md gap-1.5"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Previous</span>
@@ -1820,17 +1820,17 @@ export function MithilaQueenWizard() {
             <Button
               type="button"
               onClick={handleNextStep}
-              className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F8FAFC] text-xs font-bold h-10 px-6 rounded-md gap-2 shadow-xs"
+              className="bg-maroon hover:bg-maroon-dark text-warm-ivory text-xs font-bold h-10 px-6 rounded-md gap-2 shadow-xs"
             >
               <span>Continue</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
+              <ArrowRight className="w-3.5 h-3.5 text-saffron" />
             </Button>
           ) : (
             <Button
               type="button"
               disabled={isSubmitting}
               onClick={handleSubmitRegistration}
-              className="bg-[#C5A880] hover:bg-[#B59870] text-[#0A192F] text-xs font-bold h-11 px-8 rounded-md shadow-md gap-2"
+              className="bg-saffron hover:bg-saffron-dark text-maroon text-xs font-bold h-11 px-8 rounded-md shadow-md gap-2"
             >
               {isSubmitting ? (
                 <>

@@ -246,7 +246,7 @@ export function MithilaQueenApplicationsView({
       <Card className="border-zinc-200 overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#F8FAFC] text-zinc-700 border-b border-zinc-200 font-bold uppercase tracking-wider text-[11px]">
+            <thead className="bg-soft-cream text-zinc-700 border-b border-zinc-200 font-bold uppercase tracking-wider text-[11px]">
               <tr>
                 <th className="py-3 px-4">Registration ID</th>
                 <th className="py-3 px-4">Applicant Name</th>
@@ -267,7 +267,7 @@ export function MithilaQueenApplicationsView({
               ) : (
                 filtered.map((app) => (
                   <tr key={app.id} className="hover:bg-zinc-50 transition-colors">
-                    <td className="py-3 px-4 font-mono font-bold text-[#0A192F]">
+                    <td className="py-3 px-4 font-mono font-bold text-maroon">
                       {app.registrationId}
                     </td>
                     <td className="py-3 px-4">
@@ -289,7 +289,7 @@ export function MithilaQueenApplicationsView({
                       <span
                         className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                           app.paymentStatus === "VERIFIED"
-                            ? "bg-[#F8FAFC] text-[#0A192F] border border-[#C5A880]"
+                            ? "bg-soft-cream text-maroon border border-saffron"
                             : app.paymentStatus === "UNDER_REVIEW"
                             ? "bg-amber-50 text-amber-800 border border-amber-200"
                             : app.paymentStatus === "CLARIFICATION_REQUIRED"
@@ -309,7 +309,7 @@ export function MithilaQueenApplicationsView({
                       <span
                         className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                           app.applicationStatus === "APPROVED"
-                            ? "bg-[#F8FAFC] text-[#0A192F] border border-[#C5A880]"
+                            ? "bg-soft-cream text-maroon border border-saffron"
                             : app.applicationStatus === "REJECTED"
                             ? "bg-rose-50 text-rose-800 border border-rose-200"
                             : app.applicationStatus === "ACTION_REQUIRED"
@@ -324,9 +324,9 @@ export function MithilaQueenApplicationsView({
                       <Button
                         size="sm"
                         onClick={() => setSelectedApp(app)}
-                        className="bg-[#0A192F] hover:bg-[#1E293B] text-[#F8FAFC] text-xs h-7 px-2.5 font-bold shadow-2xs gap-1"
+                        className="bg-maroon hover:bg-maroon-dark text-warm-ivory text-xs h-7 px-2.5 font-bold shadow-2xs gap-1"
                       >
-                        <Eye className="w-3.5 h-3.5 text-[#C5A880]" />
+                        <Eye className="w-3.5 h-3.5 text-saffron" />
                         <span>Inspect & Review</span>
                       </Button>
                     </td>
@@ -346,14 +346,14 @@ export function MithilaQueenApplicationsView({
             onClick={() => setSelectedApp(null)}
           />
 
-          <div className="relative w-full max-w-3xl max-h-[90vh] bg-[#FFFDF7] rounded-2xl border border-[#EADBCE] shadow-2xl flex flex-col overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
+          <div className="relative w-full max-w-3xl max-h-[90vh] bg-warm-ivory rounded-2xl border border-cream-dark shadow-2xl flex flex-col overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
             {/* Header */}
-            <div className="p-5 border-b border-[#EADBCE] bg-[#F7F1E5] flex items-start justify-between">
+            <div className="p-5 border-b border-cream-dark bg-soft-cream flex items-start justify-between">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-[#D97706] block">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-saffron block">
                   Mithila Queen 2026 &bull; Participant Dossier
                 </span>
-                <h3 className="text-xl font-bold text-[#7F1D2D]">
+                <h3 className="text-xl font-bold text-maroon">
                   {selectedApp.fullName}
                 </h3>
                 <span className="font-mono text-xs font-bold text-stone-600">
@@ -362,14 +362,14 @@ export function MithilaQueenApplicationsView({
               </div>
               <button
                 onClick={() => setSelectedApp(null)}
-                className="p-1.5 rounded-lg text-stone-500 hover:text-stone-800 hover:bg-[#EADBCE]/50 transition-colors"
+                className="p-1.5 rounded-lg text-stone-500 hover:text-stone-800 hover:bg-cream-dark/50 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Scrollable Body */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 text-xs text-[#292524]">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 text-xs text-charcoal">
               {/* Minor Safeguarding Banner if < 18 */}
               {selectedApp.isMinor && (
                 <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-950 space-y-1">
@@ -385,14 +385,14 @@ export function MithilaQueenApplicationsView({
 
               {/* Profile Overview */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div className="p-4 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE] space-y-1.5">
+                <div className="p-4 rounded-xl bg-soft-cream/40 border border-cream-dark space-y-1.5">
                   <p className="text-stone-500 font-bold text-[11px] uppercase tracking-wider">Contact &amp; Location</p>
                   <p><strong>Phone:</strong> {selectedApp.phone}</p>
                   <p><strong>Email:</strong> {selectedApp.email}</p>
                   <p><strong>Location:</strong> {selectedApp.currentAddress}, {selectedApp.cityVillage}, {selectedApp.district}, {selectedApp.province}</p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE] space-y-1.5">
+                <div className="p-4 rounded-xl bg-soft-cream/40 border border-cream-dark space-y-1.5">
                   <p className="text-stone-500 font-bold text-[11px] uppercase tracking-wider">Profile &amp; Cultural Talents</p>
                   <p><strong>Languages:</strong> {selectedApp.languagesSpoken || "None specified"}</p>
                   <p><strong>Talents:</strong> {selectedApp.talentsSkills || "None specified"}</p>
@@ -402,8 +402,8 @@ export function MithilaQueenApplicationsView({
 
               {/* Social Media Links */}
               {(selectedApp.instagramHandle || selectedApp.tiktokHandle || selectedApp.facebookUrl) && (
-                <div className="p-4 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE] space-y-2">
-                  <span className="text-[11px] font-bold text-[#7F1D2D] uppercase tracking-wider block">
+                <div className="p-4 rounded-xl bg-soft-cream/40 border border-cream-dark space-y-2">
+                  <span className="text-[11px] font-bold text-maroon uppercase tracking-wider block">
                     Social Media Profiles
                   </span>
                   <div className="flex flex-wrap gap-2">
@@ -412,11 +412,11 @@ export function MithilaQueenApplicationsView({
                         href={selectedApp.instagramHandle.startsWith("http") ? selectedApp.instagramHandle : `https://instagram.com/${selectedApp.instagramHandle.replace("@", "")}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#EADBCE] text-stone-800 hover:text-[#7F1D2D] transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-cream-dark text-stone-800 hover:text-maroon transition-colors"
                       >
                         <span className="font-bold text-[11px]">Instagram:</span>
                         <span className="font-mono text-[11px]">{selectedApp.instagramHandle}</span>
-                        <ExternalLink className="w-3 h-3 text-[#D97706]" />
+                        <ExternalLink className="w-3 h-3 text-saffron" />
                       </a>
                     )}
                     {selectedApp.tiktokHandle && (
@@ -424,11 +424,11 @@ export function MithilaQueenApplicationsView({
                         href={selectedApp.tiktokHandle.startsWith("http") ? selectedApp.tiktokHandle : `https://tiktok.com/@${selectedApp.tiktokHandle.replace("@", "")}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#EADBCE] text-stone-800 hover:text-[#7F1D2D] transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-cream-dark text-stone-800 hover:text-maroon transition-colors"
                       >
                         <span className="font-bold text-[11px]">TikTok:</span>
                         <span className="font-mono text-[11px]">{selectedApp.tiktokHandle}</span>
-                        <ExternalLink className="w-3 h-3 text-[#D97706]" />
+                        <ExternalLink className="w-3 h-3 text-saffron" />
                       </a>
                     )}
                     {selectedApp.facebookUrl && (
@@ -436,11 +436,11 @@ export function MithilaQueenApplicationsView({
                         href={selectedApp.facebookUrl.startsWith("http") ? selectedApp.facebookUrl : `https://${selectedApp.facebookUrl}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#EADBCE] text-stone-800 hover:text-[#7F1D2D] transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-cream-dark text-stone-800 hover:text-maroon transition-colors"
                       >
                         <span className="font-bold text-[11px]">Facebook:</span>
                         <span className="font-mono text-[11px] truncate max-w-[140px]">{selectedApp.facebookUrl}</span>
-                        <ExternalLink className="w-3 h-3 text-[#D97706]" />
+                        <ExternalLink className="w-3 h-3 text-saffron" />
                       </a>
                     )}
                   </div>
@@ -449,15 +449,15 @@ export function MithilaQueenApplicationsView({
 
               {/* Motivation & Heritage Response */}
               {selectedApp.motivationReason && (
-                <div className="p-4 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE] text-xs space-y-1.5">
-                  <p className="font-bold text-[#7F1D2D]">Why participant wants to join Mithila Queen:</p>
+                <div className="p-4 rounded-xl bg-soft-cream/40 border border-cream-dark text-xs space-y-1.5">
+                  <p className="font-bold text-maroon">Why participant wants to join Mithila Queen:</p>
                   <p className="text-stone-800 leading-relaxed">{selectedApp.motivationReason}</p>
                 </div>
               )}
 
               {/* Uploaded Photos & Proofs */}
-              <div className="p-4 rounded-xl bg-[#F7F1E5]/40 border border-[#EADBCE] space-y-3">
-                <p className="text-[11px] font-bold text-[#7F1D2D] uppercase tracking-wider">
+              <div className="p-4 rounded-xl bg-soft-cream/40 border border-cream-dark space-y-3">
+                <p className="text-[11px] font-bold text-maroon uppercase tracking-wider">
                   Uploaded Media &amp; Proofs
                 </p>
                 <div className="flex flex-wrap gap-4">
@@ -468,7 +468,7 @@ export function MithilaQueenApplicationsView({
                         href={selectedApp.profilePhotoUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-block relative w-24 h-32 rounded-xl border border-[#EADBCE] overflow-hidden bg-stone-100 shadow-2xs group"
+                        className="inline-block relative w-24 h-32 rounded-xl border border-cream-dark overflow-hidden bg-stone-100 shadow-2xs group"
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -489,9 +489,9 @@ export function MithilaQueenApplicationsView({
                         href={selectedApp.videoUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 p-3 rounded-xl bg-white border border-[#EADBCE] text-[#7F1D2D] hover:bg-[#F7F1E5] transition-colors font-bold text-xs"
+                        className="inline-flex items-center gap-2 p-3 rounded-xl bg-white border border-cream-dark text-maroon hover:bg-soft-cream transition-colors font-bold text-xs"
                       >
-                        <Video className="w-4 h-4 text-[#D97706]" />
+                        <Video className="w-4 h-4 text-saffron" />
                         <span>Watch Audition Video</span>
                         <ExternalLink className="w-3.5 h-3.5 text-stone-400" />
                       </a>
@@ -505,7 +505,7 @@ export function MithilaQueenApplicationsView({
                         href={selectedApp.paymentScreenshotUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-block relative w-24 h-32 rounded-xl border border-[#EADBCE] overflow-hidden bg-stone-100 shadow-2xs group"
+                        className="inline-block relative w-24 h-32 rounded-xl border border-cream-dark overflow-hidden bg-stone-100 shadow-2xs group"
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -520,23 +520,23 @@ export function MithilaQueenApplicationsView({
               </div>
 
               {/* PAYMENT VERIFICATION SECTION */}
-              <div className="p-5 rounded-xl bg-[#F7F1E5] border border-[#EADBCE] space-y-4">
+              <div className="p-5 rounded-xl bg-soft-cream border border-cream-dark space-y-4">
                 <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-sm text-[#7F1D2D] flex items-center gap-2">
-                    <CreditCard className="w-4 h-4 text-[#D97706]" />
+                  <h4 className="font-bold text-sm text-maroon flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-saffron" />
                     <span>NPR {selectedApp.registrationFee || 399} Registration Fee Verification</span>
                   </h4>
                   <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
                     selectedApp.paymentStatus === "VERIFIED"
-                      ? "bg-[#7F1D2D] text-white"
-                      : "bg-[#D97706] text-white"
+                      ? "bg-maroon text-white"
+                      : "bg-saffron text-white"
                   }`}>
                     Status: {selectedApp.paymentStatus}
                   </span>
                 </div>
 
-                <div className="p-3 bg-white rounded-lg border border-[#EADBCE] text-xs space-y-1">
-                  <p><strong>Transaction Reference:</strong> <span className="font-mono text-[#7F1D2D] font-bold">{selectedApp.paymentReference || "Not yet submitted"}</span></p>
+                <div className="p-3 bg-white rounded-lg border border-cream-dark text-xs space-y-1">
+                  <p><strong>Transaction Reference:</strong> <span className="font-mono text-maroon font-bold">{selectedApp.paymentReference || "Not yet submitted"}</span></p>
                 </div>
 
                 {/* Action Buttons for Payment */}
@@ -545,9 +545,9 @@ export function MithilaQueenApplicationsView({
                     size="sm"
                     disabled={isProcessing || selectedApp.paymentStatus === "VERIFIED"}
                     onClick={() => handleVerifyPayment("VERIFY")}
-                    className="bg-[#7F1D2D] hover:bg-[#681724] text-white font-bold text-xs h-8 px-4 rounded-lg gap-1.5"
+                    className="bg-maroon hover:bg-maroon-dark text-white font-bold text-xs h-8 px-4 rounded-lg gap-1.5"
                   >
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#D97706]" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-saffron" />
                     <span>Verify Payment (Settled)</span>
                   </Button>
 
@@ -565,8 +565,8 @@ export function MithilaQueenApplicationsView({
               </div>
 
               {/* APPLICATION ADJUDICATION (Only permitted after payment is verified) */}
-              <div className="p-5 rounded-xl bg-white border border-[#EADBCE] space-y-4">
-                <h4 className="font-bold text-xs uppercase tracking-wider text-[#7F1D2D]">
+              <div className="p-5 rounded-xl bg-white border border-cream-dark space-y-4">
+                <h4 className="font-bold text-xs uppercase tracking-wider text-maroon">
                   Application Review &amp; Decision
                 </h4>
 
@@ -579,7 +579,7 @@ export function MithilaQueenApplicationsView({
                     value={actionNotes}
                     onChange={(e) => setActionNotes(e.target.value)}
                     placeholder="Enter reason for rejection or details for action required..."
-                    className="h-9 text-xs border-[#EADBCE] bg-white focus-visible:ring-[#D97706]"
+                    className="h-9 text-xs border-cream-dark bg-white focus-visible:ring-saffron"
                   />
                 </div>
 
@@ -588,10 +588,10 @@ export function MithilaQueenApplicationsView({
                     size="sm"
                     disabled={isProcessing || selectedApp.paymentStatus !== "VERIFIED"}
                     onClick={() => handleAdjudicate("APPROVE")}
-                    className="bg-[#7F1D2D] hover:bg-[#681724] text-white font-bold text-xs h-9 px-4 rounded-lg gap-1.5"
+                    className="bg-maroon hover:bg-maroon-dark text-white font-bold text-xs h-9 px-4 rounded-lg gap-1.5"
                     title={selectedApp.paymentStatus !== "VERIFIED" ? "Payment must be verified first" : "Approve Application"}
                   >
-                    <FileCheck2 className="w-3.5 h-3.5 text-[#D97706]" />
+                    <FileCheck2 className="w-3.5 h-3.5 text-saffron" />
                     <span>Approve &amp; Dispatch Confirmation</span>
                   </Button>
 

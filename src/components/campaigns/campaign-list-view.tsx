@@ -181,7 +181,7 @@ export function CampaignListView({
         );
       case "COMPLETED":
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#F8FAFC] text-[#A64B36] border border-[#E2E8F0]">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-soft-cream text-maroon border border-cream-dark">
             <CheckCircle2 className="w-3 h-3" />
             <span>Completed</span>
           </span>
@@ -228,16 +228,16 @@ export function CampaignListView({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-[#A64B36] uppercase tracking-wider">
+            <span className="text-xs font-bold text-maroon uppercase tracking-wider">
               The Origin Foundation
             </span>
             <span className="text-zinc-300">&bull;</span>
-            <span className="text-xs font-bold text-[#C5A880] flex items-center gap-1">
+            <span className="text-xs font-bold text-saffron flex items-center gap-1">
               <Crown className="w-3 h-3" />
               <span>Mithila Queen</span>
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] tracking-tight font-serif mt-0.5">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-maroon tracking-tight font-serif mt-0.5">
             Communications
           </h1>
           <p className="text-xs text-zinc-500 mt-1">
@@ -247,8 +247,8 @@ export function CampaignListView({
 
         <div className="flex items-center gap-2.5">
           <Link href="/admin/campaigns/new">
-            <Button className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs h-9 px-4 rounded-xl gap-2 shadow-xs">
-              <Plus className="w-4 h-4 text-[#C5A880]" />
+            <Button className="bg-maroon hover:bg-maroon-dark text-white font-bold text-xs h-9 px-4 rounded-xl gap-2 shadow-xs">
+              <Plus className="w-4 h-4 text-saffron" />
               <span>Compose Email</span>
             </Button>
           </Link>
@@ -261,9 +261,9 @@ export function CampaignListView({
         <div className="bg-white rounded-xl border border-zinc-200 p-4 shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-zinc-500">Total Emails Sent</span>
-            <CheckCircle2 className="w-4 h-4 text-[#C5A880]" />
+            <CheckCircle2 className="w-4 h-4 text-saffron" />
           </div>
-          <div className="text-2xl font-black text-[#0A192F] mt-2 font-mono">
+          <div className="text-2xl font-black text-maroon mt-2 font-mono">
             {stats.totalSent.toLocaleString()}
           </div>
         </div>
@@ -312,7 +312,7 @@ export function CampaignListView({
               onClick={() => setStatusFilter(st.id)}
               className={`px-3 py-1.5 text-xs rounded-lg font-bold transition-all whitespace-nowrap ${
                 statusFilter === st.id
-                  ? "bg-[#0A192F] text-white shadow-2xs"
+                  ? "bg-maroon text-white shadow-2xs"
                   : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
               }`}
             >
@@ -329,7 +329,7 @@ export function CampaignListView({
             placeholder="Search communications..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-lg pl-9 pr-3 py-1.5 focus:outline-[#C5A880]"
+            className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-lg pl-9 pr-3 py-1.5 focus:outline-[#B89150]"
           />
         </div>
       </div>
@@ -338,7 +338,7 @@ export function CampaignListView({
       <div className="bg-white rounded-xl border border-zinc-200 shadow-2xs overflow-hidden">
         {filteredCampaigns.length === 0 ? (
           <div className="p-12 text-center space-y-3">
-            <div className="w-12 h-12 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center mx-auto text-[#C5A880]">
+            <div className="w-12 h-12 rounded-full bg-soft-cream border border-cream-dark flex items-center justify-center mx-auto text-saffron">
               <Mail className="w-6 h-6" />
             </div>
             <h3 className="text-sm font-bold text-zinc-900 font-serif">
@@ -348,8 +348,8 @@ export function CampaignListView({
               Send your first announcement or update to Mithila Queen participants.
             </p>
             <Link href="/admin/campaigns/new">
-              <Button size="sm" className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold text-xs h-8 px-4 rounded-lg mt-2 gap-1.5 shadow-xs">
-                <Plus className="w-3.5 h-3.5 text-[#C5A880]" />
+              <Button size="sm" className="bg-maroon hover:bg-maroon-dark text-white font-bold text-xs h-8 px-4 rounded-lg mt-2 gap-1.5 shadow-xs">
+                <Plus className="w-3.5 h-3.5 text-saffron" />
                 <span>Compose Email</span>
               </Button>
             </Link>
@@ -382,7 +382,7 @@ export function CampaignListView({
                       <td className="py-3.5 px-4 max-w-sm">
                         <Link
                           href={`/admin/campaigns/${camp.id}`}
-                          className="font-bold text-zinc-900 hover:text-[#A64B36] block transition-colors truncate"
+                          className="font-bold text-zinc-900 hover:text-maroon block transition-colors truncate"
                           title={camp.subject}
                         >
                           {camp.subject}
@@ -407,10 +407,10 @@ export function CampaignListView({
                             <div
                               className={`h-full transition-all duration-300 rounded-full ${
                                 camp.status === "COMPLETED"
-                                  ? "bg-[#C5A880]"
+                                  ? "bg-saffron"
                                   : camp.status === "FAILED"
                                   ? "bg-rose-500"
-                                  : "bg-[#0A192F]"
+                                  : "bg-maroon"
                               }`}
                               style={{ width: `${percent}%` }}
                             />
@@ -483,7 +483,7 @@ export function CampaignListView({
                               variant="outline"
                               disabled={isActionLoading}
                               onClick={() => handleResume(camp.id)}
-                              className="h-7 text-[11px] px-2 font-semibold text-[#A64B36] border-[#E2E8F0] hover:bg-[#F8FAFC]"
+                              className="h-7 text-[11px] px-2 font-semibold text-maroon border-cream-dark hover:bg-soft-cream"
                               title="Resume sending"
                             >
                               <Play className="w-3 h-3 mr-1" />

@@ -53,13 +53,13 @@ export function ChangePasswordCard() {
   };
 
   return (
-    <Card className="border-[#EADBCE] shadow-xs bg-[#FFFDF7]">
+    <Card className="border-cream-dark shadow-xs bg-warm-ivory">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base font-serif font-bold text-[#7F1D2D]">
+          <CardTitle className="text-base font-serif font-bold text-maroon">
             Change Admin Password
           </CardTitle>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-[#D97706] bg-[#F7F1E5] px-2 py-0.5 rounded border border-[#B89150]/30">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-saffron bg-soft-cream px-2 py-0.5 rounded border border-[#B89150]/30">
             Security
           </span>
         </div>
@@ -68,7 +68,7 @@ export function ChangePasswordCard() {
       <CardContent className="pt-1">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <Label className="text-xs font-bold text-[#7F1D2D]">
+            <Label className="text-xs font-bold text-maroon">
               Current Password *
             </Label>
             <div className="relative">
@@ -78,7 +78,7 @@ export function ChangePasswordCard() {
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="Enter current password"
                 required
-                className="h-10 text-xs border-[#EADBCE] bg-white pr-9"
+                className="h-10 text-xs border-cream-dark bg-white pr-9"
               />
               <button
                 type="button"
@@ -92,7 +92,7 @@ export function ChangePasswordCard() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#7F1D2D]">
+              <Label className="text-xs font-bold text-maroon">
                 New Password (min 8 chars) *
               </Label>
               <div className="relative">
@@ -102,7 +102,7 @@ export function ChangePasswordCard() {
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Min 8 characters"
                   required
-                  className="h-10 text-xs border-[#EADBCE] bg-white pr-9"
+                  className="h-10 text-xs border-cream-dark bg-white pr-9"
                 />
                 <button
                   type="button"
@@ -115,7 +115,7 @@ export function ChangePasswordCard() {
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-[#7F1D2D]">
+              <Label className="text-xs font-bold text-maroon">
                 Confirm New Password *
               </Label>
               <Input
@@ -124,7 +124,7 @@ export function ChangePasswordCard() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm new password"
                 required
-                className="h-10 text-xs border-[#EADBCE] bg-white"
+                className="h-10 text-xs border-cream-dark bg-white"
               />
             </div>
           </div>
@@ -133,7 +133,7 @@ export function ChangePasswordCard() {
             <Button
               type="submit"
               disabled={isUpdating}
-              className="w-full bg-[#7F1D2D] hover:bg-[#5B131E] text-white font-bold text-xs h-10 rounded-lg shadow-sm gap-2"
+              className="w-full bg-maroon hover:bg-[#5B131E] text-white font-bold text-xs h-10 rounded-lg shadow-sm gap-2"
             >
               {isUpdating ? (
                 <>
@@ -142,7 +142,7 @@ export function ChangePasswordCard() {
                 </>
               ) : (
                 <>
-                  <ShieldCheck className="w-4 h-4 text-[#D97706]" />
+                  <ShieldCheck className="w-4 h-4 text-saffron" />
                   <span>Update Password</span>
                 </>
               )}

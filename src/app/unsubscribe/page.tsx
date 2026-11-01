@@ -49,13 +49,13 @@ function UnsubscribeContent() {
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col justify-center items-center p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-zinc-200 p-8 text-center space-y-6">
-        <div className="w-12 h-12 rounded-2xl bg-[#0A192F] text-white flex items-center justify-center mx-auto shadow-md">
-          <Trophy className="w-6 h-6 text-[#C5A880]" />
+        <div className="w-12 h-12 rounded-2xl bg-maroon text-white flex items-center justify-center mx-auto shadow-md">
+          <Trophy className="w-6 h-6 text-saffron" />
         </div>
 
         <div>
-          <h1 className="text-xl font-bold text-[#0A192F]">Email Preferences</h1>
-          <p className="text-xs text-[#0A192F]/60 mt-1">
+          <h1 className="text-xl font-bold text-maroon">Email Preferences</h1>
+          <p className="text-xs text-stone-500 mt-1">
             Manage your announcement subscription for The Origin Foundation.
           </p>
         </div>
@@ -76,7 +76,7 @@ function UnsubscribeContent() {
             </p>
             <Button
               onClick={handleUnsubscribe}
-              className="w-full bg-[#0A192F] hover:bg-[#1E293B] text-white font-bold h-10 text-xs rounded-xl"
+              className="w-full bg-maroon hover:bg-maroon-dark text-white font-bold h-10 text-xs rounded-xl"
             >
               Confirm Unsubscribe
             </Button>
@@ -85,17 +85,17 @@ function UnsubscribeContent() {
 
         {status === "loading" && (
           <div className="py-6 flex flex-col items-center gap-2">
-            <Loader2 className="w-6 h-6 text-[#C5A880] animate-spin" />
+            <Loader2 className="w-6 h-6 text-saffron animate-spin" />
             <p className="text-xs text-zinc-500">Updating your email preferences...</p>
           </div>
         )}
 
         {status === "success" && (
           <div className="space-y-4 py-4">
-            <div className="w-10 h-10 rounded-full bg-[#F8FAFC] text-[#C5A880] flex items-center justify-center mx-auto border border-[#E2E8F0]">
+            <div className="w-10 h-10 rounded-full bg-soft-cream text-saffron flex items-center justify-center mx-auto border border-cream-dark">
               <CheckCircle2 className="w-6 h-6" />
             </div>
-            <h2 className="text-base font-bold text-[#0A192F]">Successfully Unsubscribed</h2>
+            <h2 className="text-base font-bold text-maroon">Successfully Unsubscribed</h2>
             <p className="text-xs text-zinc-500">
               Your email preferences have been recorded. You will no longer receive non-essential announcement campaigns from this event organizer.
             </p>
@@ -104,11 +104,11 @@ function UnsubscribeContent() {
 
         {status === "error" && (
           <div className="space-y-4 py-4">
-            <div className="w-10 h-10 rounded-full bg-rose-50 text-[#A64B36] flex items-center justify-center mx-auto border border-rose-200">
+            <div className="w-10 h-10 rounded-full bg-rose-50 text-maroon flex items-center justify-center mx-auto border border-rose-200">
               <AlertCircle className="w-6 h-6" />
             </div>
-            <h2 className="text-base font-bold text-[#0A192F]">Unable to Process Request</h2>
-            <p className="text-xs text-[#A64B36]">{errorMessage || "Invalid or expired token."}</p>
+            <h2 className="text-base font-bold text-maroon">Unable to Process Request</h2>
+            <p className="text-xs text-maroon">{errorMessage || "Invalid or expired token."}</p>
           </div>
         )}
       </div>
@@ -121,7 +121,7 @@ export default function UnsubscribePage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-zinc-50 flex items-center justify-center">
-          <Loader2 className="w-8 h-8 text-[#C5A880] animate-spin" />
+          <Loader2 className="w-8 h-8 text-saffron animate-spin" />
         </div>
       }
     >

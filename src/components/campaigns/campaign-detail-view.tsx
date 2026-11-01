@@ -183,7 +183,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
         <div>
           <Link
             href="/admin/campaigns"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-[#A64B36] transition-colors mb-2"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-maroon transition-colors mb-2"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Communications</span>
@@ -195,7 +195,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
             <Badge
               className={`text-xs px-2.5 py-0.5 font-bold uppercase tracking-wide ${
                 campaign.status === "COMPLETED"
-                  ? "bg-[#F8FAFC] text-[#0A192F] border-[#E2E8F0]"
+                  ? "bg-soft-cream text-maroon border-cream-dark"
                   : campaign.status === "PROCESSING"
                   ? "bg-blue-50 text-blue-800 border-blue-200 animate-pulse"
                   : campaign.status === "QUEUED"
@@ -209,9 +209,9 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
             </Badge>
           </div>
           <div className="text-xs text-zinc-500 mt-1 flex items-center gap-1.5">
-            <span className="font-bold text-[#A64B36]">The Origin Foundation</span>
+            <span className="font-bold text-maroon">The Origin Foundation</span>
             <span>&bull;</span>
-            <span className="font-bold text-[#C5A880] flex items-center gap-1">
+            <span className="font-bold text-saffron flex items-center gap-1">
               <Crown className="w-3 h-3" />
               <span>Mithila Queen</span>
             </span>
@@ -251,7 +251,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
               variant="outline"
               disabled={actionLoading}
               onClick={handleResume}
-              className="h-8 text-xs font-bold text-[#A64B36] border-[#E2E8F0] hover:bg-[#F8FAFC]"
+              className="h-8 text-xs font-bold text-maroon border-cream-dark hover:bg-soft-cream"
             >
               <Play className="w-3.5 h-3.5 mr-1.5" />
               <span>Resume Sending</span>
@@ -291,12 +291,12 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
         <div>
           <div className="flex items-center justify-between text-xs font-bold mb-2">
             <span className="text-zinc-700">Delivery Completion Progress</span>
-            <span className="text-[#A64B36] font-mono text-sm">{progressPercent}%</span>
+            <span className="text-maroon font-mono text-sm">{progressPercent}%</span>
           </div>
           <div className="w-full bg-zinc-100 h-3 rounded-full overflow-hidden">
             <div
               className={`h-full transition-all duration-500 rounded-full ${
-                campaign.status === "COMPLETED" ? "bg-[#C5A880]" : "bg-[#0A192F]"
+                campaign.status === "COMPLETED" ? "bg-saffron" : "bg-maroon"
               }`}
               style={{ width: `${progressPercent}%` }}
             />
@@ -312,9 +312,9 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
             </span>
           </div>
 
-          <div className="p-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
-            <span className="text-[11px] font-medium text-[#0A192F] block">Successfully Sent</span>
-            <span className="text-xl font-black text-[#A64B36] font-mono">
+          <div className="p-3 rounded-xl bg-soft-cream border border-cream-dark">
+            <span className="text-[11px] font-medium text-maroon block">Successfully Sent</span>
+            <span className="text-xl font-black text-maroon font-mono">
               {campaign.sentCount.toLocaleString()}
             </span>
           </div>
@@ -343,7 +343,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
             onClick={() => setActiveTab("recipients")}
             className={`pb-3 text-xs font-bold border-b-2 transition-colors ${
               activeTab === "recipients"
-                ? "border-[#C5A880] text-black"
+                ? "border-saffron text-black"
                 : "border-transparent text-zinc-400 hover:text-zinc-700"
             }`}
           >
@@ -354,7 +354,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
             onClick={() => setActiveTab("logs")}
             className={`pb-3 text-xs font-bold border-b-2 transition-colors ${
               activeTab === "logs"
-                ? "border-[#C5A880] text-black"
+                ? "border-saffron text-black"
                 : "border-transparent text-zinc-400 hover:text-zinc-700"
             }`}
           >
@@ -390,7 +390,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
                 placeholder="Search participant name or email..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-lg pl-9 pr-3 py-1.5 focus:outline-[#C5A880]"
+                className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-lg pl-9 pr-3 py-1.5 focus:outline-[#B89150]"
               />
             </div>
           </div>
@@ -423,7 +423,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
                         <span
                           className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${
                             rec.status === "SENT" || rec.status === "DELIVERED"
-                              ? "bg-[#F8FAFC] text-[#A64B36] border border-[#E2E8F0]"
+                              ? "bg-soft-cream text-maroon border border-cream-dark"
                               : rec.status === "FAILED" || rec.status === "BOUNCED"
                               ? "bg-rose-50 text-rose-700 border border-rose-200"
                               : rec.status === "SKIPPED"

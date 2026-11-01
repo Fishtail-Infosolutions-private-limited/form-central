@@ -65,8 +65,8 @@ export function FormPreview({
         {/* Preview Top Banner */}
         <div className="bg-black text-white px-6 py-3 flex items-center justify-between text-xs border-b border-zinc-800">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#C5A880] animate-pulse" />
-            <span className="font-semibold uppercase tracking-wider text-[#C5A880]">
+            <span className="w-2 h-2 rounded-full bg-saffron animate-pulse" />
+            <span className="font-semibold uppercase tracking-wider text-saffron">
               Interactive Live Preview
             </span>
             <span className="text-zinc-500">&bull;</span>
@@ -97,7 +97,7 @@ export function FormPreview({
               <div key={st.id} className="flex items-center gap-2 flex-1">
                 <div
                   className={`flex-1 h-1.5 rounded-full ${
-                    i <= currentStepIndex ? "bg-[#7F1D2D]" : "bg-stone-200"
+                    i <= currentStepIndex ? "bg-maroon" : "bg-stone-200"
                   }`}
                 />
               </div>
@@ -113,7 +113,7 @@ export function FormPreview({
         {/* Step Content OR Simulation Success Screen */}
         {isSubmitted ? (
           <div className="p-10 flex-1 flex flex-col items-center justify-center text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#F8FAFC] text-[#A64B36] flex items-center justify-center shadow-xs">
+            <div className="w-16 h-16 rounded-full bg-soft-cream text-maroon flex items-center justify-center shadow-xs">
               <CheckCircle2 className="w-9 h-9" />
             </div>
             <div>
@@ -126,7 +126,7 @@ export function FormPreview({
             <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-50 max-w-xs w-full text-left text-xs space-y-1.5 font-mono">
               <div className="flex justify-between">
                 <span className="text-zinc-500">Ref Code:</span>
-                <span className="font-bold text-[#A64B36]">MQ-2026-SIMULATED</span>
+                <span className="font-bold text-maroon">MQ-2026-SIMULATED</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-500">Participant:</span>
@@ -154,7 +154,7 @@ export function FormPreview({
               <Button
                 size="sm"
                 onClick={onClose}
-                className="bg-[#A64B36] hover:bg-[#8F3E2C] text-white text-xs h-9 px-4 font-bold"
+                className="bg-maroon hover:bg-[#8F3E2C] text-white text-xs h-9 px-4 font-bold"
               >
                 Exit Preview
               </Button>
@@ -163,8 +163,8 @@ export function FormPreview({
         ) : (
           <div className="p-6 overflow-y-auto flex-1 space-y-5">
             {currentStepIndex === 0 && (
-              <div className="p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0A192F] text-xs flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#A64B36] shrink-0" />
+              <div className="p-3 bg-soft-cream border border-cream-dark rounded-xl text-maroon text-xs flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-maroon shrink-0" />
                 <span>
                   <strong>Simulated State:</strong> Email is verified via OTP. You can navigate forward through all custom steps.
                 </span>
@@ -223,7 +223,7 @@ export function FormPreview({
                               value={opt.value}
                               checked={answers[field.fieldKey] === opt.value}
                               onChange={() => handleAnswerChange(field.fieldKey, opt.value)}
-                              className="text-[#A64B36] focus:ring-[#C5A880]"
+                              className="text-maroon focus:ring-saffron"
                             />
                             <span>{opt.label}</span>
                           </label>
@@ -235,12 +235,12 @@ export function FormPreview({
                           type="checkbox"
                           checked={Boolean(answers[field.fieldKey])}
                           onChange={(e) => handleAnswerChange(field.fieldKey, e.target.checked)}
-                          className="w-4 h-4 rounded text-[#A64B36] focus:ring-[#C5A880] mt-0.5"
+                          className="w-4 h-4 rounded text-maroon focus:ring-saffron mt-0.5"
                         />
                         <span>{field.placeholder || field.label}</span>
                       </label>
                     ) : ["image", "video", "file"].includes(field.type) ? (
-                      <div className="border-2 border-dashed border-zinc-200 rounded-xl p-4 text-center hover:border-[#C5A880] transition-colors bg-zinc-50/50">
+                      <div className="border-2 border-dashed border-zinc-200 rounded-xl p-4 text-center hover:border-saffron transition-colors bg-zinc-50/50">
                         <Upload className="w-5 h-5 text-zinc-400 mx-auto mb-1" />
                         <span className="text-xs font-semibold text-zinc-700 block">
                           Upload {field.type.toUpperCase()}
@@ -285,7 +285,7 @@ export function FormPreview({
               <Button
                 size="sm"
                 onClick={() => setCurrentStepIndex((i) => i + 1)}
-                className="bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs gap-1 font-semibold"
+                className="bg-maroon hover:bg-[#5B131E] text-white text-xs gap-1 font-semibold"
               >
                 <span>Next Step</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -297,7 +297,7 @@ export function FormPreview({
                   setIsSubmitted(true);
                   toast.success("Simulation Complete: All form fields validated!");
                 }}
-                className="bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs gap-1 font-bold shadow-xs"
+                className="bg-maroon hover:bg-[#5B131E] text-white text-xs gap-1 font-bold shadow-xs"
               >
                 <Check className="w-3.5 h-3.5" />
                 <span>Complete Registration</span>

@@ -54,14 +54,14 @@ export default function ContactPage() {
     <div className="py-12 sm:py-20 space-y-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* HEADER */}
       <div className="max-w-3xl mx-auto text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#F7F1E5] border border-[#B89150]/40 text-[#7F1D2D] text-xs font-semibold shadow-xs">
-          <Crown className="w-3.5 h-3.5 text-[#D97706]" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-soft-cream border border-antique-gold/40 text-maroon text-xs font-semibold shadow-xs">
+          <Crown className="w-3.5 h-3.5 text-saffron" />
           <span>Official Contact Desk</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black font-serif text-[#7F1D2D] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-serif text-maroon tracking-tight">
           Get in Touch
         </h1>
-        <p className="text-sm text-[#292524] max-w-xl mx-auto leading-relaxed">
+        <p className="text-sm text-charcoal max-w-xl mx-auto leading-relaxed">
           Reach out to the organizing team of The Origin Foundation for competition guidance, registration queries, or official correspondence.
         </p>
       </div>
@@ -69,45 +69,45 @@ export default function ContactPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         {/* DIRECTORS & CONTACT INFO (LG: 5 COLS) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="p-8 rounded-xl bg-[#7F1D2D] text-[#FFFDF7] border border-[#B89150]/30 shadow-md space-y-6">
-            <h2 className="text-lg font-bold font-serif text-[#FFFDF7] border-b border-white/20 pb-3">
+          <div className="p-8 rounded-xl bg-maroon text-white border border-antique-gold/30 shadow-md space-y-6">
+            <h2 className="text-lg font-bold font-serif text-white border-b border-white/20 pb-3">
               Direct Leadership Contacts
             </h2>
 
             {/* Gaurav Gupta */}
             <div className="space-y-1">
-              <p className="font-bold text-[#FFFDF7] text-base font-serif">Gaurav Gupta</p>
-              <p className="text-xs text-[#F59E0B] font-semibold">Managing Director</p>
+              <p className="font-bold text-white text-base font-serif">Gaurav Gupta</p>
+              <p className="text-xs text-antique-gold font-semibold">Managing Director</p>
               <a
                 href="tel:+9779704571941"
-                className="text-xs text-[#FFFDF7]/85 hover:text-white flex items-center gap-2 font-mono pt-1 transition-colors"
+                className="text-xs text-white/85 hover:text-white flex items-center gap-2 font-mono pt-1 transition-colors"
               >
-                <Phone className="w-3.5 h-3.5 text-[#F59E0B]" />
+                <Phone className="w-3.5 h-3.5 text-antique-gold" />
                 <span>+977 9704571941</span>
               </a>
             </div>
 
             {/* Dipendra Shah Kalwar */}
             <div className="space-y-1 pt-3 border-t border-white/15">
-              <p className="font-bold text-[#FFFDF7] text-base font-serif">Dipendra Shah Kalwar</p>
-              <p className="text-xs text-[#F59E0B] font-semibold">Managing Director</p>
+              <p className="font-bold text-white text-base font-serif">Dipendra Shah Kalwar</p>
+              <p className="text-xs text-antique-gold font-semibold">Managing Director</p>
               <a
                 href="tel:+9779812005468"
-                className="text-xs text-[#FFFDF7]/85 hover:text-white flex items-center gap-2 font-mono pt-1 transition-colors"
+                className="text-xs text-white/85 hover:text-white flex items-center gap-2 font-mono pt-1 transition-colors"
               >
-                <Phone className="w-3.5 h-3.5 text-[#F59E0B]" />
+                <Phone className="w-3.5 h-3.5 text-antique-gold" />
                 <span>+977 981-2005468</span>
               </a>
             </div>
 
             {/* General Info */}
-            <div className="pt-4 border-t border-white/15 space-y-3 text-xs text-[#FFFDF7]/85">
+            <div className="pt-4 border-t border-white/15 space-y-3 text-xs text-white/85">
               <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-[#F59E0B] shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-antique-gold shrink-0 mt-0.5" />
                 <span>Janakpur Dham, Madhesh Province, Nepal</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-[#F59E0B] shrink-0" />
+                <Mail className="w-4 h-4 text-antique-gold shrink-0" />
                 <a
                   href="mailto:originfoundation107@gmail.com"
                   className="hover:text-white font-mono transition-colors"
@@ -116,7 +116,7 @@ export default function ContactPage() {
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
-                <Clock className="w-4 h-4 text-[#F59E0B] shrink-0" />
+                <Clock className="w-4 h-4 text-antique-gold shrink-0" />
                 <span>Nepal Standard Time (UTC+05:45)</span>
               </div>
             </div>
@@ -125,12 +125,12 @@ export default function ContactPage() {
 
         {/* INQUIRY FORM (LG: 7 COLS) */}
         <div className="lg:col-span-7">
-          <div className="p-8 sm:p-10 rounded-xl bg-[#FFFDF7] border border-[#EADBCE] shadow-xs space-y-6">
+          <div className="p-8 sm:p-10 rounded-xl bg-warm-ivory border border-cream-dark shadow-xs space-y-6">
             <div>
-              <h2 className="text-xl font-bold font-serif text-[#7F1D2D]">
+              <h2 className="text-xl font-bold font-serif text-maroon">
                 Send an Inquiry
               </h2>
-              <p className="text-xs text-[#292524]/80 mt-1">
+              <p className="text-xs text-charcoal/80 mt-1">
                 Please leave your message and contact details below. Our team responds promptly.
               </p>
             </div>
@@ -143,18 +143,18 @@ export default function ContactPage() {
             )}
 
             {isSent ? (
-              <div className="p-8 rounded-xl bg-[#F7F1E5] border border-[#B89150] text-center space-y-3">
-                <div className="w-12 h-12 rounded-full bg-[#7F1D2D] text-[#D97706] mx-auto flex items-center justify-center shadow-xs">
-                  <CheckCircle2 className="w-6 h-6 text-[#FFFDF7]" />
+              <div className="p-8 rounded-xl bg-soft-cream border border-antique-gold text-center space-y-3">
+                <div className="w-12 h-12 rounded-full bg-maroon text-saffron mx-auto flex items-center justify-center shadow-xs">
+                  <CheckCircle2 className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="font-bold text-[#7F1D2D] text-lg font-serif">Message Delivered</h3>
-                <p className="text-xs text-[#292524] max-w-sm mx-auto leading-relaxed">
+                <h3 className="font-bold text-maroon text-lg font-serif">Message Delivered</h3>
+                <p className="text-xs text-charcoal max-w-sm mx-auto leading-relaxed">
                   Thank you for writing to The Origin Foundation. Your inquiry has been registered in our administration desk and our directors will respond via email shortly.
                 </p>
                 <Button
                   onClick={() => setIsSent(false)}
                   variant="outline"
-                  className="border-[#B89150] text-[#7F1D2D] hover:bg-[#FFFDF7] text-xs h-9 px-4 rounded-md mt-2 font-semibold"
+                  className="border-antique-gold text-maroon hover:bg-white text-xs h-9 px-4 rounded-md mt-2 font-semibold"
                 >
                   Send Another Message
                 </Button>
@@ -163,7 +163,7 @@ export default function ContactPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <Label htmlFor="name" required className="text-xs font-bold text-[#7F1D2D]">
+                    <Label htmlFor="name" required className="text-xs font-bold text-maroon">
                       Your Name
                     </Label>
                     <Input
@@ -172,11 +172,11 @@ export default function ContactPage() {
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. Anjali Sharma"
                       required
-                      className="h-10 text-xs border-[#EADBCE] bg-white focus-visible:border-[#D97706] focus-visible:ring-[#D97706]/20"
+                      className="h-10 text-xs border-cream-dark bg-white focus-visible:border-saffron focus-visible:ring-saffron/20"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="email" required className="text-xs font-bold text-[#7F1D2D]">
+                    <Label htmlFor="email" required className="text-xs font-bold text-maroon">
                       Email Address
                     </Label>
                     <Input
@@ -186,13 +186,13 @@ export default function ContactPage() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="anjali@example.com"
                       required
-                      className="h-10 text-xs border-[#EADBCE] bg-white focus-visible:border-[#D97706] focus-visible:ring-[#D97706]/20"
+                      className="h-10 text-xs border-cream-dark bg-white focus-visible:border-saffron focus-visible:ring-saffron/20"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="subject" className="text-xs font-bold text-[#7F1D2D]">
+                  <Label htmlFor="subject" className="text-xs font-bold text-maroon">
                     Subject / Competition Inquiry
                   </Label>
                   <Input
@@ -200,12 +200,12 @@ export default function ContactPage() {
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     placeholder="e.g. Question regarding video audition guidelines"
-                    className="h-10 text-xs border-[#EADBCE] bg-white focus-visible:border-[#D97706] focus-visible:ring-[#D97706]/20"
+                    className="h-10 text-xs border-cream-dark bg-white focus-visible:border-saffron focus-visible:ring-saffron/20"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="message" required className="text-xs font-bold text-[#7F1D2D]">
+                  <Label htmlFor="message" required className="text-xs font-bold text-maroon">
                     Your Message
                   </Label>
                   <Textarea
@@ -215,14 +215,14 @@ export default function ContactPage() {
                     placeholder="How can The Origin Foundation assist you?"
                     rows={5}
                     required
-                    className="text-xs border-[#EADBCE] bg-white resize-none focus-visible:border-[#D97706] focus-visible:ring-[#D97706]/20"
+                    className="text-xs border-cream-dark bg-white resize-none focus-visible:border-saffron focus-visible:ring-saffron/20"
                   />
                 </div>
 
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#D97706] hover:bg-[#B45309] text-white font-bold text-xs h-11 rounded-lg shadow-sm gap-2 transition-colors"
+                  className="w-full bg-saffron hover:bg-saffron-dark text-white font-bold text-xs h-11 rounded-lg shadow-sm gap-2 transition-colors"
                 >
                   {isSubmitting ? (
                     <>

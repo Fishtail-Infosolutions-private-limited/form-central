@@ -112,12 +112,12 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
       ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
 
       // Border outline around QR code
-      ctx.strokeStyle = "#E2E8F0";
+      ctx.strokeStyle = "#EADBCE";
       ctx.lineWidth = 3;
       ctx.strokeRect(qrX, qrY, qrSize, qrSize);
 
       // Event / Form Name below QR (with multi-line wrap support)
-      ctx.fillStyle = "#0A192F";
+      ctx.fillStyle = "#7F1D2D";
       ctx.font = "bold 42px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
       ctx.textAlign = "center";
 
@@ -141,19 +141,19 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
 
       // Instructions Subtitle
       yPos += 48;
-      ctx.fillStyle = "#1E293B";
+      ctx.fillStyle = "#292524";
       ctx.font = "500 24px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
       ctx.fillText("Point your phone camera to register online • Janakpur Dham, Nepal", 500, yPos);
 
       // Footer Box with Public URL
       yPos += 46;
-      ctx.fillStyle = "#F8FAFC";
+      ctx.fillStyle = "#F7F1E5";
       ctx.fillRect(80, yPos, 840, 64);
-      ctx.strokeStyle = "#E2E8F0";
+      ctx.strokeStyle = "#EADBCE";
       ctx.lineWidth = 2;
       ctx.strokeRect(80, yPos, 840, 64);
 
-      ctx.fillStyle = "#A64B36";
+      ctx.fillStyle = "#D97706";
       ctx.font = "bold 22px monospace";
       ctx.fillText(registrationUrl, 500, yPos + 40);
 
@@ -189,14 +189,14 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
 
   return (
     <Card className="border-stone-200/80 shadow-xs bg-white overflow-hidden">
-      <CardHeader className="pb-3 border-b border-stone-100 bg-[#FFFDF7]">
+      <CardHeader className="pb-3 border-b border-stone-100 bg-warm-ivory">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[#7F1D2D] text-white flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-maroon text-white flex items-center justify-center">
               <QrCode className="w-4 h-4" />
             </div>
             <div>
-              <CardTitle className="text-sm font-serif font-bold text-[#292524]">
+              <CardTitle className="text-sm font-serif font-bold text-charcoal">
                 Public Registration URL & QR Code
               </CardTitle>
               <CardDescription className="text-[11px] text-stone-500">
@@ -218,7 +218,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
             Official Public Registration URL
           </label>
           <div className="flex flex-col sm:flex-row items-stretch gap-2">
-            <div className="flex-1 flex items-center bg-[#FFFDF7] border border-stone-200 rounded-lg px-3 py-2 text-xs font-mono text-stone-800 truncate">
+            <div className="flex-1 flex items-center bg-warm-ivory border border-stone-200 rounded-lg px-3 py-2 text-xs font-mono text-stone-800 truncate">
               {registrationUrl || `/register/${slug}`}
             </div>
 
@@ -228,7 +228,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
                 variant="outline"
                 size="sm"
                 onClick={handleCopyUrl}
-                className="h-9 text-xs border-stone-200 text-stone-700 font-medium gap-1.5 hover:bg-[#F7F1E5]"
+                className="h-9 text-xs border-stone-200 text-stone-700 font-medium gap-1.5 hover:bg-soft-cream"
               >
                 {isCopied ? (
                   <>
@@ -237,7 +237,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5 text-[#D97706]" />
+                    <Copy className="w-3.5 h-3.5 text-saffron" />
                     <span>Copy URL</span>
                   </>
                 )}
@@ -252,10 +252,10 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="h-9 text-xs border-stone-200 text-stone-700 font-medium gap-1 hover:bg-[#F7F1E5]"
+                  className="h-9 text-xs border-stone-200 text-stone-700 font-medium gap-1 hover:bg-soft-cream"
                   title="Open live link"
                 >
-                  <ExternalLink className="w-3.5 h-3.5 text-[#D97706]" />
+                  <ExternalLink className="w-3.5 h-3.5 text-saffron" />
                   <span>Open</span>
                 </Button>
               </a>
@@ -264,7 +264,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
         </div>
 
         {/* QR Code Preview & Download Card */}
-        <div className="p-4 rounded-xl border border-stone-200 bg-[#FFFDF7] flex flex-col sm:flex-row items-center gap-5">
+        <div className="p-4 rounded-xl border border-stone-200 bg-warm-ivory flex flex-col sm:flex-row items-center gap-5">
           {/* QR Canvas Display */}
           <div className="w-36 h-36 bg-white p-2.5 rounded-lg border border-stone-200 shadow-2xs flex items-center justify-center shrink-0">
             {qrDataUrl ? (
@@ -283,7 +283,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
 
           {/* QR Download Actions & Specs */}
           <div className="flex-1 space-y-2 text-center sm:text-left min-w-0">
-            <h4 className="text-sm font-serif font-bold text-[#292524] truncate">
+            <h4 className="text-sm font-serif font-bold text-charcoal truncate">
               {formName}
             </h4>
             <p className="text-xs text-stone-600 leading-relaxed">
@@ -295,7 +295,7 @@ export function FormQrCard({ formId, formName, slug }: FormQrCardProps) {
                 type="button"
                 disabled={!qrDataUrl || isDownloading}
                 onClick={handleDownloadJpg}
-                className="w-full sm:w-auto h-9 text-xs bg-[#7F1D2D] hover:bg-[#5B131E] text-white font-medium gap-2 px-4 shadow-xs"
+                className="w-full sm:w-auto h-9 text-xs bg-maroon hover:bg-[#5B131E] text-white font-medium gap-2 px-4 shadow-xs"
               >
                 {isDownloading ? (
                   <>

@@ -99,7 +99,7 @@ export async function generateResponsesWorkbook({
   headerRow.fill = {
     type: "pattern",
     pattern: "solid",
-    fgColor: { argb: "FF0A192F" }, // Deep Navy #0A192F (The Origin Foundation)
+    fgColor: { argb: "FF7F1D2D" }, // Deep Maroon #7F1D2D (The Origin Foundation)
   };
   headerRow.alignment = { vertical: "middle", horizontal: "left" };
   headerRow.height = 26;

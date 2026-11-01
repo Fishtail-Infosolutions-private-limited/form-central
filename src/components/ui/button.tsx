@@ -3,30 +3,30 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A880] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-saffron focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
   {
     variants: {
       variant: {
         default:
-          "bg-[#0A192F] text-white shadow-xs hover:bg-[#162C4E] active:bg-[#071324]",
+          "bg-maroon text-white shadow-xs hover:bg-maroon-dark active:bg-maroon-dark",
         destructive:
           "bg-rose-600 text-white shadow-xs hover:bg-rose-700 active:bg-rose-800",
         outline:
-          "border border-slate-200 bg-white text-[#0A192F] shadow-xs hover:bg-slate-50 hover:border-[#C5A880]/60",
+          "border border-cream-dark bg-white text-charcoal shadow-xs hover:bg-soft-cream hover:border-antique-gold",
         secondary:
-          "bg-slate-100 text-[#0A192F] border border-slate-200 shadow-xs hover:bg-slate-200",
+          "bg-soft-cream text-charcoal border border-cream-dark shadow-xs hover:bg-cream-dark",
         ghost:
-          "text-[#0A192F] hover:bg-slate-100 hover:text-[#0A192F]",
+          "text-charcoal hover:bg-soft-cream hover:text-maroon",
         link:
-          "text-[#0A192F] hover:text-[#C5A880] underline-offset-4 hover:underline",
+          "text-maroon hover:text-saffron underline-offset-4 hover:underline",
         terracotta:
-          "bg-[#C5A880] text-[#0A192F] font-bold shadow-xs hover:bg-[#B59870]",
+          "bg-saffron text-white font-bold shadow-xs hover:bg-saffron-dark",
         accent:
-          "bg-[#C5A880] text-[#0A192F] font-bold shadow-xs hover:bg-[#B59870]",
+          "bg-saffron text-white font-bold shadow-xs hover:bg-saffron-dark",
         black:
-          "bg-[#0A192F] text-white shadow-xs hover:bg-[#162C4E] active:bg-[#071324]",
+          "bg-maroon text-white shadow-xs hover:bg-maroon-dark active:bg-maroon-dark",
         forest:
-          "bg-[#0A192F] text-white shadow-xs hover:bg-[#162C4E]",
+          "bg-maroon text-white shadow-xs hover:bg-maroon-dark",
       },
       size: {
         default: "h-10 px-4 py-2",

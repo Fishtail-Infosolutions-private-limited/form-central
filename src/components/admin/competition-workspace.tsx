@@ -261,7 +261,7 @@ export function CompetitionWorkspace({
               {isRegOpen ? "Registration Open" : "Registration Closed"}
             </span>
           </div>
-          <h1 className="text-2xl font-serif font-bold text-[#292524] tracking-tight">
+          <h1 className="text-2xl font-serif font-bold text-charcoal tracking-tight">
             Manage Competition: Mithila Queen
           </h1>
           <p className="text-xs sm:text-sm text-stone-600">
@@ -274,10 +274,10 @@ export function CompetitionWorkspace({
             <Button
               variant="outline"
               size="sm"
-              className="gap-2 border-stone-200 text-stone-700 hover:bg-[#F7F1E5] hover:text-[#7F1D2D] text-xs h-9 font-medium"
+              className="gap-2 border-stone-200 text-stone-700 hover:bg-soft-cream hover:text-maroon text-xs h-9 font-medium"
             >
               <span>Test Live Form</span>
-              <ExternalLink className="w-3.5 h-3.5 text-[#D97706]" />
+              <ExternalLink className="w-3.5 h-3.5 text-saffron" />
             </Button>
           </Link>
         </div>
@@ -294,11 +294,11 @@ export function CompetitionWorkspace({
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                 isActive
-                  ? "bg-[#7F1D2D] text-white shadow-xs"
-                  : "bg-white text-stone-700 hover:bg-[#F7F1E5]/70 hover:text-stone-900 border border-stone-200/80"
+                  ? "bg-maroon text-white shadow-xs"
+                  : "bg-white text-stone-700 hover:bg-soft-cream/70 hover:text-stone-900 border border-stone-200/80"
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#F7F1E5]" : "text-[#D97706]"}`} />
+              <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#F7F1E5]" : "text-saffron"}`} />
               <span>{tab.label}</span>
             </button>
           );
@@ -327,7 +327,7 @@ export function CompetitionWorkspace({
         <Card className="border-stone-200/80 bg-white shadow-xs">
           <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-100 pb-5">
             <div>
-              <CardTitle className="text-lg font-serif font-bold text-[#292524]">
+              <CardTitle className="text-lg font-serif font-bold text-charcoal">
                 Payment & Fee Configuration
               </CardTitle>
               <CardDescription className="text-xs text-stone-500 mt-1">
@@ -337,7 +337,7 @@ export function CompetitionWorkspace({
             <Button
               onClick={() => handleSaveSettings("Payment Settings")}
               disabled={isSaving}
-              className="gap-2 bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
+              className="gap-2 bg-maroon hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
             >
               {isSaving ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -349,7 +349,7 @@ export function CompetitionWorkspace({
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
             {/* Official QR Code Upload Area */}
-            <div className="p-5 rounded-xl border border-stone-200 bg-[#FFFDF7] flex flex-col sm:flex-row items-center gap-6">
+            <div className="p-5 rounded-xl border border-stone-200 bg-warm-ivory flex flex-col sm:flex-row items-center gap-6">
               <div className="relative w-40 h-40 bg-white border border-stone-200 rounded-lg p-2.5 shadow-2xs shrink-0 flex items-center justify-center">
                 {paymentQrUrl ? (
                   <Image
@@ -384,7 +384,7 @@ export function CompetitionWorkspace({
                       disabled={isUploadingQr}
                       className="hidden"
                     />
-                    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#7F1D2D] text-white text-xs font-medium hover:bg-[#5B131E] transition-colors">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-maroon text-white text-xs font-medium hover:bg-[#5B131E] transition-colors">
                       {isUploadingQr ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
                       ) : (
@@ -497,7 +497,7 @@ export function CompetitionWorkspace({
             </div>
 
             {/* Verification Notice */}
-            <div className="p-4 rounded-lg bg-[#FFFDF7] border border-[#B89150]/30 text-xs text-stone-700 flex items-start gap-3">
+            <div className="p-4 rounded-lg bg-warm-ivory border border-[#B89150]/30 text-xs text-stone-700 flex items-start gap-3">
               <ShieldCheck className="w-5 h-5 text-[#B89150] shrink-0 mt-0.5" />
               <div className="space-y-1">
                 <div className="font-semibold text-stone-800">
@@ -517,7 +517,7 @@ export function CompetitionWorkspace({
         <Card className="border-stone-200/80 bg-white shadow-xs">
           <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-100 pb-5">
             <div>
-              <CardTitle className="text-lg font-serif font-bold text-[#292524]">
+              <CardTitle className="text-lg font-serif font-bold text-charcoal">
                 Registration Schedule & Timeline
               </CardTitle>
               <CardDescription className="text-xs text-stone-500 mt-1">
@@ -527,7 +527,7 @@ export function CompetitionWorkspace({
             <Button
               onClick={() => handleSaveSettings("Schedule")}
               disabled={isSaving}
-              className="gap-2 bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
+              className="gap-2 bg-maroon hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
             >
               {isSaving ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -602,7 +602,7 @@ export function CompetitionWorkspace({
         <Card className="border-stone-200/80 bg-white shadow-xs">
           <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-100 pb-5">
             <div>
-              <CardTitle className="text-lg font-serif font-bold text-[#292524]">
+              <CardTitle className="text-lg font-serif font-bold text-charcoal">
                 Competition Details & FAQ
               </CardTitle>
               <CardDescription className="text-xs text-stone-500 mt-1">
@@ -612,7 +612,7 @@ export function CompetitionWorkspace({
             <Button
               onClick={() => handleSaveSettings("Competition Information")}
               disabled={isSaving}
-              className="gap-2 bg-[#7F1D2D] hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
+              className="gap-2 bg-maroon hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-medium"
             >
               {isSaving ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -684,14 +684,14 @@ export function CompetitionWorkspace({
                   onClick={addFaq}
                   className="h-8 text-xs border-stone-200 hover:bg-stone-50 text-stone-700 gap-1.5"
                 >
-                  <Plus className="w-3.5 h-3.5 text-[#D97706]" />
+                  <Plus className="w-3.5 h-3.5 text-saffron" />
                   <span>Add FAQ</span>
                 </Button>
               </div>
 
               <div className="space-y-3">
                 {faqs.map((faq, idx) => (
-                  <div key={idx} className="p-4 rounded-xl border border-stone-200 bg-[#FFFDF7] space-y-2">
+                  <div key={idx} className="p-4 rounded-xl border border-stone-200 bg-warm-ivory space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-semibold text-[#B89150] uppercase tracking-wider">
                         Question #{idx + 1}
@@ -738,7 +738,7 @@ export function CompetitionWorkspace({
 
           <Card className="border-stone-200/80 bg-white shadow-xs">
             <CardHeader>
-              <CardTitle className="text-base font-serif font-bold text-[#292524]">
+              <CardTitle className="text-base font-serif font-bold text-charcoal">
                 Live Public Registration Link
               </CardTitle>
               <CardDescription className="text-xs text-stone-500">
@@ -746,9 +746,9 @@ export function CompetitionWorkspace({
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 rounded-lg border border-stone-200 bg-[#FFFDF7] space-y-2 text-xs">
+              <div className="p-4 rounded-lg border border-stone-200 bg-warm-ivory space-y-2 text-xs">
                 <div className="font-semibold text-stone-700">Primary Public URL:</div>
-                <div className="font-mono text-xs text-[#7F1D2D] font-semibold">
+                <div className="font-mono text-xs text-maroon font-semibold">
                   /register/mithila-queen
                 </div>
                 <p className="text-[11px] text-stone-500">
@@ -757,7 +757,7 @@ export function CompetitionWorkspace({
               </div>
 
               <Link href="/register/mithila-queen" target="_blank">
-                <Button className="w-full text-xs h-9 bg-[#7F1D2D] hover:bg-[#5B131E] text-white font-medium gap-2 shadow-xs">
+                <Button className="w-full text-xs h-9 bg-maroon hover:bg-[#5B131E] text-white font-medium gap-2 shadow-xs">
                   <span>Open Registration Form in New Tab</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </Button>

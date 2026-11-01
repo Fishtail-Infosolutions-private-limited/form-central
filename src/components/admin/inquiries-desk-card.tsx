@@ -56,15 +56,15 @@ export function InquiriesDeskCard({ initialInquiries }: { initialInquiries: Inqu
 
   return (
     <>
-      <div className="bg-[#FFFDF7] border border-[#EADBCE] rounded-xl p-5 shadow-xs space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-[#EADBCE]">
+      <div className="bg-warm-ivory border border-cream-dark rounded-xl p-5 shadow-xs space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-cream-dark">
           <div className="flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-[#D97706]" />
-            <h3 className="font-serif font-bold text-sm text-[#7F1D2D]">
+            <MessageSquare className="w-4 h-4 text-saffron" />
+            <h3 className="font-serif font-bold text-sm text-maroon">
               Public Inquiries & Messages
             </h3>
           </div>
-          <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#F7F1E5] text-[#7F1D2D] border border-[#B89150]/40">
+          <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-soft-cream text-maroon border border-[#B89150]/40">
             {inquiries.filter((i) => !i.isRead).length} Unread
           </span>
         </div>
@@ -79,16 +79,16 @@ export function InquiriesDeskCard({ initialInquiries }: { initialInquiries: Inqu
               <div
                 key={inquiry.id}
                 className={`py-3 px-1.5 transition-colors rounded-lg flex items-start justify-between gap-3 ${
-                  !inquiry.isRead ? "bg-[#F7F1E5]/50" : "hover:bg-[#F7F1E5]/20"
+                  !inquiry.isRead ? "bg-soft-cream/50" : "hover:bg-soft-cream/20"
                 }`}
               >
                 <div className="space-y-1 min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-semibold text-xs text-[#7F1D2D] truncate">
+                    <span className="font-semibold text-xs text-maroon truncate">
                       {inquiry.name}
                     </span>
                     {!inquiry.isRead && (
-                      <span className="inline-block w-2 h-2 rounded-full bg-[#D97706]" />
+                      <span className="inline-block w-2 h-2 rounded-full bg-saffron" />
                     )}
                     <span className="text-[10px] text-stone-500 font-mono">
                       {formatNepalDateTime(inquiry.createdAt)}
@@ -104,7 +104,7 @@ export function InquiriesDeskCard({ initialInquiries }: { initialInquiries: Inqu
                   </p>
 
                   <div className="text-[10px] text-stone-500 font-mono">
-                    <a href={`mailto:${inquiry.email}`} className="text-[#D97706] hover:underline">
+                    <a href={`mailto:${inquiry.email}`} className="text-saffron hover:underline">
                       {inquiry.email}
                     </a>
                   </div>
@@ -117,7 +117,7 @@ export function InquiriesDeskCard({ initialInquiries }: { initialInquiries: Inqu
                       if (!inquiry.isRead) handleToggleRead(inquiry);
                     }}
                     title="View Message"
-                    className="p-1.5 rounded hover:bg-[#F7F1E5] text-[#7F1D2D] transition-colors"
+                    className="p-1.5 rounded hover:bg-soft-cream text-maroon transition-colors"
                   >
                     <Eye className="w-3.5 h-3.5" />
                   </button>
@@ -138,58 +138,58 @@ export function InquiriesDeskCard({ initialInquiries }: { initialInquiries: Inqu
       {/* Inquiry Detail Modal */}
       {activeModalInquiry && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-[#FFFDF7] border border-[#EADBCE] rounded-xl shadow-xl w-full max-w-lg p-6 space-y-4 animate-in fade-in-50 zoom-in-95">
-            <div className="flex items-center justify-between pb-3 border-b border-[#EADBCE]">
+          <div className="bg-warm-ivory border border-cream-dark rounded-xl shadow-xl w-full max-w-lg p-6 space-y-4 animate-in fade-in-50 zoom-in-95">
+            <div className="flex items-center justify-between pb-3 border-b border-cream-dark">
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#D97706]" />
-                <h3 className="font-serif font-bold text-base text-[#7F1D2D]">
+                <Mail className="w-4 h-4 text-saffron" />
+                <h3 className="font-serif font-bold text-base text-maroon">
                   Inquiry from {activeModalInquiry.name}
                 </h3>
               </div>
               <button
                 onClick={() => setActiveModalInquiry(null)}
-                className="p-1 rounded text-stone-400 hover:text-stone-700 hover:bg-[#F7F1E5]"
+                className="p-1 rounded text-stone-400 hover:text-stone-700 hover:bg-soft-cream"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="space-y-3 text-xs text-[#292524]">
-              <div className="grid grid-cols-2 gap-3 p-3 rounded-lg bg-[#F7F1E5] border border-[#EADBCE]">
+            <div className="space-y-3 text-xs text-charcoal">
+              <div className="grid grid-cols-2 gap-3 p-3 rounded-lg bg-soft-cream border border-cream-dark">
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-[#7F1D2D] block">Sender Name</span>
+                  <span className="text-[10px] font-bold uppercase text-maroon block">Sender Name</span>
                   <span className="font-semibold text-stone-900">{activeModalInquiry.name}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-[#7F1D2D] block">Email Address</span>
-                  <a href={`mailto:${activeModalInquiry.email}`} className="font-mono text-[#D97706] hover:underline">
+                  <span className="text-[10px] font-bold uppercase text-maroon block">Email Address</span>
+                  <a href={`mailto:${activeModalInquiry.email}`} className="font-mono text-saffron hover:underline">
                     {activeModalInquiry.email}
                   </a>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-[10px] font-bold uppercase text-[#7F1D2D] block">Subject</span>
+                  <span className="text-[10px] font-bold uppercase text-maroon block">Subject</span>
                   <span className="font-medium text-stone-800">{activeModalInquiry.subject || "General Inquiry"}</span>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-[10px] font-bold uppercase text-[#7F1D2D] block">Received Date</span>
+                  <span className="text-[10px] font-bold uppercase text-maroon block">Received Date</span>
                   <span className="font-mono text-stone-600">{formatNepalDateTime(activeModalInquiry.createdAt)}</span>
                 </div>
               </div>
 
               <div>
-                <span className="text-[10px] font-bold uppercase text-[#7F1D2D] block mb-1">Message Content</span>
-                <div className="p-3.5 rounded-lg bg-white border border-[#EADBCE] text-stone-800 whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto">
+                <span className="text-[10px] font-bold uppercase text-maroon block mb-1">Message Content</span>
+                <div className="p-3.5 rounded-lg bg-white border border-cream-dark text-stone-800 whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto">
                   {activeModalInquiry.message}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-3 border-t border-[#EADBCE]">
+            <div className="flex items-center justify-between pt-3 border-t border-cream-dark">
               <a
                 href={`mailto:${activeModalInquiry.email}?subject=${encodeURIComponent(
                   `Re: ${activeModalInquiry.subject || "The Origin Foundation Inquiry"}`
                 )}`}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#D97706] hover:bg-[#B45309] text-white text-xs font-bold transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-saffron hover:bg-saffron-dark text-white text-xs font-bold transition-colors"
               >
                 <Mail className="w-3.5 h-3.5" />
                 <span>Reply via Email</span>
@@ -199,7 +199,7 @@ export function InquiriesDeskCard({ initialInquiries }: { initialInquiries: Inqu
                 variant="outline"
                 size="sm"
                 onClick={() => setActiveModalInquiry(null)}
-                className="border-[#EADBCE] text-[#7F1D2D] hover:bg-[#F7F1E5] text-xs h-9"
+                className="border-cream-dark text-maroon hover:bg-soft-cream text-xs h-9"
               >
                 Close
               </Button>

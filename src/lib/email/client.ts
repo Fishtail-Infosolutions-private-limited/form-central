@@ -49,20 +49,20 @@ export async function sendOtpVerificationEmail({
     subject: `Your Registration Verification Code: ${otpCode} - ${formName}`,
     text: `Hello ${recipientName},\n\nYour 6-digit verification code for "${formName}" is: ${otpCode}\n\nThis code will expire in ${expiresInMinutes} minutes. If you did not request this, please ignore this email.\n\nBest regards,\nThe Origin Foundation\nJanakpur Dham, Nepal`,
     html: `
-      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 580px; margin: 0 auto; background-color: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
-        <div style="background-color: #0A192F; padding: 24px; text-align: center; border-bottom: 2px solid #C5A880;">
+      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 580px; margin: 0 auto; background-color: #F7F1E5; border: 1px solid #EADBCE; border-radius: 12px; overflow: hidden;">
+        <div style="background-color: #7F1D2D; padding: 24px; text-align: center; border-bottom: 2px solid #B89150;">
           <h1 style="color: #FFFFFF; font-size: 22px; font-weight: 800; margin: 0;">${formName}</h1>
-          <p style="color: #C5A880; font-size: 12px; font-weight: 600; margin: 4px 0 0 0; text-transform: uppercase; letter-spacing: 1px;">The Origin Foundation &bull; Janakpur Dham</p>
+          <p style="color: #B89150; font-size: 12px; font-weight: 600; margin: 4px 0 0 0; text-transform: uppercase; letter-spacing: 1px;">The Origin Foundation &bull; Janakpur Dham</p>
         </div>
         
         <div style="padding: 32px 28px; background-color: #FFFFFF;">
-          <p style="color: #0A192F; font-size: 15px; line-height: 1.5; margin: 0 0 16px 0;">Hello <strong>${recipientName}</strong>,</p>
-          <p style="color: #1E293B; font-size: 14px; line-height: 1.6; margin: 0 0 24px 0;">
+          <p style="color: #7F1D2D; font-size: 15px; line-height: 1.5; margin: 0 0 16px 0;">Hello <strong>${recipientName}</strong>,</p>
+          <p style="color: #292524; font-size: 14px; line-height: 1.6; margin: 0 0 24px 0;">
             Thank you for registering for <strong>${formName}</strong>. To verify your email address and continue with your application, enter the one-time code below:
           </p>
           
-          <div style="text-align: center; margin: 24px 0; background-color: #F1F5F9; border: 2px dashed #C5A880; border-radius: 10px; padding: 20px;">
-            <div style="font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #0A192F; font-family: monospace;">
+          <div style="text-align: center; margin: 24px 0; background-color: #F7F1E5; border: 2px dashed #B89150; border-radius: 10px; padding: 20px;">
+            <div style="font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #7F1D2D; font-family: monospace;">
               ${otpCode}
             </div>
             <p style="color: #71717a; font-size: 12px; margin: 8px 0 0 0;">
@@ -75,8 +75,8 @@ export async function sendOtpVerificationEmail({
           </p>
         </div>
         
-        <div style="background-color: #0A192F; padding: 14px 24px; text-align: center;">
-          <p style="color: #E2E8F0; font-size: 11px; margin: 0;">
+        <div style="background-color: #7F1D2D; padding: 14px 24px; text-align: center;">
+          <p style="color: #EADBCE; font-size: 11px; margin: 0;">
             The Origin Foundation &bull; Janakpur Dham, Nepal &bull; originfoundation107@gmail.com
           </p>
         </div>
@@ -111,20 +111,20 @@ export async function sendMithilaQueenStatusOtpEmail({
     subject: `Application Status Access Code: ${otpCode} - Mithila Queen`,
     text: `Hello ${recipientName},\n\nYour 6-digit verification code to access your Mithila Queen application dossier and status is: ${otpCode}\n\nThis code will expire in ${expiresInMinutes} minutes.\n\nBest regards,\nThe Origin Foundation\nJanakpur Dham, Nepal`,
     html: `
-      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 580px; margin: 0 auto; background-color: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
-        <div style="background-color: #0A192F; padding: 24px; text-align: center; border-bottom: 2px solid #C5A880;">
+      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 580px; margin: 0 auto; background-color: #F7F1E5; border: 1px solid #EADBCE; border-radius: 12px; overflow: hidden;">
+        <div style="background-color: #7F1D2D; padding: 24px; text-align: center; border-bottom: 2px solid #B89150;">
           <h1 style="color: #FFFFFF; font-size: 22px; font-weight: 800; margin: 0;">Mithila Queen</h1>
-          <p style="color: #C5A880; font-size: 12px; font-weight: 600; margin: 4px 0 0 0; text-transform: uppercase;">Secure Status & Dossier Access</p>
+          <p style="color: #B89150; font-size: 12px; font-weight: 600; margin: 4px 0 0 0; text-transform: uppercase;">Secure Status & Dossier Access</p>
         </div>
         
         <div style="padding: 32px 28px; background-color: #FFFFFF;">
-          <p style="color: #0A192F; font-size: 15px; margin: 0 0 16px 0;">Hello <strong>${recipientName}</strong>,</p>
-          <p style="color: #1E293B; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
+          <p style="color: #7F1D2D; font-size: 15px; margin: 0 0 16px 0;">Hello <strong>${recipientName}</strong>,</p>
+          <p style="color: #292524; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
             A request was made to view or update your registered Mithila Queen application. Enter the one-time code below to verify ownership:
           </p>
           
-          <div style="text-align: center; margin: 24px 0; background-color: #F1F5F9; border: 2px dashed #C5A880; border-radius: 10px; padding: 20px;">
-            <div style="font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #0A192F; font-family: monospace;">
+          <div style="text-align: center; margin: 24px 0; background-color: #F7F1E5; border: 2px dashed #B89150; border-radius: 10px; padding: 20px;">
+            <div style="font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #7F1D2D; font-family: monospace;">
               ${otpCode}
             </div>
             <p style="color: #71717a; font-size: 12px; margin: 8px 0 0 0;">
@@ -137,8 +137,8 @@ export async function sendMithilaQueenStatusOtpEmail({
           </p>
         </div>
         
-        <div style="background-color: #0A192F; padding: 14px 24px; text-align: center;">
-          <p style="color: #E2E8F0; font-size: 11px; margin: 0;">
+        <div style="background-color: #7F1D2D; padding: 14px 24px; text-align: center;">
+          <p style="color: #EADBCE; font-size: 11px; margin: 0;">
             The Origin Foundation &bull; Janakpur Dham, Nepal &bull; originfoundation107@gmail.com
           </p>
         </div>
@@ -173,36 +173,36 @@ export async function sendMithilaQueenSubmissionEmail({
     subject: `Application Received – Mithila Queen (${registrationId})`,
     text: `Hello ${fullName},\n\nThank you for submitting your application for Mithila Queen.\n\nYour Registration ID is: ${registrationId}\n\nNext Step: Please complete the NPR ${feeAmount} registration fee payment and upload your transaction reference and screenshot.\n\nPayment Link: ${paymentPageUrl}\n\nWith cultural pride,\nThe Origin Foundation\nJanakpur Dham, Nepal`,
     html: `
-      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 0 auto; background-color: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
-        <div style="background-color: #0A192F; padding: 28px 24px; text-align: center; border-bottom: 3px solid #C5A880;">
+      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 0 auto; background-color: #F7F1E5; border: 1px solid #EADBCE; border-radius: 12px; overflow: hidden;">
+        <div style="background-color: #7F1D2D; padding: 28px 24px; text-align: center; border-bottom: 3px solid #B89150;">
           <h1 style="color: #FFFFFF; font-size: 24px; font-weight: 800; margin: 0;">Mithila Queen</h1>
-          <p style="color: #C5A880; font-size: 13px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: 1px;">THE ORIGIN FOUNDATION • JANAKPUR DHAM</p>
+          <p style="color: #B89150; font-size: 13px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: 1px;">THE ORIGIN FOUNDATION • JANAKPUR DHAM</p>
         </div>
-        <div style="padding: 32px 28px; color: #0A192F; background-color: #FFFFFF;">
+        <div style="padding: 32px 28px; color: #7F1D2D; background-color: #FFFFFF;">
           <p style="font-size: 15px; margin: 0 0 16px 0;">Hello <strong>${fullName}</strong>,</p>
-          <p style="font-size: 14px; line-height: 1.6; color: #1E293B; margin: 0 0 24px 0;">
+          <p style="font-size: 14px; line-height: 1.6; color: #292524; margin: 0 0 24px 0;">
             Thank you for applying to participate in <strong>Mithila Queen</strong>. Your registration application has been safely received by our organizing desk.
           </p>
-          <div style="background-color: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 10px; padding: 20px; margin-bottom: 24px;">
+          <div style="background-color: #F7F1E5; border: 1px solid #EADBCE; border-radius: 10px; padding: 20px; margin-bottom: 24px;">
             <p style="margin: 0 0 8px 0; font-size: 12px; color: #71717a; text-transform: uppercase; font-weight: bold;">Registration ID</p>
-            <p style="margin: 0; font-size: 22px; font-weight: 800; color: #0A192F; font-family: monospace;">${registrationId}</p>
-            <p style="margin: 12px 0 0 0; font-size: 12px; color: #1E293B;">
+            <p style="margin: 0; font-size: 22px; font-weight: 800; color: #7F1D2D; font-family: monospace;">${registrationId}</p>
+            <p style="margin: 12px 0 0 0; font-size: 12px; color: #292524;">
               Registration Fee: <strong>NPR ${feeAmount}</strong> (Nepalese Rupees)
             </p>
           </div>
-          <div style="background-color: #F8FAFC; border-left: 4px solid #C5A880; padding: 14px 18px; border-radius: 0 8px 8px 0; margin-bottom: 24px;">
-            <p style="font-size: 13px; font-weight: bold; color: #0A192F; margin: 0 0 4px 0;">Next Step: Submit Payment Verification</p>
-            <p style="font-size: 12px; color: #1E293B; margin: 0; line-height: 1.5;">
+          <div style="background-color: #F7F1E5; border-left: 4px solid #B89150; padding: 14px 18px; border-radius: 0 8px 8px 0; margin-bottom: 24px;">
+            <p style="font-size: 13px; font-weight: bold; color: #7F1D2D; margin: 0 0 4px 0;">Next Step: Submit Payment Verification</p>
+            <p style="font-size: 12px; color: #292524; margin: 0; line-height: 1.5;">
               To advance your application to review, scan the official QR code, complete the NPR ${feeAmount} payment, and upload your transaction reference and screenshot.
             </p>
           </div>
           <div style="text-align: center; margin: 28px 0;">
-            <a href="${paymentPageUrl}" style="background-color: #C5A880; color: #0A192F; text-decoration: none; font-size: 13px; font-weight: 800; padding: 14px 32px; border-radius: 6px; display: inline-block;">
+            <a href="${paymentPageUrl}" style="background-color: #B89150; color: #7F1D2D; text-decoration: none; font-size: 13px; font-weight: 800; padding: 14px 32px; border-radius: 6px; display: inline-block;">
               Complete Payment Details
             </a>
           </div>
         </div>
-        <div style="background-color: #0A192F; padding: 16px 24px; text-align: center; color: #E2E8F0; font-size: 11px;">
+        <div style="background-color: #7F1D2D; padding: 16px 24px; text-align: center; color: #EADBCE; font-size: 11px;">
           The Origin Foundation &bull; Janakpur Dham, Nepal &bull; originfoundation107@gmail.com
         </div>
       </div>
@@ -241,31 +241,31 @@ export async function sendMithilaQueenApprovalEmail({
       },
     ],
     html: `
-      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 0 auto; background-color: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
-        <div style="background-color: #0A192F; padding: 28px 24px; text-align: center; border-bottom: 3px solid #C5A880;">
+      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 0 auto; background-color: #F7F1E5; border: 1px solid #EADBCE; border-radius: 12px; overflow: hidden;">
+        <div style="background-color: #7F1D2D; padding: 28px 24px; text-align: center; border-bottom: 3px solid #B89150;">
           <h1 style="color: #FFFFFF; font-size: 24px; font-weight: 800; margin: 0;">Mithila Queen</h1>
-          <p style="color: #C5A880; font-size: 13px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: 1px;">THE ORIGIN FOUNDATION • OFFICIAL CONFIRMATION</p>
+          <p style="color: #B89150; font-size: 13px; font-weight: 600; margin: 6px 0 0 0; letter-spacing: 1px;">THE ORIGIN FOUNDATION • OFFICIAL CONFIRMATION</p>
         </div>
-        <div style="padding: 32px 28px; color: #0A192F; background-color: #FFFFFF;">
+        <div style="padding: 32px 28px; color: #7F1D2D; background-color: #FFFFFF;">
           <p style="font-size: 15px; margin: 0 0 16px 0;">Hello <strong>${fullName}</strong>,</p>
-          <p style="font-size: 14px; line-height: 1.6; color: #1E293B; margin: 0 0 24px 0;">
+          <p style="font-size: 14px; line-height: 1.6; color: #292524; margin: 0 0 24px 0;">
             Congratulations! Your registration application and payment for <strong>Mithila Queen</strong> have been independently verified and officially approved by the organizing committee.
           </p>
-          <div style="background-color: #F8FAFC; border: 1px solid #C5A880; border-radius: 10px; padding: 20px; margin-bottom: 24px; text-align: center;">
-            <p style="font-size: 11px; text-transform: uppercase; font-weight: bold; color: #A64B36; margin: 0 0 4px 0;">Official Registration ID</p>
-            <p style="font-size: 24px; font-weight: 800; color: #0A192F; margin: 0; font-family: monospace;">${registrationId}</p>
-            <p style="font-size: 12px; color: #0A192F; font-weight: 600; margin: 8px 0 0 0;">STATUS: APPROVED & CONFIRMED</p>
+          <div style="background-color: #F7F1E5; border: 1px solid #B89150; border-radius: 10px; padding: 20px; margin-bottom: 24px; text-align: center;">
+            <p style="font-size: 11px; text-transform: uppercase; font-weight: bold; color: #D97706; margin: 0 0 4px 0;">Official Registration ID</p>
+            <p style="font-size: 24px; font-weight: 800; color: #7F1D2D; margin: 0; font-family: monospace;">${registrationId}</p>
+            <p style="font-size: 12px; color: #7F1D2D; font-weight: 600; margin: 8px 0 0 0;">STATUS: APPROVED & CONFIRMED</p>
           </div>
-          <p style="font-size: 13px; color: #1E293B; line-height: 1.6; margin: 0 0 16px 0;">
+          <p style="font-size: 13px; color: #292524; line-height: 1.6; margin: 0 0 16px 0;">
             Your official branded <strong>Registration Confirmation PDF</strong> is attached to this email. Please download and retain this document for attendance verification and official announcements.
           </p>
-          <div style="background-color: #F8FAFC; border-left: 4px solid #0A192F; padding: 14px 18px; border-radius: 0 8px 8px 0; margin-bottom: 20px;">
-            <p style="font-size: 12px; color: #1E293B; margin: 0; line-height: 1.5;">
+          <div style="background-color: #F7F1E5; border-left: 4px solid #7F1D2D; padding: 14px 18px; border-radius: 0 8px 8px 0; margin-bottom: 20px;">
+            <p style="font-size: 12px; color: #292524; margin: 0; line-height: 1.5;">
               <strong>Video Audition Reminder:</strong> Please record your introduction video and send it directly via WhatsApp to Managing Director Gaurav Gupta at <strong>+977 9704571941</strong>.
             </p>
           </div>
         </div>
-        <div style="background-color: #0A192F; padding: 16px 24px; text-align: center; color: #E2E8F0; font-size: 11px;">
+        <div style="background-color: #7F1D2D; padding: 16px 24px; text-align: center; color: #EADBCE; font-size: 11px;">
           The Origin Foundation &bull; Janakpur Dham, Nepal &bull; originfoundation107@gmail.com
         </div>
       </div>
@@ -297,21 +297,21 @@ export async function sendMithilaQueenDetailsUpdatedEmail({
     subject: `Application Details Updated – Mithila Queen (${registrationId})`,
     text: `Hello ${recipientName},\n\nYour application details for Mithila Queen (${registrationId}) have been successfully updated.\n\nUpdated fields: ${updatedFieldsList.join(", ")}\n\nBest regards,\nThe Origin Foundation\nJanakpur Dham, Nepal`,
     html: `
-      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 580px; margin: 0 auto; background-color: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
-        <div style="background-color: #0A192F; padding: 24px; text-align: center; border-bottom: 2px solid #C5A880;">
+      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 580px; margin: 0 auto; background-color: #F7F1E5; border: 1px solid #EADBCE; border-radius: 12px; overflow: hidden;">
+        <div style="background-color: #7F1D2D; padding: 24px; text-align: center; border-bottom: 2px solid #B89150;">
           <h1 style="color: #FFFFFF; font-size: 20px; font-weight: 800; margin: 0;">Mithila Queen</h1>
-          <p style="color: #C5A880; font-size: 12px; font-weight: 600; margin: 4px 0 0 0; text-transform: uppercase;">Application Details Modified</p>
+          <p style="color: #B89150; font-size: 12px; font-weight: 600; margin: 4px 0 0 0; text-transform: uppercase;">Application Details Modified</p>
         </div>
         
         <div style="padding: 30px 26px; background-color: #FFFFFF;">
-          <p style="color: #0A192F; font-size: 15px; margin: 0 0 14px 0;">Hello <strong>${recipientName}</strong>,</p>
-          <p style="color: #1E293B; font-size: 13.5px; line-height: 1.6; margin: 0 0 20px 0;">
+          <p style="color: #7F1D2D; font-size: 15px; margin: 0 0 14px 0;">Hello <strong>${recipientName}</strong>,</p>
+          <p style="color: #292524; font-size: 13.5px; line-height: 1.6; margin: 0 0 20px 0;">
             This email confirms that your participant information for registration <strong>${registrationId}</strong> was successfully updated.
           </p>
           
-          <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-            <p style="font-size: 11px; text-transform: uppercase; font-weight: bold; color: #A64B36; margin: 0 0 6px 0;">Modified Categories</p>
-            <ul style="margin: 0; padding-left: 20px; font-size: 12.5px; color: #0A192F;">
+          <div style="background-color: #F7F1E5; border: 1px solid #EADBCE; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+            <p style="font-size: 11px; text-transform: uppercase; font-weight: bold; color: #D97706; margin: 0 0 6px 0;">Modified Categories</p>
+            <ul style="margin: 0; padding-left: 20px; font-size: 12.5px; color: #7F1D2D;">
               ${updatedFieldsList.map((f) => `<li>${f}</li>`).join("")}
             </ul>
           </div>
@@ -321,8 +321,8 @@ export async function sendMithilaQueenDetailsUpdatedEmail({
           </p>
         </div>
         
-        <div style="background-color: #0A192F; padding: 14px 24px; text-align: center;">
-          <p style="color: #E2E8F0; font-size: 11px; margin: 0;">
+        <div style="background-color: #7F1D2D; padding: 14px 24px; text-align: center;">
+          <p style="color: #EADBCE; font-size: 11px; margin: 0;">
             The Origin Foundation &bull; Janakpur Dham, Nepal
           </p>
         </div>
@@ -355,27 +355,27 @@ export async function sendMithilaQueenPaymentReceivedEmail({
     subject: `Payment Receipt Received – Mithila Queen (${registrationId})`,
     text: `Hello ${recipientName},\n\nWe have received your payment reference (${transactionRef}) for registration ${registrationId}.\nOur committee will independently verify it with bank records.\n\nBest regards,\nThe Origin Foundation`,
     html: `
-      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 580px; margin: 0 auto; background-color: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
-        <div style="background-color: #0A192F; padding: 24px; text-align: center; border-bottom: 2px solid #C5A880;">
+      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 580px; margin: 0 auto; background-color: #F7F1E5; border: 1px solid #EADBCE; border-radius: 12px; overflow: hidden;">
+        <div style="background-color: #7F1D2D; padding: 24px; text-align: center; border-bottom: 2px solid #B89150;">
           <h1 style="color: #FFFFFF; font-size: 20px; font-weight: 800; margin: 0;">Mithila Queen</h1>
-          <p style="color: #C5A880; font-size: 12px; font-weight: 600; margin: 4px 0 0 0; text-transform: uppercase;">Payment Under Verification</p>
+          <p style="color: #B89150; font-size: 12px; font-weight: 600; margin: 4px 0 0 0; text-transform: uppercase;">Payment Under Verification</p>
         </div>
         <div style="padding: 30px 26px; background-color: #FFFFFF;">
-          <p style="color: #0A192F; font-size: 15px; margin: 0 0 14px 0;">Hello <strong>${recipientName}</strong>,</p>
-          <p style="color: #1E293B; font-size: 13.5px; line-height: 1.6; margin: 0 0 20px 0;">
+          <p style="color: #7F1D2D; font-size: 15px; margin: 0 0 14px 0;">Hello <strong>${recipientName}</strong>,</p>
+          <p style="color: #292524; font-size: 13.5px; line-height: 1.6; margin: 0 0 20px 0;">
             Thank you for submitting your transaction receipt for registration <strong>${registrationId}</strong>.
           </p>
-          <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-            <p style="font-size: 11px; text-transform: uppercase; font-weight: bold; color: #A64B36; margin: 0 0 4px 0;">Recorded Transaction Reference</p>
-            <p style="font-size: 16px; font-family: monospace; font-weight: bold; color: #0A192F; margin: 0;">${transactionRef}</p>
+          <div style="background-color: #F7F1E5; border: 1px solid #EADBCE; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+            <p style="font-size: 11px; text-transform: uppercase; font-weight: bold; color: #D97706; margin: 0 0 4px 0;">Recorded Transaction Reference</p>
+            <p style="font-size: 16px; font-family: monospace; font-weight: bold; color: #7F1D2D; margin: 0;">${transactionRef}</p>
             <p style="font-size: 12px; color: #71717a; margin: 8px 0 0 0;">Status: <strong>Payment Under Review</strong></p>
           </div>
           <p style="color: #71717a; font-size: 12px; line-height: 1.5; margin: 0;">
             Our finance committee will independently verify this transaction against our official banking statement within 24-48 hours. You will receive an email once verified.
           </p>
         </div>
-        <div style="background-color: #0A192F; padding: 14px 24px; text-align: center;">
-          <p style="color: #E2E8F0; font-size: 11px; margin: 0;">
+        <div style="background-color: #7F1D2D; padding: 14px 24px; text-align: center;">
+          <p style="color: #EADBCE; font-size: 11px; margin: 0;">
             The Origin Foundation &bull; Janakpur Dham, Nepal
           </p>
         </div>
@@ -407,9 +407,9 @@ export async function sendAdminPasswordResetEmail({
     text: `Hello Administrator,\n\nA request was initiated to reset your Origin Foundation administrator password.\n\nYour 6-digit verification code is: ${otpCode}\n\nThis code will expire in ${expiresInMinutes} minutes.\n\nBest regards,\nOrigin Foundation Security Desk`,
     html: `
       <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 580px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e4e4e7; border-radius: 12px; overflow: hidden;">
-        <div style="background-color: #0A192F; padding: 24px; text-align: center;">
+        <div style="background-color: #7F1D2D; padding: 24px; text-align: center;">
           <h1 style="color: #ffffff; font-size: 20px; font-weight: 800; margin: 0;">The Origin Foundation</h1>
-          <p style="color: #C5A880; font-size: 12px; font-weight: 700; margin: 6px 0 0 0; text-transform: uppercase;">Administrator Password Recovery</p>
+          <p style="color: #B89150; font-size: 12px; font-weight: 700; margin: 6px 0 0 0; text-transform: uppercase;">Administrator Password Recovery</p>
         </div>
         
         <div style="padding: 32px 28px;">
@@ -418,8 +418,8 @@ export async function sendAdminPasswordResetEmail({
             A password reset was requested for your administrator account. Enter the 6-digit code below:
           </p>
           
-          <div style="text-align: center; margin: 24px 0; background-color: #F1F5F9; border: 2px dashed #C5A880; border-radius: 12px; padding: 20px;">
-            <div style="font-size: 36px; font-weight: 900; letter-spacing: 8px; color: #0A192F; font-family: monospace;">
+          <div style="text-align: center; margin: 24px 0; background-color: #F7F1E5; border: 2px dashed #B89150; border-radius: 12px; padding: 20px;">
+            <div style="font-size: 36px; font-weight: 900; letter-spacing: 8px; color: #7F1D2D; font-family: monospace;">
               ${otpCode}
             </div>
             <p style="color: #64748b; font-size: 12px; margin: 8px 0 0 0;">
@@ -428,8 +428,8 @@ export async function sendAdminPasswordResetEmail({
           </div>
         </div>
         
-        <div style="background-color: #0A192F; padding: 14px 24px; text-align: center;">
-          <p style="color: #E2E8F0; font-size: 11px; margin: 0;">
+        <div style="background-color: #7F1D2D; padding: 14px 24px; text-align: center;">
+          <p style="color: #EADBCE; font-size: 11px; margin: 0;">
             The Origin Foundation &bull; Janakpur Dham, Nepal
           </p>
         </div>
@@ -467,9 +467,9 @@ export async function sendParticipantEmailNotice({
     text: `Hello ${recipientName},\n\n${messageText}\n\nBest regards,\n${formName} Organizing Team`,
     html: `
       <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 580px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e4e4e7; border-radius: 12px; overflow: hidden;">
-        <div style="background-color: #0A192F; padding: 24px; text-align: center;">
+        <div style="background-color: #7F1D2D; padding: 24px; text-align: center;">
           <h1 style="color: #ffffff; font-size: 20px; font-weight: 800; margin: 0;">${formName}</h1>
-          <p style="color: #C5A880; font-size: 12px; font-weight: 700; margin: 6px 0 0 0; text-transform: uppercase;">Official Registration Notice</p>
+          <p style="color: #B89150; font-size: 12px; font-weight: 700; margin: 6px 0 0 0; text-transform: uppercase;">Official Registration Notice</p>
         </div>
         
         <div style="padding: 32px 28px;">
@@ -479,8 +479,8 @@ ${messageText}
           </div>
         </div>
         
-        <div style="background-color: #0A192F; padding: 14px 24px; text-align: center;">
-          <p style="color: #E2E8F0; font-size: 11px; margin: 0;">
+        <div style="background-color: #7F1D2D; padding: 14px 24px; text-align: center;">
+          <p style="color: #EADBCE; font-size: 11px; margin: 0;">
             The Origin Foundation &bull; Janakpur Dham, Nepal
           </p>
         </div>
@@ -521,19 +521,19 @@ export async function sendRegistrationConfirmationEmail({
     subject: `Registration Confirmed: ${eventTitle} (${referenceNumber})`,
     text: `Hello ${participantName},\n\nYour registration for "${eventTitle}" has been received.\nReference Number: ${referenceNumber}\nDate: ${submissionDate}\nStatus: ${status}\n\nView details: ${viewDetailsUrl}\n\nBest regards,\nThe Origin Foundation`,
     html: `
-      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 580px; margin: 0 auto; background-color: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
-        <div style="background-color: #0A192F; padding: 24px; text-align: center; border-bottom: 2px solid #C5A880;">
+      <div style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 580px; margin: 0 auto; background-color: #F7F1E5; border: 1px solid #EADBCE; border-radius: 12px; overflow: hidden;">
+        <div style="background-color: #7F1D2D; padding: 24px; text-align: center; border-bottom: 2px solid #B89150;">
           <h1 style="color: #ffffff; font-size: 20px; font-weight: 800; margin: 0;">${eventTitle}</h1>
-          <p style="color: #C5A880; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">Registration Confirmation</p>
+          <p style="color: #B89150; font-size: 12px; font-weight: 700; margin: 4px 0 0 0; text-transform: uppercase;">Registration Confirmation</p>
         </div>
         <div style="padding: 30px 26px; background-color: #ffffff;">
-          <p style="color: #0A192F; font-size: 15px; margin: 0 0 14px 0;">Hello <strong>${participantName}</strong>,</p>
-          <p style="color: #1E293B; font-size: 13.5px; line-height: 1.6; margin: 0 0 20px 0;">
+          <p style="color: #7F1D2D; font-size: 15px; margin: 0 0 14px 0;">Hello <strong>${participantName}</strong>,</p>
+          <p style="color: #292524; font-size: 13.5px; line-height: 1.6; margin: 0 0 20px 0;">
             Thank you for registering. Your entry reference number is <strong>${referenceNumber}</strong>.
           </p>
         </div>
-        <div style="background-color: #0A192F; padding: 14px 24px; text-align: center;">
-          <p style="color: #E2E8F0; font-size: 11px; margin: 0;">The Origin Foundation &bull; Janakpur Dham, Nepal</p>
+        <div style="background-color: #7F1D2D; padding: 14px 24px; text-align: center;">
+          <p style="color: #EADBCE; font-size: 11px; margin: 0;">The Origin Foundation &bull; Janakpur Dham, Nepal</p>
         </div>
       </div>
     `,

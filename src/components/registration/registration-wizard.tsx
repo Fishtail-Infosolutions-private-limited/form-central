@@ -367,42 +367,42 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
   if (completedRef) {
     return (
       <div className="max-w-2xl mx-auto py-12 px-4">
-        <Card className="border-[#E2E8F0] bg-white shadow-xl text-center p-8 overflow-hidden relative">
-          <div className="w-16 h-16 bg-[#F8FAFC] border border-[#C5A880] text-[#C5A880] rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <Card className="border-cream-dark bg-white shadow-xl text-center p-8 overflow-hidden relative">
+          <div className="w-16 h-16 bg-soft-cream border border-saffron text-saffron rounded-2xl flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-9 h-9 stroke-[2.5]" />
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F8FAFC] text-[#0A192F] text-xs font-bold tracking-wide uppercase mb-3 border border-[#C5A880]">
-            <ShieldCheck className="w-4 h-4 text-[#C5A880]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-soft-cream text-maroon text-xs font-bold tracking-wide uppercase mb-3 border border-saffron">
+            <ShieldCheck className="w-4 h-4 text-saffron" />
             <span>Registration Confirmed</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] tracking-tight mb-2 font-serif">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-maroon tracking-tight mb-2 font-serif">
             You Are Officially Registered!
           </h2>
-          <p className="text-xs sm:text-sm text-[#0A192F]/70 max-w-md mx-auto mb-6">
-            Congratulations <strong className="text-[#0A192F]">{answers.fullName}</strong>. Your entry for{" "}
-            <strong className="text-[#0A192F]">{form.name}</strong> has been successfully recorded in the event system.
+          <p className="text-xs sm:text-sm text-maroon/70 max-w-md mx-auto mb-6">
+            Congratulations <strong className="text-maroon">{answers.fullName}</strong>. Your entry for{" "}
+            <strong className="text-maroon">{form.name}</strong> has been successfully recorded in the event system.
           </p>
 
-          <div className="bg-[#F8FAFC] border-2 border-dashed border-[#C5A880] rounded-2xl p-6 max-w-md mx-auto mb-6">
-            <span className="text-[11px] font-bold text-[#0A192F]/60 uppercase tracking-wider block mb-1.5">
+          <div className="bg-soft-cream border-2 border-dashed border-saffron rounded-2xl p-6 max-w-md mx-auto mb-6">
+            <span className="text-[11px] font-bold text-maroon/60 uppercase tracking-wider block mb-1.5">
               Official Reference Number
             </span>
             <div className="flex items-center justify-center gap-2.5">
-              <span className="font-mono text-2xl font-black text-[#0A192F] tracking-wider">
+              <span className="font-mono text-2xl font-black text-maroon tracking-wider">
                 {completedRef}
               </span>
               <button
                 type="button"
                 onClick={copyRefToClipboard}
-                className="p-2 rounded-lg text-[#0A192F] hover:bg-[#E2E8F0] bg-white border border-[#E2E8F0] transition-colors"
+                className="p-2 rounded-lg text-maroon hover:bg-[#E2E8F0] bg-white border border-cream-dark transition-colors"
                 title="Copy reference"
               >
-                {copiedRef ? <Check className="w-4 h-4 text-[#C5A880]" /> : <Copy className="w-4 h-4" />}
+                {copiedRef ? <Check className="w-4 h-4 text-saffron" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
-            <p className="text-[11px] text-[#0A192F]/50 mt-2">
+            <p className="text-[11px] text-maroon/50 mt-2">
               Save or screenshot this official reference number for event check-in and entry verification.
             </p>
           </div>
@@ -440,7 +440,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
             <a href="/" className="w-full sm:w-auto">
               <Button
                 type="button"
-                className="bg-[#0A192F] hover:bg-[#1E293B] text-white text-xs font-bold h-10 px-6 gap-1.5 w-full"
+                className="bg-maroon hover:bg-maroon-dark text-white text-xs font-bold h-10 px-6 gap-1.5 w-full"
               >
                 <span>Return to Home</span>
                 <ArrowRight className="w-4 h-4" />
@@ -457,12 +457,12 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
       {/* Event Header Banner */}
       <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xs border border-zinc-200 relative overflow-hidden">
         <div className="flex items-center gap-2 mb-3">
-          <span className="w-2 h-2 rounded-full bg-[#C5A880] animate-pulse" />
-          <span className="text-xs font-bold text-[#C5A880] tracking-wide uppercase">
+          <span className="w-2 h-2 rounded-full bg-saffron animate-pulse" />
+          <span className="text-xs font-bold text-saffron tracking-wide uppercase">
             Official Registration
           </span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A192F] tracking-tight font-serif">{form.name}</h1>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-maroon tracking-tight font-serif">{form.name}</h1>
         {form.description && (
           <div className="mt-2 max-w-2xl">
             <RichTextView content={form.description} className="text-zinc-600 text-sm" />
@@ -470,7 +470,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
         )}
         {form.instructions && (
           <div className="mt-4 p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-[#C5A880] shrink-0 mt-0.5" />
+            <AlertCircle className="w-4 h-4 text-saffron shrink-0 mt-0.5" />
             <div className="flex-1 min-w-0">
               <RichTextView content={form.instructions} className="text-zinc-700 text-xs" />
             </div>
@@ -483,12 +483,12 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
         {/* Step Info Row */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-[#0A192F] text-[#C5A880] font-black flex items-center justify-center text-sm shadow-sm shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-maroon text-saffron font-black flex items-center justify-center text-sm shadow-sm shrink-0">
               {currentStepNumber}
             </div>
             <div>
               <div className="flex items-center gap-2 text-xs">
-                <span className="font-bold uppercase tracking-wider text-[#C5A880]">
+                <span className="font-bold uppercase tracking-wider text-saffron">
                   Step {currentStepNumber} of {totalStepsCount}
                 </span>
                 <span className="text-slate-300">&bull;</span>
@@ -496,7 +496,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                   {progressPercent}% Complete
                 </span>
               </div>
-              <h2 className="text-lg sm:text-xl font-extrabold text-[#0A192F] font-serif leading-tight mt-0.5">
+              <h2 className="text-lg sm:text-xl font-extrabold text-maroon font-serif leading-tight mt-0.5">
                 {isReviewStep ? "Review & Confirm Details" : currentStep?.title}
               </h2>
             </div>
@@ -514,7 +514,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                 </span>
               </div>
             )}
-            <div className="px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-[#0A192F] shrink-0">
+            <div className="px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-maroon shrink-0">
               Fee: NPR {dynamicFee}
             </div>
           </div>
@@ -528,9 +528,9 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                 key={idx}
                 className={`h-full flex-1 rounded-full transition-all duration-300 ${
                   idx < currentStepIndex
-                    ? "bg-[#0A192F]"
+                    ? "bg-maroon"
                     : idx === currentStepIndex
-                    ? "bg-[#C5A880]"
+                    ? "bg-saffron"
                     : "bg-slate-200/80"
                 }`}
               />
@@ -630,9 +630,9 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
               <div className="p-5 rounded-xl border bg-slate-50/70 border-slate-200 space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Mail className="w-5 h-5 text-[#C5A880]" />
+                    <Mail className="w-5 h-5 text-saffron" />
                     <div>
-                      <h4 className="font-bold text-sm text-[#0A192F]">
+                      <h4 className="font-bold text-sm text-maroon">
                         Email Address Verification
                       </h4>
                       <p className="text-[11px] text-slate-500">
@@ -642,8 +642,8 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                   </div>
 
                   {isEmailVerified && (
-                    <span className="text-xs font-bold text-[#0A192F] bg-[#F8FAFC] px-3 py-1 rounded-full flex items-center gap-1.5 border border-[#C5A880]">
-                      <ShieldCheck className="w-4 h-4 text-[#C5A880]" />
+                    <span className="text-xs font-bold text-maroon bg-soft-cream px-3 py-1 rounded-full flex items-center gap-1.5 border border-saffron">
+                      <ShieldCheck className="w-4 h-4 text-saffron" />
                       <span>Verified</span>
                     </span>
                   )}
@@ -663,7 +663,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                         type="button"
                         onClick={handleSendOtp}
                         disabled={isSendingOtp}
-                        className="bg-[#0A192F] hover:bg-[#1E293B] text-white font-semibold text-xs h-9 gap-1.5"
+                        className="bg-maroon hover:bg-maroon-dark text-white font-semibold text-xs h-9 gap-1.5"
                       >
                         {isSendingOtp ? (
                           <>
@@ -672,7 +672,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                           </>
                         ) : (
                           <>
-                            <Mail className="w-3.5 h-3.5 text-[#C5A880]" />
+                            <Mail className="w-3.5 h-3.5 text-saffron" />
                             <span>Send 6-Digit Verification Code</span>
                           </>
                         )}
@@ -693,7 +693,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                             type="button"
                             onClick={handleVerifyOtp}
                             disabled={isVerifyingOtp || otpCode.length !== 6}
-                            className="bg-[#0A192F] hover:bg-[#1E293B] text-white text-xs h-10 px-4 font-bold"
+                            className="bg-maroon hover:bg-maroon-dark text-white text-xs h-10 px-4 font-bold"
                           >
                             {isVerifyingOtp ? (
                               <Loader2 className="w-4 h-4 animate-spin" />
@@ -709,7 +709,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                             type="button"
                             disabled={resendCooldown > 0 || isSendingOtp}
                             onClick={handleSendOtp}
-                            className="text-[#C5A880] font-semibold hover:underline disabled:text-slate-400 disabled:no-underline"
+                            className="text-saffron font-semibold hover:underline disabled:text-slate-400 disabled:no-underline"
                           >
                             {resendCooldown > 0
                               ? `Resend in ${resendCooldown}s`
@@ -779,7 +779,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                                 value={opt.value}
                                 checked={answers[field.fieldKey] === opt.value}
                                 onChange={() => handleInputChange(field.fieldKey, opt.value)}
-                                className="w-4 h-4 text-[#C5A880] focus:ring-[#C5A880]"
+                                className="w-4 h-4 text-saffron focus:ring-saffron"
                               />
                               <span className="font-medium">{opt.label}</span>
                             </label>
@@ -791,7 +791,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                             type="checkbox"
                             checked={Boolean(answers[field.fieldKey])}
                             onChange={(e) => handleInputChange(field.fieldKey, e.target.checked)}
-                            className="w-4 h-4 rounded text-[#C5A880] focus:ring-[#C5A880] mt-0.5"
+                            className="w-4 h-4 rounded text-saffron focus:ring-saffron mt-0.5"
                           />
                           <span className="font-medium">{field.placeholder || field.label}</span>
                         </label>
@@ -820,7 +820,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                                       );
                                     }
                                   }}
-                                  className="w-4 h-4 rounded text-[#C5A880] focus:ring-[#C5A880]"
+                                  className="w-4 h-4 rounded text-saffron focus:ring-saffron"
                                 />
                                 <span className="font-medium text-xs text-zinc-900">{opt.label}</span>
                               </label>
@@ -830,15 +830,15 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                       ) : ["image", "video", "file"].includes(field.type) ? (
                         <div className="space-y-2">
                           {filePreviews[field.fieldKey] ? (
-                            <div className="bg-[#F8FAFC] p-4 rounded-xl border border-[#C5A880] flex items-center justify-between gap-3">
+                            <div className="bg-soft-cream p-4 rounded-xl border border-saffron flex items-center justify-between gap-3">
                               <div className="flex items-center gap-3 min-w-0">
-                                <div className="w-9 h-9 rounded-lg bg-white border border-[#E2E8F0] text-[#C5A880] flex items-center justify-center shrink-0">
+                                <div className="w-9 h-9 rounded-lg bg-white border border-cream-dark text-saffron flex items-center justify-center shrink-0">
                                   {field.type === "video" ? (
-                                    <Video className="w-5 h-5 text-[#C5A880]" />
+                                    <Video className="w-5 h-5 text-saffron" />
                                   ) : field.type === "file" ? (
-                                    <FileCheck className="w-5 h-5 text-[#C5A880]" />
+                                    <FileCheck className="w-5 h-5 text-saffron" />
                                   ) : (
-                                    <ImageIcon className="w-5 h-5 text-[#C5A880]" />
+                                    <ImageIcon className="w-5 h-5 text-saffron" />
                                   )}
                                 </div>
                                 <div className="min-w-0">
@@ -846,7 +846,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                                     {filePreviews[field.fieldKey].name}
                                   </p>
                                   <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
-                                    <span className="text-[10px] text-[#C5A880] font-bold">
+                                    <span className="text-[10px] text-saffron font-bold">
                                       Uploaded Successfully
                                     </span>
                                     {filePreviews[field.fieldKey].size && (
@@ -882,18 +882,18 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                               </label>
                             </div>
                           ) : (
-                            <div className="border-2 border-dashed border-[#E2E8F0] rounded-xl p-5 text-center hover:border-[#C5A880] transition-colors bg-[#F8FAFC]/50">
+                            <div className="border-2 border-dashed border-cream-dark rounded-xl p-5 text-center hover:border-saffron transition-colors bg-soft-cream/50">
                               <div className="space-y-2.5">
                                 {field.type === "video" ? (
-                                  <Video className="w-8 h-8 text-[#C5A880] mx-auto" />
+                                  <Video className="w-8 h-8 text-saffron mx-auto" />
                                 ) : field.type === "file" ? (
-                                  <FileUp className="w-8 h-8 text-[#C5A880] mx-auto" />
+                                  <FileUp className="w-8 h-8 text-saffron mx-auto" />
                                 ) : (
-                                  <ImageIcon className="w-8 h-8 text-[#C5A880] mx-auto" />
+                                  <ImageIcon className="w-8 h-8 text-saffron mx-auto" />
                                 )}
-                                <div className="text-xs text-[#0A192F]/70">
+                                <div className="text-xs text-maroon/70">
                                   {uploadingFieldKey === field.fieldKey ? (
-                                    <div className="flex items-center justify-center gap-2 text-[#C5A880] font-bold py-1">
+                                    <div className="flex items-center justify-center gap-2 text-saffron font-bold py-1">
                                       <Loader2 className="w-4 h-4 animate-spin" />
                                       <span>
                                         Uploading {field.type === "video" ? "to Google Drive" : "to server"}...
@@ -901,7 +901,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                                     </div>
                                   ) : (
                                     <>
-                                      <label className="cursor-pointer text-[#C5A880] hover:text-[#B59870] font-bold underline">
+                                      <label className="cursor-pointer text-saffron hover:text-[#B59870] font-bold underline">
                                         <span>
                                           Click to upload {field.type === "file" ? "document (PDF, DOC)" : field.type}
                                         </span>
@@ -923,7 +923,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                                       </label>
 
                                       <div className="flex flex-wrap items-center justify-center gap-1.5 mt-2">
-                                        <span className="text-[10px] font-bold text-[#0A192F] bg-[#F8FAFC] px-2 py-0.5 rounded border border-[#C5A880]">
+                                        <span className="text-[10px] font-bold text-maroon bg-soft-cream px-2 py-0.5 rounded border border-saffron">
                                           Max file size: {field.type === "video" ? "100 MB" : field.type === "file" ? "25 MB" : "10 MB"}
                                         </span>
                                         <span className="text-[10px] text-zinc-400">
@@ -985,9 +985,9 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
           {/* FINAL STEP: Summary Review */}
           {isReviewStep && (
             <div className="space-y-6">
-              <div className="p-4 bg-[#F8FAFC] rounded-xl border border-[#C5A880] flex items-center gap-3">
-                <CheckCircle2 className="w-6 h-6 text-[#C5A880] shrink-0" />
-                <div className="text-xs text-[#0A192F]">
+              <div className="p-4 bg-soft-cream rounded-xl border border-saffron flex items-center gap-3">
+                <CheckCircle2 className="w-6 h-6 text-saffron shrink-0" />
+                <div className="text-xs text-maroon">
                   <span className="font-bold block text-sm">Review Your Information</span>
                   Please review your details carefully. Clicking <strong>&quot;Submit Official Registration&quot;</strong> will finalize your event entry.
                 </div>
@@ -998,8 +998,8 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                 <div className="rounded-xl border border-zinc-200 overflow-hidden bg-white">
                   <div className="px-4 py-2.5 bg-zinc-50 border-b border-zinc-200 font-bold text-xs text-black flex items-center justify-between">
                     <span>1. Participant & Contact Information</span>
-                    <span className="text-[10px] text-[#0A192F] font-semibold bg-[#F8FAFC] px-2 py-0.5 rounded-full flex items-center gap-1 border border-[#C5A880]">
-                      <ShieldCheck className="w-3 h-3 text-[#C5A880]" />
+                    <span className="text-[10px] text-maroon font-semibold bg-soft-cream px-2 py-0.5 rounded-full flex items-center gap-1 border border-saffron">
+                      <ShieldCheck className="w-3 h-3 text-saffron" />
                       <span>Email Verified</span>
                     </span>
                   </div>
@@ -1061,17 +1061,17 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                               <span className="text-zinc-500 font-medium block text-[11px]">{f.label}:</span>
                               {isFileField ? (
                                 preview?.name || (rawVal && !String(rawVal).startsWith("/")) ? (
-                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#F8FAFC] text-[#0A192F] border border-[#C5A880] text-xs font-semibold max-w-full">
+                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-soft-cream text-maroon border border-saffron text-xs font-semibold max-w-full">
                                     {f.type === "video" ? (
-                                      <Video className="w-3.5 h-3.5 text-[#C5A880] shrink-0" />
+                                      <Video className="w-3.5 h-3.5 text-saffron shrink-0" />
                                     ) : f.type === "file" ? (
-                                      <FileCheck className="w-3.5 h-3.5 text-[#C5A880] shrink-0" />
+                                      <FileCheck className="w-3.5 h-3.5 text-saffron shrink-0" />
                                     ) : (
-                                      <ImageIcon className="w-3.5 h-3.5 text-[#C5A880] shrink-0" />
+                                      <ImageIcon className="w-3.5 h-3.5 text-saffron shrink-0" />
                                     )}
                                     <span className="truncate">{preview?.name || String(rawVal)}</span>
                                     {preview?.size && (
-                                      <span className="text-[10px] text-[#C5A880] font-normal shrink-0">
+                                      <span className="text-[10px] text-saffron font-normal shrink-0">
                                         ({preview.size})
                                       </span>
                                     )}
@@ -1113,7 +1113,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
               type="button"
               disabled={Boolean(uploadingFieldKey)}
               onClick={handleProceedNext}
-              className="bg-[#0A192F] hover:bg-[#1E293B] text-white text-xs font-semibold gap-1.5 px-6 shadow-sm"
+              className="bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold gap-1.5 px-6 shadow-sm"
             >
               {uploadingFieldKey ? (
                 <>
@@ -1132,7 +1132,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
               type="button"
               disabled={isSubmitting}
               onClick={handleFinalSubmit}
-              className="bg-[#0A192F] hover:bg-[#1E293B] text-white text-xs font-black gap-2 px-8 h-10 shadow-md"
+              className="bg-maroon hover:bg-maroon-dark text-white text-xs font-black gap-2 px-8 h-10 shadow-md"
             >
               {isSubmitting ? (
                 <>
