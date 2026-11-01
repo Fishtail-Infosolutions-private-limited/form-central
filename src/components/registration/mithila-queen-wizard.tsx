@@ -26,6 +26,8 @@ import {
   Phone,
   RefreshCw,
   ExternalLink,
+  Wallet,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -101,6 +103,19 @@ export function MithilaQueenWizard() {
     paymentInstructions?: string | null;
     isRegistrationOpen?: boolean;
     registrationClosingDate?: Date | null;
+    enableWalletPayment?: boolean;
+    walletProviderName?: string | null;
+    walletId?: string | null;
+    walletBeneficiaryName?: string | null;
+    walletInstructions?: string | null;
+    walletReferenceInstructions?: string | null;
+    enableBankPayment?: boolean;
+    bankName?: string | null;
+    bankBranch?: string | null;
+    bankBeneficiaryName?: string | null;
+    bankAccountNumber?: string | null;
+    bankInstructions?: string | null;
+    bankReferenceInstructions?: string | null;
   } | null>(null);
 
   useEffect(() => {
@@ -188,9 +203,13 @@ export function MithilaQueenWizard() {
 
   // Payment Post-Submission State
   const [transactionRef, setTransactionRef] = useState("");
+  const [paymentScreenshotUrl, setPaymentScreenshotUrl] = useState("");
+  const [isUploadingPaymentScreenshot, setIsUploadingPaymentScreenshot] = useState(false);
   const [isSubmittingPayment, setIsSubmittingPayment] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [copiedRef, setCopiedRef] = useState(false);
+  const [copiedWallet, setCopiedWallet] = useState(false);
+  const [copiedBank, setCopiedBank] = useState(false);
 
   // Cooldown timer
   useEffect(() => {
@@ -635,6 +654,41 @@ export function MithilaQueenWizard() {
     }
   };
 
+  // Handle payment receipt screenshot upload
+  const handlePaymentScreenshotUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Receipt screenshot must be under 10MB.");
+      return;
+    }
+
+    setIsUploadingPaymentScreenshot(true);
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("kind", "payment-proof");
+
+      const res = await fetch("/api/public/upload/image", {
+        method: "POST",
+        body: data,
+      });
+
+      const json = await res.json();
+      if (json.success && json.url) {
+        setPaymentScreenshotUrl(json.url);
+        toast.success("Payment screenshot uploaded successfully!");
+      } else {
+        toast.error(json.error || "Failed to upload payment receipt screenshot.");
+      }
+    } catch {
+      toast.error("Upload error. Please try again.");
+    } finally {
+      setIsUploadingPaymentScreenshot(false);
+    }
+  };
+
   // Submit Payment Transaction Details
   const handlePaymentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -649,6 +703,7 @@ export function MithilaQueenWizard() {
     const res = await submitPaymentDetailsAction({
       registrationId: registeredId,
       transactionReference: transactionRef.trim(),
+      screenshotUrl: paymentScreenshotUrl || undefined,
     });
     setIsSubmittingPayment(false);
 
@@ -668,6 +723,20 @@ export function MithilaQueenWizard() {
       setTimeout(() => setCopiedRef(false), 2000);
       toast.success("Registration ID copied to clipboard!");
     }
+  };
+
+  const copyWalletId = (id: string) => {
+    navigator.clipboard.writeText(id);
+    setCopiedWallet(true);
+    setTimeout(() => setCopiedWallet(false), 2000);
+    toast.success("Wallet ID copied to clipboard!");
+  };
+
+  const copyBankAccount = (acc: string) => {
+    navigator.clipboard.writeText(acc);
+    setCopiedBank(true);
+    setTimeout(() => setCopiedBank(false), 2000);
+    toast.success("Account number copied to clipboard!");
   };
 
   // ==========================================
@@ -835,10 +904,131 @@ export function MithilaQueenWizard() {
               * Note: Screenshots are independently cross-checked with official banking statements before approval.
             </p>
 
+            {/* Optional Wallet Details Card */}
+            {siteSettings?.enableWalletPayment && (
+              <div className="p-4 rounded-lg border border-cream-dark bg-soft-cream/40 space-y-2 text-xs text-left">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-maroon flex items-center gap-1.5">
+                    <Wallet className="w-4 h-4 text-saffron" />
+                    <span>{siteSettings.walletProviderName || "Digital Wallet"} Transfer</span>
+                  </span>
+                  <span className="text-[10px] uppercase font-bold text-saffron bg-white px-2 py-0.5 rounded border border-cream-dark">
+                    Direct Wallet
+                  </span>
+                </div>
+                {siteSettings.walletId && (
+                  <div className="flex items-center justify-between bg-white p-2.5 rounded border border-cream-dark">
+                    <div>
+                      <span className="text-[10px] text-zinc-500 block uppercase tracking-wider">
+                        Wallet ID / Phone
+                      </span>
+                      <span className="font-mono font-bold text-stone-900 text-sm">
+                        {siteSettings.walletId}
+                      </span>
+                    </div>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => copyWalletId(siteSettings.walletId!)}
+                      className="h-8 text-xs gap-1 border-cream-dark"
+                    >
+                      {copiedWallet ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedWallet ? "Copied" : "Copy"}</span>
+                    </Button>
+                  </div>
+                )}
+                {siteSettings.walletBeneficiaryName && (
+                  <p className="text-[11px] text-stone-600">
+                    Beneficiary Name: <strong>{siteSettings.walletBeneficiaryName}</strong>
+                  </p>
+                )}
+                {siteSettings.walletInstructions && (
+                  <p className="text-[11px] text-stone-500 italic">
+                    {siteSettings.walletInstructions}
+                  </p>
+                )}
+                {siteSettings.walletReferenceInstructions && (
+                  <p className="text-[11px] text-amber-900 bg-amber-50 p-2 rounded border border-amber-200">
+                    {siteSettings.walletReferenceInstructions}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Optional Bank Transfer Card */}
+            {siteSettings?.enableBankPayment && (
+              <div className="p-4 rounded-lg border border-cream-dark bg-soft-cream/40 space-y-2 text-xs text-left">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-maroon flex items-center gap-1.5">
+                    <Building2 className="w-4 h-4 text-saffron" />
+                    <span>Direct Bank Account Details</span>
+                  </span>
+                  <span className="text-[10px] uppercase font-bold text-saffron bg-white px-2 py-0.5 rounded border border-cream-dark">
+                    Bank Transfer
+                  </span>
+                </div>
+                <div className="bg-white p-2.5 rounded border border-cream-dark space-y-2">
+                  {siteSettings.bankAccountNumber && (
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] text-zinc-500 block uppercase tracking-wider">
+                          Account Number
+                        </span>
+                        <span className="font-mono font-bold text-stone-900 text-sm">
+                          {siteSettings.bankAccountNumber}
+                        </span>
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => copyBankAccount(siteSettings.bankAccountNumber!)}
+                        className="h-8 text-xs gap-1 border-cream-dark"
+                      >
+                        {copiedBank ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                        <span>{copiedBank ? "Copied" : "Copy"}</span>
+                      </Button>
+                    </div>
+                  )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-1.5 border-t border-cream-dark text-[11px]">
+                    {siteSettings.bankName && (
+                      <div>
+                        <span className="text-zinc-500">Bank: </span>
+                        <strong>{siteSettings.bankName}</strong>
+                      </div>
+                    )}
+                    {siteSettings.bankBranch && (
+                      <div>
+                        <span className="text-zinc-500">Branch: </span>
+                        <strong>{siteSettings.bankBranch}</strong>
+                      </div>
+                    )}
+                    {siteSettings.bankBeneficiaryName && (
+                      <div className="sm:col-span-2">
+                        <span className="text-zinc-500">Beneficiary: </span>
+                        <strong>{siteSettings.bankBeneficiaryName}</strong>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                {siteSettings.bankInstructions && (
+                  <p className="text-[11px] text-stone-500 italic">
+                    {siteSettings.bankInstructions}
+                  </p>
+                )}
+                {siteSettings.bankReferenceInstructions && (
+                  <p className="text-[11px] text-amber-900 bg-amber-50 p-2 rounded border border-amber-200">
+                    {siteSettings.bankReferenceInstructions}
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Transaction Reference Submission Form */}
             <form onSubmit={handlePaymentSubmit} className="space-y-4 pt-4 border-t border-cream-dark">
               <div className="space-y-1.5">
-                <Label htmlFor="txnRef" required className="text-xs font-bold text-maroon">
+                <Label htmlFor="txnRef" required className="text-xs font-bold text-[#183153]">
                   Transaction Reference / UTR Number
                 </Label>
                 <Input
@@ -847,17 +1037,84 @@ export function MithilaQueenWizard() {
                   onChange={(e) => setTransactionRef(e.target.value)}
                   placeholder="e.g. 981200546872 or Fonepay Txn ID"
                   required
-                  className="h-10 text-sm border-cream-dark bg-white font-mono"
+                  className="h-10 text-sm border-[#DCE5ED] bg-white font-mono"
                 />
-                <p className="text-[11px] text-stone-700">
+                <p className="text-[11px] text-[#546E7A]">
                   Enter the exact transaction reference shown in your banking or wallet receipt.
                 </p>
+              </div>
+
+              {/* Payment Screenshot Upload */}
+              <div className="space-y-1.5 pt-1">
+                <Label className="text-xs font-bold text-[#183153] flex items-center justify-between">
+                  <span>Payment Receipt Screenshot</span>
+                  <span className="text-[11px] text-[#546E7A] font-normal">PNG, JPG, WebP up to 10MB</span>
+                </Label>
+
+                {paymentScreenshotUrl ? (
+                  <div className="p-3 rounded-xl border border-[#DCE5ED] bg-[#F4F7FA] flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-10 h-10 rounded-lg overflow-hidden border border-[#DCE5ED] bg-white shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={paymentScreenshotUrl}
+                          alt="Receipt Preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-xs font-semibold text-[#263238] block truncate">
+                          Receipt Screenshot Uploaded
+                        </span>
+                        <a
+                          href={paymentScreenshotUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[11px] text-[#356FA8] hover:underline flex items-center gap-1 font-medium"
+                        >
+                          <span>View full image</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
+                    </div>
+                    <label className="cursor-pointer text-xs font-semibold text-[#356FA8] hover:underline px-2.5 py-1 rounded-md bg-white border border-[#DCE5ED] shrink-0">
+                      <span>Change</span>
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={handlePaymentScreenshotUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                ) : (
+                  <label className="flex flex-col items-center justify-center p-4 rounded-xl border-2 border-dashed border-[#DCE5ED] hover:border-[#356FA8] bg-[#F4F7FA]/40 hover:bg-[#F4F7FA] cursor-pointer transition-colors text-center space-y-1.5">
+                    {isUploadingPaymentScreenshot ? (
+                      <Loader2 className="w-5 h-5 animate-spin text-[#356FA8]" />
+                    ) : (
+                      <Upload className="w-5 h-5 text-[#356FA8]" />
+                    )}
+                    <span className="text-xs font-semibold text-[#263238] block">
+                      {isUploadingPaymentScreenshot ? "Uploading receipt..." : "Upload Bank / Wallet Receipt Screenshot"}
+                    </span>
+                    <span className="text-[11px] text-[#546E7A] block">
+                      Clear screenshot showing transaction reference, amount, and timestamp
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      disabled={isUploadingPaymentScreenshot}
+                      onChange={handlePaymentScreenshotUpload}
+                      className="hidden"
+                    />
+                  </label>
+                )}
               </div>
 
               <Button
                 type="submit"
                 disabled={isSubmittingPayment}
-                className="w-full bg-saffron hover:bg-saffron-dark text-maroon font-bold text-xs h-11 rounded-md shadow-xs gap-2"
+                className="w-full bg-[#183153] hover:bg-[#12243d] text-white font-bold text-xs h-11 rounded-md shadow-xs gap-2"
               >
                 {isSubmittingPayment ? (
                   <>
@@ -866,7 +1123,7 @@ export function MithilaQueenWizard() {
                   </>
                 ) : (
                   <>
-                    <CheckCircle2 className="w-4 h-4" />
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                     <span>Submit Payment Details for Verification</span>
                   </>
                 )}
@@ -879,7 +1136,7 @@ export function MithilaQueenWizard() {
   }
 
   // ==========================================
-  // 7-STEP REGISTRATION WIZARD
+  // MULTI-STEP REGISTRATION WIZARD
   // ==========================================
   return (
     <div className="max-w-3xl mx-auto space-y-8">

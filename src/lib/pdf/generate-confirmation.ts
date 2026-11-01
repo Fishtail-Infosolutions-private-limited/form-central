@@ -26,15 +26,14 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
   const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontOblique = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
 
-  // Brand Palette RGB Colors (0 - 1) — Charcoal, Antique Gold, Terracotta & Warm Ivory
-  // Color Palette per official Brand Guidelines (Maroon, Saffron Gold, Warm Ivory, Charcoal)
-  const colorNavy = rgb(127 / 255, 29 / 255, 45 / 255);        // #7F1D2D (Deep Maroon)
-  const colorGold = rgb(184 / 255, 145 / 255, 80 / 255);       // #B89150 (Antique Heritage Gold)
-  const colorIvory = rgb(255 / 255, 253 / 255, 247 / 255);     // #FFFDF7 (Warm Ivory)
-  const colorTerracotta = rgb(217 / 255, 119 / 255, 6 / 255);  // #D97706 (Saffron Accent)
-  const colorDark = rgb(41 / 255, 37 / 255, 36 / 255);         // #292524 (Charcoal)
-  const colorGray = rgb(110 / 255, 108 / 255, 98 / 255);
-  const colorSlate = rgb(50 / 255, 60 / 255, 55 / 255);
+  // Brand Palette RGB Colors (0 - 1) — Soft, Clean & Professional
+  const colorNavy = rgb(92 / 255, 87 / 255, 81 / 255);        // #5C5751 (Dark Taupe)
+  const colorGold = rgb(220 / 255, 216 / 255, 209 / 255);     // #DCD8D1 (Warm Stone)
+  const colorIvory = rgb(255 / 255, 254 / 255, 252 / 255);    // #FFFEFC (Warm White)
+  const colorTerracotta = rgb(92 / 255, 87 / 255, 81 / 255);  // #5C5751 (Dark Taupe Accent)
+  const colorDark = rgb(41 / 255, 40 / 255, 36 / 255);        // #292824 (Soft Black)
+  const colorGray = rgb(138 / 255, 133 / 255, 128 / 255);     // #8A8580 (Taupe Grey)
+  const colorSlate = rgb(41 / 255, 40 / 255, 36 / 255);       // #292824 (Soft Black)
 
   // 1. Decorative Double Outer Border
   page.drawRectangle({
@@ -215,8 +214,8 @@ export async function generateRegistrationConfirmationPdf(data: PdfConfirmationD
       width: 120,
       margin: 1,
       color: {
-        dark: "#7F1D2DFF",
-        light: "#FFFFFFFF",
+        dark: "#5C5751FF",
+        light: "#FFFEFCFF",
       },
     });
 

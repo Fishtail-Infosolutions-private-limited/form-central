@@ -167,7 +167,7 @@ export function EmailRichEditor({ value, onChange, disabled = false }: EmailRich
   return (
     <div className="space-y-3">
       {/* Visual Editor Card */}
-      <div className="rounded-xl border border-zinc-200 bg-white overflow-hidden shadow-2xs focus-within:border-saffron focus-within:ring-2 focus-within:ring-[#B89150]/15 transition-all">
+      <div className="rounded-xl border border-cream-dark bg-white overflow-hidden shadow-2xs focus-within:border-maroon focus-within:ring-2 focus-within:ring-maroon/15 transition-all">
         {/* Toolbar */}
         <div className="flex flex-wrap items-center gap-1 p-2 bg-soft-cream/70 border-b border-zinc-200 text-zinc-700">
           {/* Paragraph / Headings */}

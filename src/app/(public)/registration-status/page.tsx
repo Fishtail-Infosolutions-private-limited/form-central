@@ -32,6 +32,7 @@ import {
   Calendar,
   MapPin,
   Hash,
+  Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -83,6 +84,8 @@ function RegistrationStatusContent() {
 
   // Clarification / payment submission state
   const [newTxnRef, setNewTxnRef] = useState("");
+  const [newScreenshotUrl, setNewScreenshotUrl] = useState("");
+  const [isUploadingScreenshot, setIsUploadingScreenshot] = useState(false);
   const [isReSubmittingPayment, setIsReSubmittingPayment] = useState(false);
 
   // Edit details modal & unlock modal state
@@ -341,6 +344,41 @@ function RegistrationStatusContent() {
     }
   };
 
+  // Upload receipt screenshot
+  const handleScreenshotUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Receipt screenshot must be under 10MB.");
+      return;
+    }
+
+    setIsUploadingScreenshot(true);
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("kind", "payment-proof");
+
+      const res = await fetch("/api/public/upload/image", {
+        method: "POST",
+        body: data,
+      });
+
+      const json = await res.json();
+      if (json.success && json.url) {
+        setNewScreenshotUrl(json.url);
+        toast.success("Payment receipt screenshot uploaded!");
+      } else {
+        toast.error(json.error || "Failed to upload payment receipt screenshot.");
+      }
+    } catch {
+      toast.error("Upload error. Please try again.");
+    } finally {
+      setIsUploadingScreenshot(false);
+    }
+  };
+
   // 8. Submit Payment Reference (if pending/clarification)
   const handlePaymentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -350,6 +388,7 @@ function RegistrationStatusContent() {
     const res = await submitPaymentDetailsAction({
       registrationId: record.registrationId,
       transactionReference: newTxnRef.trim(),
+      screenshotUrl: newScreenshotUrl || undefined,
     });
     setIsReSubmittingPayment(false);
 
@@ -359,9 +398,11 @@ function RegistrationStatusContent() {
         ...record,
         paymentStatus: "UNDER_REVIEW",
         paymentReference: newTxnRef.trim(),
+        paymentScreenshotUrl: newScreenshotUrl || record.paymentScreenshotUrl,
         paymentClarificationNotes: null,
       });
       setNewTxnRef("");
+      setNewScreenshotUrl("");
     } else {
       toast.error(res.error || "Failed to update payment details.");
     }
@@ -414,11 +455,11 @@ function RegistrationStatusContent() {
     <div className="py-12 sm:py-20 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-soft-cream border border-antique-gold/30 text-maroon text-xs font-semibold">
-          <Crown className="w-3.5 h-3.5 text-saffron" />
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F4F7FA] border border-[#DCE5ED] text-[#183153] text-xs font-semibold">
+          <Crown className="w-3.5 h-3.5 text-[#356FA8]" />
           <span>The Origin Foundation &bull; Mithila Queen 2026</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-charcoal tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-bold font-bold text-[#263238] tracking-tight">
           Application Status
         </h1>
         <p className="text-xs sm:text-sm text-stone-600 max-w-lg mx-auto leading-relaxed">
@@ -439,7 +480,7 @@ function RegistrationStatusContent() {
               }}
               className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-md text-xs font-semibold transition-all ${
                 searchMode === "email"
-                  ? "bg-maroon text-white shadow-xs"
+                  ? "bg-[#183153] text-white shadow-xs"
                   : "text-stone-600 hover:text-stone-900"
               }`}
             >
@@ -455,7 +496,7 @@ function RegistrationStatusContent() {
               }}
               className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-md text-xs font-semibold transition-all ${
                 searchMode === "registrationId"
-                  ? "bg-maroon text-white shadow-xs"
+                  ? "bg-[#183153] text-white shadow-xs"
                   : "text-stone-600 hover:text-stone-900"
               }`}
             >
@@ -480,7 +521,7 @@ function RegistrationStatusContent() {
                       onChange={(e) => setEmailInput(e.target.value)}
                       placeholder="e.g. anjali@example.com"
                       required
-                      className="h-10 text-xs border-stone-200 bg-warm-ivory focus-visible:ring-maroon"
+                      className="h-10 text-xs border-stone-200 bg-[#F4F7FA] focus-visible:ring-[#183153]"
                     />
                     <p className="text-[11px] text-stone-500">
                       A 6-digit one-time access code will be sent to this email to unlock your full application.
@@ -490,7 +531,7 @@ function RegistrationStatusContent() {
                   <Button
                     type="submit"
                     disabled={isSendingOtp}
-                    className="w-full bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
+                    className="w-full bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
                   >
                     {isSendingOtp ? (
                       <>
@@ -507,10 +548,10 @@ function RegistrationStatusContent() {
                 </form>
               ) : (
                 <form onSubmit={handleVerifyEmailOtp} className="space-y-4">
-                  <div className="p-4 rounded-lg bg-warm-ivory border border-antique-gold/30 text-xs text-stone-700 space-y-1">
+                  <div className="p-4 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] text-xs text-stone-700 space-y-1">
                     <p className="font-semibold text-stone-900">Access Code Sent</p>
                     <p>
-                      We have sent a 6-digit access code to <strong className="font-mono text-maroon">{emailInput}</strong>. Enter it below to access your application dossier.
+                      We have sent a 6-digit access code to <strong className="font-mono text-[#183153]">{emailInput}</strong>. Enter it below to access your application dossier.
                     </p>
                   </div>
 
@@ -526,7 +567,7 @@ function RegistrationStatusContent() {
                       maxLength={6}
                       required
                       autoFocus
-                      className="h-12 text-center text-xl font-mono font-bold tracking-widest border-antique-gold bg-white"
+                      className="h-12 text-center text-xl font-mono font-bold tracking-widest border-[#356FA8] bg-white"
                     />
                   </div>
 
@@ -534,7 +575,7 @@ function RegistrationStatusContent() {
                     <Button
                       type="submit"
                       disabled={isVerifyingOtp || otpCode.length !== 6}
-                      className="flex-1 bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
+                      className="flex-1 bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
                     >
                       {isVerifyingOtp ? (
                         <>
@@ -554,7 +595,7 @@ function RegistrationStatusContent() {
                       variant="outline"
                       disabled={resendCooldown > 0 || isSendingOtp}
                       onClick={handleRequestEmailOtp}
-                      className="border-stone-200 text-stone-700 text-xs font-medium h-11 px-4 gap-1.5 hover:bg-soft-cream"
+                      className="border-stone-200 text-stone-700 text-xs font-medium h-11 px-4 gap-1.5 hover:bg-[#F4F7FA]"
                     >
                       <RefreshCw className="w-3.5 h-3.5" />
                       <span>{resendCooldown > 0 ? `Resend (${resendCooldown}s)` : "Resend Code"}</span>
@@ -591,7 +632,7 @@ function RegistrationStatusContent() {
                   onChange={(e) => setRegistrationIdInput(e.target.value.toUpperCase())}
                   placeholder="e.g. MQ-2026-X8Y7Z"
                   required
-                  className="h-10 text-xs border-stone-200 bg-warm-ivory font-mono uppercase focus-visible:ring-maroon"
+                  className="h-10 text-xs border-stone-200 bg-[#F4F7FA] font-mono uppercase focus-visible:ring-[#183153]"
                 />
                 <p className="text-[11px] text-stone-500">
                   Enter the unique Registration ID from your submission confirmation screen or email.
@@ -601,7 +642,7 @@ function RegistrationStatusContent() {
               <Button
                 type="submit"
                 disabled={isSearching}
-                className="w-full bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
+                className="w-full bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold h-11 rounded-lg shadow-xs gap-2"
               >
                 {isSearching ? (
                   <>
@@ -627,7 +668,7 @@ function RegistrationStatusContent() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-100 pb-5">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-antique-gold">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-[#356FA8]">
                   Candidate Dossier
                 </span>
                 {isEmailVerified ? (
@@ -642,7 +683,7 @@ function RegistrationStatusContent() {
                   </span>
                 )}
               </div>
-              <h2 className="text-2xl font-serif font-bold text-charcoal">
+              <h2 className="text-2xl font-bold font-bold text-[#263238]">
                 {record.fullName}
               </h2>
               <span className="text-xs text-stone-500">
@@ -654,14 +695,14 @@ function RegistrationStatusContent() {
               <span className="text-[10px] uppercase font-bold text-stone-400 tracking-wider">
                 Registration ID
               </span>
-              <span className="text-lg font-bold font-mono text-maroon">
+              <span className="text-lg font-bold font-mono text-[#183153]">
                 {record.registrationId}
               </span>
               <div className="flex items-center gap-2 mt-1">
                 <Button
                   size="sm"
                   onClick={handleOpenEditModal}
-                  className="bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold h-8 px-3 gap-1.5 shadow-2xs"
+                  className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold h-8 px-3 gap-1.5 shadow-2xs"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
                   <span>Edit Details</span>
@@ -672,9 +713,9 @@ function RegistrationStatusContent() {
 
           {/* Verification Notice Banner if entered via Registration ID without OTP */}
           {!isEmailVerified && (
-            <div className="p-3.5 rounded-lg bg-warm-ivory border border-antique-gold/30 text-xs text-stone-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="p-3.5 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] text-xs text-stone-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-start gap-2.5">
-                <ShieldCheck className="w-4 h-4 text-antique-gold shrink-0 mt-0.5" />
+                <ShieldCheck className="w-4 h-4 text-[#356FA8] shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-stone-900 block font-semibold">
                     Want to update your application details?
@@ -688,7 +729,7 @@ function RegistrationStatusContent() {
                 size="sm"
                 variant="outline"
                 onClick={handleOpenEditModal}
-                className="border-antique-gold text-maroon hover:bg-soft-cream text-xs font-semibold h-8 shrink-0 self-start sm:self-auto"
+                className="border-[#356FA8] text-[#183153] hover:bg-[#F4F7FA] text-xs font-semibold h-8 shrink-0 self-start sm:self-auto"
               >
                 <span>Verify Email to Edit</span>
               </Button>
@@ -698,7 +739,7 @@ function RegistrationStatusContent() {
           {/* Dual Status Indicators: Payment Status & Application Review Status */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Payment Status Card */}
-            <div className="p-5 rounded-xl bg-warm-ivory border border-stone-200/80 space-y-2">
+            <div className="p-5 rounded-xl bg-[#F4F7FA] border border-stone-200/80 space-y-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">
                 Payment Verification (NPR {record?.registrationFee || siteSettings?.registrationFee || 399})
               </span>
@@ -734,14 +775,14 @@ function RegistrationStatusContent() {
             </div>
 
             {/* Application Review Status Card */}
-            <div className="p-5 rounded-xl bg-warm-ivory border border-stone-200/80 space-y-2">
+            <div className="p-5 rounded-xl bg-[#F4F7FA] border border-stone-200/80 space-y-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">
                 Application Review Status
               </span>
               <div className="flex items-center gap-2">
                 {record.applicationStatus === "APPROVED" ? (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-maroon text-white">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-soft-cream" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#183153] text-white">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-white" />
                     Approved & Confirmed
                   </span>
                 ) : record.applicationStatus === "REJECTED" ? (
@@ -772,17 +813,17 @@ function RegistrationStatusContent() {
 
           {/* PAYMENT RESUBMISSION BOX (If Pending or Clarification Required) */}
           {(record.paymentStatus === "PENDING" || record.paymentStatus === "CLARIFICATION_REQUIRED") && (
-            <div className="p-6 rounded-xl bg-warm-ivory border border-antique-gold/40 space-y-4">
+            <div className="p-6 rounded-xl bg-[#F4F7FA] border border-[#356FA8]/40 space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-serif font-bold text-sm text-charcoal">
+                  <h4 className="font-bold font-bold text-sm text-[#263238]">
                     Submit Fee Payment Verification (NPR {record?.registrationFee || siteSettings?.registrationFee || 399})
                   </h4>
                   <p className="text-xs text-stone-600 mt-0.5">
                     Scan the official QR code to pay NPR {record?.registrationFee || siteSettings?.registrationFee || 399} and submit your transaction code.
                   </p>
                 </div>
-                <QrCode className="w-5 h-5 text-antique-gold" />
+                <QrCode className="w-5 h-5 text-[#356FA8]" />
               </div>
 
               {/* QR Image Display */}
@@ -817,10 +858,55 @@ function RegistrationStatusContent() {
                     className="h-10 text-xs border-stone-200 bg-white font-mono"
                   />
                 </div>
+
+                {/* Screenshot Upload */}
+                <div className="space-y-1">
+                  <Label className="text-xs font-semibold text-stone-700 flex items-center justify-between">
+                    <span>Payment Receipt Screenshot (Optional but recommended)</span>
+                    <span className="text-[10px] text-stone-400">PNG, JPG up to 10MB</span>
+                  </Label>
+                  {newScreenshotUrl ? (
+                    <div className="p-2.5 rounded-lg border border-[#DCE5ED] bg-[#F4F7FA] flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div className="w-8 h-8 rounded overflow-hidden border border-[#DCE5ED] bg-white shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={newScreenshotUrl} alt="Receipt" className="w-full h-full object-cover" />
+                        </div>
+                        <span className="text-xs text-stone-700 truncate">Screenshot uploaded</span>
+                      </div>
+                      <label className="cursor-pointer text-xs font-semibold text-[#356FA8] hover:underline px-2 py-0.5 rounded bg-white border border-[#DCE5ED] shrink-0">
+                        <span>Change</span>
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          onChange={handleScreenshotUpload}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+                  ) : (
+                    <label className="flex items-center justify-center gap-2 p-3 rounded-lg border border-dashed border-stone-300 hover:border-[#356FA8] bg-stone-50/50 hover:bg-stone-50 cursor-pointer text-xs text-stone-600">
+                      {isUploadingScreenshot ? (
+                        <Loader2 className="w-4 h-4 animate-spin text-[#356FA8]" />
+                      ) : (
+                        <Upload className="w-4 h-4 text-[#356FA8]" />
+                      )}
+                      <span>{isUploadingScreenshot ? "Uploading..." : "Upload payment receipt screenshot"}</span>
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        disabled={isUploadingScreenshot}
+                        onChange={handleScreenshotUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  )}
+                </div>
+
                 <Button
                   type="submit"
                   disabled={isReSubmittingPayment}
-                  className="w-full bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold h-10 gap-2"
+                  className="w-full bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold h-10 gap-2"
                 >
                   {isReSubmittingPayment ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -835,17 +921,17 @@ function RegistrationStatusContent() {
 
           {/* OFFICIAL PDF DOWNLOAD (If Verified & Approved) */}
           {record.isPdfAvailable && (
-            <div className="p-6 rounded-xl bg-maroon text-white space-y-4 shadow-xs">
+            <div className="p-6 rounded-xl bg-[#183153] text-white space-y-4 shadow-xs">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-serif font-bold text-base text-white">
+                  <h3 className="font-bold font-bold text-base text-white">
                     Official Registration Confirmation PDF
                   </h3>
-                  <p className="text-xs text-soft-cream/80 mt-0.5">
+                  <p className="text-xs text-[#F4F7FA]/80 mt-0.5">
                     Verified Document &bull; Issued by The Origin Foundation
                   </p>
                 </div>
-                <FileCheck2 className="w-6 h-6 text-soft-cream" />
+                <FileCheck2 className="w-6 h-6 text-[#F4F7FA]" />
               </div>
 
               <p className="text-xs text-white/90 leading-relaxed">
@@ -855,7 +941,7 @@ function RegistrationStatusContent() {
               <Button
                 onClick={handleDownloadPdf}
                 disabled={isDownloadingPdf}
-                className="w-full bg-warm-ivory hover:bg-soft-cream text-maroon font-bold text-xs h-11 rounded-lg shadow-xs gap-2"
+                className="w-full bg-[#F4F7FA] hover:bg-[#F4F7FA] text-[#183153] font-bold text-xs h-11 rounded-lg shadow-xs gap-2"
               >
                 {isDownloadingPdf ? (
                   <>
@@ -864,7 +950,7 @@ function RegistrationStatusContent() {
                   </>
                 ) : (
                   <>
-                    <FileDown className="w-4 h-4 text-maroon" />
+                    <FileDown className="w-4 h-4 text-[#183153]" />
                     <span>Download Official Confirmation Certificate (A4 PDF)</span>
                   </>
                 )}
@@ -875,36 +961,36 @@ function RegistrationStatusContent() {
           {/* APPLICATION DETAILS BREAKDOWN */}
           <div className="space-y-4 pt-4 border-t border-stone-100">
             <div className="flex items-center justify-between">
-              <h3 className="font-serif font-bold text-base text-charcoal">
+              <h3 className="font-bold font-bold text-base text-[#263238]">
                 Submitted Candidate Profile
               </h3>
               <Button
                 size="sm"
                 variant="outline"
                 onClick={handleOpenEditModal}
-                className="border-stone-200 text-stone-700 hover:bg-soft-cream hover:text-maroon text-xs h-8 gap-1.5"
+                className="border-stone-200 text-stone-700 hover:bg-[#F4F7FA] hover:text-[#183153] text-xs h-8 gap-1.5"
               >
-                <Edit3 className="w-3.5 h-3.5 text-saffron" />
+                <Edit3 className="w-3.5 h-3.5 text-[#356FA8]" />
                 <span>Update Profile</span>
               </Button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div className="p-3.5 bg-warm-ivory rounded-lg border border-stone-200/80">
+              <div className="p-3.5 bg-[#F4F7FA] rounded-lg border border-stone-200/80">
                 <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">
                   Contact Email
                 </span>
                 <span className="font-mono text-stone-800 font-semibold">{record.email}</span>
               </div>
 
-              <div className="p-3.5 bg-warm-ivory rounded-lg border border-stone-200/80">
+              <div className="p-3.5 bg-[#F4F7FA] rounded-lg border border-stone-200/80">
                 <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">
                   Mobile Phone
                 </span>
                 <span className="font-mono text-stone-800 font-semibold">{record.phone}</span>
               </div>
 
-              <div className="p-3.5 bg-warm-ivory rounded-lg border border-stone-200/80">
+              <div className="p-3.5 bg-[#F4F7FA] rounded-lg border border-stone-200/80">
                 <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">
                   Date of Birth
                 </span>
@@ -913,7 +999,7 @@ function RegistrationStatusContent() {
                 </span>
               </div>
 
-              <div className="p-3.5 bg-warm-ivory rounded-lg border border-stone-200/80">
+              <div className="p-3.5 bg-[#F4F7FA] rounded-lg border border-stone-200/80">
                 <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">
                   Origin & Location
                 </span>
@@ -925,7 +1011,7 @@ function RegistrationStatusContent() {
 
             {/* Cultural & Talents info if present */}
             {record.talentsSkills && (
-              <div className="p-4 bg-warm-ivory rounded-lg border border-stone-200/80 text-xs space-y-1">
+              <div className="p-4 bg-[#F4F7FA] rounded-lg border border-stone-200/80 text-xs space-y-1">
                 <span className="text-stone-400 uppercase font-bold text-[10px] tracking-wider">
                   Talent Specialization & Cultural Skills
                 </span>
@@ -934,7 +1020,7 @@ function RegistrationStatusContent() {
             )}
 
             {record.personalIntro && (
-              <div className="p-4 bg-warm-ivory rounded-lg border border-stone-200/80 text-xs space-y-1">
+              <div className="p-4 bg-[#F4F7FA] rounded-lg border border-stone-200/80 text-xs space-y-1">
                 <span className="text-stone-400 uppercase font-bold text-[10px] tracking-wider">
                   Personal Introduction
                 </span>
@@ -944,9 +1030,9 @@ function RegistrationStatusContent() {
 
             {/* Audition Video link if present */}
             {record.videoUrl && (
-              <div className="p-4 bg-warm-ivory rounded-lg border border-stone-200/80 text-xs flex items-center justify-between gap-3">
+              <div className="p-4 bg-[#F4F7FA] rounded-lg border border-stone-200/80 text-xs flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 min-w-0">
-                  <Video className="w-4 h-4 text-saffron shrink-0" />
+                  <Video className="w-4 h-4 text-[#356FA8] shrink-0" />
                   <div className="min-w-0">
                     <span className="font-semibold text-stone-800 block truncate">Audition Video</span>
                     <span className="text-[11px] text-stone-500 truncate block font-mono">
@@ -958,7 +1044,7 @@ function RegistrationStatusContent() {
                   href={record.videoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-maroon text-white hover:bg-maroon-dark font-medium text-xs shrink-0"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#183153] text-white hover:bg-[#183153]-dark font-medium text-xs shrink-0"
                 >
                   <span>Watch Video</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -971,7 +1057,7 @@ function RegistrationStatusContent() {
           {record.editLogs && record.editLogs.length > 0 && (
             <div className="space-y-3 pt-4 border-t border-stone-100">
               <div className="flex items-center gap-2">
-                <History className="w-4 h-4 text-antique-gold" />
+                <History className="w-4 h-4 text-[#356FA8]" />
                 <h4 className="font-bold text-xs uppercase tracking-wider text-stone-800">
                   Modification History & Audit Log
                 </h4>
@@ -1006,7 +1092,7 @@ function RegistrationStatusContent() {
             <button
               type="button"
               onClick={handleResetSearch}
-              className="text-xs text-stone-500 hover:text-maroon font-medium underline"
+              className="text-xs text-stone-500 hover:text-[#183153] font-medium underline"
             >
               Check another registration record
             </button>
@@ -1020,8 +1106,8 @@ function RegistrationStatusContent() {
           <div className="bg-white rounded-xl max-w-md w-full p-6 sm:p-8 space-y-5 border border-stone-200 shadow-2xl animate-in fade-in slide-in-from-bottom-2">
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">
               <div className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-maroon" />
-                <h3 className="font-serif font-bold text-base text-charcoal">
+                <Lock className="w-4 h-4 text-[#183153]" />
+                <h3 className="font-bold font-bold text-base text-[#263238]">
                   Verify Email to Edit Details
                 </h3>
               </div>
@@ -1039,7 +1125,7 @@ function RegistrationStatusContent() {
 
             {!unlockOtpSent ? (
               <div className="space-y-4 pt-2">
-                <div className="p-3.5 rounded-lg bg-warm-ivory border border-antique-gold/30 text-xs text-stone-700">
+                <div className="p-3.5 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] text-xs text-stone-700">
                   <div className="font-semibold text-stone-800">Dispatch Verification Code</div>
                   <div className="text-[11px] text-stone-600 mt-0.5">
                     Click the button below to receive a 6-digit access code at your registered email address.
@@ -1059,7 +1145,7 @@ function RegistrationStatusContent() {
                     type="button"
                     disabled={isSendingUnlockOtp}
                     onClick={handleSendUnlockOtp}
-                    className="bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold gap-1.5"
+                    className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold gap-1.5"
                   >
                     {isSendingUnlockOtp ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -1084,7 +1170,7 @@ function RegistrationStatusContent() {
                     maxLength={6}
                     required
                     autoFocus
-                    className="h-11 text-center text-lg font-mono font-bold tracking-widest border-antique-gold bg-white"
+                    className="h-11 text-center text-lg font-mono font-bold tracking-widest border-[#356FA8] bg-white"
                   />
                   <p className="text-[11px] text-stone-500">
                     Enter the code sent to {maskedEmail || "your email"}.
@@ -1118,7 +1204,7 @@ function RegistrationStatusContent() {
                       type="submit"
                       size="sm"
                       disabled={isVerifyingUnlockOtp || unlockOtpCode.length !== 6}
-                      className="bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold"
+                      className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold"
                     >
                       {isVerifyingUnlockOtp ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin mr-1" />
@@ -1141,7 +1227,7 @@ function RegistrationStatusContent() {
           <div className="bg-white rounded-xl max-w-2xl w-full p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto border border-stone-200 shadow-2xl">
             <div className="flex items-center justify-between border-b border-stone-100 pb-4">
               <div>
-                <h3 className="font-serif font-bold text-xl text-charcoal">
+                <h3 className="font-bold font-bold text-xl text-[#263238]">
                   Edit Application Details
                 </h3>
                 <p className="text-xs text-stone-500 mt-0.5">
@@ -1390,7 +1476,7 @@ function RegistrationStatusContent() {
                 <Button
                   type="submit"
                   disabled={isSavingEdits}
-                  className="bg-maroon hover:bg-maroon-dark text-white text-xs font-semibold gap-2"
+                  className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold gap-2"
                 >
                   {isSavingEdits ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -1413,7 +1499,7 @@ export default function RegistrationStatusPage() {
     <Suspense
       fallback={
         <div className="py-24 text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto text-maroon" />
+          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#183153]" />
           <p className="text-xs text-stone-500 mt-2 font-mono">Loading application lookup...</p>
         </div>
       }
@@ -1422,3 +1508,4 @@ export default function RegistrationStatusPage() {
     </Suspense>
   );
 }
+

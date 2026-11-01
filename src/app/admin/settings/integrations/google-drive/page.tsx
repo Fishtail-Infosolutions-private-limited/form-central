@@ -31,8 +31,8 @@ export default async function GoogleDriveIntegrationPage({
       </div>
 
       <div>
-        <h1 className="text-2xl font-serif font-bold text-maroon tracking-tight flex items-center gap-2.5">
-          <HardDrive className="w-7 h-7 text-saffron" />
+        <h1 className="text-2xl font-bold font-bold text-[#183153] tracking-tight flex items-center gap-2.5">
+          <HardDrive className="w-7 h-7 text-[#356FA8]" />
           <span>Google Drive Storage Integration</span>
         </h1>
         <p className="text-xs text-stone-600 mt-1">
@@ -48,4 +48,5 @@ export default async function GoogleDriveIntegrationPage({
     </div>
   );
 }
+
 

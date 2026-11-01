@@ -138,9 +138,9 @@ export default async function AdminAllResponsesPage() {
   return (
     <div className="space-y-6">
       {/* Header with Charcoal and Antique Gold cultural branding */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-cream-dark pb-6 bg-[#FFFFFF] p-6 rounded-lg border">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#DCE5ED] pb-6 bg-white p-6 rounded-2xl border">
         <div className="space-y-1">
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-maroon tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold font-bold text-[#183153] tracking-tight">
             Applications & Payment Reviews
           </h1>
           <p className="text-xs sm:text-sm text-stone-600 max-w-2xl">
@@ -150,10 +150,10 @@ export default async function AdminAllResponsesPage() {
 
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">
-            <div className="text-xs font-semibold text-maroon">
+            <div className="text-xs font-semibold text-[#183153]">
               {allApplications.length} Total Submissions
             </div>
-            <div className="text-[11px] text-maroon font-medium">
+            <div className="text-[11px] text-[#183153] font-medium">
               {mappedMithilaQueen.length} Mithila Queen &bull; {mappedSubmissions.length} Other Forms
             </div>
           </div>
@@ -163,8 +163,8 @@ export default async function AdminAllResponsesPage() {
       {/* Unified Responses Interface */}
       <Suspense
         fallback={
-          <div className="flex items-center justify-center p-16 bg-[#FFFFFF] border border-cream-dark rounded-lg">
-            <Loader2 className="w-6 h-6 animate-spin text-saffron" />
+          <div className="flex items-center justify-center p-16 bg-white border border-[#DCE5ED] rounded-2xl">
+            <Loader2 className="w-6 h-6 animate-spin text-[#356FA8]" />
             <span className="ml-3 text-xs font-medium text-stone-600">
               Loading participant records...
             </span>
@@ -176,3 +176,4 @@ export default async function AdminAllResponsesPage() {
     </div>
   );
 }
+

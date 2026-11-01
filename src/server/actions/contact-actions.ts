@@ -3,6 +3,8 @@
 import { headers } from "next/headers";
 import { prisma } from "@/lib/db/prisma";
 import { requireAdmin } from "@/lib/auth/guards";
+import { sendInquiryReplyEmail } from "@/lib/email/client";
+import { revalidatePath } from "next/cache";
 
 export interface ContactInquiryInput {
   name: string;
@@ -109,9 +111,130 @@ export async function deleteContactInquiryAction(id: string) {
     await prisma.contactInquiry.delete({
       where: { id },
     });
+    revalidatePath("/admin/inquiries");
+    revalidatePath("/admin/dashboard");
     return { success: true };
   } catch (err: unknown) {
     return { success: false, error: "Failed to delete inquiry." };
+  }
+}
+
+/**
+ * Admin action to fetch all inquiries with search, filter, and stats.
+ */
+export async function getContactInquiriesAction({
+  filter = "all",
+  search = "",
+}: {
+  filter?: "all" | "unread" | "replied";
+  search?: string;
+} = {}) {
+  await requireAdmin();
+  try {
+    const where: any = {};
+
+    if (filter === "unread") {
+      where.isRead = false;
+      where.replyMessage = null;
+    } else if (filter === "replied") {
+      where.replyMessage = { not: null };
+    }
+
+    if (search.trim()) {
+      where.OR = [
+        { name: { contains: search.trim(), mode: "insensitive" } },
+        { email: { contains: search.trim(), mode: "insensitive" } },
+        { subject: { contains: search.trim(), mode: "insensitive" } },
+        { message: { contains: search.trim(), mode: "insensitive" } },
+      ];
+    }
+
+    const [inquiries, totalCount, unreadCount, repliedCount] = await Promise.all([
+      prisma.contactInquiry.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.contactInquiry.count(),
+      prisma.contactInquiry.count({ where: { isRead: false, replyMessage: null } }),
+      prisma.contactInquiry.count({ where: { replyMessage: { not: null } } }),
+    ]);
+
+    return {
+      success: true,
+      inquiries,
+      stats: {
+        total: totalCount,
+        unread: unreadCount,
+        replied: repliedCount,
+      },
+    };
+  } catch (err: unknown) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Failed to load inquiries.",
+      inquiries: [],
+      stats: { total: 0, unread: 0, replied: 0 },
+    };
+  }
+}
+
+/**
+ * Admin action to directly send an email reply to an inquiry.
+ */
+export async function replyToContactInquiryAction({
+  inquiryId,
+  replySubject,
+  replyMessage,
+}: {
+  inquiryId: string;
+  replySubject: string;
+  replyMessage: string;
+}) {
+  const admin = await requireAdmin();
+  try {
+    const inquiry = await prisma.contactInquiry.findUnique({
+      where: { id: inquiryId },
+    });
+
+    if (!inquiry) {
+      return { success: false, error: "Inquiry record not found." };
+    }
+
+    if (!replyMessage.trim()) {
+      return { success: false, error: "Reply message cannot be empty." };
+    }
+
+    // 1. Dispatch email reply
+    await sendInquiryReplyEmail({
+      to: inquiry.email,
+      recipientName: inquiry.name,
+      originalSubject: inquiry.subject,
+      originalMessage: inquiry.message,
+      replySubject: replySubject.trim() || `Re: ${inquiry.subject || "The Origin Foundation Inquiry"}`,
+      replyMessage: replyMessage.trim(),
+      adminName: (admin as any).name || "The Origin Foundation Directorate",
+    });
+
+    // 2. Update record in database
+    await prisma.contactInquiry.update({
+      where: { id: inquiryId },
+      data: {
+        isRead: true,
+        replyMessage: replyMessage.trim(),
+        repliedAt: new Date(),
+        repliedBy: (admin as any).name || (admin as any).email || "Event Administrator",
+      },
+    });
+
+    revalidatePath("/admin/inquiries");
+    revalidatePath("/admin/dashboard");
+    return { success: true };
+  } catch (err: unknown) {
+    console.error("Reply to inquiry error:", err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Failed to send email reply.",
+    };
   }
 }
 

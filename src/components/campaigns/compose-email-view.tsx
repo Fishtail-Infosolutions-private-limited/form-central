@@ -408,7 +408,7 @@ export function ComposeEmailView({
             type="button"
             onClick={() => setIsReviewModalOpen(true)}
             disabled={(recipientTab === "DIRECT" && manualEmails.length === 0) || (estimatedCount ?? 0) === 0}
-            className="bg-maroon hover:bg-[#681724] text-white font-bold text-xs h-9 px-4 rounded-xl gap-1.5 shadow-xs"
+            className="bg-maroon hover:bg-maroon-dark text-white font-bold text-xs h-9 px-4 rounded-xl gap-1.5 shadow-xs"
           >
             <Send className="w-3.5 h-3.5 text-saffron" />
             <span>Review & Send</span>
@@ -527,7 +527,7 @@ export function ComposeEmailView({
                   className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full ${
                     recipientTab === "GROUP"
                       ? "bg-white/20 text-white"
-                      : "bg-[#EADBCE] text-maroon"
+                      : "bg-cream-dark text-maroon"
                   }`}
                 >
                   3
@@ -585,7 +585,7 @@ export function ComposeEmailView({
                         className={`text-left p-3.5 rounded-xl border text-xs transition-all relative flex flex-col justify-between ${
                           isSelected
                             ? "bg-maroon text-white border-maroon shadow-xs"
-                            : "bg-warm-ivory text-charcoal border-cream-dark hover:border-[#B89150] hover:bg-soft-cream/60"
+                            : "bg-warm-ivory text-charcoal border-cream-dark hover:border-cream-dark hover:bg-soft-cream/60"
                         }`}
                       >
                         <div className="flex items-center justify-between gap-1 w-full">
@@ -700,7 +700,7 @@ export function ComposeEmailView({
               type="button"
               onClick={() => setIsReviewModalOpen(true)}
               disabled={(recipientTab === "DIRECT" && (manualEmails.length === 0 || hasInvalidManualEmails)) || (estimatedCount ?? 0) === 0}
-              className="bg-maroon hover:bg-[#681724] text-white font-bold text-xs h-9 px-5 rounded-xl gap-2 flex-1 sm:flex-none shadow-xs"
+              className="bg-maroon hover:bg-maroon-dark text-white font-bold text-xs h-9 px-5 rounded-xl gap-2 flex-1 sm:flex-none shadow-xs"
             >
               <Send className="w-3.5 h-3.5 text-saffron" />
               <span>Review &amp; Send</span>
@@ -758,7 +758,7 @@ export function ComposeEmailView({
                 size="sm"
                 onClick={handleSendTest}
                 disabled={isSendingTest}
-                className="bg-maroon hover:bg-[#681724] text-white text-xs h-8 px-4 rounded-lg gap-1.5"
+                className="bg-maroon hover:bg-maroon-dark text-white text-xs h-8 px-4 rounded-lg gap-1.5"
               >
                 {isSendingTest && <Loader2 className="w-3.5 h-3.5 animate-spin text-saffron" />}
                 <span>{isSendingTest ? "Sending..." : "Send Test Email"}</span>
@@ -777,14 +777,14 @@ export function ComposeEmailView({
               <div className="flex items-center gap-2">
                 <Eye className="w-4 h-4 text-saffron" />
                 <h3 className="text-sm font-bold text-stone-900">Email Live Preview</h3>
-                <span className="text-[10px] bg-[#EADBCE] text-maroon px-2 py-0.5 rounded-full font-semibold">
+                <span className="text-[10px] bg-cream-dark text-maroon px-2 py-0.5 rounded-full font-semibold">
                   Sample Contestant Data
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
                 {/* Desktop / Mobile Toggle */}
-                <div className="flex items-center bg-[#EADBCE]/80 p-0.5 rounded-lg">
+                <div className="flex items-center bg-cream-dark/80 p-0.5 rounded-lg">
                   <button
                     type="button"
                     onClick={() => setPreviewDevice("desktop")}
@@ -927,7 +927,7 @@ export function ComposeEmailView({
                 type="button"
                 onClick={handleFinalSubmit}
                 disabled={isSubmitting || (estimatedCount ?? 0) === 0 || (recipientTab === "DIRECT" && hasInvalidManualEmails)}
-                className="bg-maroon hover:bg-[#681724] text-white text-xs font-bold h-9 px-5 rounded-xl gap-2 shadow-xs"
+                className="bg-maroon hover:bg-maroon-dark text-white text-xs font-bold h-9 px-5 rounded-xl gap-2 shadow-xs"
               >
                 {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin text-saffron" />}
                 <span>{isSubmitting ? "Enqueuing..." : "Confirm & Send Now"}</span>

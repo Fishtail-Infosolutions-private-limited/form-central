@@ -170,7 +170,7 @@ export function RichTextEditor({
 
   return (
     <div
-      className={`rounded-xl border border-zinc-300 bg-white shadow-2xs overflow-hidden focus-within:border-maroon focus-within:ring-2 focus-within:ring-[#B89150]/20 transition-all ${className}`}
+      className={`rounded-xl border border-cream-dark bg-white shadow-2xs overflow-hidden focus-within:border-maroon focus-within:ring-2 focus-within:ring-maroon/20 transition-all ${className}`}
     >
       {/* Hidden input to support native Server Actions & forms */}
       <input type="hidden" id={id} name={name} value={currentHtml} />

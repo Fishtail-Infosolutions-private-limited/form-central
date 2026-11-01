@@ -88,7 +88,7 @@ export function GmailRecipientInput({
     <div className="space-y-2">
       <div
         className={`min-h-[52px] w-full rounded-xl border bg-white p-2 text-xs transition-all flex flex-wrap items-center gap-1.5 cursor-text ${
-          disabled ? "opacity-60 bg-zinc-50 cursor-not-allowed" : "border-zinc-200 focus-within:border-saffron focus-within:ring-2 focus-within:ring-[#B89150]/15"
+          disabled ? "opacity-60 bg-zinc-50 cursor-not-allowed" : "border-cream-dark focus-within:border-maroon focus-within:ring-2 focus-within:ring-maroon/15"
         }`}
         onClick={(e) => {
           const input = e.currentTarget.querySelector("input");

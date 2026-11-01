@@ -383,7 +383,7 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
                 placeholder="Search participant name or email..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-lg pl-9 pr-3 py-1.5 focus:outline-[#B89150]"
+                className="w-full text-xs bg-zinc-50 border border-zinc-200 rounded-lg pl-9 pr-3 py-1.5 focus:outline-maroon"
               />
             </div>
           </div>

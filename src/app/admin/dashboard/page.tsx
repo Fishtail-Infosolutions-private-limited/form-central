@@ -54,9 +54,9 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-6 pb-12">
       {/* Clean Header */}
-      <div className="bg-warm-ivory p-5 rounded-xl border border-cream-dark shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white p-5 rounded-xl border border-[#DCE5ED] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-serif font-bold text-maroon tracking-tight">
+          <h1 className="text-2xl font-bold font-bold text-[#183153] tracking-tight">
             Dashboard
           </h1>
           <p className="text-xs text-stone-500 mt-0.5">
@@ -66,15 +66,15 @@ export default async function AdminDashboardPage() {
 
         <div className="flex flex-wrap items-center gap-2.5">
           <Link href="/admin/responses">
-            <Button className="gap-2 bg-maroon hover:bg-[#5B131E] text-white text-xs h-9 px-4 font-semibold shadow-xs">
-              <Crown className="w-3.5 h-3.5 text-saffron" />
+            <Button className="gap-2 bg-[#183153] hover:bg-[#12243d] text-white text-xs h-9 px-4 font-semibold shadow-xs">
+              <Crown className="w-3.5 h-3.5 text-[#356FA8]" />
               <span>Applications</span>
             </Button>
           </Link>
-          <Link href="/admin/forms">
-            <Button variant="outline" className="gap-2 border-cream-dark text-maroon hover:bg-soft-cream text-xs h-9 px-4 font-semibold shadow-xs">
-              <FileText className="w-3.5 h-3.5 text-saffron" />
-              <span>Manage Competition</span>
+          <Link href="/admin/registration-form">
+            <Button variant="outline" className="gap-2 border-[#DCE5ED] text-[#183153] hover:bg-[#F4F7FA] text-xs h-9 px-4 font-semibold shadow-xs">
+              <FileText className="w-3.5 h-3.5 text-[#356FA8]" />
+              <span>Registration Form</span>
             </Button>
           </Link>
         </div>
@@ -85,72 +85,72 @@ export default async function AdminDashboardPage() {
         {/* 1. Total Registrations */}
         <Link
           href="/admin/responses?tab=all"
-          className="group block p-4 rounded-xl bg-warm-ivory border border-cream-dark hover:border-saffron transition-all hover:shadow-xs"
+          className="group block p-4 rounded-xl bg-white border border-[#DCE5ED] hover:border-[#356FA8] transition-all hover:shadow-xs"
         >
           <div className="flex items-center justify-between text-stone-500 mb-1.5">
             <span className="text-xs font-semibold text-stone-600">Total Registrations</span>
-            <Users className="w-4 h-4 text-saffron group-hover:translate-x-0.5 transition-transform" />
+            <Users className="w-4 h-4 text-[#356FA8] group-hover:translate-x-0.5 transition-transform" />
           </div>
-          <div className="text-2xl font-serif font-black text-maroon tracking-tight">
+          <div className="text-2xl font-bold font-black text-[#183153] tracking-tight">
             {totalRegistrations}
           </div>
           <div className="text-[11px] text-stone-500 mt-1 flex items-center gap-1 font-mono">
             <span>All registered entries</span>
-            <ArrowUpRight className="w-3 h-3 text-saffron" />
+            <ArrowUpRight className="w-3 h-3 text-[#356FA8]" />
           </div>
         </Link>
 
         {/* 2. Payments Under Review */}
         <Link
           href="/admin/responses?paymentStatus=UNDER_REVIEW"
-          className="group block p-4 rounded-xl bg-warm-ivory border border-cream-dark hover:border-saffron transition-all hover:shadow-xs"
+          className="group block p-4 rounded-xl bg-white border border-[#DCE5ED] hover:border-[#356FA8] transition-all hover:shadow-xs"
         >
           <div className="flex items-center justify-between text-stone-500 mb-1.5">
             <span className="text-xs font-semibold text-stone-600">Payments to Review</span>
-            <CreditCard className="w-4 h-4 text-saffron group-hover:translate-x-0.5 transition-transform" />
+            <CreditCard className="w-4 h-4 text-[#356FA8] group-hover:translate-x-0.5 transition-transform" />
           </div>
-          <div className="text-2xl font-serif font-black text-maroon tracking-tight">
+          <div className="text-2xl font-bold font-black text-[#183153] tracking-tight">
             {paymentsUnderReview}
           </div>
           <div className="text-[11px] text-amber-700 mt-1 flex items-center gap-1 font-mono">
             <span>Awaiting bank verification</span>
-            <ArrowUpRight className="w-3 h-3 text-saffron" />
+            <ArrowUpRight className="w-3 h-3 text-[#356FA8]" />
           </div>
         </Link>
 
         {/* 3. Applications Under Review */}
         <Link
           href="/admin/responses?applicationStatus=UNDER_REVIEW"
-          className="group block p-4 rounded-xl bg-warm-ivory border border-cream-dark hover:border-saffron transition-all hover:shadow-xs"
+          className="group block p-4 rounded-xl bg-white border border-[#DCE5ED] hover:border-[#356FA8] transition-all hover:shadow-xs"
         >
           <div className="flex items-center justify-between text-stone-500 mb-1.5">
             <span className="text-xs font-semibold text-stone-600">Applications to Review</span>
-            <Clock className="w-4 h-4 text-saffron group-hover:translate-x-0.5 transition-transform" />
+            <Clock className="w-4 h-4 text-[#356FA8] group-hover:translate-x-0.5 transition-transform" />
           </div>
-          <div className="text-2xl font-serif font-black text-maroon tracking-tight">
+          <div className="text-2xl font-bold font-black text-[#183153] tracking-tight">
             {appsUnderReview}
           </div>
           <div className="text-[11px] text-stone-500 mt-1 flex items-center gap-1 font-mono">
             <span>Jury / Admin screening</span>
-            <ArrowUpRight className="w-3 h-3 text-saffron" />
+            <ArrowUpRight className="w-3 h-3 text-[#356FA8]" />
           </div>
         </Link>
 
         {/* 4. Approved Candidates */}
         <Link
           href="/admin/responses?applicationStatus=APPROVED"
-          className="group block p-4 rounded-xl bg-warm-ivory border border-cream-dark hover:border-saffron transition-all hover:shadow-xs"
+          className="group block p-4 rounded-xl bg-white border border-[#DCE5ED] hover:border-[#356FA8] transition-all hover:shadow-xs"
         >
           <div className="flex items-center justify-between text-stone-500 mb-1.5">
             <span className="text-xs font-semibold text-stone-600">Approved Candidates</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
           </div>
-          <div className="text-2xl font-serif font-black text-maroon tracking-tight">
+          <div className="text-2xl font-bold font-black text-[#183153] tracking-tight">
             {appsApproved}
           </div>
           <div className="text-[11px] text-emerald-700 mt-1 flex items-center gap-1 font-mono">
             <span>Official confirmation active</span>
-            <ArrowUpRight className="w-3 h-3 text-saffron" />
+            <ArrowUpRight className="w-3 h-3 text-[#356FA8]" />
           </div>
         </Link>
       </div>
@@ -160,24 +160,24 @@ export default async function AdminDashboardPage() {
         {/* Left Column: Recent Applications (8 cols) */}
         <div className="lg:col-span-8 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-maroon flex items-center gap-2">
-              <FileCheck2 className="w-4 h-4 text-saffron" />
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#183153] flex items-center gap-2">
+              <FileCheck2 className="w-4 h-4 text-[#356FA8]" />
               <span>Recent Participant Applications</span>
             </h3>
             <Link
               href="/admin/responses"
-              className="text-xs font-bold text-saffron hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-[#356FA8] hover:underline flex items-center gap-1"
             >
               <span>View All</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="bg-warm-ivory border border-cream-dark rounded-xl overflow-hidden shadow-xs">
+          <div className="bg-white border border-[#DCE5ED] rounded-xl overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-cream-dark bg-soft-cream text-maroon font-bold">
+                  <tr className="border-b border-[#DCE5ED] bg-[#F4F7FA] text-[#183153] font-bold">
                     <th className="py-3 px-4">Participant Name</th>
                     <th className="py-3 px-4">Registration ID</th>
                     <th className="py-3 px-4">Date</th>
@@ -186,7 +186,7 @@ export default async function AdminDashboardPage() {
                     <th className="py-3 px-4 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#EADBCE]/70">
+                <tbody className="divide-y divide-cream-dark/70">
                   {recentApplications.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="py-8 text-center text-stone-400">
@@ -197,10 +197,10 @@ export default async function AdminDashboardPage() {
                     recentApplications.map((app) => (
                       <tr
                         key={app.id}
-                        className="hover:bg-soft-cream/40 transition-colors"
+                        className="hover:bg-[#F4F7FA]/40 transition-colors"
                       >
                         <td className="py-3 px-4">
-                          <div className="font-semibold text-maroon">
+                          <div className="font-semibold text-[#183153]">
                             {app.fullName}
                           </div>
                           <div className="text-[11px] text-stone-500 font-mono">
@@ -248,9 +248,9 @@ export default async function AdminDashboardPage() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="h-7 px-2.5 text-[11px] border-cream-dark hover:bg-soft-cream text-maroon font-semibold"
+                              className="h-7 px-2.5 text-[11px] border-[#DCE5ED] hover:bg-[#F4F7FA] text-[#183153] font-semibold"
                             >
-                              <Eye className="w-3 h-3 mr-1 text-saffron" />
+                              <Eye className="w-3 h-3 mr-1 text-[#356FA8]" />
                               <span>View</span>
                             </Button>
                           </Link>
@@ -272,3 +272,4 @@ export default async function AdminDashboardPage() {
     </div>
   );
 }
+

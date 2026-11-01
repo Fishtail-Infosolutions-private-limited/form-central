@@ -99,6 +99,21 @@ export function formatNepalDateTime(dateInput: Date | string | null | undefined)
 }
 
 /**
+ * Formats date only (e.g. "Nov 25, 2026") in Nepal Standard Time.
+ */
+export function formatNepalDateOnly(dateInput: Date | string | null | undefined): string {
+  if (!dateInput) return "—";
+  const d = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+  if (isNaN(d.getTime())) return "—";
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: NEPAL_TIMEZONE,
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(d);
+}
+
+/**
  * Convenience alias for formatting Nepal time.
  */
 export function formatNepalTime(dateInput: Date | string | null | undefined, _customFormat?: string): string {

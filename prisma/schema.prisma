@@ -110,6 +110,9 @@ model RegistrationForm {
   isUnlimitedCapacity Boolean                  @default(true)
   maxParticipants     Int?
 
+  // Form Appearance & Introduction Customization
+  appearanceJson      Json?
+
   // Registration Deadline Management (Stored in UTC, configured in Asia/Kathmandu UTC+05:45)
   isDeadlineEnabled   Boolean                  @default(false)
   registrationDeadline DateTime?
@@ -595,6 +598,54 @@ model SiteSetting {
   paymentProviderName          String?               @default("eSewa / Fonepay / Bank Transfer")
   paymentInstructions          String?               @db.Text
   paymentReferenceInstructions String?               @db.Text
+
+  // Wallet Payment Details (Toggleable)
+  enableWalletPayment          Boolean               @default(false)
+  walletProviderName           String?               @default("eSewa")
+  walletId                     String?
+  walletBeneficiaryName        String?
+  walletInstructions           String?               @db.Text
+  walletReferenceInstructions  String?               @db.Text
+
+  // Bank Transfer Details (Toggleable)
+  enableBankPayment            Boolean               @default(false)
+  bankName                     String?
+  bankBranch                   String?
+  bankBeneficiaryName          String?
+  bankAccountNumber            String?
+  bankInstructions             String?               @db.Text
+  bankReferenceInstructions    String?               @db.Text
+
+  // Competition Details & Links
+  shortIntro                   String?               @db.Text
+  fullDescription              String?               @db.Text
+  officialFacebook             String?
+  officialYoutube              String?
+
+  // Dates & Venue Configuration
+  grandFinaleDate              DateTime?
+  grandFinaleTime              String?
+  auditionDate                 DateTime?
+  auditionTime                 String?
+  dateInstructions             String?               @db.Text
+  venueAddress                 String?
+  venueCity                    String?               @default("Janakpur Dham, Nepal")
+  venueDirections              String?               @db.Text
+  venueInstructions            String?               @db.Text
+
+  // Audition Guidelines & Details
+  videoRequirements            String?               @db.Text
+  videoDuration                String?
+  videoSubmissionDeadline      DateTime?
+  videoSubmissionMethod        String?
+  applicantInstructions        String?               @db.Text
+
+  // Public Information Modules
+  homepageIntroText            String?               @db.Text
+  competitionHighlightsJson    Json?
+  importantNoticesJson         Json?
+  contactInfoJson              Json?
+
   whatsappContact              String                @default("+977 9704571941")
   officialInstagram            String?               // To be provided by organizers
   officialTiktok               String?               // To be provided by organizers
@@ -611,14 +662,17 @@ model SiteSetting {
 }
 
 model ContactInquiry {
-  id        String   @id @default(uuid())
-  name      String
-  email     String
-  subject   String?
-  message   String   @db.Text
-  ipAddress String?
-  isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id           String    @id @default(uuid())
+  name         String
+  email        String
+  subject      String?
+  message      String    @db.Text
+  ipAddress    String?
+  isRead       Boolean   @default(false)
+  replyMessage String?   @db.Text
+  repliedAt    DateTime?
+  repliedBy    String?
+  createdAt    DateTime  @default(now())
 
   @@index([email])
   @@index([ipAddress, createdAt])

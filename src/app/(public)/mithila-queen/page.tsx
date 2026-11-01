@@ -14,10 +14,13 @@ import {
   HelpCircle,
   ExternalLink,
   MessageCircle,
+  Sparkles,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MithilaQueenLogo, MithilaHeritageMandala } from "@/components/brand/brand-logos";
+import { MithilaHeritageMandala } from "@/components/brand/brand-logos";
 import { prisma } from "@/lib/db/prisma";
+import { formatNepalDateOnly } from "@/lib/utils/timezone";
 
 export const metadata = {
   title: "Mithila Queen | Flagship Competition of The Origin Foundation",
@@ -35,18 +38,18 @@ export default async function MithilaQueenPage() {
   const eligibilityRules = [
     {
       rule: "Gender Eligibility",
-      criteria: "Girls only. Any girl can participate.",
+      criteria: "Girls only. Any female candidate can participate.",
       note: "Celebrates female cultural voice and empowerment across Mithila.",
     },
     {
       rule: "Age Requirements",
       criteria: "No minimum or maximum age requirement.",
-      note: "Because there is no minimum age, girls under 18 are eligible with mandatory parent/guardian legal consent.",
+      note: "Because there is no age barrier, girls under 18 register with mandatory parent/guardian legal consent.",
     },
     {
       rule: "Marital Status",
       criteria: "Both unmarried and married girls can participate.",
-      note: "Inclusive participation reflecting real community life across Madhesh Province.",
+      note: "Inclusive participation reflecting community life across Madhesh Province and Nepal.",
     },
     {
       rule: "Prior Experience",
@@ -56,14 +59,14 @@ export default async function MithilaQueenPage() {
     {
       rule: "Registration Fee",
       criteria: `Strictly NPR ${regFee} per registration (Nepalese rupees only).`,
-      note: "Collected via official QR code with independent bank reconciliation before review.",
+      note: "Collected via verified official QR code with independent bank reconciliation before review.",
     },
   ];
 
   const evaluationPillars = [
     {
       title: "Cultural Articulation",
-      desc: "Deep knowledge and genuine appreciation of Mithila's heritage, folk art traditions, Maithili literature, and community values.",
+      desc: "Knowledge and genuine appreciation of Mithila's heritage, folk art traditions, Maithili literature, and community values.",
     },
     {
       title: "Talent & Creative Expression",
@@ -71,7 +74,7 @@ export default async function MithilaQueenPage() {
     },
     {
       title: "Stage Poise & Confidence",
-      desc: "Self-belief, graceful articulation of thoughts, dignity of bearing, and the courage to voice aspirations before an audience.",
+      desc: "Graceful articulation of thoughts, dignity of bearing, and the courage to voice aspirations before an audience.",
     },
     {
       title: "Community Representation",
@@ -79,253 +82,276 @@ export default async function MithilaQueenPage() {
     },
   ];
 
-  const prizes = (setting?.prizesJson as any) || [
-    {
-      place: "First Prize",
-      title: "iPhone 18 Pro Max, Red, 512 GB",
-      status: "Proposed by organizers",
-      badge: "Crown Winner",
-    },
-    {
-      place: "Second Prize",
-      title: "MAC Beauty Products Collection",
-      value: "Approx. NPR 30,000 estimated value",
-      status: "Proposed value",
-      badge: "First Runner-Up",
-    },
-    {
-      place: "Third Prize",
-      title: "Smartphone or Quality Electronic Device",
-      status: "To be confirmed",
-      badge: "Second Runner-Up",
-    },
-    {
-      place: "Fourth & Fifth Prize",
-      title: "Special Recognitions & Trophies",
-      status: "Details to be announced later",
-      badge: "Honorable Mention",
-    },
-  ];
+  const prizes: Array<{ place: string; title: string; badge?: string; status?: string; value?: string }> =
+    (setting?.prizesJson as any) || [
+      {
+        place: "First Prize",
+        title: "iPhone 18 Pro Max, Red, 512 GB",
+        status: "Proposed by organizers",
+        badge: "Crown Winner",
+      },
+      {
+        place: "Second Prize",
+        title: "MAC Beauty Products Collection",
+        value: "Approx. NPR 30,000 estimated value",
+        status: "Proposed value",
+        badge: "First Runner-Up",
+      },
+      {
+        place: "Third Prize",
+        title: "Smartphone or Quality Electronic Device",
+        status: "To be confirmed",
+        badge: "Second Runner-Up",
+      },
+    ];
 
   const videoSteps = [
     {
       step: "01",
-      title: "Create Your Introduction Video",
-      desc: "Record a short 60–90 second video introducing yourself, expressing why you want to participate, and demonstrating your talent or thoughts on Mithila heritage.",
+      title: "Record Introduction",
+      desc: "Create a 60-90 second video introducing your identity, location, and creative talents in Maithili, Nepali, or English.",
     },
     {
       step: "02",
-      title: "Publish on Social Media",
-      desc: "Post the video on your personal TikTok and Instagram profiles using the required official tags and hashtags once announced.",
+      title: "Tag on Social Media",
+      desc: "Post your video on your personal TikTok or Instagram profile using the official hashtag #MithilaQueen2026.",
     },
     {
       step: "03",
-      title: "Submit on WhatsApp to Gaurav Gupta",
-      desc: "Send the original video directly on WhatsApp to Managing Director Gaurav Gupta at +977 9704571941.",
+      title: "Submit on WhatsApp",
+      desc: "Send the original video file directly on WhatsApp to Managing Director Gaurav Gupta at +977 9704571941.",
     },
     {
       step: "04",
-      title: "Verification & Confirmation",
-      desc: "Ensure the sent video displays your tags and registration details for seamless cross-verification by the organizing team.",
+      title: "Verification & Review",
+      desc: "Ensure the sent message includes your Registration ID (MQ-YYYY-XXXXXX) for immediate administrative matching.",
     },
   ];
 
+  // Dynamic Availability & Registration Timeline Logic
+  const now = new Date();
+  const isMasterOpen = setting?.isRegistrationOpen ?? true;
+  const openingDate = setting?.registrationOpeningDate ? new Date(setting.registrationOpeningDate) : null;
+  const closingDate = setting?.registrationClosingDate ? new Date(setting.registrationClosingDate) : null;
+
+  const isBeforeOpening = openingDate ? now < openingDate : false;
+  const isAfterClosing = closingDate ? now > closingDate : false;
+
+  let regHeadline = "Official Online Registrations Are Currently Open";
+  let regDeadlineText: string | null = null;
+  let regStatusBadge = "Open";
+  let regStatusVariant: "emerald" | "amber" | "rose" | "blue" = "emerald";
+
+  if (!isMasterOpen) {
+    regHeadline = "Official Registrations Are Currently Closed";
+    regStatusBadge = "Closed";
+    regStatusVariant = "rose";
+  } else if (isAfterClosing && closingDate) {
+    regHeadline = `Official Online Registrations Closed (Ended on ${formatNepalDateOnly(closingDate)})`;
+    regStatusBadge = "Closed";
+    regStatusVariant = "rose";
+  } else if (isBeforeOpening && openingDate) {
+    regHeadline = `Official Online Registrations Start on ${formatNepalDateOnly(openingDate)}`;
+    regStatusBadge = `Starts ${formatNepalDateOnly(openingDate)}`;
+    regStatusVariant = "amber";
+  } else if (openingDate || closingDate) {
+    regHeadline = "Official Online Registrations Are Currently Open";
+    if (closingDate) {
+      regDeadlineText = `Deadline: ${formatNepalDateOnly(closingDate)}`;
+      regStatusBadge = `Open • Closes ${formatNepalDateOnly(closingDate)}`;
+    } else {
+      regStatusBadge = "Open Now";
+    }
+    regStatusVariant = "emerald";
+  } else {
+    regHeadline = "Official Online Registrations Opening Soon";
+    regStatusBadge = "Soon";
+    regStatusVariant = "blue";
+  }
+
   return (
-    <div className="py-12 sm:py-20 space-y-16 sm:space-y-24">
-      {/* ==================================================================== */}
-      {/* HERO BANNER */}
-      {/* ==================================================================== */}
-      <section className="bg-maroon text-white py-16 sm:py-24 border-b border-white/20 relative overflow-hidden">
-        {/* Ambient background mandala */}
-        <div className="absolute -right-20 top-1/2 -translate-y-1/2 opacity-10 pointer-events-none hidden lg:block">
-          <MithilaHeritageMandala className="w-[480px] h-[480px]" accent="var(--color-brand-accent, #D97706)" />
+    <div className="space-y-16 sm:space-y-24 py-12 sm:py-20">
+      {/* Hero Banner - Refined Light Tint Background */}
+      <section className="relative py-16 sm:py-24 border-b border-[#DCE5ED] bg-gradient-to-b from-[#FAFBFD] via-[#F4F7FA]/75 to-[#FFFFFF] overflow-hidden">
+        {/* Subtle Ambient Radial Highlight */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-15%,rgba(53,111,168,0.06),transparent_70%)] pointer-events-none" />
+
+        <div className="absolute -right-24 top-1/2 -translate-y-1/2 opacity-[0.035] text-[#183153] pointer-events-none hidden lg:block">
+          <MithilaHeritageMandala className="w-[480px] h-[480px]" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/20 border border-white/20 text-antique-gold text-xs font-semibold uppercase tracking-wider">
-            <span>Flagship Cultural Initiative &bull; The Origin Foundation</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DCE5ED] text-xs font-semibold text-[#183153] shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#356FA8]" />
+            <span>Flagship Cultural Initiative &bull; {setting?.organizationName || "The Origin Foundation"}</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-black font-serif text-white tracking-tight">
-            Mithila Queen
+          <h1 className="text-4xl sm:text-6xl font-black font-sans text-[#183153] tracking-tight">
+            {setting?.competitionName || "Mithila Queen"}
           </h1>
 
-          <p className="text-xl sm:text-2xl text-antique-gold font-serif italic max-w-2xl mx-auto">
-            &ldquo;Celebrating Mithila&apos;s Culture, Confidence & Talent.&rdquo;
+          <p className="text-xl sm:text-2xl text-[#356FA8] font-serif italic max-w-2xl mx-auto">
+            &ldquo;{setting?.competitionTagline || "Celebrating Mithila's Culture, Confidence & Talent."}&rdquo;
           </p>
 
-          <p className="text-sm sm:text-base text-stone-200 max-w-2xl mx-auto leading-relaxed">
-            An official cultural and talent-oriented competition based in Janakpur Dham, Nepal. Open to girls of any age, unmarried or married, with no prior stage experience required.
+          <p className="text-sm sm:text-base text-[#546E7A] max-w-2xl mx-auto leading-relaxed">
+            {setting?.shortIntro ||
+              "An official cultural and talent-oriented competition based in Janakpur Dham, Nepal. Open to girls of any age, unmarried or married, with no prior stage experience required."}
           </p>
 
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3.5">
-            <Link href="/register">
-              <Button className="w-full sm:w-auto bg-saffron hover:bg-saffron-dark text-white font-bold text-sm h-12 px-7 rounded-md shadow-md gap-2 group">
-                <span>Register Online</span>
-                <span className="text-xs bg-black/20 px-2 py-0.5 rounded font-mono font-bold">
+          {/* Registration Live Status Card */}
+          <div className="max-w-xl mx-auto p-3.5 rounded-xl bg-white border border-[#DCE5ED] shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2 text-[#263238] font-medium">
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  regStatusVariant === "emerald"
+                    ? "bg-emerald-500 animate-pulse"
+                    : regStatusVariant === "amber"
+                    ? "bg-amber-500"
+                    : regStatusVariant === "rose"
+                    ? "bg-rose-500"
+                    : "bg-blue-500"
+                }`}
+              />
+              <span>{regHeadline}</span>
+              {regDeadlineText && <span className="font-bold text-[#183153]">&bull; {regDeadlineText}</span>}
+            </div>
+            <span
+              className={`inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-semibold border ${
+                regStatusVariant === "emerald"
+                  ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                  : regStatusVariant === "amber"
+                  ? "bg-amber-50 text-amber-800 border-amber-200"
+                  : regStatusVariant === "rose"
+                  ? "bg-rose-50 text-rose-800 border-rose-200"
+                  : "bg-blue-50 text-blue-800 border-blue-200"
+              }`}
+            >
+              {regStatusBadge}
+            </span>
+          </div>
+
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+            <Link href="/register" className="w-full sm:w-auto">
+              <Button className="w-full sm:w-auto bg-[#183153] hover:bg-[#12243D] text-white font-bold text-sm h-13 px-8 rounded-xl shadow-md gap-3 transition-all hover:scale-[1.01]">
+                <span>
+                  {regStatusVariant === "amber"
+                    ? `Registration Starts ${formatNepalDateOnly(openingDate)}`
+                    : regStatusVariant === "rose"
+                    ? "Registrations Closed"
+                    : "Register for Mithila Queen"}
+                </span>
+                <span className="text-[11px] bg-white/20 text-white px-2 py-0.5 rounded-md font-mono font-bold">
                   NPR {regFee}
                 </span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                <ArrowRight className="w-4 h-4 text-[#DCE5ED]" />
               </Button>
             </Link>
-            <Link href="/rules">
+            <Link href="/registration-status" className="w-full sm:w-auto">
               <Button
                 variant="outline"
-                className="w-full sm:w-auto border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white text-sm h-12 px-6 rounded-md"
+                className="w-full sm:w-auto border-2 border-[#183153]/25 hover:border-[#183153] bg-white hover:bg-[#F4F7FA] text-[#183153] font-bold text-sm h-13 px-7 rounded-xl shadow-2xs gap-2.5 transition-all"
               >
-                Read Official Rules & Safeguarding
+                <Search className="w-4 h-4 text-[#356FA8]" />
+                <span>Check Application Status</span>
+              </Button>
+            </Link>
+            <Link href="/rules" className="w-full sm:w-auto">
+              <Button
+                variant="ghost"
+                className="w-full sm:w-auto text-[#183153] hover:bg-black/5 text-xs h-13 px-5 rounded-xl font-semibold border border-[#DCE5ED]"
+              >
+                Rules &amp; Code
               </Button>
             </Link>
           </div>
 
-          <div className="pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-6 text-xs text-stone-200">
+          <div className="pt-6 border-t border-[#DCE5ED] flex flex-wrap items-center justify-center gap-6 text-xs text-[#546E7A]">
             <div className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4 text-antique-gold" />
-              <span>Schedule: <strong>{setting?.eventSchedule || "To Be Announced"}</strong></span>
+              <Calendar className="w-4 h-4 text-[#356FA8]" />
+              <span>Schedule: <strong className="text-[#183153]">{setting?.eventSchedule || "To Be Announced"}</strong></span>
             </div>
             <div className="flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-antique-gold" />
-              <span>Format: <strong>Online Registration Portal</strong></span>
+              <MapPin className="w-4 h-4 text-[#356FA8]" />
+              <span>Location: <strong className="text-[#183153]">{setting?.location || "Janakpur Dham, Nepal"}</strong></span>
             </div>
             <div className="flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-antique-gold" />
-              <span>Girls Only (Any Age) &bull; Newcomers Welcome</span>
+              <ShieldCheck className="w-4 h-4 text-[#356FA8]" />
+              <span className="text-[#183153]">Girls Only (Any Age) &bull; Newcomers Welcome</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ==================================================================== */}
-      {/* CULTURAL PLATFORM PHILOSOPHY */}
-      {/* ==================================================================== */}
+      {/* Cultural Platform Philosophy */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-12 rounded-xl bg-white border border-cream-dark shadow-xs space-y-6">
+        <div className="p-8 sm:p-12 rounded-2xl bg-white border border-[#DCE5ED] shadow-xs space-y-6">
           <div className="max-w-3xl space-y-3">
-            <span className="text-xs font-bold uppercase tracking-[0.16em] text-saffron">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#356FA8]">
               Evaluation Philosophy
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-maroon font-serif">
-              A Cultural Platform — Not Merely a Physical Beauty Contest
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#263238]">
+              A Cultural Platform &bull; Not Merely a Physical Pageant
             </h2>
-            <p className="text-sm text-stone-600 leading-relaxed">
+            <p className="text-sm text-[#546E7A] leading-relaxed">
               Mithila Queen is consciously framed around cultural wisdom, self-confidence, articulation, and talent. Physical beauty is not the primary criteria. We evaluate each participant across four core competencies:
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
             {evaluationPillars.map((p, i) => (
-              <div key={i} className="p-6 rounded-xl bg-soft-cream border border-cream-dark space-y-2">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-saffron block">
+              <div key={i} className="p-6 rounded-xl bg-[#F4F7FA] border border-[#DCE5ED] space-y-2">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-[#356FA8] block">
                   Criteria 0{i + 1}
                 </span>
-                <h3 className="font-bold text-maroon text-base font-serif">{p.title}</h3>
-                <p className="text-xs text-stone-600 leading-relaxed">{p.desc}</p>
+                <h3 className="font-bold text-sm text-[#263238]">{p.title}</h3>
+                <p className="text-xs text-[#546E7A] leading-relaxed">{p.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ==================================================================== */}
-      {/* ELIGIBILITY CRITERIA TABLE */}
-      {/* ==================================================================== */}
+      {/* Rules & Eligibility Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="max-w-2xl space-y-2">
-          <span className="text-xs font-bold uppercase tracking-[0.16em] text-saffron">
-            Eligibility & Inclusivity
+          <span className="text-xs font-bold uppercase tracking-wider text-[#356FA8]">
+            Standards & Requirements
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-maroon font-serif">
-            Who Can Participate?
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#263238]">
+            Eligibility Guidelines
           </h2>
-          <p className="text-xs sm:text-sm text-stone-600">
-            Our eligibility rules are straightforward, fair, and designed to remove arbitrary barriers.
+          <p className="text-xs sm:text-sm text-[#546E7A]">
+            Clear, transparent participation rules established by The Origin Foundation.
           </p>
         </div>
 
-        <div className="bg-white rounded-xl border border-cream-dark shadow-xs overflow-hidden">
-          <div className="divide-y divide-cream-dark">
-            {eligibilityRules.map((item, idx) => (
-              <div key={idx} className="p-6 sm:p-7 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="md:w-1/3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-saffron block">
-                    Rule 0{idx + 1}
-                  </span>
-                  <h3 className="text-base font-bold text-maroon font-serif mt-0.5">
-                    {item.rule}
-                  </h3>
-                </div>
-                <div className="md:w-1/3">
-                  <span className="font-bold text-sm text-maroon block">{item.criteria}</span>
-                </div>
-                <div className="md:w-1/3 text-xs text-stone-500">
-                  <span>{item.note}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ==================================================================== */}
-      {/* PROPOSED PRIZE SECTION */}
-      {/* ==================================================================== */}
-      <section className="bg-white py-16 sm:py-20 border-y border-cream-dark">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div className="space-y-2 max-w-xl">
-              <span className="text-xs font-bold uppercase tracking-[0.16em] text-saffron">
-                Recognition
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {eligibilityRules.map((rule, idx) => (
+            <div
+              key={idx}
+              className="p-5 rounded-xl bg-white border border-[#DCE5ED] shadow-xs space-y-2 hover:border-[#356FA8] transition-colors"
+            >
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#356FA8] block">
+                {rule.rule}
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-maroon font-serif">
-                Prize Structure
-              </h2>
-              <p className="text-xs sm:text-sm text-stone-600">
-                Honoring the hard work, courage, and regional pride demonstrated by our participants.
-              </p>
+              <p className="font-bold text-[#263238] text-sm">{rule.criteria}</p>
+              <p className="text-xs text-[#546E7A] leading-relaxed">{rule.note}</p>
             </div>
-            <div className="p-3 rounded-xl bg-soft-cream border border-cream-dark text-xs text-stone-600">
-              <span className="font-bold text-maroon">Organizer Note: </span>
-              <span>All unconfirmed awards are labeled per transparency guidelines.</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {prizes.map((p: any, idx: number) => (
-              <div
-                key={idx}
-                className="p-6 rounded-xl bg-soft-cream border border-cream-dark flex flex-col justify-between space-y-4 hover:border-saffron transition-colors"
-              >
-                <div className="space-y-2">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-saffron">
-                    {p.badge || "Prize"}
-                  </span>
-                  <h3 className="font-serif font-bold text-base text-maroon">{p.place || p.position}</h3>
-                  <p className="text-sm font-semibold text-stone-800">{p.title}</p>
-                  {p.value && <p className="text-xs text-stone-500 font-mono">{p.value}</p>}
-                </div>
-                <div className="pt-3 border-t border-cream-dark">
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-white text-maroon border border-cream-dark">
-                    {p.status}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* ==================================================================== */}
-      {/* VIDEO AUDITION & WHATSAPP SUBMISSION */}
-      {/* ==================================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      {/* Video Audition & WhatsApp Submission */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="max-w-2xl space-y-2">
-          <span className="text-xs font-bold uppercase tracking-[0.16em] text-saffron">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#356FA8]">
             Audition Guidelines
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-maroon font-serif">
-            Video Submission Process
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#263238]">
+            Video Audition Process
           </h2>
-          <p className="text-xs sm:text-sm text-stone-600">
+          <p className="text-xs sm:text-sm text-[#546E7A]">
             Participants share a short introduction video demonstrating their personality, cultural thoughts, and talent.
           </p>
         </div>
@@ -334,35 +360,36 @@ export default async function MithilaQueenPage() {
           {videoSteps.map((step) => (
             <div
               key={step.step}
-              className="p-6 rounded-xl bg-white border border-cream-dark shadow-xs space-y-3 hover:border-saffron transition-colors"
+              className="p-6 rounded-xl bg-white border border-[#DCE5ED] shadow-xs space-y-3 hover:border-[#356FA8] transition-colors"
             >
               <div className="flex items-center justify-between">
-                <span className="w-8 h-8 rounded-lg bg-maroon text-antique-gold flex items-center justify-center font-bold text-xs font-mono">
+                <span className="w-8 h-8 rounded-md bg-[#183153] text-white flex items-center justify-center font-bold text-xs font-mono">
                   {step.step}
                 </span>
-                <Video className="w-4 h-4 text-saffron" />
+                <Video className="w-4 h-4 text-[#356FA8]" />
               </div>
-              <h3 className="text-base font-bold text-maroon font-serif">{step.title}</h3>
-              <p className="text-xs text-stone-600 leading-relaxed">{step.desc}</p>
+              <h3 className="text-sm font-bold text-[#263238]">{step.title}</h3>
+              <p className="text-xs text-[#546E7A] leading-relaxed">{step.desc}</p>
             </div>
           ))}
         </div>
 
-        <div className="p-6 rounded-xl bg-maroon text-white border border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* WhatsApp Receiving Line Banner */}
+        <div className="p-6 rounded-2xl bg-[#183153] text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
           <div className="space-y-1">
-            <span className="text-xs font-bold text-antique-gold uppercase tracking-wider block">
-              Direct WhatsApp Submission Line
+            <span className="text-xs font-bold text-[#356FA8] uppercase tracking-wider block">
+              Direct WhatsApp Audition Line
             </span>
             <p className="text-sm font-semibold text-white">
               Send your video directly to Managing Director Gaurav Gupta:{" "}
-              <span className="font-mono text-antique-gold">+977 9704571941</span>
+              <span className="font-mono text-[#DCE5ED]">+977 9704571941</span>
             </p>
           </div>
           <a
             href="https://wa.me/9779704571941"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-saffron hover:bg-saffron-dark text-white text-xs font-bold h-10 px-5 rounded-md transition-colors shrink-0"
+            className="inline-flex items-center gap-2 bg-[#356FA8] hover:bg-[#2B5A88] text-white text-xs font-bold h-10 px-5 rounded-md transition-colors shrink-0 shadow-xs"
           >
             <MessageCircle className="w-4 h-4" />
             <span>Open WhatsApp Chat</span>
@@ -370,28 +397,63 @@ export default async function MithilaQueenPage() {
         </div>
       </section>
 
-      {/* ==================================================================== */}
-      {/* FINAL CALL TO ACTION */}
-      {/* ==================================================================== */}
+      {/* Prizes Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="max-w-2xl space-y-2">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#356FA8]">
+            Recognition
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#263238]">
+            Proposed Competition Awards
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {prizes.map((p, idx) => (
+            <div
+              key={idx}
+              className="p-6 rounded-2xl bg-white border border-[#DCE5ED] shadow-xs space-y-3"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-[#F4F7FA] text-[#356FA8] px-2.5 py-0.5 rounded border border-[#DCE5ED]">
+                  {p.badge}
+                </span>
+                <Award className="w-4 h-4 text-[#356FA8]" />
+              </div>
+              <h3 className="font-bold text-base text-[#183153]">{p.place}</h3>
+              <p className="text-sm font-semibold text-[#263238]">{p.title}</p>
+              {p.value && <p className="text-xs text-[#546E7A] font-mono">{p.value}</p>}
+              <p className="text-xs text-[#546E7A] pt-2 border-t border-[#DCE5ED]">{p.status}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Final Call to Action */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-maroon font-serif">
-          Begin Your Registration for Mithila Queen
-        </h2>
-        <p className="text-xs sm:text-sm text-stone-600 max-w-xl mx-auto">
-          Complete the 7-step online application form, submit the NPR {regFee} administrative registration fee, and receive your official registration confirmation.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Link href="/register">
-            <Button className="bg-saffron hover:bg-saffron-dark text-white font-bold text-xs h-11 px-7 rounded-md shadow-xs gap-2">
-              <span>Start Registration (NPR {regFee})</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Button>
-          </Link>
-          <Link href="/registration-status">
-            <Button variant="outline" className="border-cream-dark text-maroon hover:bg-soft-cream text-xs h-11 px-6 rounded-md font-medium">
-              Check Application Status
-            </Button>
-          </Link>
+        <div className="p-8 sm:p-12 rounded-2xl bg-[#183153] text-white space-y-5 shadow-xs">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white">
+            Begin Your Registration for {setting?.competitionName || "Mithila Queen"}
+          </h2>
+          <p className="text-xs sm:text-sm text-[#DCE5ED] max-w-xl mx-auto">
+            Complete the online application form, submit the NPR {regFee} administrative fee, and receive your official candidate dossier.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <Link href="/register">
+              <Button className="w-full sm:w-auto bg-[#356FA8] hover:bg-[#2B5A88] text-white font-bold text-xs h-11 px-7 rounded-md shadow-xs gap-2">
+                <span>Start Registration (NPR {regFee})</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Button>
+            </Link>
+            <Link href="/registration-status">
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white text-xs h-11 px-6 rounded-md font-medium"
+              >
+                Check Application Status
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>
