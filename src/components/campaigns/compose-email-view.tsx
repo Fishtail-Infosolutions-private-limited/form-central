@@ -32,6 +32,13 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   AVAILABLE_EMAIL_VARIABLES,
   renderEmailTemplate,
   getSamplePreviewContext,
@@ -447,18 +454,24 @@ export function ComposeEmailView({
                 <span className="text-[11px] font-semibold text-stone-500 whitespace-nowrap">
                   Load Template:
                 </span>
-                <select
-                  value={selectedTemplateId}
-                  onChange={(e) => handleTemplateSelect(e.target.value)}
-                  className="text-xs bg-soft-cream border border-cream-dark rounded-lg px-2.5 py-1.5 font-medium text-stone-800 focus:outline-[#D97706]"
-                >
-                  <option value="">Blank Message (Custom)</option>
-                  {templates.map((tpl) => (
-                    <option key={tpl.id} value={tpl.id}>
-                      {tpl.name}
-                    </option>
-                  ))}
-                </select>
+                <div className="w-[230px]">
+                  <Select
+                    value={selectedTemplateId}
+                    onValueChange={(val) => handleTemplateSelect(val)}
+                  >
+                    <SelectTrigger className="h-8 text-xs bg-soft-cream border-cream-dark shadow-xs">
+                      <SelectValue placeholder="Blank Message (Custom)" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Blank Message (Custom)</SelectItem>
+                      {templates.map((tpl) => (
+                        <SelectItem key={tpl.id} value={tpl.id}>
+                          {tpl.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
           </CardHeader>

@@ -6,6 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Check, CheckCircle2, ArrowRight, ArrowLeft, Eye, ShieldCheck, Upload, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { RichTextView } from "@/components/ui/rich-text-view";
@@ -198,18 +205,22 @@ export function FormPreview({
                         rows={3}
                       />
                     ) : field.type === "select" ? (
-                      <select
+                      <Select
                         value={answers[field.fieldKey] || ""}
-                        onChange={(e) => handleAnswerChange(field.fieldKey, e.target.value)}
-                        className="w-full h-10 rounded-lg border border-zinc-200 px-3 text-xs bg-white text-zinc-900"
+                        onValueChange={(val) => handleAnswerChange(field.fieldKey, val)}
                       >
-                        <option value="">{field.placeholder || "Select an option..."}</option>
-                        {(field.options || []).map((opt) => (
-                          <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
+                        <SelectTrigger className="w-full h-10 text-xs border-zinc-200 bg-white">
+                          <SelectValue placeholder={field.placeholder || "Select an option..."} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="">Select an option...</SelectItem>
+                          {(field.options || []).map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     ) : field.type === "radio" ? (
                       <div className="space-y-2 pt-1">
                         {(field.options || []).map((opt) => (

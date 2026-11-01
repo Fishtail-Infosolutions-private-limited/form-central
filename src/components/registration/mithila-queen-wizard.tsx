@@ -31,6 +31,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import {
   initiateMithilaQueenStep1Action,
@@ -40,6 +47,47 @@ import {
   submitPaymentDetailsAction,
 } from "@/server/actions/mithila-queen-actions";
 import { getPublicSiteSettingsAction } from "@/server/actions/site-settings-actions";
+
+const NEPAL_PROVINCES = [
+  "Madhesh Province",
+  "Bagmati Province",
+  "Koshi Province",
+  "Gandaki Province",
+  "Lumbini Province",
+  "Karnali Province",
+  "Sudurpashchim Province",
+] as const;
+
+const PROVINCE_DISTRICTS: Record<string, string[]> = {
+  "Madhesh Province": ["Dhanusha", "Mahottari", "Sarlahi", "Siraha", "Saptari", "Rautahat", "Bara", "Parsa"],
+  "Bagmati Province": ["Kathmandu", "Lalitpur", "Bhaktapur", "Kavrepalanchok", "Chitwan", "Makwanpur", "Sindhuli", "Dhading", "Nuwakot", "Ramechhap", "Sindhupalchok", "Dolakha", "Rasuwa"],
+  "Koshi Province": ["Morang", "Sunsari", "Jhapa", "Udayapur", "Ilam", "Dhankuta", "Bhojpur", "Sankhuwasabha", "Solukhumbu", "Okhaldhunga", "Khotang", "Terhathum", "Panchthar", "Taplejung"],
+  "Gandaki Province": ["Kaski", "Tanahun", "Syangja", "Gorkha", "Lamjung", "Nawalpur", "Baglung", "Parbat", "Myagdi", "Manang", "Mustang"],
+  "Lumbini Province": ["Rupandehi", "Kapilvastu", "Dang", "Banke", "Bardiya", "Palpa", "Parasi", "Arghakhanchi", "Gulmi", "Pyuthan", "Rolpa", "Rukum East"],
+  "Karnali Province": ["Surkhet", "Dailekh", "Jajarkot", "Salyan", "Rukum West", "Jumla", "Kalikot", "Mugu", "Humla", "Dolpa"],
+  "Sudurpashchim Province": ["Kailali", "Kanchanpur", "Dadeldhura", "Doti", "Achham", "Baitadi", "Bajhang", "Bajura", "Darchula"],
+};
+
+const EDUCATION_LEVEL_OPTIONS = [
+  "Secondary School / SEE (Grade 10)",
+  "+2 / Higher Secondary (Grade 11-12)",
+  "Bachelor's Degree (Ongoing / Enrolled)",
+  "Bachelor's Degree (Graduated)",
+  "Master's Degree or Higher",
+  "Vocational / Professional Training",
+  "Other",
+];
+
+const GUARDIAN_RELATION_OPTIONS = [
+  "Parent / Mother",
+  "Parent / Father",
+  "Elder Sister",
+  "Elder Brother",
+  "Grandparent",
+  "Aunt / Uncle",
+  "Legal Guardian",
+  "Other Relative",
+];
 
 export function MithilaQueenWizard() {
   const [step, setStep] = useState(1);
@@ -1056,26 +1104,47 @@ export function MithilaQueenWizard() {
                 <Label htmlFor="province" required className="text-xs font-bold text-maroon">
                   Province
                 </Label>
-                <Input
-                  id="province"
+                <Select
                   value={province}
-                  onChange={(e) => setProvince(e.target.value)}
-                  required
-                  className="h-10 text-xs border-cream-dark"
-                />
+                  onValueChange={(val) => {
+                    setProvince(val);
+                    const defaultDist = PROVINCE_DISTRICTS[val]?.[0] || "";
+                    if (defaultDist) setDistrict(defaultDist);
+                  }}
+                >
+                  <SelectTrigger id="province" className="h-10 text-xs border-cream-dark bg-white font-medium">
+                    <SelectValue placeholder="Select Province" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {NEPAL_PROVINCES.map((prov) => (
+                      <SelectItem key={prov} value={prov}>
+                        {prov}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-1.5">
                 <Label htmlFor="district" required className="text-xs font-bold text-maroon">
                   District
                 </Label>
-                <Input
-                  id="district"
+                <Select
                   value={district}
-                  onChange={(e) => setDistrict(e.target.value)}
-                  required
-                  className="h-10 text-xs border-cream-dark"
-                />
+                  onValueChange={(val) => setDistrict(val)}
+                >
+                  <SelectTrigger id="district" className="h-10 text-xs border-cream-dark bg-white font-medium">
+                    <SelectValue placeholder="Select District" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(PROVINCE_DISTRICTS[province] || PROVINCE_DISTRICTS["Madhesh Province"]).map((d) => (
+                      <SelectItem key={d} value={d}>
+                        {d}
+                      </SelectItem>
+                    ))}
+                    <SelectItem value="Other District">Other District</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-1.5">
@@ -1086,6 +1155,7 @@ export function MithilaQueenWizard() {
                   id="municipality"
                   value={municipality}
                   onChange={(e) => setMunicipality(e.target.value)}
+                  placeholder="e.g. Janakpurdham Sub-Metropolitan"
                   required
                   className="h-10 text-xs border-cream-dark"
                 />
@@ -1286,13 +1356,21 @@ export function MithilaQueenWizard() {
                 <Label htmlFor="education" className="text-xs font-bold text-maroon">
                   Current Education Level (Voluntary)
                 </Label>
-                <Input
-                  id="education"
+                <Select
                   value={educationLevel}
-                  onChange={(e) => setEducationLevel(e.target.value)}
-                  placeholder="e.g. Bachelor's Degree"
-                  className="h-10 text-xs border-cream-dark"
-                />
+                  onValueChange={(val) => setEducationLevel(val)}
+                >
+                  <SelectTrigger id="education" className="h-10 text-xs border-cream-dark bg-white font-medium">
+                    <SelectValue placeholder="Select Education Level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {EDUCATION_LEVEL_OPTIONS.map((edu) => (
+                      <SelectItem key={edu} value={edu}>
+                        {edu}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-1.5">
@@ -1664,14 +1742,21 @@ export function MithilaQueenWizard() {
                     <Label htmlFor="guardianRelation" required className="text-[11px] font-bold text-amber-950">
                       Relationship
                     </Label>
-                    <Input
-                      id="guardianRelation"
+                    <Select
                       value={guardianRelation}
-                      onChange={(e) => setGuardianRelation(e.target.value)}
-                      placeholder="e.g. Mother / Father / Guardian"
-                      required
-                      className="h-9 text-xs border-amber-300 bg-white"
-                    />
+                      onValueChange={(val) => setGuardianRelation(val)}
+                    >
+                      <SelectTrigger id="guardianRelation" className="h-9 text-xs border-amber-300 bg-white font-medium">
+                        <SelectValue placeholder="Select relationship" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {GUARDIAN_RELATION_OPTIONS.map((rel) => (
+                          <SelectItem key={rel} value={rel}>
+                            {rel}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="space-y-1">

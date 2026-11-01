@@ -22,6 +22,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { BuilderWorkspace } from "@/components/admin/form-builder/builder-workspace";
 import { FormQrCard } from "@/components/admin/form-qr-card";
@@ -541,14 +548,18 @@ export function CompetitionWorkspace({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <Label className="text-xs font-semibold text-stone-700">Current Registration Status</Label>
-                <select
+                <Select
                   value={isRegOpen ? "OPEN" : "CLOSED"}
-                  onChange={(e) => setIsRegOpen(e.target.value === "OPEN")}
-                  className="w-full h-9 px-3 rounded-lg border border-stone-200 bg-stone-50 text-xs font-medium text-stone-800"
+                  onValueChange={(val) => setIsRegOpen(val === "OPEN")}
                 >
-                  <option value="OPEN">Registration Open</option>
-                  <option value="CLOSED">Registration Closed</option>
-                </select>
+                  <SelectTrigger className="h-9 text-xs border-stone-200 bg-stone-50">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="OPEN">Registration Open</SelectItem>
+                    <SelectItem value="CLOSED">Registration Closed</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-1.5">

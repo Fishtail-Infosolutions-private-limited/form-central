@@ -33,6 +33,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import {
   adminVerifyPaymentAction,
@@ -210,33 +217,39 @@ export function MithilaQueenApplicationsView({
 
         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           {/* Payment Filter */}
-          <select
-            value={paymentFilter}
-            onChange={(e) => setPaymentFilter(e.target.value)}
-            className="h-10 text-xs border border-zinc-200 rounded-md px-3 bg-white font-medium text-zinc-800"
-          >
-            <option value="ALL">Payment: All</option>
-            <option value="PENDING">Payment: Pending</option>
-            <option value="UNDER_REVIEW">Payment: Under Review</option>
-            <option value="VERIFIED">Payment: Verified</option>
-            <option value="CLARIFICATION_REQUIRED">Payment: Clarification</option>
-          </select>
+          <div className="w-[170px]">
+            <Select value={paymentFilter} onValueChange={(val) => setPaymentFilter(val)}>
+              <SelectTrigger className="h-10 text-xs border-cream-dark bg-white font-medium">
+                <SelectValue placeholder="Payment: All" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">Payment: All</SelectItem>
+                <SelectItem value="PENDING">Payment: Pending</SelectItem>
+                <SelectItem value="UNDER_REVIEW">Payment: Under Review</SelectItem>
+                <SelectItem value="VERIFIED">Payment: Verified</SelectItem>
+                <SelectItem value="CLARIFICATION_REQUIRED">Payment: Clarification</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* Application Filter */}
-          <select
-            value={appFilter}
-            onChange={(e) => setAppFilter(e.target.value)}
-            className="h-10 text-xs border border-zinc-200 rounded-md px-3 bg-white font-medium text-zinc-800"
-          >
-            <option value="ALL">Application: All</option>
-            <option value="SUBMITTED">App: Submitted</option>
-            <option value="UNDER_REVIEW">App: Under Review</option>
-            <option value="APPROVED">App: Approved</option>
-            <option value="REJECTED">App: Rejected</option>
-            <option value="ACTION_REQUIRED">App: Action Required</option>
-          </select>
+          <div className="w-[175px]">
+            <Select value={appFilter} onValueChange={(val) => setAppFilter(val)}>
+              <SelectTrigger className="h-10 text-xs border-cream-dark bg-white font-medium">
+                <SelectValue placeholder="Application: All" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">Application: All</SelectItem>
+                <SelectItem value="SUBMITTED">App: Submitted</SelectItem>
+                <SelectItem value="UNDER_REVIEW">App: Under Review</SelectItem>
+                <SelectItem value="APPROVED">App: Approved</SelectItem>
+                <SelectItem value="REJECTED">App: Rejected</SelectItem>
+                <SelectItem value="ACTION_REQUIRED">App: Action Required</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-          <span className="text-xs text-zinc-500 font-mono font-bold pl-2">
+          <span className="text-xs text-stone-500 font-mono font-bold pl-2">
             Total: {filtered.length}
           </span>
         </div>

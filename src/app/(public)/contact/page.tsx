@@ -6,12 +6,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { submitContactInquiryAction } from "@/server/actions/contact-actions";
+
+const CONTACT_TOPICS = [
+  "General Competition Guidance",
+  "Video Audition & WhatsApp Submission Support",
+  "Payment & Fee Verification Assistance",
+  "Eligibility & Minor Consent Inquiry",
+  "Sponsorship & Partnership Opportunity",
+  "Press & Media Relations",
+  "Other Inquiries",
+] as const;
 
 export default function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [selectedTopic, setSelectedTopic] = useState("General Competition Guidance");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,10 +46,12 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setErrorMessage(null);
 
+    const finalSubject = subject.trim() ? `${selectedTopic}: ${subject.trim()}` : selectedTopic;
+
     const res = await submitContactInquiryAction({
       name,
       email,
-      subject,
+      subject: finalSubject,
       message,
     });
 
@@ -191,17 +211,40 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <Label htmlFor="subject" className="text-xs font-bold text-maroon">
-                    Subject / Competition Inquiry
-                  </Label>
-                  <Input
-                    id="subject"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    placeholder="e.g. Question regarding video audition guidelines"
-                    className="h-10 text-xs border-cream-dark bg-white focus-visible:border-saffron focus-visible:ring-saffron/20"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="topic" className="text-xs font-bold text-maroon">
+                      Topic of Inquiry
+                    </Label>
+                    <Select
+                      value={selectedTopic}
+                      onValueChange={(val) => setSelectedTopic(val)}
+                    >
+                      <SelectTrigger id="topic" className="h-10 text-xs border-cream-dark bg-white font-medium">
+                        <SelectValue placeholder="Select topic" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CONTACT_TOPICS.map((topic) => (
+                          <SelectItem key={topic} value={topic}>
+                            {topic}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label htmlFor="subject" className="text-xs font-bold text-maroon">
+                      Specific Subject (Optional)
+                    </Label>
+                    <Input
+                      id="subject"
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                      placeholder="e.g. Audition video inquiry"
+                      className="h-10 text-xs border-cream-dark bg-white focus-visible:border-saffron focus-visible:ring-saffron/20"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-1.5">

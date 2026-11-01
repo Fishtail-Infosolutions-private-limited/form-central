@@ -16,6 +16,13 @@ import { Badge } from "@/components/ui/badge";
 import { RichTextView } from "@/components/ui/rich-text-view";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Trophy,
   ShieldCheck,
   Mail,
@@ -754,18 +761,22 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                           rows={3}
                         />
                       ) : field.type === "select" ? (
-                        <select
+                        <Select
                           value={answers[field.fieldKey] || ""}
-                          onChange={(e) => handleInputChange(field.fieldKey, e.target.value)}
-                          className="w-full h-10 rounded-lg border border-slate-200 px-3 text-sm bg-white text-slate-900"
+                          onValueChange={(val) => handleInputChange(field.fieldKey, val)}
                         >
-                          <option value="">{field.placeholder || "Select option..."}</option>
-                          {(field.options || []).map((opt) => (
-                            <option key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </option>
-                          ))}
-                        </select>
+                          <SelectTrigger className="w-full h-10 rounded-lg border border-slate-200 px-3 text-sm bg-white text-slate-900">
+                            <SelectValue placeholder={field.placeholder || "Select option..."} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="">{field.placeholder || "Select option..."}</SelectItem>
+                            {(field.options || []).map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       ) : field.type === "radio" ? (
                         <div className="space-y-2 pt-1">
                           {(field.options || []).map((opt) => (

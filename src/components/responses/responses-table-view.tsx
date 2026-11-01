@@ -29,6 +29,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { formatDateTime } from "@/lib/utils";
 import {
   toggleSubmissionReadStatusAction,
@@ -250,18 +257,21 @@ export function ResponsesTableView({
 
           {/* Form Filter */}
           {!currentFormId && (
-            <select
-              value={selectedFormId}
-              onChange={(e) => setSelectedFormId(e.target.value)}
-              className="h-10 text-xs rounded-lg border border-zinc-200 px-3 bg-white text-zinc-800"
-            >
-              <option value="ALL">All Events & Competitions ({submissions.length})</option>
-              {forms.map((f) => (
-                <option key={f.id} value={f.id}>
-                  {f.name}
-                </option>
-              ))}
-            </select>
+            <div className="w-[240px]">
+              <Select value={selectedFormId} onValueChange={(val) => setSelectedFormId(val)}>
+                <SelectTrigger className="h-10 text-xs border-cream-dark bg-white text-zinc-800">
+                  <SelectValue placeholder="All Events & Competitions" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">All Events &amp; Competitions ({submissions.length})</SelectItem>
+                  {forms.map((f) => (
+                    <SelectItem key={f.id} value={f.id}>
+                      {f.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           )}
 
           {/* Read / Unread Status Filter */}

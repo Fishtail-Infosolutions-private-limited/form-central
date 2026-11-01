@@ -32,6 +32,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { updateSiteSettingsAction } from "@/server/actions/site-settings-actions";
 import { UploadSettingsCard } from "@/components/admin/upload-settings-card";
@@ -460,14 +467,18 @@ export function UnifiedSettingsCMS({
 
               <div className="space-y-1.5">
                 <Label className="text-xs font-bold text-maroon">Registration Status</Label>
-                <select
+                <Select
                   value={isRegOpen ? "OPEN" : "CLOSED"}
-                  onChange={(e) => setIsRegOpen(e.target.value === "OPEN")}
-                  className="w-full h-10 px-3 rounded-md border border-cream-dark bg-soft-cream text-xs font-semibold text-maroon"
+                  onValueChange={(val) => setIsRegOpen(val === "OPEN")}
                 >
-                  <option value="OPEN">Registration Open</option>
-                  <option value="CLOSED">Registration Closed</option>
-                </select>
+                  <SelectTrigger className="h-10 border-cream-dark bg-soft-cream text-xs font-semibold text-maroon">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="OPEN">Registration Open</SelectItem>
+                    <SelectItem value="CLOSED">Registration Closed</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-1.5">

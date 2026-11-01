@@ -33,6 +33,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
@@ -377,50 +384,53 @@ export function UnifiedResponsesView({
 
           {/* Form / Competition Selector */}
           <div>
-            <select
-              value={formFilter}
-              onChange={(e) => setFormFilter(e.target.value)}
-              className="w-full h-9 text-xs border border-cream-dark rounded-md bg-soft-cream/50 px-3 text-charcoal focus:outline-none focus:border-saffron"
-            >
-              <option value="ALL">All Competitions &amp; Forms</option>
-              {forms.map((f) => (
-                <option key={f.id} value={f.slug}>
-                  {f.name}
-                </option>
-              ))}
-            </select>
+            <Select value={formFilter} onValueChange={(val) => setFormFilter(val)}>
+              <SelectTrigger className="w-full h-9 text-xs border-cream-dark bg-soft-cream/50 text-charcoal">
+                <SelectValue placeholder="All Competitions & Forms" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">All Competitions &amp; Forms</SelectItem>
+                {forms.map((f) => (
+                  <SelectItem key={f.id} value={f.slug}>
+                    {f.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Payment Status Filter */}
           <div>
-            <select
-              value={paymentFilter}
-              onChange={(e) => setPaymentFilter(e.target.value)}
-              className="w-full h-9 text-xs border border-cream-dark rounded-md bg-soft-cream/50 px-3 text-charcoal focus:outline-none focus:border-saffron"
-            >
-              <option value="ALL">All Payment States</option>
-              <option value="UNDER_REVIEW">Payment: Under Review</option>
-              <option value="VERIFIED">Payment: Verified</option>
-              <option value="CLARIFICATION_REQUIRED">Payment: Clarification</option>
-              <option value="PENDING">Payment: Pending</option>
-              <option value="FAILED">Payment: Failed</option>
-            </select>
+            <Select value={paymentFilter} onValueChange={(val) => setPaymentFilter(val)}>
+              <SelectTrigger className="w-full h-9 text-xs border-cream-dark bg-soft-cream/50 text-charcoal">
+                <SelectValue placeholder="All Payment States" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">All Payment States</SelectItem>
+                <SelectItem value="UNDER_REVIEW">Payment: Under Review</SelectItem>
+                <SelectItem value="VERIFIED">Payment: Verified</SelectItem>
+                <SelectItem value="CLARIFICATION_REQUIRED">Payment: Clarification</SelectItem>
+                <SelectItem value="PENDING">Payment: Pending</SelectItem>
+                <SelectItem value="FAILED">Payment: Failed</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Application Status Filter */}
           <div>
-            <select
-              value={applicationFilter}
-              onChange={(e) => setApplicationFilter(e.target.value)}
-              className="w-full h-9 text-xs border border-cream-dark rounded-md bg-soft-cream/50 px-3 text-charcoal focus:outline-none focus:border-saffron"
-            >
-              <option value="ALL">All Application States</option>
-              <option value="SUBMITTED">Status: Submitted</option>
-              <option value="UNDER_REVIEW">Status: Under Review</option>
-              <option value="ACTION_REQUIRED">Status: Action Required</option>
-              <option value="APPROVED">Status: Approved</option>
-              <option value="REJECTED">Status: Rejected</option>
-            </select>
+            <Select value={applicationFilter} onValueChange={(val) => setApplicationFilter(val)}>
+              <SelectTrigger className="w-full h-9 text-xs border-cream-dark bg-soft-cream/50 text-charcoal">
+                <SelectValue placeholder="All Application States" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">All Application States</SelectItem>
+                <SelectItem value="SUBMITTED">Status: Submitted</SelectItem>
+                <SelectItem value="UNDER_REVIEW">Status: Under Review</SelectItem>
+                <SelectItem value="ACTION_REQUIRED">Status: Action Required</SelectItem>
+                <SelectItem value="APPROVED">Status: Approved</SelectItem>
+                <SelectItem value="REJECTED">Status: Rejected</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 

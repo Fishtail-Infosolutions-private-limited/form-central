@@ -4,7 +4,8 @@ import React from "react";
 // THE ORIGIN FOUNDATION — OFFICIAL LOGO & SEAL
 // Rooted in Identity. Driven by Purpose.
 // Janakpur Dham, Nepal
-// Palette: Deep Maroon, Saffron, Antique Heritage Gold, Crisp White, Warm Ivory
+// Palette: Deep Navy (#0A192F), Crisp White (#FFFFFF), Slate Navy (#1E293B),
+// Restrained Gold (#C5A880), Soft Slate (#E2E8F0)
 // ============================================================================
 
 export function OriginFoundationLogo({
@@ -267,7 +268,7 @@ export function MithilaQueenLogo({
             Mithila Queen
           </span>
           <span
-            className="text-xs font-serif italic text-saffron mt-0.5"
+            className="text-xs font-serif italic text-[#C5A880] mt-0.5"
           >
             Celebrating Mithila&apos;s Culture, Confidence & Talent
           </span>
@@ -296,7 +297,7 @@ export function MithilaQueenLogo({
           Mithila Queen
         </span>
         <span
-          className="text-[11px] font-serif italic text-saffron leading-tight mt-0.5"
+          className="text-[11px] font-serif italic text-[#C5A880] leading-tight mt-0.5"
         >
           Culture &bull; Confidence &bull; Talent
         </span>
@@ -319,7 +320,7 @@ export function MithilaQueenLogo({
 
 export function MithilaHeritageMandala({
   className = "w-72 h-72",
-  accent = "var(--color-brand-gold, #B89150)",
+  accent = "#C5A880",
 }: {
   className?: string;
   accent?: string;
