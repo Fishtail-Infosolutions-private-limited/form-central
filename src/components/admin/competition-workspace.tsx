@@ -249,10 +249,6 @@ export function CompetitionWorkspace({
       <div className="bg-white p-6 rounded-xl border border-stone-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold tracking-wider uppercase text-[#B89150]">
-              The Origin Foundation &bull; Janakpur Dham
-            </span>
-            <span className="text-stone-300">•</span>
             <span
               className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold ${
                 isRegOpen

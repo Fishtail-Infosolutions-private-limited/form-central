@@ -63,14 +63,9 @@ interface CampaignListViewProps {
 
 const STATUS_FILTERS = [
   { id: "ALL", label: "All" },
-  { id: "DRAFT", label: "Drafts" },
-  { id: "SCHEDULED", label: "Scheduled" },
-  { id: "QUEUED", label: "Queued" },
-  { id: "PROCESSING", label: "Sending" },
-  { id: "COMPLETED", label: "Completed" },
+  { id: "COMPLETED", label: "Sent" },
+  { id: "QUEUE", label: "In Queue" },
   { id: "FAILED", label: "Failed" },
-  { id: "PAUSED", label: "Paused" },
-  { id: "CANCELLED", label: "Cancelled" },
 ];
 
 export function CampaignListView({
@@ -143,8 +138,11 @@ export function CampaignListView({
 
   const filteredCampaigns = campaigns.filter((c) => {
     if (statusFilter !== "ALL") {
-      if (statusFilter === "PROCESSING" && c.status !== "PROCESSING") return false;
-      if (statusFilter !== "PROCESSING" && c.status !== statusFilter) return false;
+      if (statusFilter === "QUEUE") {
+        if (!["QUEUED", "PROCESSING", "SCHEDULED"].includes(c.status)) return false;
+      } else if (c.status !== statusFilter) {
+        return false;
+      }
     }
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
@@ -227,21 +225,11 @@ export function CampaignListView({
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-5">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-maroon uppercase tracking-wider">
-              The Origin Foundation
-            </span>
-            <span className="text-zinc-300">&bull;</span>
-            <span className="text-xs font-bold text-saffron flex items-center gap-1">
-              <Crown className="w-3 h-3" />
-              <span>Mithila Queen</span>
-            </span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-maroon tracking-tight font-serif mt-0.5">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-maroon tracking-tight font-serif">
             Communications
           </h1>
           <p className="text-xs text-zinc-500 mt-1">
-            Send announcements, updates, reminders and important information to Mithila Queen participants.
+            Send announcements, updates, and important notices to participants.
           </p>
         </div>
 
@@ -255,8 +243,8 @@ export function CampaignListView({
         </div>
       </div>
 
-      {/* 4 Database KPI Metric Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* 3 Core Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Total Emails Sent */}
         <div className="bg-white rounded-xl border border-zinc-200 p-4 shadow-2xs">
           <div className="flex items-center justify-between">
@@ -268,17 +256,6 @@ export function CampaignListView({
           </div>
         </div>
 
-        {/* Emails Scheduled */}
-        <div className="bg-white rounded-xl border border-zinc-200 p-4 shadow-2xs">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-zinc-500">Emails Scheduled</span>
-            <Calendar className="w-4 h-4 text-purple-600" />
-          </div>
-          <div className="text-2xl font-black text-purple-700 mt-2 font-mono">
-            {stats.totalScheduled.toLocaleString()}
-          </div>
-        </div>
-
         {/* Emails Currently Queued */}
         <div className="bg-white rounded-xl border border-zinc-200 p-4 shadow-2xs">
           <div className="flex items-center justify-between">
@@ -286,7 +263,7 @@ export function CampaignListView({
             <Clock className="w-4 h-4 text-amber-500" />
           </div>
           <div className="text-2xl font-black text-amber-600 mt-2 font-mono">
-            {stats.totalQueued.toLocaleString()}
+            {(stats.totalQueued + stats.totalScheduled).toLocaleString()}
           </div>
         </div>
 
@@ -361,8 +338,7 @@ export function CampaignListView({
                 <tr className="border-b border-zinc-200 bg-zinc-50/75 text-zinc-500 font-semibold">
                   <th className="py-3 px-4">Subject</th>
                   <th className="py-3 px-4">Recipients</th>
-                  <th className="py-3 px-4">Created</th>
-                  <th className="py-3 px-4">Scheduled</th>
+                  <th className="py-3 px-4">Date Sent</th>
                   <th className="py-3 px-4">Status</th>
                   <th className="py-3 px-4 text-right">Action</th>
                 </tr>
@@ -424,20 +400,9 @@ export function CampaignListView({
                         </div>
                       </td>
 
-                      {/* Created Date */}
+                      {/* Date */}
                       <td className="py-3.5 px-4 text-zinc-500 whitespace-nowrap text-[11px]">
                         {formatNepalTime(new Date(camp.createdAt), "MMM dd, yyyy")}
-                      </td>
-
-                      {/* Scheduled Date */}
-                      <td className="py-3.5 px-4 text-zinc-500 whitespace-nowrap text-[11px]">
-                        {camp.scheduledAt ? (
-                          <div className="text-purple-700 font-semibold" title="Nepal Standard Time">
-                            {formatNepalTime(new Date(camp.scheduledAt), "MMM dd, yyyy hh:mm a")} NPT
-                          </div>
-                        ) : (
-                          <span className="text-zinc-400">—</span>
-                        )}
                       </td>
 
                       {/* Status */}

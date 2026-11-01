@@ -209,13 +209,6 @@ export function CampaignDetailView({ campaign: initialCampaign }: CampaignDetail
             </Badge>
           </div>
           <div className="text-xs text-zinc-500 mt-1 flex items-center gap-1.5">
-            <span className="font-bold text-maroon">The Origin Foundation</span>
-            <span>&bull;</span>
-            <span className="font-bold text-saffron flex items-center gap-1">
-              <Crown className="w-3 h-3" />
-              <span>Mithila Queen</span>
-            </span>
-            <span>&bull;</span>
             <span>Subject: <strong className="text-zinc-800">{campaign.subject}</strong></span>
           </div>
         </div>

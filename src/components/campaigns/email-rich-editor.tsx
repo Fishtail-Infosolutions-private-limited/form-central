@@ -17,7 +17,44 @@ import {
   Info,
   Check,
 } from "lucide-react";
-import { AVAILABLE_EMAIL_VARIABLES, EmailVariableDefinition } from "@/lib/email/variables";
+const ESSENTIAL_VARIABLES = [
+  {
+    key: "participant_name",
+    label: "Participant Name",
+    token: "{{participant_name}}",
+    description: "Inserts the contestant's full name",
+  },
+  {
+    key: "registration_id",
+    label: "Registration ID",
+    token: "{{registration_id}}",
+    description: "Inserts unique ID (e.g. MQ-2026-001)",
+  },
+  {
+    key: "participant_email",
+    label: "Participant Email",
+    token: "{{participant_email}}",
+    description: "Inserts candidate's email address",
+  },
+  {
+    key: "event_name",
+    label: "Competition Name",
+    token: "{{event_name}}",
+    description: "Mithila Queen",
+  },
+  {
+    key: "event_date",
+    label: "Event Date",
+    token: "{{event_date}}",
+    description: "Audition or event date",
+  },
+  {
+    key: "event_venue",
+    label: "Event Venue",
+    token: "{{event_venue}}",
+    description: "Official venue location",
+  },
+];
 
 interface EmailRichEditorProps {
   value: string;
@@ -29,7 +66,6 @@ export function EmailRichEditor({ value, onChange, disabled = false }: EmailRich
   const editorRef = useRef<HTMLDivElement>(null);
   const lastRangeRef = useRef<Range | null>(null);
   const isUpdatingFromPropRef = useRef(false);
-  const [activeTab, setActiveTab] = useState<"participant" | "competition" | "organization" | "links">("participant");
   const [justInsertedKey, setJustInsertedKey] = useState<string | null>(null);
 
   // Sync prop value into contentEditable when prop changes externally
@@ -126,16 +162,6 @@ export function EmailRichEditor({ value, onChange, disabled = false }: EmailRich
     setJustInsertedKey(variableKey);
     setTimeout(() => setJustInsertedKey(null), 1800);
     handleInput();
-  };
-
-  // Group variables
-  const groupedVariables: Record<string, EmailVariableDefinition[]> = {
-    participant: AVAILABLE_EMAIL_VARIABLES.filter(
-      (v) => !v.group || v.group === "participant"
-    ),
-    competition: AVAILABLE_EMAIL_VARIABLES.filter((v) => v.group === "competition"),
-    organization: AVAILABLE_EMAIL_VARIABLES.filter((v) => v.group === "organization"),
-    links: AVAILABLE_EMAIL_VARIABLES.filter((v) => v.group === "links"),
   };
 
   return (
@@ -273,73 +299,46 @@ export function EmailRichEditor({ value, onChange, disabled = false }: EmailRich
         />
       </div>
 
-      {/* Personalize Your Email (Dynamic Variables Section) */}
-      <div className="bg-soft-cream rounded-xl border border-cream-dark p-3.5 space-y-2.5">
+      {/* Personalize Your Email (Essential Dynamic Variables Bar) */}
+      <div className="bg-soft-cream rounded-xl border border-cream-dark p-3.5 space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
           <div className="flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-saffron" />
-            <h4 className="text-xs font-bold text-maroon tracking-tight">
-              Personalize Your Email
-            </h4>
-            <span className="text-[10px] text-zinc-500 hidden md:inline">
-              — Insert participant information automatically at your cursor position
+            <Sparkles className="w-3.5 h-3.5 text-saffron" />
+            <span className="text-xs font-bold text-maroon">
+              Insert Dynamic Info:
             </span>
-          </div>
-
-          {/* Category Tabs */}
-          <div className="flex items-center gap-1 bg-white/70 p-0.5 rounded-lg border border-cream-dark">
-            {(
-              [
-                { key: "participant", label: "Participant" },
-                { key: "competition", label: "Competition" },
-                { key: "organization", label: "Organization" },
-                { key: "links", label: "Links" },
-              ] as const
-            ).map((tab) => (
-              <button
-                key={tab.key}
-                type="button"
-                onClick={() => setActiveTab(tab.key)}
-                className={`px-2.5 py-1 text-[11px] font-semibold rounded-md transition-all ${
-                  activeTab === tab.key
-                    ? "bg-maroon text-white shadow-2xs"
-                    : "text-zinc-600 hover:text-zinc-900"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+            <span className="text-[11px] text-stone-500">
+              Click any tag below to insert participant information at your cursor
+            </span>
           </div>
         </div>
 
-        {/* Variable Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 pt-1">
-          {groupedVariables[activeTab]?.map((variable) => {
-            const isJustInserted = justInsertedKey === variable.key;
+        {/* 6 Essential Variable Pills */}
+        <div className="flex flex-wrap items-center gap-2 pt-0.5">
+          {ESSENTIAL_VARIABLES.map((v) => {
+            const isJustInserted = justInsertedKey === v.key;
             return (
               <button
-                key={variable.key}
+                key={v.key}
                 type="button"
-                onClick={() => insertVariable(variable.key)}
+                onClick={() => insertVariable(v.key)}
                 disabled={disabled}
-                title={`${variable.description} (Example: "${variable.sampleValue}")`}
-                className={`group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all ${
+                title={v.description}
+                className={`group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border shadow-2xs ${
                   isJustInserted
-                    ? "bg-maroon text-white scale-95"
-                    : "bg-white text-zinc-800 border border-cream-dark hover:border-saffron hover:bg-soft-cream"
+                    ? "bg-maroon text-white border-maroon scale-95"
+                    : "bg-white text-stone-800 border-cream-dark hover:border-saffron hover:bg-soft-cream"
                 }`}
               >
                 {isJustInserted ? (
-                  <Check className="w-3 h-3 text-saffron" />
+                  <Check className="w-3.5 h-3.5 text-saffron" />
                 ) : (
-                  <span className="text-[10px] font-mono text-saffron font-bold">
-                    +
-                  </span>
+                  <span className="text-saffron font-bold text-xs">+</span>
                 )}
-                <span>{variable.label}</span>
-                <span className="text-[10px] font-mono text-zinc-400 group-hover:text-zinc-600">
-                  {`{{${variable.key}}}`}
-                </span>
+                <span>{v.label}</span>
+                <code className="text-[10px] font-mono text-stone-500 font-normal">
+                  {v.token}
+                </code>
               </button>
             );
           })}

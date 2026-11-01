@@ -140,12 +140,6 @@ export default async function AdminAllResponsesPage() {
       {/* Header with Charcoal and Antique Gold cultural branding */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-cream-dark pb-6 bg-[#FFFFFF] p-6 rounded-lg border">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <MithilaHeritageMandala className="w-5 h-5 text-saffron" />
-            <span className="text-[11px] font-bold tracking-widest uppercase text-saffron">
-              The Origin Foundation &bull; Adjudication Desk
-            </span>
-          </div>
           <h1 className="text-2xl sm:text-3xl font-serif font-bold text-maroon tracking-tight">
             Applications & Payment Reviews
           </h1>

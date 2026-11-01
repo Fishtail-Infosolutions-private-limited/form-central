@@ -101,7 +101,6 @@ export function ComposeEmailView({
   const router = useRouter();
 
   // Basic Details
-  const [internalName, setInternalName] = useState("");
   const [selectedTemplateId, setSelectedTemplateId] = useState("");
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("<p>Dear {{participant_name}},</p><p><br></p><p>Regards,<br><strong>The Origin Foundation</strong></p>");
@@ -119,11 +118,6 @@ export function ComposeEmailView({
     PAYMENT_VERIFIED: 0,
     PAYMENT_PENDING: 0,
   });
-
-  // Scheduling (Nepal Time)
-  const [sendOption, setSendOption] = useState<"immediate" | "scheduled">("immediate");
-  const [scheduledDate, setScheduledDate] = useState("");
-  const [scheduledTime, setScheduledTime] = useState("09:00");
 
   // Estimation State
   const [estimatedCount, setEstimatedCount] = useState<number | null>(null);
@@ -157,7 +151,6 @@ export function ComposeEmailView({
     async function loadDuplicate() {
       const res = await getDuplicateCommunicationAction(duplicateId!);
       if (res.success && res.campaign) {
-        setInternalName(res.campaign.name);
         setSubject(res.campaign.subject);
         setContent(res.campaign.content);
         if (res.campaign.templateId) {
@@ -314,25 +307,19 @@ export function ComposeEmailView({
           };
 
     const res = await createCampaignAction({
-      name: internalName.trim() || undefined,
+      name: subject.trim(),
       templateId: selectedTemplateId || undefined,
       subject: subject.trim(),
       content: content.trim(),
       criteria,
-      sendOption,
-      scheduledDate: sendOption === "scheduled" ? scheduledDate : undefined,
-      scheduledTime: sendOption === "scheduled" ? scheduledTime : undefined,
+      sendOption: "immediate",
     });
 
     setIsSubmitting(false);
 
     if (res.success) {
       setIsReviewModalOpen(false);
-      toast.success(
-        sendOption === "scheduled"
-          ? "Communication scheduled successfully!"
-          : "Communication enqueued! Delivery has started."
-      );
+      toast.success("Email announcement enqueued! Delivery has started.");
       router.push("/admin/campaigns");
     } else {
       toast.error(res.error || "Failed to launch communication.");
@@ -383,17 +370,13 @@ export function ComposeEmailView({
             <span className="text-stone-900 font-bold">Compose Email</span>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-maroon tracking-tight">
               Compose Email
             </h1>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-soft-cream text-saffron border border-cream-dark">
-              <Crown className="w-3 h-3 text-saffron" />
-              <span>Mithila Queen</span>
-            </span>
           </div>
           <p className="text-xs text-stone-500">
-            Send announcements, audition schedules, status updates and important notices to participants.
+            Send announcements, audition updates, and important notices to participants.
           </p>
         </div>
 
@@ -491,21 +474,6 @@ export function ComposeEmailView({
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 className="text-sm font-semibold text-stone-900 border-cream-dark focus-visible:ring-saffron"
-              />
-            </div>
-
-            {/* Internal Campaign Name (Optional) */}
-            <div className="space-y-1.5">
-              <Label className="text-xs font-semibold text-stone-600 flex items-center gap-1.5">
-                <span>Internal Reference Name</span>
-                <span className="text-[11px] font-normal text-stone-400">(Optional — participants will never see this)</span>
-              </Label>
-              <Input
-                type="text"
-                placeholder="e.g. Round 1 Audition Call - Madhesh Region"
-                value={internalName}
-                onChange={(e) => setInternalName(e.target.value)}
-                className="text-xs text-stone-700 border-cream-dark focus-visible:ring-saffron"
               />
             </div>
           </CardContent>
@@ -689,103 +657,6 @@ export function ComposeEmailView({
               value={content}
               onChange={setContent}
             />
-          </CardContent>
-        </Card>
-
-        {/* Section 4: Delivery Schedule */}
-        <Card className="border-cream-dark bg-warm-ivory shadow-xs">
-          <CardHeader className="pb-3 border-b border-cream-dark">
-            <CardTitle className="text-base font-bold text-stone-900 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-saffron" />
-              <span>4. Delivery Schedule</span>
-            </CardTitle>
-            <CardDescription className="text-xs text-stone-500 mt-0.5">
-              Choose whether to launch immediate delivery or schedule for a specific date and time in Nepal Time.
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="pt-4 space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {/* Send Now */}
-              <button
-                type="button"
-                onClick={() => setSendOption("immediate")}
-                className={`p-4 rounded-xl border text-left transition-all flex items-start gap-3 ${
-                  sendOption === "immediate"
-                    ? "bg-maroon text-white border-maroon shadow-xs"
-                    : "bg-warm-ivory text-stone-800 border-cream-dark hover:border-[#B89150] hover:bg-soft-cream/60"
-                }`}
-              >
-                <Send className={`w-4 h-4 mt-0.5 shrink-0 ${sendOption === "immediate" ? "text-saffron" : "text-stone-400"}`} />
-                <div>
-                  <div className="font-bold text-xs">Send Now</div>
-                  <p className={`text-[11px] mt-1 ${sendOption === "immediate" ? "text-white/80" : "text-stone-500"}`}>
-                    Queue message immediately and begin delivery through background worker.
-                  </p>
-                </div>
-              </button>
-
-              {/* Schedule Later */}
-              <button
-                type="button"
-                onClick={() => setSendOption("scheduled")}
-                className={`p-4 rounded-xl border text-left transition-all flex items-start gap-3 ${
-                  sendOption === "scheduled"
-                    ? "bg-maroon text-white border-maroon shadow-xs"
-                    : "bg-warm-ivory text-stone-800 border-cream-dark hover:border-[#B89150] hover:bg-soft-cream/60"
-                }`}
-              >
-                <Calendar className={`w-4 h-4 mt-0.5 shrink-0 ${sendOption === "scheduled" ? "text-saffron" : "text-stone-400"}`} />
-                <div>
-                  <div className="font-bold text-xs">Schedule for Later</div>
-                  <p className={`text-[11px] mt-1 ${sendOption === "scheduled" ? "text-white/80" : "text-stone-500"}`}>
-                    Hold message in queue until your designated date &amp; time (Nepal Time).
-                  </p>
-                </div>
-              </button>
-            </div>
-
-            {/* Date & Time Picker when scheduled */}
-            {sendOption === "scheduled" && (
-              <div className="bg-soft-cream rounded-xl border border-cream-dark p-4 space-y-3">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-maroon">
-                  <Clock className="w-4 h-4 text-saffron" />
-                  <span>Configure Schedule in Nepal Time (Asia/Kathmandu UTC+05:45)</span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <Label className="text-[11px] font-semibold text-stone-600">
-                      Scheduled Date
-                    </Label>
-                    <Input
-                      type="date"
-                      value={scheduledDate}
-                      onChange={(e) => setScheduledDate(e.target.value)}
-                      className="bg-white text-xs border-cream-dark focus-visible:ring-saffron"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label className="text-[11px] font-semibold text-stone-600">
-                      Scheduled Time (Nepal Standard Time)
-                    </Label>
-                    <Input
-                      type="time"
-                      value={scheduledTime}
-                      onChange={(e) => setScheduledTime(e.target.value)}
-                      className="bg-white text-xs border-cream-dark focus-visible:ring-saffron"
-                    />
-                  </div>
-                </div>
-
-                {scheduledDate && (
-                  <div className="text-[11px] font-semibold text-maroon pt-1">
-                    Summary: Your email will be sent on {scheduledDate} at {scheduledTime} Nepal Time.
-                  </div>
-                )}
-              </div>
-            )}
           </CardContent>
         </Card>
 
@@ -1022,16 +893,11 @@ export function ComposeEmailView({
 
               <div className="p-3 bg-soft-cream rounded-xl border border-cream-dark space-y-1">
                 <span className="font-bold text-stone-500 uppercase tracking-wider text-[10px]">
-                  Delivery Time
+                  Delivery Method
                 </span>
-                <p className="font-semibold text-stone-800">
-                  {sendOption === "immediate" ? (
-                    "Immediate (queued right now)"
-                  ) : (
-                    <span>
-                      {scheduledDate} at {scheduledTime} (Nepal Standard Time)
-                    </span>
-                  )}
+                <p className="font-semibold text-stone-800 flex items-center gap-1.5">
+                  <Send className="w-3.5 h-3.5 text-saffron" />
+                  <span>Immediate Delivery (Queued immediately)</span>
                 </p>
               </div>
 
@@ -1064,13 +930,7 @@ export function ComposeEmailView({
                 className="bg-maroon hover:bg-[#681724] text-white text-xs font-bold h-9 px-5 rounded-xl gap-2 shadow-xs"
               >
                 {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin text-saffron" />}
-                <span>
-                  {isSubmitting
-                    ? "Enqueuing..."
-                    : sendOption === "scheduled"
-                    ? "Confirm & Schedule"
-                    : "Confirm & Send Now"}
-                </span>
+                <span>{isSubmitting ? "Enqueuing..." : "Confirm & Send Now"}</span>
               </Button>
             </div>
           </div>

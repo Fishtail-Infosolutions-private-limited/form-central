@@ -60,7 +60,7 @@ export default async function AdminDashboardPage() {
             Dashboard
           </h1>
           <p className="text-xs text-stone-500 mt-0.5">
-            The Origin Foundation &bull; Mithila Queen Management
+            Key operations, participant metrics, and recent inquiries.
           </p>
         </div>
 
