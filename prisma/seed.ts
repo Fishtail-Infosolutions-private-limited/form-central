@@ -46,15 +46,7 @@ async function main() {
     },
   });
 
-  // Clean up any old legacy accounts if present
-  await prisma.adminUser.deleteMany({
-    where: {
-      email: {
-        notIn: [primaryEmail, secondaryEmail],
-      },
-    },
-  });
-
+  // Default Admins are safely upserted without deleting existing accounts
   console.log(`✅ Default administrators seeded: ${primaryEmail} and ${secondaryEmail}`);
 
   // Seed Default Official Site Settings for The Origin Foundation & Mithila Queen
@@ -226,7 +218,7 @@ async function main() {
   // 3. Seed Default Bulk Email Templates
   await ensureDefaultEmailTemplates(prisma);
   console.log("✅ Default email templates seeded successfully!");
-
+  console.log(defaultPassword);
   console.log("✨ Seeding finished successfully!");
 }
 
