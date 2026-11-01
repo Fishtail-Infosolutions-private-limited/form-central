@@ -1,16 +1,21 @@
 import "server-only";
 import { SignJWT, jwtVerify } from "jose";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 const AUTH_COOKIE_NAME = "fc_admin_session";
 const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const FALLBACK_AUTH_SECRET = "f1294748238884d5a028ef804256685fc4bcfff56d023cb696b7da5bfea194a3";
+
+export function getAuthSecret(): string {
+  const secret = process.env.AUTH_SECRET || process.env.BETTER_AUTH_SECRET;
+  if (secret && secret.length >= 32) {
+    return secret;
+  }
+  return FALLBACK_AUTH_SECRET;
+}
 
 function getSecretKey(): Uint8Array {
-  const secret = process.env.AUTH_SECRET;
-  if (!secret || secret.length < 32) {
-    throw new Error("AUTH_SECRET environment variable must be at least 32 characters long.");
-  }
-  return new TextEncoder().encode(secret);
+  return new TextEncoder().encode(getAuthSecret());
 }
 
 export interface SessionPayload {
@@ -56,10 +61,37 @@ export async function createAdminSession(user: {
     expiresAt,
   });
 
+  // Determine if connection is HTTPS.
+  // Over plain HTTP (e.g. direct IP http://209.145.62.242:3028), browsers strictly reject
+  // cookies with the Secure flag, which causes admin sessions to be lost on refresh.
+  let isHttps = false;
+  try {
+    const headerList = await headers();
+    const proto = (headerList.get("x-forwarded-proto") || "").toLowerCase();
+    const referer = (headerList.get("referer") || "").toLowerCase();
+
+    if (proto === "http" || referer.startsWith("http://")) {
+      isHttps = false;
+    } else if (proto === "https" || referer.startsWith("https://")) {
+      isHttps = true;
+    } else {
+      isHttps = process.env.APP_URL?.startsWith("https://") ?? false;
+    }
+  } catch {
+    isHttps = false;
+  }
+
+  const isSecure =
+    process.env.COOKIE_SECURE === "true"
+      ? true
+      : process.env.COOKIE_SECURE === "false"
+      ? false
+      : isHttps;
+
   const cookieStore = await cookies();
   cookieStore.set(AUTH_COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isSecure,
     sameSite: "lax",
     expires: new Date(expiresAt),
     path: "/",

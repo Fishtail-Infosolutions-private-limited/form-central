@@ -13,9 +13,11 @@ export async function GET(request: Request) {
   const state = nanoid(32);
   const cookieStore = await cookies();
 
+  const isHttps = request.url.startsWith("https://") || (process.env.APP_URL?.startsWith("https://") ?? false);
+
   cookieStore.set("gdrive_oauth_state", state, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.COOKIE_SECURE === "true" ? true : process.env.COOKIE_SECURE === "false" ? false : isHttps,
     sameSite: "lax",
     maxAge: 10 * 60, // 10 minutes
     path: "/",
