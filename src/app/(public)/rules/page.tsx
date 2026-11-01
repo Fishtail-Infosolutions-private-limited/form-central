@@ -2,7 +2,9 @@ import React from "react";
 import Link from "next/link";
 import { CheckCircle2, ArrowRight, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { prisma } from "@/lib/db/prisma";
+import { getSafeSiteSetting } from "@/lib/db/site-settings";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Official Competition Rules & Eligibility | Mithila Queen",
@@ -11,9 +13,7 @@ export const metadata = {
 };
 
 export default async function RulesPage() {
-  const setting = await prisma.siteSetting.findUnique({
-    where: { id: "primary" },
-  });
+  const setting = await getSafeSiteSetting();
   const regFee = setting?.registrationFee || 399;
 
   return (

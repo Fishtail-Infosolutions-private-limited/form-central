@@ -11,6 +11,9 @@ import {
   Sliders,
   CheckCircle2,
   Info,
+  Minus,
+  MoveVertical,
+  Heading,
 } from "lucide-react";
 import { FormFieldDefinition, FieldOption } from "@/types/form";
 import { Button } from "@/components/ui/button";
@@ -42,6 +45,7 @@ export function QuestionConfigDrawer({
     field.isSystem || ["fullName", "email", "phone"].includes(field.fieldKey)
   );
 
+  const isLayoutField = ["heading", "divider", "spacer", "notice"].includes(field.type);
   const hasOptions = ["select", "radio", "checkbox-group"].includes(field.type);
   const isUploadField = ["image", "video", "file"].includes(field.type);
   const isTextField = ["text", "textarea"].includes(field.type);
@@ -84,56 +88,60 @@ export function QuestionConfigDrawer({
   };
 
   return (
-    <div className="flex flex-col h-full bg-white border-l border-[#DCE5ED] shadow-lg">
+    <div className="flex flex-col h-full max-h-full bg-white border-l border-[#DCE5ED] shadow-lg overflow-hidden">
       {/* Drawer Header */}
-      <div className="p-4 border-b border-[#DCE5ED] bg-[#F4F7FA] flex items-center justify-between">
+      <div className="p-4 border-b border-[#DCE5ED] bg-[#F4F7FA] flex items-center justify-between shrink-0">
         <div className="space-y-0.5 min-w-0 pr-2">
           <div className="flex items-center gap-1.5">
             {isSystemField && <Lock className="w-3.5 h-3.5 text-[#356FA8]" />}
             <span className="text-xs font-bold text-[#183153] truncate block">
-              {field.label || "Untitled Question"}
+              {field.label || (isLayoutField ? "Layout Element" : "Untitled Question")}
             </span>
           </div>
           <span className="text-[10px] text-[#546E7A] font-medium uppercase tracking-wider block">
-            Type: {field.type}
+            {isLayoutField ? `Layout Element: ${field.type}` : `Type: ${field.type}`}
           </span>
         </div>
         <button
           onClick={onClose}
-          className="p-1.5 rounded-lg text-[#546E7A] hover:text-[#183153] hover:bg-slate-100 transition-colors"
+          className="p-1.5 rounded-lg text-[#546E7A] hover:text-[#183153] hover:bg-slate-100 transition-colors cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
       </div>
 
-      {/* Tabs Switcher */}
-      <div className="flex items-center border-b border-[#DCE5ED] bg-white px-3">
-        <button
-          onClick={() => setActiveTab("general")}
-          className={`flex items-center gap-1.5 py-2.5 px-3 text-xs font-bold border-b-2 transition-colors ${
-            activeTab === "general"
-              ? "border-[#183153] text-[#183153]"
-              : "border-transparent text-[#546E7A] hover:text-[#183153]"
-          }`}
-        >
-          <Settings className="w-3.5 h-3.5" />
-          <span>General</span>
-        </button>
-        <button
-          onClick={() => setActiveTab("validation")}
-          className={`flex items-center gap-1.5 py-2.5 px-3 text-xs font-bold border-b-2 transition-colors ${
-            activeTab === "validation"
-              ? "border-[#183153] text-[#183153]"
-              : "border-transparent text-[#546E7A] hover:text-[#183153]"
-          }`}
-        >
-          <Sliders className="w-3.5 h-3.5" />
-          <span>Validation &amp; Rules</span>
-        </button>
-      </div>
+      {/* Tabs Switcher - Only for regular questions */}
+      {!isLayoutField && (
+        <div className="flex items-center border-b border-[#DCE5ED] bg-white px-3 shrink-0">
+          <button
+            type="button"
+            onClick={() => setActiveTab("general")}
+            className={`flex items-center gap-1.5 py-2.5 px-3 text-xs font-bold border-b-2 transition-colors cursor-pointer ${
+              activeTab === "general"
+                ? "border-[#183153] text-[#183153]"
+                : "border-transparent text-[#546E7A] hover:text-[#183153]"
+            }`}
+          >
+            <Settings className="w-3.5 h-3.5" />
+            <span>General</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("validation")}
+            className={`flex items-center gap-1.5 py-2.5 px-3 text-xs font-bold border-b-2 transition-colors cursor-pointer ${
+              activeTab === "validation"
+                ? "border-[#183153] text-[#183153]"
+                : "border-transparent text-[#546E7A] hover:text-[#183153]"
+            }`}
+          >
+            <Sliders className="w-3.5 h-3.5" />
+            <span>Validation &amp; Rules</span>
+          </button>
+        </div>
+      )}
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs min-h-0">
         {/* System Protected Notice */}
         {isSystemField && (
           <div className="p-3 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] space-y-1">
@@ -147,7 +155,203 @@ export function QuestionConfigDrawer({
           </div>
         )}
 
-        {activeTab === "general" ? (
+        {isLayoutField ? (
+          /* ========================================================== */
+          /* LAYOUT ELEMENT CONFIGURATION (Heading / Line / Gap / Notice)*/
+          /* ========================================================== */
+          <div className="space-y-4">
+            <div className="p-3 rounded-xl bg-[#F4F7FA] border border-[#356FA8]/20 flex items-start gap-2.5">
+              <Info className="w-4 h-4 text-[#356FA8] shrink-0 mt-0.5" />
+              <div className="space-y-0.5 text-xs">
+                <span className="font-bold text-[#183153] block capitalize">
+                  {field.type === "heading" && "Section Sub-Heading"}
+                  {field.type === "divider" && "Horizontal Line Divider"}
+                  {field.type === "spacer" && "Vertical Spacing Gap"}
+                  {field.type === "notice" && "Notice / Callout Box"}
+                </span>
+                <p className="text-[11px] text-[#546E7A] leading-relaxed">
+                  This layout element helps visually structure the registration form. It is excluded from required answer validation.
+                </p>
+              </div>
+            </div>
+
+            {field.type === "heading" && (
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <Label className="text-xs font-semibold text-[#263238]">Section Heading Title *</Label>
+                  <Input
+                    value={field.label}
+                    onChange={(e) => handleLabelChange(e.target.value)}
+                    className="h-9 text-xs border-[#DCE5ED] bg-white"
+                    placeholder="e.g. Cultural Background & Community Work"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs font-semibold text-[#263238]">Subtitle / Description (Optional)</Label>
+                  <Textarea
+                    rows={2}
+                    value={field.description || ""}
+                    onChange={(e) => onUpdate({ ...field, description: e.target.value })}
+                    className="text-xs border-[#DCE5ED] bg-white"
+                    placeholder="Brief guidance for candidates under this section..."
+                  />
+                </div>
+                {/* Live Preview */}
+                <div className="space-y-1 pt-1">
+                  <span className="text-[10px] font-bold text-[#546E7A] uppercase tracking-wider block">Live Preview</span>
+                  <div className="p-3 bg-zinc-50 border border-[#DCE5ED] rounded-xl">
+                    <h3 className="font-extrabold text-sm text-[#183153]">{field.label || "Section Title"}</h3>
+                    {field.description && (
+                      <p className="text-xs text-slate-500 mt-0.5">{field.description}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {field.type === "divider" && (
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <Label className="text-xs font-semibold text-[#263238]">Divider Label / Title</Label>
+                  <Input
+                    value={field.label}
+                    onChange={(e) => handleLabelChange(e.target.value)}
+                    className="h-9 text-xs border-[#DCE5ED] bg-white"
+                    placeholder="Horizontal Line"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-semibold text-[#263238]">Line Style</Label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: "solid", label: "Solid" },
+                      { id: "dashed", label: "Dashed" },
+                      { id: "dotted", label: "Dotted" },
+                    ].map((style) => (
+                      <button
+                        key={style.id}
+                        type="button"
+                        onClick={() => onUpdate({ ...field, placeholder: style.id })}
+                        className={`h-8 px-2 rounded-lg text-xs font-semibold border transition-colors cursor-pointer ${
+                          (field.placeholder || "solid") === style.id
+                            ? "border-[#183153] bg-[#183153] text-white"
+                            : "border-[#DCE5ED] bg-white text-[#263238] hover:bg-slate-50"
+                        }`}
+                      >
+                        {style.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* Live Preview */}
+                <div className="space-y-1 pt-1">
+                  <span className="text-[10px] font-bold text-[#546E7A] uppercase tracking-wider block">Live Preview</span>
+                  <div className="p-4 bg-zinc-50 border border-[#DCE5ED] rounded-xl">
+                    <hr
+                      className={`border-[#DCE5ED] ${
+                        field.placeholder === "dashed"
+                          ? "border-dashed border-t-2"
+                          : field.placeholder === "dotted"
+                          ? "border-dotted border-t-2"
+                          : "border-solid border-t"
+                      }`}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {field.type === "spacer" && (
+              <div className="space-y-3">
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-semibold text-[#263238]">Vertical Gap Height</Label>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {[
+                      { h: "16", label: "16px" },
+                      { h: "28", label: "28px" },
+                      { h: "44", label: "44px" },
+                      { h: "64", label: "64px" },
+                    ].map((sz) => (
+                      <button
+                        key={sz.h}
+                        type="button"
+                        onClick={() => onUpdate({ ...field, placeholder: sz.h })}
+                        className={`h-8 px-2 rounded-lg text-xs font-semibold border transition-colors cursor-pointer ${
+                          (field.placeholder || "28") === sz.h
+                            ? "border-[#183153] bg-[#183153] text-white"
+                            : "border-[#DCE5ED] bg-white text-[#263238] hover:bg-slate-50"
+                        }`}
+                      >
+                        {sz.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs font-semibold text-[#263238]">Custom Height (pixels)</Label>
+                  <Input
+                    type="number"
+                    min="4"
+                    max="160"
+                    value={field.placeholder || "28"}
+                    onChange={(e) => onUpdate({ ...field, placeholder: e.target.value })}
+                    className="h-8 text-xs border-[#DCE5ED] bg-white font-mono"
+                    placeholder="28"
+                  />
+                </div>
+                {/* Live Preview */}
+                <div className="space-y-1 pt-1">
+                  <span className="text-[10px] font-bold text-[#546E7A] uppercase tracking-wider block">Gap Visual Preview</span>
+                  <div className="bg-zinc-50 border border-dashed border-[#356FA8]/40 rounded-xl flex items-center justify-center p-2">
+                    <div
+                      style={{ height: `${Number(field.placeholder) || 28}px` }}
+                      className="w-full bg-[#356FA8]/10 rounded flex items-center justify-center text-[10px] font-mono text-[#183153] font-bold"
+                    >
+                      ↕ {Number(field.placeholder) || 28}px empty gap
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {field.type === "notice" && (
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <Label className="text-xs font-semibold text-[#263238]">Notice Title</Label>
+                  <Input
+                    value={field.label}
+                    onChange={(e) => handleLabelChange(e.target.value)}
+                    className="h-9 text-xs border-[#DCE5ED] bg-white"
+                    placeholder="e.g. Important Audition Guideline"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs font-semibold text-[#263238]">Notice Content / Text *</Label>
+                  <Textarea
+                    rows={3}
+                    value={field.description || ""}
+                    onChange={(e) => onUpdate({ ...field, description: e.target.value })}
+                    className="text-xs border-[#DCE5ED] bg-white"
+                    placeholder="Provide details or advisory for participants..."
+                  />
+                </div>
+                {/* Live Preview */}
+                <div className="space-y-1 pt-1">
+                  <span className="text-[10px] font-bold text-[#546E7A] uppercase tracking-wider block">Live Preview</span>
+                  <div className="p-3.5 rounded-xl bg-[#F4F7FA] border border-[#356FA8]/30 flex items-start gap-2.5">
+                    <Info className="w-4 h-4 text-[#356FA8] shrink-0 mt-0.5" />
+                    <div className="space-y-0.5 text-xs">
+                      <span className="font-bold text-[#183153] block">{field.label || "Notice Title"}</span>
+                      <p className="text-slate-600 leading-relaxed text-[11px]">
+                        {field.description || "Notice content text..."}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : activeTab === "general" ? (
           <>
             {/* Label */}
             <div className="space-y-1">
@@ -383,8 +587,8 @@ export function QuestionConfigDrawer({
         )}
       </div>
 
-      {/* Drawer Footer Actions */}
-      <div className="p-4 border-t border-[#DCE5ED] bg-[#F4F7FA] flex items-center justify-between gap-2">
+      {/* Drawer Footer Actions - Fixed at bottom */}
+      <div className="p-3 border-t border-[#DCE5ED] bg-[#F4F7FA] flex items-center justify-between gap-2 shrink-0 z-10">
         {!isSystemField && (
           <Button
             type="button"

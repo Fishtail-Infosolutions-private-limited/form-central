@@ -3,7 +3,9 @@ import Link from "next/link";
 import { Sparkles, ArrowRight, BookOpen, Heart, Landmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MithilaHeritageMandala } from "@/components/brand/brand-logos";
-import { prisma } from "@/lib/db/prisma";
+import { getSafeSiteSetting } from "@/lib/db/site-settings";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Culture & Heritage of Mithila | The Origin Foundation",
@@ -12,9 +14,7 @@ export const metadata = {
 };
 
 export default async function CulturePage() {
-  const setting = await prisma.siteSetting.findUnique({
-    where: { id: "primary" },
-  });
+  const setting = await getSafeSiteSetting();
   const regFee = setting?.registrationFee || 399;
 
   const culturalThemes = [

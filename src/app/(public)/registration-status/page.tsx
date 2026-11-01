@@ -246,6 +246,12 @@ function RegistrationStatusContent() {
 
   // 4. Trigger Edit Details (Checks if OTP verification is required)
   const handleOpenEditModal = () => {
+    if (record?.applicationStatus === "APPROVED") {
+      toast.error(
+        "Your application has been officially APPROVED and confirmed. Application details are permanently locked and cannot be edited."
+      );
+      return;
+    }
     if (isEmailVerified && sessionToken) {
       // User already verified their email with OTP when checking! No OTP required again!
       setIsEditModalOpen(true);
@@ -325,18 +331,23 @@ function RegistrationStatusContent() {
     setIsSavingEdits(false);
 
     if (res.success) {
+      const wasRejected = record.applicationStatus === "REJECTED";
       toast.success(
-        res.requiresReview
+        wasRejected
+          ? "Application successfully updated and resubmitted for committee review!"
+          : res.requiresReview
           ? "Details updated! Because critical fields were modified, your application is queued for administrative review."
           : "Application details updated successfully!"
       );
       setRecord({
         ...record,
         ...editFormData,
-        applicationStatus:
-          res.requiresReview && record.applicationStatus === "APPROVED"
-            ? "UNDER_REVIEW"
-            : record.applicationStatus,
+        applicationStatus: wasRejected
+          ? "SUBMITTED"
+          : res.requiresReview && record.applicationStatus === "APPROVED"
+          ? "UNDER_REVIEW"
+          : record.applicationStatus,
+        rejectionReason: wasRejected ? null : record.rejectionReason,
       });
       setIsEditModalOpen(false);
     } else {
@@ -699,20 +710,31 @@ function RegistrationStatusContent() {
                 {record.registrationId}
               </span>
               <div className="flex items-center gap-2 mt-1">
-                <Button
-                  size="sm"
-                  onClick={handleOpenEditModal}
-                  className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold h-8 px-3 gap-1.5 shadow-2xs"
-                >
-                  <Edit3 className="w-3.5 h-3.5" />
-                  <span>Edit Details</span>
-                </Button>
+                {record.applicationStatus === "APPROVED" ? (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300">
+                    <Lock className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Details Locked (Approved)</span>
+                  </span>
+                ) : (
+                  <Button
+                    size="sm"
+                    onClick={handleOpenEditModal}
+                    className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold h-8 px-3 gap-1.5 shadow-2xs cursor-pointer"
+                  >
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>
+                      {record.applicationStatus === "REJECTED"
+                        ? "Edit & Resubmit Application"
+                        : "Edit Details"}
+                    </span>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Verification Notice Banner if entered via Registration ID without OTP */}
-          {!isEmailVerified && (
+          {/* Verification Notice Banner if entered via Registration ID without OTP (Only when not approved) */}
+          {!isEmailVerified && record.applicationStatus !== "APPROVED" && (
             <div className="p-3.5 rounded-lg bg-[#F4F7FA] border border-[#DCE5ED] text-xs text-stone-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-start gap-2.5">
                 <ShieldCheck className="w-4 h-4 text-[#356FA8] shrink-0 mt-0.5" />
@@ -732,6 +754,35 @@ function RegistrationStatusContent() {
                 className="border-[#356FA8] text-[#183153] hover:bg-[#F4F7FA] text-xs font-semibold h-8 shrink-0 self-start sm:self-auto"
               >
                 <span>Verify Email to Edit</span>
+              </Button>
+            </div>
+          )}
+
+          {/* REJECTED APPLICATION RESUBMIT ADVISORY BANNER */}
+          {record.applicationStatus === "REJECTED" && (
+            <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-900 space-y-2.5">
+              <div className="flex items-center gap-2 font-bold text-rose-800 text-sm">
+                <XCircle className="w-4 h-4 text-rose-600" />
+                <span>Application Not Approved</span>
+              </div>
+              <p className="leading-relaxed text-rose-700">
+                Your previous application was reviewed and not accepted in this round.
+                {record.rejectionReason && (
+                  <span className="block mt-1 font-medium bg-white/80 p-2.5 rounded-lg border border-rose-200 text-rose-900">
+                    <strong>Reviewer Note:</strong> {record.rejectionReason}
+                  </span>
+                )}
+              </p>
+              <p className="text-[11px] text-rose-600">
+                You can update your answers, submit clearer media or documentation, and <strong>resubmit your candidacy for committee re-evaluation</strong>.
+              </p>
+              <Button
+                size="sm"
+                onClick={handleOpenEditModal}
+                className="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold h-8.5 px-4 gap-1.5 shadow-xs cursor-pointer"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Edit &amp; Resubmit Application</span>
               </Button>
             </div>
           )}
@@ -964,15 +1015,22 @@ function RegistrationStatusContent() {
               <h3 className="font-bold font-bold text-base text-[#263238]">
                 Submitted Candidate Profile
               </h3>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleOpenEditModal}
-                className="border-stone-200 text-stone-700 hover:bg-[#F4F7FA] hover:text-[#183153] text-xs h-8 gap-1.5"
-              >
-                <Edit3 className="w-3.5 h-3.5 text-[#356FA8]" />
-                <span>Update Profile</span>
-              </Button>
+              {record.applicationStatus === "APPROVED" ? (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                  <Lock className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Profile Locked (Approved)</span>
+                </span>
+              ) : (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleOpenEditModal}
+                  className="border-stone-200 text-stone-700 hover:bg-[#F4F7FA] hover:text-[#183153] text-xs h-8 gap-1.5 cursor-pointer"
+                >
+                  <Edit3 className="w-3.5 h-3.5 text-[#356FA8]" />
+                  <span>{record.applicationStatus === "REJECTED" ? "Edit & Resubmit" : "Update Profile"}</span>
+                </Button>
+              )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -1483,7 +1541,11 @@ function RegistrationStatusContent() {
                   ) : (
                     <Check className="w-4 h-4" />
                   )}
-                  <span>Save Updated Information</span>
+                  <span>
+                    {record.applicationStatus === "REJECTED"
+                      ? "Save & Resubmit Application"
+                      : "Save Updated Information"}
+                  </span>
                 </Button>
               </div>
             </form>

@@ -159,9 +159,107 @@ export async function verifyOtpAction({
     },
   });
 
+  // Check if an existing registration exists for this email
+  let existingRegistration: {
+    found: boolean;
+    referenceNumber: string;
+    applicationStatus: string;
+    paymentStatus: string;
+    submittedAt?: string;
+    rejectionReason?: string | null;
+    answers: Record<string, any>;
+  } | null = null;
+
+  try {
+    const mqReg = await prisma.mithilaQueenRegistration.findFirst({
+      where: { email: normalizedEmail },
+      orderBy: { submittedAt: "desc" },
+    });
+
+    if (mqReg) {
+      existingRegistration = {
+        found: true,
+        referenceNumber: mqReg.registrationId,
+        applicationStatus: mqReg.applicationStatus,
+        paymentStatus: mqReg.paymentStatus,
+        submittedAt: mqReg.submittedAt.toISOString(),
+        rejectionReason: mqReg.rejectionReason || null,
+        answers: {
+          fullName: mqReg.fullName,
+          email: mqReg.email,
+          phone: mqReg.phone,
+          dob: mqReg.dob ? mqReg.dob.toISOString().split("T")[0] : "",
+          alternatePhone: mqReg.alternatePhone || "",
+          province: mqReg.province || "",
+          district: mqReg.district || "",
+          municipality: mqReg.municipality || "",
+          cityVillage: mqReg.cityVillage || "",
+          currentAddress: mqReg.currentAddress || "",
+          guardianName: mqReg.guardianName || "",
+          guardianPhone: mqReg.guardianPhone || "",
+          guardianRelation: mqReg.guardianRelation || "",
+          guardianConsent: mqReg.guardianConsentRecorded || false,
+          motivationReason: mqReg.motivationReason || "",
+          mithilaMeaning: mqReg.mithilaMeaning || "",
+          qualitiesBrought: mqReg.qualitiesBrought || "",
+          talentsSkills: mqReg.talentsSkills || "",
+          languagesSpoken: mqReg.languagesSpoken || "",
+          culturalInterests: mqReg.culturalInterests || "",
+          hobbiesInterests: mqReg.hobbiesInterests || "",
+          educationLevel: mqReg.educationLevel || "",
+          institution: mqReg.institution || "",
+          previousExperience: mqReg.previousExperience || false,
+          experienceDetails: mqReg.experienceDetails || "",
+          heightCm: mqReg.heightCm ? String(mqReg.heightCm) : "",
+          instagramHandle: mqReg.instagramHandle || "",
+          tiktokHandle: mqReg.tiktokHandle || "",
+          facebookUrl: mqReg.facebookUrl || "",
+          paymentReference: mqReg.paymentReference || "",
+          transactionReference: mqReg.paymentReference || "",
+          paymentScreenshot: mqReg.paymentScreenshotUrl || "",
+        },
+      };
+    } else {
+      const sub = await prisma.registrationSubmission.findFirst({
+        where: { email: normalizedEmail, formId },
+        orderBy: { createdAt: "desc" },
+        include: { answers: true },
+      });
+
+      if (sub) {
+        const extracted: Record<string, any> = {
+          fullName: sub.fullName,
+          email: sub.email,
+          phone: sub.phone,
+        };
+        for (const ans of sub.answers) {
+          extracted[ans.fieldKey] = ans.value;
+        }
+
+        existingRegistration = {
+          found: true,
+          referenceNumber: sub.referenceNumber,
+          applicationStatus:
+            sub.status === "APPROVED"
+              ? "APPROVED"
+              : sub.status === "REJECTED"
+              ? "REJECTED"
+              : "SUBMITTED",
+          paymentStatus: "PENDING",
+          submittedAt: sub.createdAt.toISOString(),
+          rejectionReason: null,
+          answers: extracted,
+        };
+      }
+    }
+  } catch (lookupErr) {
+    console.error("Error looking up existing registration in verifyOtpAction:", lookupErr);
+  }
+
   return {
     success: true,
     token: sessionToken,
+    existingRegistration,
   };
 }
 

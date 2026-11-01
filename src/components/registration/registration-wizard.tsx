@@ -49,6 +49,9 @@ import {
   Wallet,
   X,
   Eye,
+  Info,
+  Lock,
+  AlertTriangle,
 } from "lucide-react";
 import { toast } from "sonner";
 import { getPublicSiteSettingsAction } from "@/server/actions/site-settings-actions";
@@ -98,6 +101,17 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
   const [verificationToken, setVerificationToken] = useState<string | null>(null);
   const [resendCooldown, setResendCooldown] = useState(0);
   const [otpError, setOtpError] = useState<string | null>(null);
+
+  // Existing Registration Detection State
+  const [existingRegistration, setExistingRegistration] = useState<{
+    found: boolean;
+    referenceNumber: string;
+    applicationStatus: string;
+    paymentStatus: string;
+    submittedAt?: string;
+    rejectionReason?: string | null;
+    answers: Record<string, any>;
+  } | null>(null);
 
   // Uploading state
   const [uploadingFieldKey, setUploadingFieldKey] = useState<string | null>(null);
@@ -213,9 +227,32 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
     if (res.success && res.token) {
       setIsEmailVerified(true);
       setVerificationToken(res.token);
+
+      if (res.existingRegistration?.found) {
+        setExistingRegistration(res.existingRegistration);
+        if (res.existingRegistration.applicationStatus === "APPROVED") {
+          toast.error("An approved registration already exists under this email. Details are locked.");
+        } else if (res.existingRegistration.applicationStatus === "REJECTED") {
+          toast.warning("Previous application was not approved. You can update and resubmit.");
+        } else {
+          toast.info("An existing application was found for this email. You can change your details.");
+        }
+      }
     } else {
       setOtpError(res.error || "Verification failed");
     }
+  };
+
+  const handleLoadPreviousAnswersAndAdvance = () => {
+    if (!existingRegistration) return;
+    setAnswers((prev) => ({
+      ...prev,
+      ...existingRegistration.answers,
+    }));
+    toast.success("Previous application loaded! You can now review and make changes.");
+    setExistingRegistration(null);
+    setCurrentStepIndex(1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // File, Document & Video Upload Handlers
@@ -306,6 +343,12 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
     const errors: Record<string, string> = {};
 
     if (currentStepIndex === 0) {
+      if (existingRegistration?.applicationStatus === "APPROVED") {
+        toast.error(
+          "Your registration has already been officially approved and locked. Further submissions are disabled."
+        );
+        return;
+      }
       const nameField = steps[0]?.fields.find((f) => f.fieldKey === "fullName");
       const emailField = steps[0]?.fields.find((f) => f.fieldKey === "email");
       const phoneField = steps[0]?.fields.find((f) => f.fieldKey === "phone");
@@ -343,7 +386,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
         if (field.fieldKey === "transactionReference" || field.fieldKey === "paymentReference") {
           continue;
         }
-        if (field.required && !["heading", "divider"].includes(field.type)) {
+        if (field.required && !["heading", "divider", "spacer", "notice"].includes(field.type)) {
           const val = answers[field.fieldKey];
           if (
             val === undefined ||
@@ -407,89 +450,257 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
 
   // Confirmation Success Screen
   if (completedRef) {
+    const formattedDate = new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    const fullLocation = [
+      answers.cityVillage,
+      answers.municipality,
+      answers.district,
+      answers.province,
+    ]
+      .filter(Boolean)
+      .join(", ") || answers.currentAddress || "Janakpur Dham, Nepal";
+
     return (
-      <div className="max-w-2xl mx-auto py-12 px-4">
-        <Card className="border-[#DCE5ED] bg-white shadow-xl text-center p-8 overflow-hidden relative">
-          <div className="w-16 h-16 bg-[#F4F7FA] border border-[#356FA8] text-[#356FA8] rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 className="w-9 h-9 stroke-[2.5]" />
-          </div>
-
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F4F7FA] text-[#183153] text-xs font-bold tracking-wide uppercase mb-3 border border-[#356FA8]">
-            <ShieldCheck className="w-4 h-4 text-[#356FA8]" />
-            <span>Registration Confirmed</span>
-          </div>
-
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#183153] tracking-tight mb-2 font-bold">
-            You Are Officially Registered!
-          </h2>
-          <p className="text-xs sm:text-sm text-[#183153]/70 max-w-md mx-auto mb-6">
-            Congratulations <strong className="text-[#183153]">{answers.fullName}</strong>. Your entry for{" "}
-            <strong className="text-[#183153]">{form.name}</strong> has been successfully recorded in the event system.
-          </p>
-
-          <div className="bg-[#F4F7FA] border-2 border-dashed border-[#356FA8] rounded-2xl p-6 max-w-md mx-auto mb-6">
-            <span className="text-[11px] font-bold text-[#183153]/60 uppercase tracking-wider block mb-1.5">
-              Official Reference Number
-            </span>
-            <div className="flex items-center justify-center gap-2.5">
-              <span className="font-mono text-2xl font-black text-[#183153] tracking-wider">
-                {completedRef}
-              </span>
-              <button
-                type="button"
-                onClick={copyRefToClipboard}
-                className="p-2 rounded-lg text-[#183153] hover:bg-[#F4F7FA] bg-white border border-[#DCE5ED] transition-colors"
-                title="Copy reference"
-              >
-                {copiedRef ? <Check className="w-4 h-4 text-[#356FA8]" /> : <Copy className="w-4 h-4" />}
-              </button>
+      <div className="max-w-3xl mx-auto py-8 sm:py-12 px-4">
+        {/* ============================================================== */}
+        {/* 1. SCREEN VIEW ONLY: INTERACTIVE SUCCESS CARD (HIDDEN ON PRINT) */}
+        {/* ============================================================== */}
+        <div className="print:hidden">
+          <Card className="border-[#DCE5ED] bg-white shadow-xl text-center p-6 sm:p-8 overflow-hidden relative">
+            <div className="w-16 h-16 bg-[#F4F7FA] border border-[#356FA8] text-[#356FA8] rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 className="w-9 h-9 stroke-[2.5]" />
             </div>
-            <p className="text-[11px] text-[#183153]/50 mt-2">
-              Save or screenshot this official reference number for event check-in and entry verification.
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F4F7FA] text-[#183153] text-xs font-bold tracking-wide uppercase mb-3 border border-[#356FA8]">
+              <ShieldCheck className="w-4 h-4 text-[#356FA8]" />
+              <span>Registration Confirmed</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#183153] tracking-tight mb-2">
+              You Are Officially Registered!
+            </h2>
+            <p className="text-xs sm:text-sm text-[#183153]/70 max-w-md mx-auto mb-6">
+              Congratulations <strong className="text-[#183153]">{answers.fullName}</strong>. Your entry for{" "}
+              <strong className="text-[#183153]">{form.name}</strong> has been successfully recorded in the event system.
             </p>
-          </div>
 
-          {/* Details summary */}
-          <div className="p-4 bg-zinc-50 rounded-xl text-left text-xs text-zinc-600 max-w-md mx-auto space-y-2 border border-[#DCE5ED] mb-6">
-            <div className="flex justify-between items-center py-1 border-b border-zinc-100">
-              <span className="text-zinc-500">Event:</span>
-              <span className="font-bold text-black">{form.name}</span>
+            <div className="bg-[#F4F7FA] border-2 border-dashed border-[#356FA8] rounded-2xl p-6 max-w-md mx-auto mb-6">
+              <span className="text-[11px] font-bold text-[#183153]/60 uppercase tracking-wider block mb-1.5">
+                Official Reference Number
+              </span>
+              <div className="flex items-center justify-center gap-2.5">
+                <span className="font-mono text-2xl font-black text-[#183153] tracking-wider">
+                  {completedRef}
+                </span>
+                <button
+                  type="button"
+                  onClick={copyRefToClipboard}
+                  className="p-2 rounded-lg text-[#183153] hover:bg-[#F4F7FA] bg-white border border-[#DCE5ED] transition-colors"
+                  title="Copy reference"
+                >
+                  {copiedRef ? <Check className="w-4 h-4 text-[#356FA8]" /> : <Copy className="w-4 h-4" />}
+                </button>
+              </div>
+              <p className="text-[11px] text-[#183153]/50 mt-2">
+                Save or screenshot this official reference number for event check-in and entry verification.
+              </p>
             </div>
-            <div className="flex justify-between items-center py-1 border-b border-zinc-100">
-              <span className="text-zinc-500">Participant:</span>
-              <span className="font-bold text-black">{answers.fullName}</span>
-            </div>
-            <div className="flex justify-between items-center py-1 border-b border-zinc-100">
-              <span className="text-zinc-500">Verified Email:</span>
-              <span className="font-mono text-black font-semibold">{answers.email}</span>
-            </div>
-            <div className="flex justify-between items-center py-1">
-              <span className="text-zinc-500">Phone:</span>
-              <span className="font-mono text-black font-semibold">{answers.phone}</span>
-            </div>
-          </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => window.print()}
-              className="text-xs font-semibold h-10 px-5 gap-1.5 border-zinc-300 w-full sm:w-auto"
-            >
-              <Printer className="w-4 h-4" />
-              <span>Print Confirmation</span>
-            </Button>
-            <a href="/" className="w-full sm:w-auto">
+            {/* Details summary */}
+            <div className="p-4 bg-zinc-50 rounded-xl text-left text-xs text-zinc-600 max-w-md mx-auto space-y-2 border border-[#DCE5ED] mb-6">
+              <div className="flex justify-between items-center py-1 border-b border-zinc-100">
+                <span className="text-zinc-500">Event:</span>
+                <span className="font-bold text-black">{form.name}</span>
+              </div>
+              <div className="flex justify-between items-center py-1 border-b border-zinc-100">
+                <span className="text-zinc-500">Participant:</span>
+                <span className="font-bold text-black">{answers.fullName}</span>
+              </div>
+              <div className="flex justify-between items-center py-1 border-b border-zinc-100">
+                <span className="text-zinc-500">Verified Email:</span>
+                <span className="font-mono text-black font-semibold">{answers.email}</span>
+              </div>
+              <div className="flex justify-between items-center py-1 border-b border-zinc-100">
+                <span className="text-zinc-500">Phone:</span>
+                <span className="font-mono text-black font-semibold">{answers.phone}</span>
+              </div>
+              <div className="flex justify-between items-center py-1">
+                <span className="text-zinc-500">Registration Fee:</span>
+                <span className="font-bold text-[#183153]">NPR 399 (Paid)</span>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Button
                 type="button"
-                className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-bold h-10 px-6 gap-1.5 w-full"
+                variant="outline"
+                onClick={() => window.print()}
+                className="text-xs font-semibold h-10 px-5 gap-2 border-[#183153] text-[#183153] hover:bg-[#F4F7FA] w-full sm:w-auto cursor-pointer"
               >
-                <span>Return to Home</span>
-                <ArrowRight className="w-4 h-4" />
+                <Printer className="w-4 h-4 text-[#356FA8]" />
+                <span>Print Official Confirmation Pass</span>
               </Button>
-            </a>
+              <a href="/" className="w-full sm:w-auto">
+                <Button
+                  type="button"
+                  className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-bold h-10 px-6 gap-1.5 w-full cursor-pointer"
+                >
+                  <span>Return to Home</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
+            </div>
+          </Card>
+        </div>
+
+        {/* ============================================================== */}
+        {/* 2. PRINT-ONLY OFFICIAL DOSSIER PASS & FEE RECEIPT (A4 OPTIMIZED) */}
+        {/* ============================================================== */}
+        <div className="hidden print:block print-dossier-root text-black bg-white">
+          <div className="border-2 border-[#183153] rounded-lg p-6 space-y-5">
+            {/* Header / Letterhead */}
+            <div className="border-b-2 border-[#183153] pb-4 flex items-center justify-between">
+              <div>
+                <span className="text-[11px] font-bold tracking-widest text-[#356FA8] uppercase block">
+                  The Origin Foundation • Cultural Initiative
+                </span>
+                <h1 className="text-2xl font-black text-[#183153] tracking-tight uppercase">
+                  Mithila Queen 2026
+                </h1>
+                <p className="text-xs text-zinc-600">
+                  Janakpur Dham, Madhesh Province, Nepal • originfoundation107@gmail.com • +977 9704571941
+                </p>
+              </div>
+              <div className="text-right">
+                <div className="inline-block bg-[#183153] text-white px-3 py-1 rounded text-xs font-bold tracking-wide uppercase">
+                  Candidate Dossier Pass
+                </div>
+                <div className="text-[11px] text-zinc-500 mt-1">Date: {formattedDate}</div>
+              </div>
+            </div>
+
+            {/* Reference & Verification Status Badge */}
+            <div className="bg-zinc-50 border border-zinc-300 rounded p-4 flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">
+                  Official Registration Reference No.
+                </span>
+                <span className="font-mono text-2xl font-black text-[#183153] tracking-wider">
+                  {completedRef}
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+                  ✓ Recorded & Verification Active
+                </span>
+                <span className="text-[10px] text-zinc-500 block mt-1">
+                  Official Event Entry Authorized
+                </span>
+              </div>
+            </div>
+
+            {/* Candidate & Payment Credentials Grid */}
+            <div className="grid grid-cols-2 gap-4 text-xs">
+              {/* Left Column: Candidate Info */}
+              <div className="border border-zinc-200 rounded p-3.5 space-y-2">
+                <h3 className="font-bold text-zinc-900 border-b border-zinc-200 pb-1 text-xs uppercase tracking-wide">
+                  Candidate Credentials
+                </h3>
+                <div className="space-y-1.5 pt-1">
+                  <div>
+                    <span className="text-zinc-500 text-[10px] block">Full Legal Name:</span>
+                    <span className="font-bold text-zinc-900 text-sm">{answers.fullName || "-"}</span>
+                  </div>
+                  <div>
+                    <span className="text-zinc-500 text-[10px] block">Verified Email Address:</span>
+                    <span className="font-mono text-zinc-900 font-semibold">{answers.email || "-"}</span>
+                  </div>
+                  <div>
+                    <span className="text-zinc-500 text-[10px] block">Primary Phone Number:</span>
+                    <span className="font-mono text-zinc-900 font-semibold">{answers.phone || "-"}</span>
+                  </div>
+                  {answers.dob && (
+                    <div>
+                      <span className="text-zinc-500 text-[10px] block">Date of Birth:</span>
+                      <span className="text-zinc-900 font-medium">{String(answers.dob)}</span>
+                    </div>
+                  )}
+                  <div>
+                    <span className="text-zinc-500 text-[10px] block">Location / Address:</span>
+                    <span className="text-zinc-900">{fullLocation}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Event & Payment Details */}
+              <div className="border border-zinc-200 rounded p-3.5 space-y-2">
+                <h3 className="font-bold text-zinc-900 border-b border-zinc-200 pb-1 text-xs uppercase tracking-wide">
+                  Registration & Fee Receipt
+                </h3>
+                <div className="space-y-1.5 pt-1">
+                  <div>
+                    <span className="text-zinc-500 text-[10px] block">Flagship Initiative:</span>
+                    <span className="font-bold text-zinc-900">Mithila Queen 2026</span>
+                  </div>
+                  <div>
+                    <span className="text-zinc-500 text-[10px] block">Official Registration Fee:</span>
+                    <span className="font-bold text-[#183153] text-sm">NPR 399 (Paid)</span>
+                  </div>
+                  <div>
+                    <span className="text-zinc-500 text-[10px] block">Payment Method:</span>
+                    <span className="text-zinc-900 font-medium">
+                      {answers.paymentMethod === "bank"
+                        ? "Direct Bank Account Deposit"
+                        : answers.paymentMethod === "wallet"
+                        ? "Digital Wallet Transfer"
+                        : "Official Merchant QR Code"}
+                    </span>
+                  </div>
+                  {answers.transactionReference && (
+                    <div>
+                      <span className="text-zinc-500 text-[10px] block">Transaction Reference / UTR:</span>
+                      <span className="font-mono font-bold text-zinc-900">{answers.transactionReference}</span>
+                    </div>
+                  )}
+                  <div>
+                    <span className="text-zinc-500 text-[10px] block">Receipt Verification:</span>
+                    <span className="text-emerald-700 font-semibold text-[11px]">Screenshot Uploaded & Logged</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Official Reporting Guidelines & Notice */}
+            <div className="bg-zinc-50 border border-zinc-200 rounded p-3 text-[11px] space-y-1.5 text-zinc-700">
+              <span className="font-bold text-zinc-900 uppercase tracking-wide block text-[10px]">
+                Important Candidate Reporting Instructions:
+              </span>
+              <ul className="list-disc list-inside space-y-0.5 text-zinc-600">
+                <li>Please present this printed confirmation pass at the official event desk during stage 1 check-in.</li>
+                <li>Bring an original government-issued identity document (Citizenship card, Passport, National ID, or Birth Certificate).</li>
+                <li>Report 30 minutes prior to your allocated audition call time in Janakpur Dham.</li>
+                <li>For any status inquiries or dossier modifications, cite reference code <strong>{completedRef}</strong> to desk officers.</li>
+              </ul>
+            </div>
+
+            {/* Signatures & Seal Area */}
+            <div className="pt-6 grid grid-cols-2 gap-8 text-center text-xs">
+              <div className="border-t border-zinc-400 pt-2">
+                <span className="font-bold text-zinc-800 block">{answers.fullName}</span>
+                <span className="text-[10px] text-zinc-500">Candidate Signature & Declaration</span>
+              </div>
+              <div className="border-t border-zinc-400 pt-2">
+                <span className="font-bold text-[#183153] block">The Origin Foundation Secretariat</span>
+                <span className="text-[10px] text-zinc-500">Authorized Event Officer & Verification Seal</span>
+              </div>
+            </div>
           </div>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -763,6 +974,188 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                   </div>
                 )}
               </div>
+
+              {/* EXISTING REGISTRATION DETECTION BANNER */}
+              {isEmailVerified && existingRegistration && (
+                <div className="pt-2 animate-in fade-in duration-200">
+                  {existingRegistration.applicationStatus === "APPROVED" ? (
+                    /* CASE 1: FULLY APPROVED - LOCKED & CANNOT EDIT */
+                    <div className="p-5 rounded-2xl bg-emerald-50/90 border-2 border-emerald-500/80 space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                          <ShieldCheck className="w-6 h-6 stroke-[2.5]" />
+                        </div>
+                        <div className="space-y-1">
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[11px] font-bold uppercase tracking-wider">
+                            <Lock className="w-3 h-3" />
+                            <span>Application Officially Approved</span>
+                          </div>
+                          <h3 className="text-base font-extrabold text-emerald-950">
+                            You Have Already Registered — Candidacy Approved!
+                          </h3>
+                          <p className="text-xs text-emerald-800 leading-relaxed">
+                            An official application under email <strong className="font-semibold text-emerald-950">{answers.email}</strong> has already been recorded and <strong>officially APPROVED</strong> for {form.name}.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="p-3 bg-white rounded-xl border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                        <div>
+                          <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+                            Official Reference Number
+                          </span>
+                          <span className="font-mono text-base font-black text-[#183153]">
+                            {existingRegistration.referenceNumber}
+                          </span>
+                        </div>
+                        <div className="text-xs font-semibold text-emerald-700">
+                          ✓ Registration details are officially locked and cannot be edited.
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                        <a
+                          href={`/registration-status?ref=${existingRegistration.referenceNumber}`}
+                          className="inline-block"
+                        >
+                          <Button
+                            type="button"
+                            className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-bold h-9 px-4 gap-1.5 cursor-pointer shadow-xs"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            <span>View Approved Status &amp; Dossier Pass</span>
+                          </Button>
+                        </a>
+                        <a href="/" className="inline-block">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="text-xs font-semibold h-9 px-4 border-emerald-300 text-emerald-900 hover:bg-emerald-100 cursor-pointer"
+                          >
+                            <span>Return to Home</span>
+                          </Button>
+                        </a>
+                      </div>
+                    </div>
+                  ) : existingRegistration.applicationStatus === "REJECTED" ? (
+                    /* CASE 2: REJECTED - CAN RESUBMIT */
+                    <div className="p-5 rounded-2xl bg-rose-50/90 border-2 border-rose-400/80 space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0">
+                          <AlertCircle className="w-6 h-6 stroke-[2.5]" />
+                        </div>
+                        <div className="space-y-1">
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-600 text-white text-[11px] font-bold uppercase tracking-wider">
+                            <span>Application Not Approved</span>
+                          </div>
+                          <h3 className="text-base font-extrabold text-rose-950">
+                            Previous Registration Found: Application Rejected
+                          </h3>
+                          <p className="text-xs text-rose-800 leading-relaxed">
+                            A previous entry from email <strong className="font-semibold text-rose-950">{answers.email}</strong> (Ref: <span className="font-mono font-bold text-rose-900">{existingRegistration.referenceNumber}</span>) was reviewed and not accepted in the previous round.
+                          </p>
+                          {existingRegistration.rejectionReason && (
+                            <div className="p-2.5 bg-white/80 rounded-lg border border-rose-200 text-xs text-rose-900 mt-1">
+                              <strong>Reviewer Note:</strong> {existingRegistration.rejectionReason}
+                            </div>
+                          )}
+                          <p className="text-xs text-rose-800 leading-relaxed pt-1">
+                            You are welcome to update your information, correct previous details, and <strong>resubmit your application for re-evaluation</strong>.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                        <Button
+                          type="button"
+                          onClick={handleLoadPreviousAnswersAndAdvance}
+                          className="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold h-9 px-4 gap-1.5 cursor-pointer shadow-xs"
+                        >
+                          <RefreshCw className="w-3.5 h-3.5" />
+                          <span>Load Previous Details &amp; Resubmit Application</span>
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setExistingRegistration(null)}
+                          className="text-xs font-semibold h-9 px-4 border-rose-300 text-rose-900 hover:bg-rose-100 cursor-pointer"
+                        >
+                          <span>Start Fresh Blank Application</span>
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    /* CASE 3: SUBMITTED / UNDER REVIEW - CAN CHANGE DETAILS */
+                    <div className="p-5 rounded-2xl bg-amber-50/90 border-2 border-amber-400/80 space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#183153] text-white flex items-center justify-center shrink-0">
+                          <AlertTriangle className="w-6 h-6 stroke-[2.5] text-amber-300" />
+                        </div>
+                        <div className="space-y-1">
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-200 text-amber-900 text-[11px] font-bold uppercase tracking-wider">
+                            <span>Already Registered</span>
+                          </div>
+                          <h3 className="text-base font-extrabold text-amber-950">
+                            You Have Already Filled the Registration Form from this Email
+                          </h3>
+                          <p className="text-xs text-amber-900 leading-relaxed">
+                            We found an existing active registration for <strong className="font-semibold text-amber-950">{answers.email}</strong>.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="p-3 bg-white rounded-xl border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                        <div>
+                          <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+                            Official Reference Number
+                          </span>
+                          <span className="font-mono text-base font-black text-[#183153]">
+                            {existingRegistration.referenceNumber}
+                          </span>
+                        </div>
+                        <div className="text-xs font-semibold text-amber-900">
+                          Current Status: <span className="uppercase font-bold text-[#183153]">{existingRegistration.applicationStatus}</span>
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-amber-900 leading-relaxed">
+                        If you need to update or change any details, you can load your previous answers, make modifications, and update your submission.
+                      </p>
+
+                      <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                        <Button
+                          type="button"
+                          onClick={handleLoadPreviousAnswersAndAdvance}
+                          className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-bold h-9 px-4 gap-1.5 cursor-pointer shadow-xs"
+                        >
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <span>Load &amp; Change My Details</span>
+                        </Button>
+                        <a
+                          href={`/registration-status?ref=${existingRegistration.referenceNumber}`}
+                          className="inline-block"
+                        >
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="text-xs font-semibold h-9 px-4 border-amber-300 text-amber-900 hover:bg-amber-100 cursor-pointer"
+                          >
+                            <span>Check Current Live Status</span>
+                          </Button>
+                        </a>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          onClick={() => setExistingRegistration(null)}
+                          className="text-xs font-medium text-slate-500 hover:text-slate-700 cursor-pointer"
+                        >
+                          <span>Dismiss</span>
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
@@ -1119,13 +1512,30 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                 <div key={field.id} className="space-y-1.5">
                   {field.type === "heading" ? (
                     <div className="pt-2 border-t border-slate-100">
-                      <h3 className="font-extrabold text-base text-slate-900">{field.label}</h3>
+                      <h3 className="font-extrabold text-base text-[#183153]">{field.label}</h3>
                       {field.description && (
                         <p className="text-xs text-slate-500">{field.description}</p>
                       )}
                     </div>
                   ) : field.type === "divider" ? (
                     <hr className="my-4 border-[#DCE5ED]" />
+                  ) : field.type === "spacer" ? (
+                    <div
+                      style={{ height: `${Number(field.placeholder) || 28}px` }}
+                      className="w-full pointer-events-none select-none"
+                      aria-hidden="true"
+                    />
+                  ) : field.type === "notice" ? (
+                    <div className="p-3.5 rounded-xl bg-[#F4F7FA] border border-[#356FA8]/30 flex items-start gap-2.5 my-2">
+                      <Info className="w-4 h-4 text-[#356FA8] shrink-0 mt-0.5" />
+                      <div className="space-y-0.5 text-xs">
+                        {field.label && <span className="font-bold text-[#183153] block">{field.label}</span>}
+                        {field.description && <p className="text-slate-600 leading-relaxed text-[11px]">{field.description}</p>}
+                        {field.placeholder && !field.description && (
+                          <p className="text-slate-600 leading-relaxed text-[11px]">{field.placeholder}</p>
+                        )}
+                      </div>
+                    </div>
                   ) : (
                     <>
                       <Label required={field.required}>{field.label}</Label>
@@ -1437,7 +1847,7 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
                     </div>
                     <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                       {st.fields
-                        .filter((f) => !["heading", "divider"].includes(f.type))
+                        .filter((f) => !["heading", "divider", "spacer", "notice"].includes(f.type))
                         .map((f) => {
                           const isFileField = ["image", "video", "file"].includes(f.type);
                           const preview = filePreviews[f.fieldKey];
@@ -1635,9 +2045,13 @@ export function RegistrationWizard({ form, schema }: RegistrationWizardProps) {
           {!isReviewStep ? (
             <Button
               type="button"
-              disabled={Boolean(uploadingFieldKey)}
+              disabled={
+                Boolean(uploadingFieldKey) ||
+                (currentStepIndex === 0 && !isEmailVerified) ||
+                (currentStepIndex === 0 && existingRegistration?.applicationStatus === "APPROVED")
+              }
               onClick={handleProceedNext}
-              className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold gap-1.5 px-6 shadow-sm"
+              className="bg-[#183153] hover:bg-[#12243d] text-white text-xs font-semibold gap-1.5 px-6 shadow-sm cursor-pointer disabled:opacity-50"
             >
               {uploadingFieldKey ? (
                 <>

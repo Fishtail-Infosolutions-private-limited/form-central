@@ -39,6 +39,10 @@ import {
   RotateCcw,
   GripVertical,
   EyeOff,
+  Minus,
+  MoveVertical,
+  Heading,
+  Info,
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -106,6 +110,38 @@ const FIELD_TYPE_OPTIONS: Array<{
   { type: "file", label: "Document File", icon: FileUp, description: "PDF or identification document" },
 ];
 
+const LAYOUT_ELEMENT_OPTIONS: Array<{
+  type: FieldType;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  description: string;
+}> = [
+  {
+    type: "divider",
+    label: "Horizontal Line (Divider)",
+    icon: Minus,
+    description: "Dividing line between form sections",
+  },
+  {
+    type: "spacer",
+    label: "Vertical Spacing Gap",
+    icon: MoveVertical,
+    description: "Blank vertical spacing between inputs",
+  },
+  {
+    type: "heading",
+    label: "Section Sub-Heading",
+    icon: Heading,
+    description: "Group inputs with a title and subtitle",
+  },
+  {
+    type: "notice",
+    label: "Notice / Callout Box",
+    icon: Info,
+    description: "Highlighted advisory or guidance banner",
+  },
+];
+
 export function RegistrationFormWorkspace({
   form,
   siteSetting: initialSiteSetting,
@@ -151,6 +187,7 @@ export function RegistrationFormWorkspace({
   const [isAppearanceOpen, setIsAppearanceOpen] = useState(false);
   const [isAvailabilityOpen, setIsAvailabilityOpen] = useState(false);
   const [isAddQuestionMenuOpen, setIsAddQuestionMenuOpen] = useState(false);
+  const [isAddLayoutMenuOpen, setIsAddLayoutMenuOpen] = useState(false);
 
   // Drag & Drop reorder states
   const [draggedStepIdx, setDraggedStepIdx] = useState<number | null>(null);
@@ -391,6 +428,56 @@ export function RegistrationFormWorkspace({
     setSelectedFieldId(id);
     setIsAddQuestionMenuOpen(false);
     toast.success(`Added ${newField.label}`);
+  };
+
+  const handleAddLayoutElement = (type: "divider" | "spacer" | "heading" | "notice") => {
+    setIsAddLayoutMenuOpen(false);
+    if (!currentStep) return;
+
+    const id = `layout-${type}-${nanoid(8)}`;
+    const fieldKey = `layout_${type}_${nanoid(4)}`;
+
+    let defaultLabel = "Horizontal Line (Divider)";
+    let defaultPlaceholder = "solid";
+    let defaultDescription = "";
+
+    if (type === "heading") {
+      defaultLabel = "Section Sub-Heading";
+      defaultDescription = "Optional subheading or brief instructions for this group of fields";
+      defaultPlaceholder = "";
+    } else if (type === "divider") {
+      defaultLabel = "Horizontal Divider";
+      defaultPlaceholder = "solid";
+    } else if (type === "spacer") {
+      defaultLabel = "Vertical Spacing Gap";
+      defaultPlaceholder = "28";
+    } else if (type === "notice") {
+      defaultLabel = "Important Advisory";
+      defaultDescription = "Please review the guidelines before submitting this section.";
+      defaultPlaceholder = "";
+    }
+
+    const newField: FormFieldDefinition = {
+      id,
+      fieldKey,
+      type,
+      label: defaultLabel,
+      placeholder: defaultPlaceholder,
+      description: defaultDescription,
+      required: false,
+      isSystem: false,
+      order: currentStep?.fields?.length || 0,
+    };
+
+    const updatedSteps = [...schema.steps];
+    updatedSteps[activeStepIndex] = {
+      ...currentStep,
+      fields: [...(currentStep.fields || []), newField],
+    };
+
+    setSchema({ ...schema, steps: updatedSteps });
+    setSelectedFieldId(id);
+    toast.success(`Added ${newField.label} to this Step`);
   };
 
   const handleUpdateField = (updatedField: FormFieldDefinition) => {
@@ -1111,53 +1198,114 @@ export function RegistrationFormWorkspace({
                           />
                         </div>
 
-                        {/* Add Input Field Dropdown Trigger */}
-                        <div className="relative">
-                          <Button
-                            type="button"
-                            size="sm"
-                            onClick={() => setIsAddQuestionMenuOpen(!isAddQuestionMenuOpen)}
-                            className="gap-1.5 bg-[#183153] hover:bg-[#12243D] text-white text-xs h-8.5 px-3.5 font-bold shadow-xs cursor-pointer rounded-lg flex items-center"
-                          >
-                            <Plus className="w-3.5 h-3.5 text-white" />
-                            <span>Add Input Field</span>
-                          </Button>
+                        {/* Action Buttons: Add Input Field & Add Line, Gap or Header */}
+                        <div className="flex items-center gap-2">
+                          {/* Add Input Field Dropdown Trigger */}
+                          <div className="relative">
+                            <Button
+                              type="button"
+                              size="sm"
+                              onClick={() => {
+                                setIsAddQuestionMenuOpen(!isAddQuestionMenuOpen);
+                                setIsAddLayoutMenuOpen(false);
+                              }}
+                              className="gap-1.5 bg-[#183153] hover:bg-[#12243D] text-white text-xs h-8.5 px-3 font-bold shadow-xs cursor-pointer rounded-lg flex items-center"
+                            >
+                              <Plus className="w-3.5 h-3.5 text-white" />
+                              <span>Add Input Field</span>
+                            </Button>
 
-                          {/* Field Palette Menu with Outside Click Dismiss Backdrop */}
-                          {isAddQuestionMenuOpen && (
-                            <>
-                              <div
-                                className="fixed inset-0 z-40 bg-black/10 cursor-default"
-                                onClick={() => setIsAddQuestionMenuOpen(false)}
-                              />
-                              <div className="absolute right-0 top-10 w-72 bg-white rounded-xl border border-[#DCE5ED] shadow-xl z-50 p-2 space-y-1 animate-in fade-in zoom-in-95 duration-100 max-h-96 overflow-y-auto">
-                                <span className="text-[10px] font-bold text-taupe-grey uppercase tracking-wider px-2 py-1 block">
-                                  Choose Input Field Type
-                                </span>
-                                {FIELD_TYPE_OPTIONS.map((opt) => {
-                                  const IconComponent = opt.icon;
-                                  return (
-                                    <button
-                                      key={opt.type}
-                                      type="button"
-                                      onClick={() => handleAddQuestion(opt.type)}
-                                      className="w-full p-2 rounded-lg text-left hover:bg-[#F4F7FA] flex items-start gap-2.5 transition-colors cursor-pointer"
-                                    >
-                                      <IconComponent className="w-4 h-4 text-[#356FA8] shrink-0 mt-0.5" />
-                                      <div>
-                                        <span className="text-xs font-semibold text-[#263238] block leading-tight">
-                                          {opt.label}
-                                        </span>
-                                        <span className="text-[10px] text-taupe-grey block">
-                                          {opt.description}
-                                        </span>
-                                      </div>
-                                    </button>
-                                  );
-                                })}
-                              </div>
-                            </>
-                          )}
+                            {/* Field Palette Menu with Outside Click Dismiss Backdrop */}
+                            {isAddQuestionMenuOpen && (
+                              <>
+                                <div
+                                  className="fixed inset-0 z-40 bg-black/10 cursor-default"
+                                  onClick={() => setIsAddQuestionMenuOpen(false)}
+                                />
+                                <div className="absolute right-0 top-10 w-72 bg-white rounded-xl border border-[#DCE5ED] shadow-xl z-50 p-2 space-y-1 animate-in fade-in zoom-in-95 duration-100 max-h-96 overflow-y-auto">
+                                  <span className="text-[10px] font-bold text-taupe-grey uppercase tracking-wider px-2 py-1 block">
+                                    Choose Input Field Type
+                                  </span>
+                                  {FIELD_TYPE_OPTIONS.map((opt) => {
+                                    const IconComponent = opt.icon;
+                                    return (
+                                      <button
+                                        key={opt.type}
+                                        type="button"
+                                        onClick={() => handleAddQuestion(opt.type)}
+                                        className="w-full p-2 rounded-lg text-left hover:bg-[#F4F7FA] flex items-start gap-2.5 transition-colors cursor-pointer"
+                                      >
+                                        <IconComponent className="w-4 h-4 text-[#356FA8] shrink-0 mt-0.5" />
+                                        <div>
+                                          <span className="text-xs font-semibold text-[#263238] block leading-tight">
+                                            {opt.label}
+                                          </span>
+                                          <span className="text-[10px] text-taupe-grey block">
+                                            {opt.description}
+                                          </span>
+                                        </div>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </>
+                            )}
+                          </div>
+
+                          {/* Add Line, Gap or Header Dropdown Trigger */}
+                          <div className="relative">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setIsAddLayoutMenuOpen(!isAddLayoutMenuOpen);
+                                setIsAddQuestionMenuOpen(false);
+                              }}
+                              className="gap-1.5 border-[#356FA8] text-[#183153] hover:bg-[#F4F7FA] text-xs h-8.5 px-3 font-semibold shadow-xs cursor-pointer rounded-lg flex items-center"
+                            >
+                              <Plus className="w-3.5 h-3.5 text-[#356FA8]" />
+                              <span>Add Line, Gap or Header</span>
+                            </Button>
+
+                            {/* Layout Palette Menu */}
+                            {isAddLayoutMenuOpen && (
+                              <>
+                                <div
+                                  className="fixed inset-0 z-40 bg-black/10 cursor-default"
+                                  onClick={() => setIsAddLayoutMenuOpen(false)}
+                                />
+                                <div className="absolute right-0 top-10 w-72 bg-white rounded-xl border border-[#DCE5ED] shadow-xl z-50 p-2 space-y-1 animate-in fade-in zoom-in-95 duration-100 max-h-96 overflow-y-auto">
+                                  <span className="text-[10px] font-bold text-taupe-grey uppercase tracking-wider px-2 py-1 block">
+                                    Layout &amp; Formatting Elements
+                                  </span>
+                                  {LAYOUT_ELEMENT_OPTIONS.map((opt) => {
+                                    const IconComponent = opt.icon;
+                                    return (
+                                      <button
+                                        key={opt.type}
+                                        type="button"
+                                        onClick={() => handleAddLayoutElement(opt.type as "divider" | "spacer" | "heading" | "notice")}
+                                        className="w-full p-2.5 rounded-lg text-left hover:bg-[#F4F7FA] flex items-start gap-2.5 transition-colors cursor-pointer"
+                                      >
+                                        <div className="w-6 h-6 rounded-md bg-[#F4F7FA] border border-[#DCE5ED] text-[#356FA8] flex items-center justify-center shrink-0 mt-0.5">
+                                          <IconComponent className="w-3.5 h-3.5 text-[#356FA8]" />
+                                        </div>
+                                        <div>
+                                          <span className="text-xs font-semibold text-[#183153] block leading-tight">
+                                            {opt.label}
+                                          </span>
+                                          <span className="text-[10px] text-taupe-grey block">
+                                            {opt.description}
+                                          </span>
+                                        </div>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
 
@@ -1296,26 +1444,82 @@ export function RegistrationFormWorkspace({
                                     }`}
                                   />
                                 )}
-                                {/* Clean preview: only label, required asterisk, and input type badge */}
-                                <div className="flex items-center gap-2.5 min-w-0 flex-1 pointer-events-none">
-                                  <span title="Drag to reorder question" className="cursor-grab active:cursor-grabbing shrink-0 flex items-center">
-                                    <GripVertical className="w-3.5 h-3.5 text-taupe-grey" />
-                                  </span>
-                                  {isSystem && (
-                                    <span title="Mandatory system field">
-                                      <Lock className="w-3.5 h-3.5 text-dark-taupe shrink-0" />
+                                {/* Layout or Question Preview */}
+                                {field.type === "heading" ? (
+                                  <div className="flex items-center gap-2.5 min-w-0 flex-1 pointer-events-none">
+                                    <span title="Drag to reorder" className="cursor-grab active:cursor-grabbing shrink-0 flex items-center">
+                                      <GripVertical className="w-3.5 h-3.5 text-taupe-grey" />
                                     </span>
-                                  )}
-                                  <span className="text-xs font-semibold text-[#263238] truncate">
-                                    {field.label}
-                                  </span>
-                                  {field.required && (
-                                    <span className="text-rose-600 font-bold text-xs shrink-0">*</span>
-                                  )}
-                                  <span className="text-[10px] uppercase font-mono font-medium px-2 py-0.5 rounded bg-[#F4F7FA] text-dark-taupe border border-warm-stone/50 shrink-0">
-                                    {field.type}
-                                  </span>
-                                </div>
+                                    <Heading className="w-3.5 h-3.5 text-[#356FA8] shrink-0" />
+                                    <span className="text-xs font-bold text-[#183153] truncate">
+                                      {field.label}
+                                    </span>
+                                    <span className="text-[10px] uppercase font-mono font-medium px-2 py-0.5 rounded bg-blue-50 text-[#183153] border border-[#356FA8]/30 shrink-0">
+                                      Section Header
+                                    </span>
+                                  </div>
+                                ) : field.type === "divider" ? (
+                                  <div className="flex items-center gap-2.5 min-w-0 flex-1 pointer-events-none">
+                                    <span title="Drag to reorder" className="cursor-grab active:cursor-grabbing shrink-0 flex items-center">
+                                      <GripVertical className="w-3.5 h-3.5 text-taupe-grey" />
+                                    </span>
+                                    <Minus className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                                    <div className="flex-1 flex items-center gap-2 min-w-0">
+                                      <span className="text-xs font-medium text-slate-600 truncate">{field.label || "Horizontal Line"}</span>
+                                      <div className="flex-1 h-px bg-slate-300 border-t border-dashed border-slate-300" />
+                                    </div>
+                                    <span className="text-[10px] uppercase font-mono font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200 shrink-0">
+                                      Divider Line
+                                    </span>
+                                  </div>
+                                ) : field.type === "spacer" ? (
+                                  <div className="flex items-center gap-2.5 min-w-0 flex-1 pointer-events-none">
+                                    <span title="Drag to reorder" className="cursor-grab active:cursor-grabbing shrink-0 flex items-center">
+                                      <GripVertical className="w-3.5 h-3.5 text-taupe-grey" />
+                                    </span>
+                                    <MoveVertical className="w-3.5 h-3.5 text-[#356FA8] shrink-0" />
+                                    <span className="text-xs font-medium text-slate-600 truncate">
+                                      {field.label || "Vertical Spacing Gap"} ({Number(field.placeholder) || 28}px)
+                                    </span>
+                                    <span className="text-[10px] uppercase font-mono font-medium px-2 py-0.5 rounded bg-blue-50/60 text-[#356FA8] border border-[#356FA8]/20 shrink-0">
+                                      Gap {Number(field.placeholder) || 28}px
+                                    </span>
+                                  </div>
+                                ) : field.type === "notice" ? (
+                                  <div className="flex items-center gap-2.5 min-w-0 flex-1 pointer-events-none">
+                                    <span title="Drag to reorder" className="cursor-grab active:cursor-grabbing shrink-0 flex items-center">
+                                      <GripVertical className="w-3.5 h-3.5 text-taupe-grey" />
+                                    </span>
+                                    <Info className="w-4 h-4 text-[#356FA8] shrink-0" />
+                                    <span className="text-xs font-semibold text-[#183153] truncate">
+                                      {field.label || "Notice Box"}
+                                    </span>
+                                    <span className="text-[10px] uppercase font-mono font-medium px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 shrink-0">
+                                      Notice Box
+                                    </span>
+                                  </div>
+                                ) : (
+                                  /* Clean preview: only label, required asterisk, and input type badge */
+                                  <div className="flex items-center gap-2.5 min-w-0 flex-1 pointer-events-none">
+                                    <span title="Drag to reorder question" className="cursor-grab active:cursor-grabbing shrink-0 flex items-center">
+                                      <GripVertical className="w-3.5 h-3.5 text-taupe-grey" />
+                                    </span>
+                                    {isSystem && (
+                                      <span title="Mandatory system field">
+                                        <Lock className="w-3.5 h-3.5 text-dark-taupe shrink-0" />
+                                      </span>
+                                    )}
+                                    <span className="text-xs font-semibold text-[#263238] truncate">
+                                      {field.label}
+                                    </span>
+                                    {field.required && (
+                                      <span className="text-rose-600 font-bold text-xs shrink-0">*</span>
+                                    )}
+                                    <span className="text-[10px] uppercase font-mono font-medium px-2 py-0.5 rounded bg-[#F4F7FA] text-dark-taupe border border-warm-stone/50 shrink-0">
+                                      {field.type}
+                                    </span>
+                                  </div>
+                                )}
 
                                 {/* Question Row Controls */}
                                 <div
@@ -1377,24 +1581,41 @@ export function RegistrationFormWorkspace({
                         </div>
                       )}
 
-                      {/* Prominent Quick-Add Field Button at bottom of questions */}
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => setIsAddQuestionMenuOpen(true)}
-                        className="w-full border-dashed border-2 border-[#DCE5ED] hover:border-[#183153] hover:bg-[#F4F7FA] text-[#183153] text-xs font-semibold h-11 rounded-xl gap-2 transition-colors mt-2"
-                      >
-                        <Plus className="w-4 h-4 text-[#356FA8]" />
-                        <span>Add Input Field to this Step</span>
-                      </Button>
+                      {/* Prominent Quick-Add Buttons at bottom of questions */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            setIsAddQuestionMenuOpen(true);
+                            setIsAddLayoutMenuOpen(false);
+                          }}
+                          className="border-dashed border-2 border-[#DCE5ED] hover:border-[#183153] hover:bg-[#F4F7FA] text-[#183153] text-xs font-semibold h-11 rounded-xl gap-2 transition-colors cursor-pointer"
+                        >
+                          <Plus className="w-4 h-4 text-[#356FA8]" />
+                          <span>+ Add Input Field</span>
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            setIsAddLayoutMenuOpen(true);
+                            setIsAddQuestionMenuOpen(false);
+                          }}
+                          className="border-dashed border-2 border-[#356FA8]/40 hover:border-[#356FA8] hover:bg-[#F4F7FA] text-[#183153] text-xs font-semibold h-11 rounded-xl gap-2 transition-colors cursor-pointer"
+                        >
+                          <Plus className="w-4 h-4 text-[#356FA8]" />
+                          <span>+ Add Line, Gap or Header</span>
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
 
                 {/* PART 3 (RIGHT): Selected Question Configuration Drawer */}
                 {selectedField && (
-                  <div className="lg:col-span-3 sticky top-4">
-                    <div className="rounded-2xl border border-[#DCE5ED] overflow-hidden shadow-xs">
+                  <div className="lg:col-span-3 sticky top-4 h-[calc(100vh-2rem)] max-h-[calc(100vh-2rem)] flex flex-col">
+                    <div className="rounded-2xl border border-[#DCE5ED] overflow-hidden shadow-xs h-full flex flex-col bg-white">
                       <QuestionConfigDrawer
                         field={selectedField}
                         onUpdate={handleUpdateField}

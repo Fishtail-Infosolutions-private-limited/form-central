@@ -28,6 +28,9 @@ import { OriginFoundationLogo, MithilaHeritageMandala } from "@/components/brand
 import { prisma } from "@/lib/db/prisma";
 import { formatNepalDateTime, formatNepalDateOnly } from "@/lib/utils/timezone";
 import { ExpandableFaqs } from "@/components/home/expandable-faqs";
+import { getSafeSiteSetting } from "@/lib/db/site-settings";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "The Origin Foundation | Mithila Queen — Janakpur Dham, Nepal",
@@ -36,9 +39,7 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const setting = await prisma.siteSetting.findUnique({
-    where: { id: "primary" },
-  });
+  const setting = await getSafeSiteSetting();
 
   const regFee = setting?.registrationFee || 399;
 

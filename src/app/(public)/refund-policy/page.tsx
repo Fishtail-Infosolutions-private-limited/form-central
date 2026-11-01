@@ -1,6 +1,8 @@
 import React from "react";
 import { CreditCard, HelpCircle } from "lucide-react";
-import { prisma } from "@/lib/db/prisma";
+import { getSafeSiteSetting } from "@/lib/db/site-settings";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Refund and Cancellation Policy | The Origin Foundation",
@@ -9,9 +11,7 @@ export const metadata = {
 };
 
 export default async function RefundPolicyPage() {
-  const setting = await prisma.siteSetting.findUnique({
-    where: { id: "primary" },
-  });
+  const setting = await getSafeSiteSetting();
   const regFee = setting?.registrationFee || 399;
 
   return (

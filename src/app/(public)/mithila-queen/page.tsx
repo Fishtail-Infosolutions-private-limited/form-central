@@ -19,8 +19,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MithilaHeritageMandala } from "@/components/brand/brand-logos";
-import { prisma } from "@/lib/db/prisma";
+import { getSafeSiteSetting } from "@/lib/db/site-settings";
 import { formatNepalDateOnly } from "@/lib/utils/timezone";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Mithila Queen | Flagship Competition of The Origin Foundation",
@@ -29,9 +31,7 @@ export const metadata = {
 };
 
 export default async function MithilaQueenPage() {
-  const setting = await prisma.siteSetting.findUnique({
-    where: { id: "primary" },
-  });
+  const setting = await getSafeSiteSetting();
 
   const regFee = setting?.registrationFee || 399;
 

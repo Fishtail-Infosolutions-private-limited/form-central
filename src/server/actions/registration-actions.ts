@@ -105,7 +105,7 @@ export async function submitRegistrationAction({
       continue;
     }
 
-    if (isVisible && field.required) {
+    if (isVisible && field.required && !["heading", "divider", "spacer", "notice"].includes(field.type)) {
       const val = answers[field.fieldKey];
       if (val === undefined || val === null || val === "" || (Array.isArray(val) && val.length === 0)) {
         return {
@@ -116,9 +116,36 @@ export async function submitRegistrationAction({
     }
   }
 
-  // 5. Generate Unique Reference Number: MQ-2026-XXXXXX for Mithila Queen, FC-2026-XXXXXX for other forms
+  // 5. Check if an existing registration already exists for this email
+  const existingMq =
+    form.slug === "mithila-queen"
+      ? await prisma.mithilaQueenRegistration.findFirst({
+          where: { email },
+          orderBy: { submittedAt: "desc" },
+        })
+      : null;
+
+  const existingSub = await prisma.registrationSubmission.findFirst({
+    where: { email, formId: form.id },
+    orderBy: { createdAt: "desc" },
+  });
+
+  // If already APPROVED: block editing and resubmission
+  if (
+    (existingMq && existingMq.applicationStatus === "APPROVED") ||
+    (existingSub && existingSub.status === "APPROVED")
+  ) {
+    return {
+      success: false,
+      error:
+        "Your registration has already been officially APPROVED and confirmed. Application details are locked and cannot be edited or resubmitted.",
+    };
+  }
+
+  // Reuse existing reference number if updating / resubmitting
+  const existingRefNumber = existingMq?.registrationId || existingSub?.referenceNumber;
   const prefix = form.slug === "mithila-queen" ? "MQ-2026" : "FC-2026";
-  const referenceNumber = `${prefix}-${generateRefCode()}`;
+  const referenceNumber = existingRefNumber || `${prefix}-${generateRefCode()}`;
 
   // 6. Execute Transaction (with atomic concurrency protection)
   let submission;
@@ -126,23 +153,42 @@ export async function submitRegistrationAction({
     submission = await prisma.$transaction(async (tx) => {
       // Re-verify availability inside the transaction to prevent concurrent over-capacity submissions
       const txAvailability = await checkFormAvailability(form, tx);
-      if (!txAvailability.isAvailable) {
+      if (!txAvailability.isAvailable && !existingSub) {
         throw new Error(txAvailability.message);
       }
 
-      // Create Submission Record
-      const sub = await tx.registrationSubmission.create({
-        data: {
-          referenceNumber,
-          formId: form.id,
-          formVersionId: publishedVersion.id,
-          fullName,
-          email,
-          phone,
-          emailVerificationId: verification.id,
-          status: "PENDING",
-        },
-      });
+      // Create or Update Submission Record
+      let sub;
+      if (existingSub) {
+        sub = await tx.registrationSubmission.update({
+          where: { id: existingSub.id },
+          data: {
+            fullName,
+            phone,
+            formVersionId: publishedVersion.id,
+            emailVerificationId: verification.id,
+            status: "PENDING",
+            submittedAt: new Date(),
+          },
+        });
+        // Clear old answers to record updated answers
+        await tx.submissionAnswer.deleteMany({
+          where: { submissionId: sub.id },
+        });
+      } else {
+        sub = await tx.registrationSubmission.create({
+          data: {
+            referenceNumber,
+            formId: form.id,
+            formVersionId: publishedVersion.id,
+            fullName,
+            email,
+            phone,
+            emailVerificationId: verification.id,
+            status: "PENDING",
+          },
+        });
+      }
 
       // Attach Uploaded Files and map original names for file answers
       const uploadedFilesMap = new Map<string, string>();
@@ -191,7 +237,7 @@ export async function submitRegistrationAction({
         });
       }
 
-      // If Mithila Queen flagship, also record into MithilaQueenRegistration for full adjudication
+      // If Mithila Queen flagship, create or update MithilaQueenRegistration
       if (form.slug === "mithila-queen") {
         const rawDob = answers.dob ? new Date(answers.dob) : new Date();
         const diffYears = Math.abs(new Date(Date.now() - rawDob.getTime()).getUTCFullYear() - 1970);
@@ -202,52 +248,64 @@ export async function submitRegistrationAction({
         const pDoc = uploadedFilesMap.get("documentUrl") || uploadedFilesMap.get("identityDoc") || answers.documentUrl;
         const pVideo = uploadedFilesMap.get("videoUrl") || uploadedFilesMap.get("videoFile") || answers.videoUrl;
 
-        await tx.mithilaQueenRegistration.create({
-          data: {
-            registrationId: referenceNumber,
-            fullName,
-            dob: rawDob,
-            isMinor,
-            email,
-            phone,
-            alternatePhone: answers.alternatePhone ? String(answers.alternatePhone) : null,
-            province: answers.province ? String(answers.province) : "Madhesh Province",
-            district: answers.district ? String(answers.district) : "Dhanusha",
-            municipality: answers.municipality ? String(answers.municipality) : "Janakpurdham",
-            cityVillage: answers.cityVillage ? String(answers.cityVillage) : "Janakpur",
-            currentAddress: answers.currentAddress ? String(answers.currentAddress) : "Janakpur Dham",
-            guardianName: answers.guardianName ? String(answers.guardianName) : null,
-            guardianPhone: answers.guardianPhone ? String(answers.guardianPhone) : null,
-            guardianRelation: answers.guardianRelation ? String(answers.guardianRelation) : null,
-            guardianConsentRecorded: Boolean(answers.guardianConsent),
-            guardianConsentTimestamp: answers.guardianConsent ? new Date() : null,
-            motivationReason: answers.motivationReason ? String(answers.motivationReason) : null,
-            mithilaMeaning: answers.mithilaMeaning ? String(answers.mithilaMeaning) : null,
-            qualitiesBrought: answers.qualitiesBrought ? String(answers.qualitiesBrought) : null,
-            talentsSkills: answers.talentsSkills ? String(answers.talentsSkills) : null,
-            languagesSpoken: answers.languagesSpoken ? String(answers.languagesSpoken) : null,
-            culturalInterests: answers.culturalInterests ? String(answers.culturalInterests) : null,
-            hobbiesInterests: answers.hobbiesInterests ? String(answers.hobbiesInterests) : null,
-            educationLevel: answers.educationLevel ? String(answers.educationLevel) : null,
-            institution: answers.institution ? String(answers.institution) : null,
-            previousExperience: Boolean(answers.previousExperience),
-            experienceDetails: answers.experienceDetails ? String(answers.experienceDetails) : null,
-            heightCm: answers.heightCm ? parseFloat(String(answers.heightCm)) : null,
-            instagramHandle: answers.instagramHandle ? String(answers.instagramHandle) : null,
-            tiktokHandle: answers.tiktokHandle ? String(answers.tiktokHandle) : null,
-            facebookUrl: answers.facebookUrl ? String(answers.facebookUrl) : null,
-            profilePhotoUrl: pPhoto ? String(pPhoto) : null,
-            videoUrl: pVideo ? String(pVideo) : null,
-            documentUrl: pDoc ? String(pDoc) : null,
-            registrationFee: 399,
-            paymentStatus: pScreenshot ? "UNDER_REVIEW" : "PENDING",
-            paymentReference: answers.transactionReference || answers.paymentReference ? String(answers.transactionReference || answers.paymentReference) : null,
-            paymentScreenshotUrl: pScreenshot ? String(pScreenshot) : null,
-            paymentSubmittedAt: pScreenshot ? new Date() : null,
-            applicationStatus: "SUBMITTED",
-            submittedAt: new Date(),
-          },
-        });
+        const mqData = {
+          fullName,
+          dob: rawDob,
+          isMinor,
+          phone,
+          alternatePhone: answers.alternatePhone ? String(answers.alternatePhone) : null,
+          province: answers.province ? String(answers.province) : "Madhesh Province",
+          district: answers.district ? String(answers.district) : "Dhanusha",
+          municipality: answers.municipality ? String(answers.municipality) : "Janakpurdham",
+          cityVillage: answers.cityVillage ? String(answers.cityVillage) : "Janakpur",
+          currentAddress: answers.currentAddress ? String(answers.currentAddress) : "Janakpur Dham",
+          guardianName: answers.guardianName ? String(answers.guardianName) : null,
+          guardianPhone: answers.guardianPhone ? String(answers.guardianPhone) : null,
+          guardianRelation: answers.guardianRelation ? String(answers.guardianRelation) : null,
+          guardianConsentRecorded: Boolean(answers.guardianConsent),
+          guardianConsentTimestamp: answers.guardianConsent ? new Date() : null,
+          motivationReason: answers.motivationReason ? String(answers.motivationReason) : null,
+          mithilaMeaning: answers.mithilaMeaning ? String(answers.mithilaMeaning) : null,
+          qualitiesBrought: answers.qualitiesBrought ? String(answers.qualitiesBrought) : null,
+          talentsSkills: answers.talentsSkills ? String(answers.talentsSkills) : null,
+          languagesSpoken: answers.languagesSpoken ? String(answers.languagesSpoken) : null,
+          culturalInterests: answers.culturalInterests ? String(answers.culturalInterests) : null,
+          hobbiesInterests: answers.hobbiesInterests ? String(answers.hobbiesInterests) : null,
+          educationLevel: answers.educationLevel ? String(answers.educationLevel) : null,
+          institution: answers.institution ? String(answers.institution) : null,
+          previousExperience: Boolean(answers.previousExperience),
+          experienceDetails: answers.experienceDetails ? String(answers.experienceDetails) : null,
+          heightCm: answers.heightCm ? parseFloat(String(answers.heightCm)) : null,
+          instagramHandle: answers.instagramHandle ? String(answers.instagramHandle) : null,
+          tiktokHandle: answers.tiktokHandle ? String(answers.tiktokHandle) : null,
+          facebookUrl: answers.facebookUrl ? String(answers.facebookUrl) : null,
+          profilePhotoUrl: pPhoto ? String(pPhoto) : existingMq?.profilePhotoUrl || null,
+          videoUrl: pVideo ? String(pVideo) : existingMq?.videoUrl || null,
+          documentUrl: pDoc ? String(pDoc) : existingMq?.documentUrl || null,
+          registrationFee: 399,
+          paymentStatus: pScreenshot ? "UNDER_REVIEW" : existingMq?.paymentStatus || "PENDING",
+          paymentReference: answers.transactionReference || answers.paymentReference ? String(answers.transactionReference || answers.paymentReference) : existingMq?.paymentReference || null,
+          paymentScreenshotUrl: pScreenshot ? String(pScreenshot) : existingMq?.paymentScreenshotUrl || null,
+          paymentSubmittedAt: pScreenshot ? new Date() : existingMq?.paymentSubmittedAt || null,
+          applicationStatus: "SUBMITTED" as const,
+          rejectionReason: null, // Reset rejection reason on resubmission
+          submittedAt: new Date(),
+        };
+
+        if (existingMq) {
+          await tx.mithilaQueenRegistration.update({
+            where: { id: existingMq.id },
+            data: mqData,
+          });
+        } else {
+          await tx.mithilaQueenRegistration.create({
+            data: {
+              ...mqData,
+              registrationId: referenceNumber,
+              email,
+            },
+          });
+        }
       }
 
       return sub;

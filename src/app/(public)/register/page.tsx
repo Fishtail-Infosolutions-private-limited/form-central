@@ -19,6 +19,9 @@ import {
 } from "lucide-react";
 import { FormAppearanceConfig } from "@/types/form";
 import { formatNepalDateTime } from "@/lib/utils/timezone";
+import { getSafeSiteSetting } from "@/lib/db/site-settings";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Mithila Queen Registration | The Origin Foundation",
@@ -28,18 +31,18 @@ export const metadata: Metadata = {
 
 export default async function RegisterPage() {
   const [form, setting] = await Promise.all([
-    prisma.registrationForm.findUnique({
-      where: { slug: "mithila-queen" },
-      include: {
-        versions: {
-          orderBy: { versionNumber: "desc" },
-          take: 1,
+    prisma.registrationForm
+      .findUnique({
+        where: { slug: "mithila-queen" },
+        include: {
+          versions: {
+            orderBy: { versionNumber: "desc" },
+            take: 1,
+          },
         },
-      },
-    }),
-    prisma.siteSetting.findUnique({
-      where: { id: "primary" },
-    }),
+      })
+      .catch(() => null),
+    getSafeSiteSetting(),
   ]);
 
   // 1. Publication Check: Form must be Published and have a published version

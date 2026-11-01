@@ -103,7 +103,10 @@ export async function getPublicSiteSettingsAction() {
     };
   } catch (error: any) {
     console.error("Error fetching public site settings:", error);
-    return { success: false, error: "Failed to load site settings" };
+    return {
+      success: true,
+      setting: DEFAULT_OFFICIAL_SETTINGS as any,
+    };
   }
 }
 

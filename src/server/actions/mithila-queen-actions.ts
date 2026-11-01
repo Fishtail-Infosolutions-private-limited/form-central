@@ -1248,6 +1248,15 @@ export async function participantUpdateDetailsAction({
       return { success: false, error: "Registration record mismatch." };
     }
 
+    // Strictly disallow editing if already approved
+    if (reg.applicationStatus === ApplicationStatus.APPROVED) {
+      return {
+        success: false,
+        error:
+          "Your application has been officially APPROVED and confirmed. Application details are locked and cannot be edited.",
+      };
+    }
+
     const changes: Record<string, { previous: any; updated: any }> = {};
     const sensitiveFieldsList = ["fullName", "dob", "guardianName", "guardianPhone", "guardianRelation", "guardianEmail"];
     let hasSensitiveChanges = false;
@@ -1274,9 +1283,10 @@ export async function participantUpdateDetailsAction({
       return { success: true, message: "No fields were changed." };
     }
 
+    // If rejected, resubmission transitions status back to SUBMITTED
     const newApplicationStatus =
-      hasSensitiveChanges && reg.applicationStatus === ApplicationStatus.APPROVED
-        ? ApplicationStatus.UNDER_REVIEW
+      reg.applicationStatus === ApplicationStatus.REJECTED
+        ? ApplicationStatus.SUBMITTED
         : reg.applicationStatus;
 
     let updatedIsMinor = reg.isMinor;
@@ -1330,6 +1340,8 @@ export async function participantUpdateDetailsAction({
           documentUrl: updatedFields.documentUrl !== undefined ? updatedFields.documentUrl?.trim() || null : reg.documentUrl,
 
           applicationStatus: newApplicationStatus,
+          rejectionReason:
+            reg.applicationStatus === ApplicationStatus.REJECTED ? null : reg.rejectionReason,
         },
       });
 

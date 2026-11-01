@@ -3,7 +3,9 @@ import Link from "next/link";
 import { MapPin, Mail, Phone, Heart, Users, Target, Compass, ArrowRight, ShieldCheck, Building2, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { OriginFoundationLogo } from "@/components/brand/brand-logos";
-import { prisma } from "@/lib/db/prisma";
+import { getSafeSiteSetting } from "@/lib/db/site-settings";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "About The Origin Foundation | Janakpur Dham, Nepal",
@@ -12,9 +14,7 @@ export const metadata = {
 };
 
 export default async function AboutPage() {
-  const setting = await prisma.siteSetting.findUnique({
-    where: { id: "primary" },
-  });
+  const setting = await getSafeSiteSetting();
   const regFee = setting?.registrationFee || 399;
 
   const principles = [

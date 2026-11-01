@@ -168,3 +168,46 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+/* ==========================================================================
+   OFFICIAL PRINT STYLES (Candidate Confirmation & Dossier Pass)
+   ========================================================================== */
+@media print {
+  @page {
+    margin: 10mm 12mm;
+    size: A4 portrait;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide public navigation, headers, footers, and web control buttons */
+  header,
+  nav,
+  footer,
+  .print-hide,
+  [data-print-hide="true"] {
+    display: none !important;
+  }
+
+  /* Clean print layout container */
+  .print-dossier-root {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .print-dossier-card {
+    border: 2px solid #183153 !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+    padding: 24px !important;
+    page-break-inside: avoid !important;
+  }
+}

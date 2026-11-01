@@ -2,7 +2,10 @@ import React from "react";
 import Link from "next/link";
 import { HelpCircle, Mail, Phone } from "lucide-react";
 import { prisma } from "@/lib/db/prisma";
+import { getSafeSiteSetting } from "@/lib/db/site-settings";
 import { ExpandableFaqs } from "@/components/home/expandable-faqs";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Frequently Asked Questions | The Origin Foundation",
@@ -74,9 +77,7 @@ const DEFAULT_FAQS = [
 ];
 
 export default async function FaqPage() {
-  const setting = await prisma.siteSetting.findUnique({
-    where: { id: "primary" },
-  });
+  const setting = await getSafeSiteSetting();
 
   const regFee = setting?.registrationFee || 399;
   const officialEmail = setting?.officialEmail || "originfoundation107@gmail.com";
