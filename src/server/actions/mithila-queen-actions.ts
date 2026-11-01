@@ -790,6 +790,27 @@ export async function submitPaymentDetailsAction({
   }
 }
 
+// Helper function to mask email for privacy
+function maskEmail(email: string): string {
+  if (!email || !email.includes("@")) return email;
+  const [localPart, domain] = email.split("@");
+  if (localPart.length <= 2) {
+    return `${localPart[0] || "*"}***@${domain}`;
+  }
+  const first = localPart.slice(0, 2);
+  const last = localPart.slice(-1);
+  return `${first}****${last}@${domain}`;
+}
+
+// Helper function to mask phone for privacy
+function maskPhone(phone: string): string {
+  if (!phone || phone.length < 6) return phone;
+  const clean = phone.trim();
+  const visibleStart = clean.slice(0, 4);
+  const visibleEnd = clean.slice(-3);
+  return `${visibleStart}****${visibleEnd}`;
+}
+
 // -------------------------------------------------------------
 // 6. STATUS LOOKUP WITH EMAIL OTP (Zero Data Leaks)
 // -------------------------------------------------------------
@@ -874,10 +895,12 @@ export async function verifyStatusLookupOtpAction({
   verificationId,
   code,
   email,
+  registrationId,
 }: {
   verificationId: string;
   code: string;
   email: string;
+  registrationId?: string;
 }) {
   try {
     const cleanEmail = email.toLowerCase().trim();
@@ -924,7 +947,9 @@ export async function verifyStatusLookupOtpAction({
 
     // Query full registration dossier (excluding internal privateAdminNotes)
     const reg = await prisma.mithilaQueenRegistration.findFirst({
-      where: { email: cleanEmail },
+      where: registrationId
+        ? { registrationId: registrationId.trim().toUpperCase() }
+        : { email: cleanEmail },
       include: {
         statusLogs: { orderBy: { createdAt: "desc" }, take: 5 },
         paymentReviewLogs: { orderBy: { createdAt: "desc" }, take: 5 },
@@ -940,6 +965,7 @@ export async function verifyStatusLookupOtpAction({
     return {
       success: true,
       sessionToken: statusSessionToken,
+      isVerifiedSession: true,
       data: {
         id: reg.id,
         registrationId: reg.registrationId,
@@ -1001,6 +1027,152 @@ export async function verifyStatusLookupOtpAction({
   } catch (err: unknown) {
     console.error("verifyStatusLookupOtpAction error:", err);
     return { success: false, error: "Authentication failed. Unable to retrieve registration." };
+  }
+}
+
+// -------------------------------------------------------------
+// 6.1 LOOKUP APPLICATION BY REGISTRATION ID (Direct view without initial OTP)
+// -------------------------------------------------------------
+export async function lookupStatusByRegistrationIdAction({
+  registrationId,
+}: {
+  registrationId: string;
+}) {
+  try {
+    const cleanId = registrationId.trim().toUpperCase();
+    if (!cleanId) {
+      return { success: false, error: "Please enter your Registration ID (e.g. MQ-2026-XXXXX)." };
+    }
+
+    const reg = await prisma.mithilaQueenRegistration.findUnique({
+      where: { registrationId: cleanId },
+      include: {
+        statusLogs: { orderBy: { createdAt: "desc" }, take: 5 },
+        paymentReviewLogs: { orderBy: { createdAt: "desc" }, take: 5 },
+        editLogs: { orderBy: { createdAt: "desc" }, take: 5 },
+      },
+    });
+
+    if (!reg) {
+      return {
+        success: false,
+        error: `No application found with Registration ID "${cleanId}". Please check the ID or search using your registered email.`,
+      };
+    }
+
+    const maskedEmailStr = maskEmail(reg.email);
+    const maskedPhoneStr = maskPhone(reg.phone);
+
+    return {
+      success: true,
+      isVerifiedSession: false,
+      maskedEmail: maskedEmailStr,
+      registeredEmail: reg.email,
+      data: {
+        id: reg.id,
+        registrationId: reg.registrationId,
+        fullName: reg.fullName,
+        email: maskedEmailStr,
+        rawEmail: reg.email,
+        phone: maskedPhoneStr,
+        alternatePhone: reg.alternatePhone ? maskPhone(reg.alternatePhone) : null,
+        dob: reg.dob.toISOString().split("T")[0],
+        isMinor: reg.isMinor,
+        province: reg.province,
+        district: reg.district,
+        municipality: reg.municipality,
+        cityVillage: reg.cityVillage,
+        currentAddress: reg.currentAddress,
+
+        guardianName: reg.guardianName,
+        guardianPhone: reg.guardianPhone ? maskPhone(reg.guardianPhone) : null,
+        guardianRelation: reg.guardianRelation,
+        guardianEmail: reg.guardianEmail ? maskEmail(reg.guardianEmail) : null,
+
+        personalIntro: reg.personalIntro,
+        hobbiesInterests: reg.hobbiesInterests,
+        talentsSkills: reg.talentsSkills,
+        languagesSpoken: reg.languagesSpoken,
+        culturalInterests: reg.culturalInterests,
+        motivationReason: reg.motivationReason,
+        mithilaMeaning: reg.mithilaMeaning,
+        qualitiesBrought: reg.qualitiesBrought,
+        educationLevel: reg.educationLevel,
+        institution: reg.institution,
+        previousExperience: reg.previousExperience,
+        experienceDetails: reg.experienceDetails,
+
+        instagramHandle: reg.instagramHandle,
+        tiktokHandle: reg.tiktokHandle,
+        facebookUrl: reg.facebookUrl,
+        profilePhotoUrl: reg.profilePhotoUrl,
+        videoUrl: reg.videoUrl,
+        documentUrl: reg.documentUrl,
+
+        paymentStatus: reg.paymentStatus,
+        applicationStatus: reg.applicationStatus,
+        paymentReference: reg.paymentReference,
+        paymentScreenshotUrl: reg.paymentScreenshotUrl,
+        paymentClarificationNotes: reg.paymentClarificationNotes,
+        rejectionReason: reg.rejectionReason,
+        actionRequiredDetails: reg.actionRequiredDetails,
+        submittedAt: reg.submittedAt,
+        isPdfAvailable: reg.paymentStatus === PaymentStatus.VERIFIED && reg.applicationStatus === ApplicationStatus.APPROVED,
+        editLogs: reg.editLogs.map((log) => ({
+          id: log.id,
+          changedFields: log.changedFields,
+          requiresReview: log.requiresReview,
+          reviewStatus: log.reviewStatus,
+          createdAt: log.createdAt,
+        })),
+      },
+    };
+  } catch (err: unknown) {
+    console.error("lookupStatusByRegistrationIdAction error:", err);
+    return { success: false, error: "Unable to find registration record. Please try again." };
+  }
+}
+
+// -------------------------------------------------------------
+// 6.2 REQUEST OTP FOR REGISTRATION ID (To unlock edit permissions)
+// -------------------------------------------------------------
+export async function requestOtpForRegistrationIdAction({
+  registrationId,
+}: {
+  registrationId: string;
+}) {
+  try {
+    const cleanId = registrationId.trim().toUpperCase();
+    if (!cleanId) {
+      return { success: false, error: "Registration ID is required." };
+    }
+
+    const reg = await prisma.mithilaQueenRegistration.findUnique({
+      where: { registrationId: cleanId },
+    });
+
+    if (!reg) {
+      return { success: false, error: `No registration found with ID "${cleanId}".` };
+    }
+
+    const res = await requestStatusLookupOtpAction({
+      email: reg.email,
+      registrationId: reg.registrationId,
+    });
+
+    if (!res.success || !res.verificationId) {
+      return { success: false, error: res.error || "Unable to dispatch verification code." };
+    }
+
+    return {
+      success: true,
+      verificationId: res.verificationId,
+      maskedEmail: maskEmail(reg.email),
+      registeredEmail: reg.email,
+    };
+  } catch (err: unknown) {
+    console.error("requestOtpForRegistrationIdAction error:", err);
+    return { success: false, error: "Unable to dispatch verification code. Please try again." };
   }
 }
 
